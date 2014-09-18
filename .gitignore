@@ -21,8 +21,8 @@
 *.dylib
 
 # Executables
-*.exe
-*.out
+src/*.exe
+src/*.out
 *.app
 *.i*86
 *.x86_64
