@@ -6,6 +6,8 @@ typedef enum {
     TAG_ERROR
 
     , TAG_HTMLBLOCK
+    , TAG_SCRIPTBLOCK
+    , TAG_STYLEBLOCK
 
     , TAG_SECTION
     , TAG_VSECTION

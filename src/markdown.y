@@ -23,7 +23,8 @@ int _inner_pre_level = -1;
 };
 
     /* bind with terminater */
-%token <text> TEXT SPECIALCHAR CODETEXT INDENT H QUOTEH HTMLBLOCK SECTION VSECTION
+%token <text> TEXT SPECIALCHAR CODETEXT INDENT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
+%token <text> STYLESTART STYLEEND
 %token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
 %token UNDERSCORE STAR BACKTICK BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART DOUBLEBACKTICK QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
@@ -168,6 +169,54 @@ line:
                     , ""
                 );
         }
+
+    | SCRIPTSTART inlineelements SCRIPTEND {
+            tag_check_stack(TAG_SCRIPTBLOCK, 0);
+            $$ = blocknode_create(
+                    TAG_SCRIPTBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , $2
+                    , $3
+                );
+        } 
+
+    | SCRIPTSTART SCRIPTEND {
+            tag_check_stack(TAG_SCRIPTBLOCK, 0);
+            $$ = blocknode_create(
+                    TAG_SCRIPTBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , ""
+                    , $2
+                );
+        } 
+
+    | STYLESTART inlineelements STYLEEND {
+            tag_check_stack(TAG_STYLEBLOCK, 0);
+            $$ = blocknode_create(
+                    TAG_STYLEBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , $2
+                    , $3
+                );
+        } 
+
+    | STYLESTART STYLEEND {
+            tag_check_stack(TAG_STYLEBLOCK, 0);
+            $$ = blocknode_create(
+                    TAG_STYLEBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , ""
+                    , $2
+                );
+        } 
 
     | error LINEBREAK { 
             /* set error indent level: 100 */

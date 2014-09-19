@@ -4,6 +4,8 @@
 #include "blocknode.h"
 #include "markdown.y.h"
 
+#define YYERROR_VERBOSE 1
+
 #undef _ISDEBUGLEX
 
 #ifdef _ISDEBUGLEX
@@ -19,7 +21,7 @@ int yylineno;
 %}
 
 %x ESCAPE CODEBLOCK CODESPAN XCODESPAN 
-%x INDENTLIST SHTMLBLOCK
+%x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK
 
 blankline ^[ ]{0,4}\r?\n
 quoteblankline ^>[ ]{0,4}\r?\n
@@ -119,8 +121,8 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^#{1,6}                       { yylval.text = strdup(yytext); P("H"); return H; }
 ^>" "+#{1,6}                  { yylval.text = strdup(yytext); P("QUOTEH"); return QUOTEH; }
 
-    /* block and functional html tags must be in one line */
-^\<\/?(div|table|tr|td|h[1-6]|dl|iframe|section|header|footer|ul|ol|li|script|style|aside)[^>]*\>   { 
+    /* block and functional html tags must be in one line and must start at first column */
+^\<\/?(div|p|table|tbody|tr|td|th|h[1-6]|dl|dt|dd|iframe|form|hr|section|header|footer|ul|ol|li|aside|canvas|center)[^>]*\>   { 
                                             yylval.text = strdup(yytext); 
                                             P("HTMLBLOCK"); 
                                             BEGIN SHTMLBLOCK; 
@@ -128,6 +130,57 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 <SHTMLBLOCK>.+          { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 <SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); BEGIN INITIAL;  return LINEBREAK; }
+
+
+
+    /* script block */
+^\<script[^>]*>                         {
+                                            yylval.text = strdup(yytext); 
+                                            P("SCRIPTSTART"); 
+                                            BEGIN SCRIPTBLOCK; 
+                                            return SCRIPTSTART; 
+                                        }
+<SCRIPTBLOCK>.                          { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+<SCRIPTBLOCK>\r?\n                      { 
+                                            yylineno++; 
+                                            yylval.text = strdup(yytext); 
+                                            P("TEXT"); 
+                                            return TEXT; 
+                                        }
+<SCRIPTBLOCK>\<\/script>.*\r?\n         { 
+                                            yylval.text = "</script>"; 
+                                            P("SCRIPTEND"); 
+                                            BEGIN INITIAL; 
+                                            return SCRIPTEND;
+                                        }
+
+
+
+
+
+    /* style block */
+^\<style[^>]*>                         {
+                                            yylval.text = strdup(yytext); 
+                                            P("STYLESTART"); 
+                                            BEGIN STYLEBLOCK; 
+                                            return STYLESTART; 
+                                        }
+<STYLEBLOCK>.                           { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+<STYLEBLOCK>\r?\n                       { 
+                                            yylineno++; 
+                                            yylval.text = strdup(yytext); 
+                                            P("TEXT"); 
+                                            return TEXT; 
+                                        }
+<STYLEBLOCK>\<\/style>.*\r?\n          { 
+                                            yylval.text = "</style>"; 
+                                            P("STYLEEND"); 
+                                            BEGIN INITIAL; 
+                                            return STYLEEND;
+                                        }
+
+
+
 
 
 .                             { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }

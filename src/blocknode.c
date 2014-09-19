@@ -43,6 +43,11 @@ char *blocknode_output(t_blocknode *node){
             printf("%s%s", node->ops[0], node->ops[1]);
             break;
 
+        case TAG_SCRIPTBLOCK:
+        case TAG_STYLEBLOCK:
+            printf("%s\n%s\n%s", node->ops[0], node->ops[1], node->ops[2]);
+            break;
+
         case TAG_P:
         case TAG_OL:
         case TAG_UL: 
@@ -110,6 +115,8 @@ char *blocknode_close(t_blocknode *node) {
         case TAG_QUOTE_PRE: printf("</code></pre></blockquote>"); break;
 
         case TAG_HTMLBLOCK:
+        case TAG_SCRIPTBLOCK:
+        case TAG_STYLEBLOCK:
         case TAG_BLANK:
         case TAG_EOF:
         case TAG_ERROR:
@@ -247,7 +254,7 @@ void blocklist_parse(){
         ){
             blocknode_push_stack(p);
         }
-        /* outpue current node */
+        /* output current node */
         blocknode_output(p);
 
         /*
@@ -285,6 +292,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                 break;
 
             case TAG_HTMLBLOCK:
+            case TAG_SCRIPTBLOCK:
+            case TAG_STYLEBLOCK:
             case TAG_BLANK:
             case TAG_QUOTE_BLANK:
                 glue = "\n";
@@ -348,6 +357,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                 break;
 
             case TAG_HTMLBLOCK:
+            case TAG_SCRIPTBLOCK:
+            case TAG_STYLEBLOCK:
             case TAG_QUOTE_BLANK:
                 glue = "\n";
                 break;
@@ -391,7 +402,11 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         break;
 
                     /* blank will close htmlblock, p , indent p, h and quoted elements */
-                    case TAG_HTMLBLOCK: glue = "\n"; blocknode_pop_stack(); break;
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
+                    case TAG_HTMLBLOCK: 
+                        glue = "\n"; blocknode_pop_stack(); 
+                        break;
                     case TAG_P: glue = "</p>\n"; blocknode_pop_stack(); break;
                     case TAG_H: glue = str_format("%s\n", get_close_header(top)); blocknode_pop_stack(); break; 
 
@@ -471,7 +486,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         break;
 
                     /* blank will close htmlblock, p , indent p, h and quoted elements */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n"; blocknode_pop_stack(); break;
+
                     case TAG_P: glue = "</p>\n"; blocknode_pop_stack(); break;
                     case TAG_H: glue = str_format("%s\n", get_close_header(top)); blocknode_pop_stack(); break; 
 
@@ -524,6 +542,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         break;
 
                     /* quoted blank will close htmlblock, p , quoted p, and quoted h */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n"; blocknode_pop_stack(); break;
                     case TAG_P: glue = "</p>\n"; blocknode_pop_stack(); break;
                     case TAG_QUOTE_P: glue = "</p></blockquote>\n"; blocknode_pop_stack(); break;
@@ -544,6 +564,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                 }
                 break;
 
+            case TAG_SCRIPTBLOCK:
+            case TAG_STYLEBLOCK:
             case TAG_HTMLBLOCK: 
                 switch(top -> tag){
 
@@ -567,6 +589,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         break;
 
                     /* same type node, close it */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels */
@@ -612,6 +636,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_P: glue = "\n"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and start p */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<p>"; blocknode_pop_stack();break;
                     case TAG_UL: glue = "</li></ul>\n<p>"; blocknode_pop_stack();break;
                     case TAG_OL: glue = "</li></ol>\n<p>"; blocknode_pop_stack();break;
@@ -653,6 +679,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_UL: glue = "</li>\n<li>"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open ul */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<ul><li>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<ul><li>"; blocknode_pop_stack();  break;
                     case TAG_OL: glue = "</li></ol>\n<ul><li>"; blocknode_pop_stack(); break;
@@ -694,6 +722,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_OL: glue = "</li>\n<li>"; blocknode_pop_stack();  break;
 
                     /* close other nodes with the same levels and open ul */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<ol><li>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<ol><li>"; blocknode_pop_stack();  break;
                     case TAG_UL: glue = "</li></ul>\n<ol><li>"; blocknode_pop_stack(); break;
@@ -734,6 +764,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_PRE: glue = "\n"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open codeblock */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<pre><code>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<pre><code>"; blocknode_pop_stack();  break;
                     case TAG_UL: glue = "</li></ul>\n<pre><code>"; blocknode_pop_stack(); break;
@@ -780,6 +812,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         break;
 
                     /* close other nodes with the same levels and open header */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = str_format("\n%s", get_open_header(current)); blocknode_pop_stack();  break;
                     case TAG_P: glue = str_format("</p>\n%s", get_open_header(current)); blocknode_pop_stack();  break;
                     case TAG_UL: glue = str_format("</li></ul>\n%s", get_open_header(current)); blocknode_pop_stack(); break;
@@ -820,6 +854,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_P: glue = ""; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open quoted p */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<blockquote><p>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<blockquote><p>"; blocknode_pop_stack();  break;
                     case TAG_UL: glue = "</li></ul>\n<blockquote><p>"; blocknode_pop_stack(); break;
@@ -861,6 +897,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_UL: glue = "</li>\n<li>"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open quoted ul */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<blockquote><ul><li>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<blockquote><ul><li>"; blocknode_pop_stack();  break;
                     case TAG_UL: glue = "</li></ul>\n<blockquote><ul><li>"; blocknode_pop_stack(); break;
@@ -902,6 +940,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_OL: glue = "</li>\n<li>"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open quoted ul */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<blockquote><ol><li>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<blockquote><ol><li>"; blocknode_pop_stack();  break;
                     case TAG_UL: glue = "</li></ul>\n<blockquote><ol><li>"; blocknode_pop_stack(); break;
@@ -943,6 +983,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_PRE: glue = "\n"; blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open quoted ul */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = "\n<blockquote><pre><code>"; blocknode_pop_stack();  break;
                     case TAG_P: glue = "</p>\n<blockquote><pre><code>"; blocknode_pop_stack();  break;
                     case TAG_UL: glue = "</li></ul>\n<blockquote><pre><code>"; blocknode_pop_stack(); break;
@@ -984,6 +1026,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_H: glue = str_format("%s\n%s", get_close_header(top), get_open_header(current)); blocknode_pop_stack(); break;
 
                     /* close other nodes with the same levels and open quoted ul */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK: glue = str_format("\n<blockquote>%s", get_open_header(current)); blocknode_pop_stack();  break;
                     case TAG_P: glue = str_format("</p>\n<blockquote>%s", get_open_header(current)); blocknode_pop_stack();  break;
                     case TAG_UL: glue = str_format("</li></ul>\n<blockquote>%s", get_open_header(current)); blocknode_pop_stack(); break;
@@ -1020,6 +1064,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_VSECTION:
 
                     /* lower level nodes except list nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK:
                     case TAG_P:
                     case TAG_H:
@@ -1063,6 +1109,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_VSECTION:
 
                     /* lower level nodes except list nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK:
                     case TAG_P:
                     case TAG_H:
@@ -1106,6 +1154,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_VSECTION:
 
                     /* lower level nodes except list nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK:
                     case TAG_P:
                     case TAG_H:
@@ -1149,6 +1199,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_VSECTION:
 
                     /* lower level nodes except list nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK:
                     case TAG_P:
                     case TAG_H:
@@ -1188,6 +1240,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_EOF:
 
                     /* higer level nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK:
                     case TAG_P:
                     case TAG_H:
@@ -1232,6 +1286,8 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_EOF:
 
                     /* higer level nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_STYLEBLOCK:
                     case TAG_HTMLBLOCK:
                     case TAG_P:
                     case TAG_H:

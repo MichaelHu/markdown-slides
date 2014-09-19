@@ -2,7 +2,7 @@
 
 REVEAL="_reveal"
 
-if [ "noreveal" == $1 ] ; then
+if [ "noreveal" == "$1" ] ; then
     REVEAL=""
 fi
 
