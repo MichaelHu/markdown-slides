@@ -204,9 +204,9 @@ rocket.collection.index_news = rocket.collection.extend({
 </code></pre>
 </li>
 <li>全局视图控制器，通过继承rocket.globalview，可直接相应路由事件，持有页面视图控制器，可按需向页面控视图控制器发送事件。<pre><code>(function($){
- 
+
 rocket.globalview.sidenav = rocket.globalview.extend({
-     
+
     el: '#sidenav_globalview'
 
     ,init: function(options){
@@ -268,7 +268,7 @@ rocket.subview.search_content = rocket.subview.extend({
     }
 
     ...
-    
+
 });
 
 })(Zepto);
@@ -318,12 +318,12 @@ rocket.subpageview.search_subpage = rocket.subpageview.extend({
             targetSubpage = params.targetSubpage,
             key = e.which,
             hit = false;
-        
+
         ...
     }
 
 });
- 
+
 })(Zepto);
 </code></pre>
 </li></ul>

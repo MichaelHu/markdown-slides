@@ -7,11 +7,9 @@
 #include "blocknode.h" 
 
 /* prototypes */
-int yylex(void);
-void yyerror(char *s);
-FILE *yyin;
-int yylineno;
-char *yytext;
+extern int yylex(void);
+extern void yyerror(char *s);
+extern void markdown();
 
 int _inner_pre_level = -1;
 %}
@@ -194,6 +192,10 @@ line:
                 );
         } 
 
+    | SCRIPTSTART error LINEBREAK {
+            fprintf(stderr, "expect </script>\n");
+        } 
+
     | STYLESTART inlineelements STYLEEND {
             tag_check_stack(TAG_STYLEBLOCK, 0);
             $$ = blocknode_create(
@@ -273,16 +275,9 @@ code_list:
 
 %%
 
-void yyerror(char *s) {
-    fprintf(stderr, "line %d: %s %s\n", yylineno, s, yytext);
-}
 
-int main(int argc, char **argv){
-    yyin = fopen(argv[1], "r");
+/* export yyparse through markdown */
+void markdown(){
     yyparse();
-    fclose(yyin);
 }
-
-
-
 

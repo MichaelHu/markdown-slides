@@ -4,29 +4,39 @@
 #include "blocknode.h"
 #include "markdown.y.h"
 
-#define YYERROR_VERBOSE 1
-
 #undef _ISDEBUGLEX
 
 #ifdef _ISDEBUGLEX
-#define P(token) printf("token: %s\n", token);
+#define P(token) printf("token: %s\n", token); BeginToken(yytext);
 #else
-#define P(token)
+#define P(token) BeginToken(yytext);
 #endif
 
+#define YY_INPUT(buf,result,max_size)  { \
+    result = GetNextChar(buf, max_size); \
+    if (  result <= 0  ) \
+      result = YY_NULL; \
+}
+
 /* prototypes */
-void yyerror(char *s);
 int yylineno;
+
+/* input.c */
+int GetNextChar(char *b, int maxBuffer);
+void BeginToken(char *t);;
 
 %}
 
 %x ESCAPE CODEBLOCK CODESPAN XCODESPAN 
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK
 
-blankline ^[ ]{0,4}\r?\n
+    /* blankline ^[ ]{0,4}\r?\n */
+blankline ^[ \t]*\r?\n
 quoteblankline ^>[ ]{0,4}\r?\n
 
 %%
+
+    /* special chars: "\[]^-?.*+|()$/{}%<> */
 
 {blankline}                             { yylineno++; P("BLANKLINE"); return BLANKLINE; }
     /* !!! note: quoteblankline has no effect */
@@ -46,7 +56,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return VSECTION; }
 
 
-\\                                      { BEGIN ESCAPE; }
+\\                                      { P("ESCAPE"); BEGIN ESCAPE; }
 <ESCAPE>[\\`*_{}()#+\-.!]               { BEGIN INITIAL; yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>.                               { BEGIN INITIAL; yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 
@@ -112,7 +122,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             }
                                         }
 <CODEBLOCK>.+                           { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }
-<CODEBLOCK>\r?\n                        { BEGIN INITIAL; yylineno++; }
+<CODEBLOCK>\r?\n                        { P(""); BEGIN INITIAL; yylineno++; }
 
 <INDENTLIST>[ ]{0,3}[*+][ ]+            { BEGIN INITIAL; P("ULSTART"); return ULSTART; }
 <INDENTLIST>[ ]{0,3}[1-9][0-9]*\.[ ]+   { BEGIN INITIAL; P("OLSTART"); return OLSTART; }
@@ -134,7 +144,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* script block */
-^\<script[^>]*>                         {
+^\<script[^>]*>/(.|[\r\n])*\<\/script>  {
                                             yylval.text = strdup(yytext); 
                                             P("SCRIPTSTART"); 
                                             BEGIN SCRIPTBLOCK; 
@@ -159,7 +169,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* style block */
-^\<style[^>]*>                         {
+^\<style[^>]*>/(.|[\r\n])*\<\/style>    {
                                             yylval.text = strdup(yytext); 
                                             P("STYLESTART"); 
                                             BEGIN STYLEBLOCK; 

@@ -85,7 +85,18 @@
 BSTR GetBSTR()
 {
     _bstr_t bstr1(_T("This is the test string."));
-CComBSTR GetComBSTR()
+
+    BSTR bstr;
+
+    bstr = bstr1.copy();
+
+    return bstr;
+}
+</code></pre>
+
+</section>
+<section >
+<pre><code>CComBSTR GetComBSTR()
 {
     CComBSTR bstr("This is the test string.");
 
@@ -95,7 +106,19 @@ CComBSTR GetComBSTR()
 
 void CVbsDlg::ShowBSTR(BSTR bstr)
 {
-    _bstr_t bstrStart(bstr); </code></pre>
+    _bstr_t bstrStart(bstr); 
+
+    CString s;
+
+    s.Format(_T("%s"), (LPCTSTR)bstrStart);
+
+    AfxMessageBox(s);
+
+}
+</code></pre>
+
+</section>
+<section >
 <h2> Conversions</h2>
 <p>So let's get to it.  Here are the conversion techniques:</p>
 
