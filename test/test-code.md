@@ -17,3 +17,8 @@ newline code\``
 console.log('javascript');
 ``
 
+@s
+`@[class="fragment"]window.alert(123);`
+
+@s
+`@[class="fragment"\]window.alert(123);`

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include "htmltags.h" 
+#include "config.h"
 
 
 char *str_concat(char *s1, char *s2){
@@ -33,7 +34,7 @@ char *str_padding_left(char *s, int count){
 
     _str = (char *)malloc(count + 1);     
     if(!_str){
-        printf("out of memory!\n");
+        fprintf(stderr, "out of memory!\n");
         exit(1);
     }
 
@@ -45,6 +46,77 @@ char *str_padding_left(char *s, int count){
 
     return ret;
 }
+
+
+
+
+
+
+t_tag_info *markdown_get_tag_info(char *s){
+    char *p = s, 
+         *end,
+         *_str = NULL;
+    int size;
+    t_tag_info *info = NULL;
+
+    if(!s){
+        return NULL;
+    }
+
+    /* skip spaces */
+    while(' ' == *p
+        || '\t' == *p
+        ){
+        p++;
+    }
+
+    info = (t_tag_info *)malloc(sizeof(t_tag_info));
+    if(!info){
+        fprintf(stderr, "markdown_get_attr out of memory!\n");
+        exit(1);
+    }
+
+    info->attr = "";
+    info->content = s;
+
+    /* attr start */
+    if(*p && p == strstr(p, "@[")){
+        end = strstr(p, "]");
+        if(end 
+            /* non-escaped ']' */
+            && *(end - 1) != '\\'){
+
+            /* take into consideration: prefix space and trail '\0' */
+            size = end - p;
+            _str = (char *)malloc(size);
+
+            if(!_str){
+                fprintf(stderr, "markdown_get_attr out of memory!\n");
+                exit(1);
+            }
+
+            memset(_str, 0, size);
+            if(size - 2 > 0){
+                /* prefix space */
+                _str[0] = ' ';
+                strncpy(_str + 1, p + 2, size - 2);
+            }
+
+            info->attr = _str;
+            info->content = end + 1;
+        }
+    }
+
+    if(config_debug_tag_info){
+        fprintf(stderr, "attr: [ %s ], content: [ %s ]\n"
+            , info->attr, info->content);
+    }
+
+    return info;
+}
+
+
+
 
 
 

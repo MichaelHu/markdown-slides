@@ -12,6 +12,7 @@ extern void yyerror(char *s);
 extern void markdown();
 
 int _inner_pre_level = -1;
+t_tag_info *tag_info;
 %}
 
 
@@ -71,11 +72,13 @@ line:
 
     | H plaintext LINEBREAK {              
             tag_check_stack(TAG_H, 0); 
-            $$ = blocknode_create(TAG_H, 0, 2, $1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(TAG_H, 0, 3, $1, tag_info->attr, tag_info->content);
         }   
     | QUOTEH plaintext LINEBREAK { 
             tag_check_stack(TAG_QUOTE_H, 0); 
-            $$ = blocknode_create(TAG_QUOTE_H, 0, 2, $1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(TAG_QUOTE_H, 0, 3, $1, tag_info->attr, tag_info->content);
         }   
 
 
@@ -106,12 +109,27 @@ line:
 
     | ULSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_UL, 0); 
-            $$ = blocknode_create(TAG_UL, 0, 1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                TAG_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | INDENT ULSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
-            $$ = blocknode_create(TAG_INDENT_UL, indent_level($1), 2, $1, $3);
+            tag_info = markdown_get_tag_info($3);
+            $$ = blocknode_create(
+                TAG_INDENT_UL
+                , indent_level($1)
+                , 3
+                , $1
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | QUOTEULSTART inlineelements LINEBREAK { 
@@ -242,7 +260,9 @@ inlineelement:
     | DOUBLESTAR inlineelements DOUBLESTAR %prec STARX              { $$ = create_strong($2); }
     | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE %prec STARX  { $$ = create_strong($2); }
 
-    | BACKTICK codespan BACKTICK        { $$ = create_codespan( html_escape($2) ); }
+    | BACKTICK codespan BACKTICK        { $$ = create_codespan( html_escape($2) ); 
+                                            markdown_get_tag_info($2);
+                                        }
     | DOUBLEBACKTICK codespan DOUBLEBACKTICK        { $$ = create_codespan($2); }
 
     | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
