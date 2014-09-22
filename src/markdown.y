@@ -73,38 +73,88 @@ line:
     | H plaintext LINEBREAK {              
             tag_check_stack(TAG_H, 0); 
             tag_info = markdown_get_tag_info($2);
-            $$ = blocknode_create(TAG_H, 0, 3, $1, tag_info->attr, tag_info->content);
+            $$ = blocknode_create(
+                TAG_H
+                , 0
+                , 3
+                , $1
+                , tag_info->attr
+                , tag_info->content
+            );
         }   
     | QUOTEH plaintext LINEBREAK { 
             tag_check_stack(TAG_QUOTE_H, 0); 
             tag_info = markdown_get_tag_info($2);
-            $$ = blocknode_create(TAG_QUOTE_H, 0, 3, $1, tag_info->attr, tag_info->content);
+            $$ = blocknode_create(
+                TAG_QUOTE_H
+                , 0
+                , 3
+                , $1
+                , tag_info->attr
+                , tag_info->content
+            );
         }   
 
 
     | inlineelements LINEBREAK { 
             tag_check_stack(TAG_P, 0); 
-            $$ = blocknode_create(TAG_P, 0, 1, $1);
+            tag_info = markdown_get_tag_info($1);
+            $$ = blocknode_create(
+                TAG_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | LARGERTHAN inlineelements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_P, 0); 
-            $$ = blocknode_create(TAG_QUOTE_P, 0, 1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                TAG_QUOTE_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | OLSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_OL, 0); 
-            $$ = blocknode_create(TAG_OL, 0, 1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                TAG_OL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | QUOTEOLSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_OL, 0); 
-            $$ = blocknode_create(TAG_QUOTE_OL, 0, 1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                TAG_QUOTE_OL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+                );
         } 
 
     | INDENT OLSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_INDENT_OL, indent_level($1)); 
-            $$ = blocknode_create(TAG_INDENT_OL, indent_level($1), 2, $1, $3);
+            tag_info = markdown_get_tag_info($3);
+            $$ = blocknode_create(
+                TAG_INDENT_OL
+                , indent_level($1)
+                , 3
+                , $1
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | ULSTART inlineelements LINEBREAK { 
@@ -134,32 +184,57 @@ line:
 
     | QUOTEULSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_UL, 0); 
-            $$ = blocknode_create(TAG_QUOTE_UL, 0, 1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                TAG_QUOTE_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
 
     | INDENT inlineelements LINEBREAK { 
             tag_check_stack(TAG_INDENT_P, indent_level($1)); 
-            $$ = blocknode_create(TAG_INDENT_P, indent_level($1), 2, $1, $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                TAG_INDENT_P
+                , indent_level($1)
+                , 3
+                , $1
+                , tag_info -> attr
+                , tag_info -> content
+            );
         } 
     | INDENT CODETEXT {
             _inner_pre_level = inner_pre_level(indent_level($1));
             if(_inner_pre_level > -1){
                 /* PRE indent level is 1 less than the literal indent */
                 tag_check_stack(TAG_INDENT_PRE, _inner_pre_level); 
+                tag_info = markdown_get_tag_info($2);
                 $$ = blocknode_create(
                         TAG_INDENT_PRE
                         , _inner_pre_level
-                        , 1
-                        , str_padding_left( $2, 4 * ( indent_level($1) - _inner_pre_level - 1 ) )
+                        , 2
+                        , tag_info -> attr
+                        , str_padding_left( 
+                            tag_info -> content
+                            , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
+                        )
                     );
             }
             else{
                 tag_check_stack(TAG_PRE, 0); 
+                tag_info = markdown_get_tag_info($2);
                 $$ = blocknode_create(
                         TAG_PRE
                         , 0
-                        , 1
-                        , str_padding_left( $2, 4 * ( indent_level($1) - 1 ) ) 
+                        , 2
+                        , tag_info -> attr
+                        , str_padding_left( 
+                            tag_info -> content
+                            , 4 * ( indent_level($1) - 1 ) 
+                        ) 
                     );
             }
         }
