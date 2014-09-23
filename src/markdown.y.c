@@ -523,8 +523,8 @@ static const yytype_uint16 yyrline[] =
        0,    41,    41,    45,    49,    53,    58,    63,    68,    73,
       85,    99,   111,   123,   135,   147,   160,   172,   185,   197,
      209,   242,   253,   264,   276,   288,   292,   304,   316,   325,
-     326,   330,   331,   333,   334,   335,   336,   338,   341,   343,
-     346,   352,   353,   357,   358,   362,   363,   367,   368
+     326,   330,   331,   333,   334,   335,   336,   338,   345,   353,
+     356,   362,   363,   367,   368,   372,   373,   377,   378
 };
 #endif
 
@@ -1980,73 +1980,83 @@ yyreduce:
 
   case 37:
 #line 338 "markdown.y"
-    { (yyval.text) = create_codespan( html_escape((yyvsp[(2) - (3)].text)) ); 
-                                            markdown_get_tag_info((yyvsp[(2) - (3)].text));
+    { 
+                                            tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
+                                            (yyval.text) = create_codespan( 
+                                                tag_info -> attr
+                                                , html_escape(tag_info -> content) 
+                                            ); 
                                         ;}
     break;
 
   case 38:
-#line 341 "markdown.y"
-    { (yyval.text) = create_codespan((yyvsp[(2) - (3)].text)); ;}
+#line 345 "markdown.y"
+    { 
+                                            tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
+                                            (yyval.text) = create_codespan( 
+                                                tag_info -> attr
+                                                , html_escape(tag_info -> content) 
+                                            ); 
+                                        ;}
     break;
 
   case 39:
-#line 343 "markdown.y"
+#line 353 "markdown.y"
     {
                                  (yyval.text) = create_link((yyvsp[(2) - (6)].text), (yyvsp[(5) - (6)].text));
                                 ;}
     break;
 
   case 40:
-#line 346 "markdown.y"
+#line 356 "markdown.y"
     {
                                  (yyval.text) = create_image((yyvsp[(3) - (7)].text), (yyvsp[(6) - (7)].text));
                                 ;}
     break;
 
   case 41:
-#line 352 "markdown.y"
-    { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
-    break;
-
-  case 42:
-#line 353 "markdown.y"
-    { (yyval.text) = (yyvsp[(1) - (1)].text); ;}
-    break;
-
-  case 43:
-#line 357 "markdown.y"
-    { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
-    break;
-
-  case 44:
-#line 358 "markdown.y"
-    { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
-    break;
-
-  case 45:
 #line 362 "markdown.y"
     { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
-  case 46:
+  case 42:
 #line 363 "markdown.y"
     { (yyval.text) = (yyvsp[(1) - (1)].text); ;}
     break;
 
-  case 47:
+  case 43:
 #line 367 "markdown.y"
     { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
-  case 48:
+  case 44:
 #line 368 "markdown.y"
+    { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+    break;
+
+  case 45:
+#line 372 "markdown.y"
+    { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
+    break;
+
+  case 46:
+#line 373 "markdown.y"
+    { (yyval.text) = (yyvsp[(1) - (1)].text); ;}
+    break;
+
+  case 47:
+#line 377 "markdown.y"
+    { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+    break;
+
+  case 48:
+#line 378 "markdown.y"
     { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2050 "markdown.y.c"
+#line 2060 "markdown.y.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2266,7 +2276,7 @@ yyreturn:
 }
 
 
-#line 371 "markdown.y"
+#line 381 "markdown.y"
 
 
 

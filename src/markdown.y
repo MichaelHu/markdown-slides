@@ -335,10 +335,20 @@ inlineelement:
     | DOUBLESTAR inlineelements DOUBLESTAR %prec STARX              { $$ = create_strong($2); }
     | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE %prec STARX  { $$ = create_strong($2); }
 
-    | BACKTICK codespan BACKTICK        { $$ = create_codespan( html_escape($2) ); 
-                                            markdown_get_tag_info($2);
+    | BACKTICK codespan BACKTICK        { 
+                                            tag_info = markdown_get_tag_info($2);
+                                            $$ = create_codespan( 
+                                                tag_info -> attr
+                                                , html_escape(tag_info -> content) 
+                                            ); 
                                         }
-    | DOUBLEBACKTICK codespan DOUBLEBACKTICK        { $$ = create_codespan($2); }
+    | DOUBLEBACKTICK codespan DOUBLEBACKTICK        { 
+                                            tag_info = markdown_get_tag_info($2);
+                                            $$ = create_codespan( 
+                                                tag_info -> attr
+                                                , html_escape(tag_info -> content) 
+                                            ); 
+                                        }
 
     | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
                                  $$ = create_link($2, $5);

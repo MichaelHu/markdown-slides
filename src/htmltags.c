@@ -204,16 +204,17 @@ char *create_strong(char *s){
     return _str;
 }
 
-char *create_codespan(char *s){
+char *create_codespan(char *attr, char *content){
     char *_str,
-        *format = "<code>%s</code>";
+        *format = "<code%s>%s</code>";
 
     _str = (char *)malloc(
-        strlen(s) 
+        strlen(content) 
+        + strlen(attr)
         + strlen(format) - 2 
         + 1
     );     
-    sprintf(_str, format, s); 
+    sprintf(_str, format, attr, content); 
     return _str;
 }
 
