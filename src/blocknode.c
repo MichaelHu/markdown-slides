@@ -255,8 +255,8 @@ char* blocknode_parse(t_blocknode *node){
 void blocklist_parse(){
     t_blocknode *p = node_list, *top;
 
-    // output_buf = strbuf_create(1024 * 100, 1024 * 50); 
-    output_buf = strbuf_create(512, 64); 
+    output_buf = strbuf_create(1024 * 100, 1024 * 50); 
+    // output_buf = strbuf_create(512, 64); 
 
     while(p){
 
