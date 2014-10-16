@@ -91,8 +91,7 @@ BSTR GetBSTR()
     bstr = bstr1.copy();
 
     return bstr;
-}
-</code></pre>
+}  </code></pre>
 
 </section>
 <section >
@@ -114,8 +113,7 @@ void CVbsDlg::ShowBSTR(BSTR bstr)
 
     AfxMessageBox(s);
 
-}
-</code></pre>
+}  </code></pre>
 
 </section>
 <section >
@@ -138,9 +136,7 @@ ShowBSTR(bstrFinal);
 // Use the = operator
 bstrFinal = bstrStart;
 
-ShowBSTR(bstrFinal);
-
-</code></pre>
+ShowBSTR(bstrFinal);   </code></pre>
 
 </section>
 <section >
@@ -161,9 +157,7 @@ ShowBSTR(bstrFinish);
 // use = operator
 bstrFinish = bstrStart;
 
-ShowBSTR(bstrFinish);
-
-</code></pre>
+ShowBSTR(bstrFinish);   </code></pre>
 
 </section>
 <section >
@@ -183,8 +177,7 @@ ShowBSTR(bstrFinish);
 // use the Copy member function
 bstrFinish = bstrStart.Copy();
 
-ShowBSTR(bstrFinish);
-</code></pre>
+ShowBSTR(bstrFinish);  </code></pre>
 
 </section>
 <section >
@@ -197,8 +190,7 @@ CComBSTR bstrFinish;
 
 bstrFinish.AppendBSTR(bstrStart);
 
-ShowBSTR(bstrFinish);
-</code></pre>
+ShowBSTR(bstrFinish);  </code></pre>
 
 </section>
 <section >
@@ -215,8 +207,7 @@ TCHAR szFinal[255];
 
 // direct conversion from BSTR to LPCTSTR only works in Unicode
 _stprintf(szFinal, _T("%s"), (LPCTSTR)bstrStart);
-AfxMessageBox(szFinal);
-</code></pre>
+AfxMessageBox(szFinal);  </code></pre>
 
 </section>
 <section >
@@ -230,8 +221,7 @@ _stprintf(szFinal, _T("%s"), (LPCTSTR)bstrIntermediate);
 
 strFinal.Format(_T("%s"), (LPCTSTR)bstrIntermediate);
 
-AfxMessageBox(strFinal);
-</code></pre>
+AfxMessageBox(strFinal);  </code></pre>
 
 </section>
 <section >
@@ -243,9 +233,7 @@ TCHAR szFinal[255];
 
 _stprintf(szFinal, _T("%s"), (LPCTSTR)bstrStart);
 
-AfxMessageBox(szFinal);
-
-</code></pre>
+AfxMessageBox(szFinal);   </code></pre>
 
 </section>
 <section >
@@ -261,8 +249,7 @@ TCHAR szFinal[255];
 
 _stprintf(szFinal, _T("%s"), (LPCTSTR)bstrIntermediate);
 
-AfxMessageBox(szFinal);
-</code></pre>
+AfxMessageBox(szFinal);  </code></pre>
 
 </section>
 <section >
@@ -281,8 +268,7 @@ ShowBSTR(bstrFinal);
 // or use = operator
 bstrFinal = szStart;
 
-ShowBSTR(bstrFinal);
-</code></pre>
+ShowBSTR(bstrFinal);  </code></pre>
 
 </section>
 <section >
@@ -304,8 +290,7 @@ ShowBSTR(bstrFinal);
 bstrFinal.Empty();
 bstrFinal.Append(szStart);
 
-ShowBSTR(bstrFinal);
-</code></pre>
+ShowBSTR(bstrFinal);  </code></pre>
 
 </section>
 <section >

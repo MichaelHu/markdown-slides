@@ -17,6 +17,8 @@ char *blocknode_output(t_blocknode *node); /* simply output node content without
 
 void output(char *format, ...);
 
+void remove_extra_blanklines_of_codeblock();
+
 int count_of_char(char *s, char c);
 char *get_open_header(t_blocknode *node);
 char *get_close_header(t_blocknode *node);
@@ -286,6 +288,7 @@ void blocklist_parse(){
     }
 
     if(output_buf -> length){
+        remove_extra_blanklines_of_codeblock();
         printf("%s", output_buf -> s);
     }
 
@@ -1910,5 +1913,42 @@ void output(char *format, ...){
 
     if(_str){
         strbuf_push(output_buf, _str);
+    }
+}
+
+
+void remove_extra_blanklines_of_codeblock(){
+    char *s, *t;
+    int len, i;
+
+    if(!output_buf){
+        return;
+    }
+
+    s = output_buf -> s;
+
+    while( ( s = strstr( s, "</code></pre>" ) ) ){
+
+        t = s - 1;
+        i = len = s - output_buf -> s;
+
+        while(i > 0){
+
+            if('\r' == *t 
+                || ' ' == *t
+                || '\t' == *t
+                || '\n' == *t){
+                *t = ' ';
+                t--;
+                i--;
+            }
+            else{
+                break;
+            }
+
+        }
+
+        s++;
+
     }
 }
