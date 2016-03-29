@@ -1,5 +1,7 @@
 all: clean doyacc dolex markdown.out
 
+debug: clean markdown.out
+
 doyacc:
 	bison -d -t --locations -omarkdown.y.c markdown.y
 

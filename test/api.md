@@ -1,5 +1,6 @@
 # D3.js API
 
+<script src="http://test.irice.com:8200/static/d3demos/common/d3/d3.min.js"></script>
 <script>
 
 d3.select('head')
@@ -32,6 +33,95 @@ function randomData(min, max, size) {
     return data;
 }
 
+</script>
+
+## 选择器
+
+    d3.select(selector)
+    d3.select(node)
+    d3.selectAll(selector)
+    d3.selectAll(nodes)
+
+值得注意的用法：
+
+    d3.selectAll(this.childNodes)
+    d3.selectAll(document.links)
+
+
+<style type="text/css">
+.test::before {
+    display: block;
+    text-align: right;
+    padding-right: 10px;
+    content: 'testing area';
+    color: #bbb;
+}
+
+.test {
+    margin: 15px 0;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+.test-container span {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 0 10px;
+    border: 1px solid #bbb;
+    background-color: #eee;
+    color: #f00;
+}
+
+.test-panel button {
+    margin: 5px;
+}
+
+.test-console {
+    margin: 10px;
+    padding: 5px;
+    font-family: courier;
+    font-size: 14px;
+    line-height: 20px;
+    color: #f66;
+}
+
+</style>
+
+<div id="test_1" class="test">
+<div class="test-container">
+<span>1</span><span>2</span><span>3</span>
+</div>
+<div class="test-console"></div>
+<div class="test-panel">
+<button id="test_1_btn_1">sel.attr('className', 'abc')</button>
+<button id="test_1_btn_2">sel.property('className', 'abc')</button>
+<button id="test_1_btn_3">sel.style('color', 'blue')</button>
+<br>
+<button id="test_1_btn_4">sel.classed('def', 1)</button>
+<button id="test_1_btn_5">sel.classed('def', 0)</button>
+<button id="test_1_btn_6">sel.classed('def abc': true)</button>
+<button id="test_1_btn_7">sel.classed({ 'def': false, 'ghi': true })</button>
+<br>
+<button id="test_1_btn_10">sel.append('span')</button>
+<button id="test_1_btn_11">sel.append(function(d,i){...})</button>
+<br>
+<button id="test_1_btn_15">sel.insert('span', ':first-child')</button>
+<button id="test_1_btn_16">sel.insert('span')</button>
+<br>
+<button id="test_1_btn_20">sel.remove()</button>
+<br>
+<button id="test_1_btn_25">sel.datum()</button>
+<button id="test_1_btn_26">sel.data([...]).datum()</button>
+<button id="test_1_btn_27">sel.data('string').datum()</button>
+<button id="test_1_btn_28">sel.data(function(){return arr;}).datum()</button>
+<button id="test_1_btn_29">sel.data(values, function(d){...}).datum()</button>
+<button id="test_1_btn_30">sel.data([...]).datum(function(){...})</button>
+</div>
+</div>
+
+<script>
 (function(){
 
 
@@ -233,8 +323,31 @@ d3.select('#test_1_btn_30').on('click', function(){
 
     
 })();
+</script>
 
 
+
+### selection.datum([values])
+
+
+
+<div id="test_2" class="test">
+<div class="test-container">
+<span>1</span><span>2</span><span>3</span>
+</div>
+<div class="test-console"></div>
+<div class="test-panel">
+<button id="test_2_btn_1">sel.datum()</button>
+<button id="test_2_btn_2">sel.data([...]).datum()</button>
+<button id="test_2_btn_3">sel.data('string').datum()</button>
+<button id="test_2_btn_4">sel.data(function(){return arr;}).datum()</button>
+<button id="test_2_btn_5">sel.data(values, function(d){...}).datum()</button>
+<button id="test_2_btn_6">sel.data([...]).datum(function(){...})</button>
+</div>
+</div>
+
+
+<script>
 (function(){
 
 
@@ -359,103 +472,99 @@ d3.select('#test_2_btn_6').on('click', function(){
 });
 
 
-(function(){
 
-var matrix = [
-    [11975,  5871, 8916, 2868],
-    [ 1951, 10048, 2060, 6171],
-    [ 8010, 16145, 8090, 8045],
-    [ 1013,   990,  940, 6907]
-];
 
-var initial = 1;
 
-d3.select('#test_3_btn_1').on('click', function(){
-
-    if( !initial ) return;
-    initial = 0;
-
-    var tr = d3.select('#test_3 .test-container').append('table')
-        .selectAll('tr').data(matrix)
-        .enter()
-        .append('tr');
-
-    var td = tr.selectAll('td')
-        .data(function(d){ return d; })
-        .enter()
-        .append('td')
-        .text(function(d){ return d; })
-        .style('background-color', function(){ return randomColor(1); })
-        .style('color', function(){ return randomColor(1); })
-        ;
-
-});
-
-d3.select('#test_3_btn_2').on('click', function(){
-
-    if(initial) return;
-
-    var table = d3.select('#test_3 table');
-
-    var old_matrix = matrix;
-
-    matrix = old_matrix.slice(1);
-    matrix.push(old_matrix[0]);
-
-    var tr = table.selectAll('tr')
-        .data(matrix)
-        ;
-
-    tr = table.selectAll('tr')
-        .data(matrix)
-        ;
-
-    // update
-    tr.selectAll('td')
-        .data(function(d) { return d; })
-        .transition()
-        .duration(1000)
-        .text(function(d){ return d; })
-        .style('background-color', function(){ return randomColor(1); })
-        .style('color', function(){ return randomColor(1); })
-        .transition()
-        .duration(200)
-        .style('-webkit-transform', 'translate(10px, 0)')
-        .transition()
-        .duration(200)
-        .style('-webkit-transform', 'translate(-10px, 0)')
-        .transition()
-        .duration(200)
-        .style('-webkit-transform', 'translate(0, 0)')
-        ;
-
-});
-
+    
 })();
+</script>
+
+### selection.data()
+
+    selection.data([values [, key ]])
+
+比较不好理解的是key函数和values配合使用的时候，
+
+    selection.data(values, function(d, i){...})
+
+以下是API文档摘抄的：
+
+A key function `key([ d [, i ]])` may be specified to `control how data is joined to elements (this replaces the default by-index behavior)`. The key function returns a string which is used to join a datum with its corresponding element, based on the previously-bound data. For example, if each datum has a unique field name, the join might be specified as .data(data, function(d) { return d.name; })
+
+The key function is `called twice` during the data binding process, which proceeds in `two phases`.
+
+1. The key function is evaluated on the nodes to form `nodeByKeyValue` (an associative array of nodes) with the this context as the node, d as the node __data__ member and the second argument i as the selection group index.
+
+2. The key function is evaluated on `each element of the values array` - this time with values as the this context, values[i] as the first argument d and the values index i as the second argument - and the results are then used to attempt to `look up` the nodes in the nodeByKeyValue collection. If the lookup is successful, the node is added to the `update selection`, any nodes not queried are added to the exit selection. Any data elements that failed to find a matching node are used to form the enter selection.
+
+If a key function is specified, the data operator also affects the index of nodes; this index is passed as the second argument i to any operator function arguments. However, note that existing DOM elements are not automatically reordered; use `sort` or `order` as needed. For a more detailed example of how the key function affects the data join, see the tutorial `A Bar Chart, Part 2` (<https://bost.ocks.org/mike/bar/2/>.
+
+概括一下：
+
+* key函数决定数据如何绑定到选择区的节点
+* key函数会被调用两次
+    1. 第一次针对已有节点及其已绑定数据： `key(nodes[i].__data__, i)`，结果形成一个关联数组`nodeByKeyValue`，key是计算数据，value是对应的节点对象
+    2. 第二次针对新绑定数据： `key(data[i], i)`，拿该计算结果去查找`nodeByKeyValue`，命中的节点将会被绑定数据data[i]
+* 进入新选择区的节点顺序可能与现有节点不一致，需要主动调用`order`或`sort`重新排序
+
+以下是代码例子：
+
+
+    d3.select('#test_1_btn_29').on('click', function(){
+
+        var selection = $cont.selectAll('span')
+                    .data(
+                        [
+                            { name: 'hudamin', value: 2 }
+                            , { name: 'michael', value: 1 }
+                            , { name: 'even', value: 3 }
+                        ]
+                    )
+                    .text(function(d, i){
+                        return d.name + ': ' + d.value;
+                    })
+                    ;
+
+        console.log(selection);
+
+        selection = selection.data(
+                        [
+                            { name: 'hudamin', value: 20 }
+                            , { name: 'even', value: 30 }
+                        ]
+                        , function(d){
+                            return d.name;
+                        }
+                    )
+                    .text(function(d, i){
+                        return d.name + ': ' + d.value;
+                    })
+                    .sort()
+                    ;
+
+        selection.exit().remove();
+
+        console.log(selection);
+        data = selection.datum();
+        show(JSON.stringify(data || []) );
+
+    });
+
+
+### 二维数据绑定
+
+二维数据绑定，一个典型的例子是Table的创建。
+
+<div id="test_3" class="test">
+<div class="test-container"></div>
+<div class="test-panel">
+<button id="test_3_btn_1">Create Table</button>
+<button id="test_3_btn_2">Update Table</button>
+</div>
+</div>
+<script>
+
 
 </script>
 
 
-代码如下：
-
-    var matrix = [
-        [11975,  5871, 8916, 2868],
-        [ 1951, 10048, 2060, 6171],
-        [ 8010, 16145, 8090, 8045],
-        [ 1013,   990,  940, 6907]
-    ];
-
-    d3.select('#test_3_btn_1').on('click', function(){
-
-        var tr = d3.select('#test_3 .test-container').append('table')
-            .selectAll('tr').data(matrix)
-            .enter()
-            .append('tr');
-
-        var td = tr.selectAll('td')
-            .data(function(d){ return d; })
-            .enter()
-            .append('td')
-            .text(function(d){ return d; });
-
-    });

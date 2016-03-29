@@ -16,7 +16,6 @@ int setInputFile(FILE *input);
 void PrintError(char *errorstring, ...);
 
 
-
 extern void yyerror(char *s) {
     /*
     fprintf(stderr

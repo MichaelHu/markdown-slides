@@ -7,7 +7,7 @@
 #undef _ISDEBUGLEX
 
 #ifdef _ISDEBUGLEX
-#define P(token) printf("token: %s\n", token); BeginToken(yytext);
+#define P(token) fprintf(stdout, "token: %s\n", token); BeginToken(yytext);
 #else
 #define P(token) BeginToken(yytext);
 #endif
@@ -151,13 +151,16 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* script block */
-^\<script[^>]*>/(.|[\r\n])*\<\/script>  {
+    /* problem triggered below: input buffer overflow, can't enlarge buffer because scanner uses REJECT */
+    /*^\<script[^>]*>/(.|[\r\n])*\<\/script>  { */
+
+^\<script[^>]*>                         {
+                                            BEGIN SCRIPTBLOCK; 
                                             yylval.text = strdup(yytext); 
                                             P("SCRIPTSTART"); 
-                                            BEGIN SCRIPTBLOCK; 
                                             return SCRIPTSTART; 
                                         }
-<SCRIPTBLOCK>.                          { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+<SCRIPTBLOCK>[^\r\n]                    { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 <SCRIPTBLOCK>\r?\n                      { 
                                             yylineno++; 
                                             yylval.text = strdup(yytext); 
@@ -165,9 +168,9 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return TEXT; 
                                         }
 <SCRIPTBLOCK>\<\/script>.*\r?\n         { 
-                                            yylval.text = "</script>"; 
-                                            P("SCRIPTEND"); 
                                             BEGIN INITIAL; 
+                                            yylval.text = strdup("</script>"); 
+                                            P("SCRIPTEND"); 
                                             return SCRIPTEND;
                                         }
 
@@ -176,7 +179,8 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* style block */
-^\<style[^>]*>/(.|[\r\n])*\<\/style>    {
+    /* ^\<style[^>]*>/(.|[\r\n])*\<\/style>    { */
+^\<style[^>]*>                          {
                                             yylval.text = strdup(yytext); 
                                             P("STYLESTART"); 
                                             BEGIN STYLEBLOCK; 
@@ -209,6 +213,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 int yywrap(){
     return 1;
 }
+
 
     /*
     int main(int argc, char **argv){
