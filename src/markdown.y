@@ -23,7 +23,7 @@ t_tag_info *tag_info;
 
     /* bind with terminater */
 %token <text> TEXT SPECIALCHAR CODETEXT INDENT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
-%token <text> STYLESTART STYLEEND LINK
+%token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK
 %token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
 %token UNDERSCORE STAR BACKTICK BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART DOUBLEBACKTICK QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
@@ -287,6 +287,34 @@ line:
 
     | SCRIPTSTART error LINEBREAK {
             fprintf(stderr, "expect </script>\n");
+        } 
+
+    | SVGSTART inlineelements SVGEND {
+            tag_check_stack(TAG_SVGBLOCK, 0);
+            $$ = blocknode_create(
+                    TAG_SVGBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , $2
+                    , $3
+                );
+        } 
+
+    | SVGSTART SVGEND {
+            tag_check_stack(TAG_SVGBLOCK, 0);
+            $$ = blocknode_create(
+                    TAG_SVGBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , ""
+                    , $2
+                );
+        } 
+
+    | SVGSTART error LINEBREAK {
+            fprintf(stderr, "expect </svg>\n");
         } 
 
     | STYLESTART inlineelements STYLEEND {

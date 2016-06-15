@@ -84,6 +84,7 @@ char *get_tag_type(t_tag tag){
 
         case TAG_HTMLBLOCK: return "TAG_HTMLBLOCK";
         case TAG_SCRIPTBLOCK: return "TAG_SCRIPTBLOCK";
+        case TAG_SVGBLOCK: return "TAG_SVGBLOCK";
         case TAG_STYLEBLOCK: return "TAG_STYLEBLOCK";
 
         case TAG_SECTION: return "TAG_SECTION";

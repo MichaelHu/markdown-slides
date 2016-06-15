@@ -1,7 +1,11 @@
 #include <stdio.h>
+#include <time.h>
 #include "htmltags.h" 
 #include "blocknode.h" 
 #include "markdown.y.h"
+
+#define VERSION "0.1.5"
+#define BUILDTIME "16/06/15 11:42"
 
 /* declare external variables and function prototypes */
 extern int yylineno;
@@ -15,6 +19,29 @@ int getNextLine(void);
 int setInputFile(FILE *input);
 void PrintError(char *errorstring, ...);
 
+/* help */
+void getTime(char *s, int size){
+    struct tm *ptr;
+    time_t localTime;
+    localTime = time(NULL);
+    ptr = localtime(&localTime);
+    strftime(s, size - 1, "%x %X", ptr);
+}
+
+void printHelp(void){
+    fprintf(
+        stdout
+        , 
+"\n\
+Usage: markdown [ file ]\n\
+\n\
+Markdown Parser v%s ( build: %s ), powered by flex & bison\n\
+Github: https://github.com/MichaelHu/markdown-slides\n\
+"
+        , VERSION
+        , BUILDTIME
+    );
+}
 
 extern void yyerror(char *s) {
     /*
@@ -30,8 +57,14 @@ extern void yyerror(char *s) {
     PrintError(s);
 }
 
+
+
 int main(int argc, char **argv){
     FILE *input;
+    if(argc == 1){
+        printHelp();
+        return 0;
+    }
     input = fopen(argv[1], "r");
     if(setInputFile(input)){
         if(getNextLine() == 0){

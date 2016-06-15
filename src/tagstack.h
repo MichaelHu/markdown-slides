@@ -8,6 +8,7 @@ typedef enum {
     , TAG_HTMLBLOCK
     , TAG_SCRIPTBLOCK
     , TAG_STYLEBLOCK
+    , TAG_SVGBLOCK
 
     , TAG_SECTION
     , TAG_VSECTION

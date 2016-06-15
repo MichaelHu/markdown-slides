@@ -2,22 +2,117 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="http://db-news-fe2.vm.baidu.com:8520/docs/markdown_res/css/markdown-6.css" />
-    <link rel="stylesheet" type="text/css" href="http://db-news-fe2.vm.baidu.com:8520/docs/markdown_res/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/bootstrap/css/bootstrap.min.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/bootstrap/css/bootstrap-theme.min.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/css/github-markdown.css" media="all" />
+    <script type="text/javascript" src="http://258i.com/docs/markdown_res/js/jquery-1.9.1.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <style type="text/css">
-        img {max-width: 100%; }
-        pre, code {color: #048ebd; }
-        li>p {display: block;}
-        p>code, li>code {font-size: 13px; color: red;}
-        blockquote {display:block; border-left: 4px solid #abc; margin: 30px 0; padding: 11px 20px 1px;}
+    <style type="text/css" media="all">
+
+img {max-width: 100%; }
+pre, code {color: #048ebd; }
+li>p {display: block;}
+p>code, li>code {font-size: 13px; color: red;}
+blockquote {display:block; border-left: 4px solid #abc; margin: 30px 0; padding: 11px 20px 1px;}
+ul, ol{margin-left: 10px;}
+ul ul,
+ul ol,
+ol ol,
+ol ul{margin-left: 10px;}
+
+.markdown-body {
+    margin: 40px 0 0 180px;
+    padding: 0 50px;
+    overflow: auto;
+}
+
+@media print {
+    #navbar-auto {
+        display: none;
+    }
+
+    .markdown-body {
+        margin-left: 40px;
+        font-size: 12px;
+    }
+
+    .markdown-body blockquote {
+        color: #777 !important;
+        border: none;
+        border-left: 4px solid #ddd;
+        font-size: 12px;
+    }
+
+    .markdown-body blockquote * {
+        color: #777 !important;
+    }
+
+    .markdown-body code {
+        color: red !important;
+    }
+}
+
+#navbar-auto {
+    width: 180px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    padding-right: 5px;
+    box-shadow: 2px 0 3px #bbb;
+    -webkit-box-shadow: 2px 0 3px #bbb;
+    overflow: scroll;
+    background-color: #fff;
+    border-right: 2px solid #eee; 
+}
+
+#navbar-auto ul{
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    padding-top: 10px;
+}
+
+
+.nav {
+    padding-left: 0px;
+}
+
+#navbar-auto .nav > li > a {
+    padding: 0;
+    padding-left: 6px;
+}
+
+#navbar-auto li{
+    height: 28px; 
+}
+
+#navbar-auto li.active a {
+    color: #f66;
+    border-left-color: #f66;
+}
+
+
+#navbar-auto a,
+#navbar-auto a:link,
+#navbar-auto a:hover,
+#navbar-auto a:active,
+#navbar-auto a:visited {
+    display: block;
+    overflow: hidden;
+    border-left: 4px solid #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    text-decoration: none;
+    color: #666;
+    font: normal normal normal 14px/28px Arial;
+}
+ 
+
     </style>
-    <script type="text/javascript" src="http://db-news-fe2.vm.baidu.com:8520/docs/markdown_res/js/jquery-1.9.1.js"></script>
 </head>
-<body>
-    <div id="nav">
-<a href="http://db-news-fe2.vm.baidu.com:8520/docs/index.md.html">首页</a>
-    </div>
+<body class="markdown-body">
 
 <a href="./api.md.html" target="_blank">./api.md.html</a><br>
 <a href="./index.md.html" target="_blank">./index.md.html</a><br>
@@ -35,6 +130,7 @@
 <a href="./test-reveal-demo.md.html" target="_blank">./test-reveal-demo.md.html</a><br>
 <a href="./test-script.md.html" target="_blank">./test-script.md.html</a><br>
 <a href="./test-style.md.html" target="_blank">./test-style.md.html</a><br>
+<a href="./test-svg.md.html" target="_blank">./test-svg.md.html</a><br>
 <a href="./test-tag-attr.md.html" target="_blank">./test-tag-attr.md.html</a><br>
 <a href="./test.md.html" target="_blank">./test.md.html</a><br>
 <a href="./test1.md.html" target="_blank">./test1.md.html</a><br>
@@ -51,8 +147,10 @@
 <a href="./test_slide_1.md.html" target="_blank">./test_slide_1.md.html</a><br>
 </body>
 </html>
+<script type="text/javascript" src="http://258i.com/docs/markdown_res/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://258i.com/docs/markdown_res/js/scrollspy.js"></script>
 <script type="text/javascript">
 (function(){
-document.title = $('h1').html() || '文档平台－百度新闻';    
+document.title = $('h1').html() || '文档标题';    
 })();
 </script>

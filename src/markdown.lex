@@ -28,7 +28,7 @@ void BeginToken(char *t);;
 %}
 
 %x ESCAPE CODEBLOCK CODESPAN XCODESPAN 
-%x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK
+%x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -132,7 +132,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^>" "+#{1,6}                  { yylval.text = strdup(yytext); P("QUOTEH"); return QUOTEH; }
 
     /* block and functional html tags must be in one line and must start at first column */
-^\<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|command|datalist|dd|del|details|dir|div|dfn|dialog|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h[1-6]|head|header|hr|html|i|iframe|img|input|ins|isindex|kbd|keygen|label|legend|li|link|map|mark|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|section|select|small|source|span|strike|strong|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr|xmp|svg|g|rect|circle|ellipse|line|polyline|polygon|text|path|defs|filter|fe[a-zA-Z]+)([" "\r\n][^>]*\/?\>|\/?\>)   { 
+^\<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|command|datalist|dd|del|details|dir|div|dfn|dialog|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h[1-6]|head|header|hr|html|i|iframe|img|input|ins|isindex|kbd|keygen|label|legend|li|link|map|mark|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|section|select|small|source|span|strike|strong|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr|xmp)([" "\r\n][^>]*\/?\>|\/?\>)   { 
                                             yylval.text = strdup(yytext); 
                                             P("HTMLBLOCK"); 
                                             BEGIN SHTMLBLOCK; 
@@ -193,11 +193,34 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             P("TEXT"); 
                                             return TEXT; 
                                         }
-<STYLEBLOCK>\<\/style>.*\r?\n          { 
+<STYLEBLOCK>\<\/style>.*\r?\n           { 
                                             yylval.text = "</style>"; 
                                             P("STYLEEND"); 
                                             BEGIN INITIAL; 
                                             return STYLEEND;
+                                        }
+
+
+
+    /* svg block */
+^\<svg[^>]*>                            {
+                                            yylval.text = strdup(yytext); 
+                                            P("SVGSTART"); 
+                                            BEGIN SVGBLOCK; 
+                                            return SVGSTART; 
+                                        }
+<SVGBLOCK>.                             { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+<SVGBLOCK>\r?\n                         { 
+                                            yylineno++; 
+                                            yylval.text = strdup(yytext); 
+                                            P("TEXT"); 
+                                            return TEXT; 
+                                        }
+<SVGBLOCK>\<\/svg>.*\r?\n               { 
+                                            yylval.text = "</svg>"; 
+                                            P("SVGEND"); 
+                                            BEGIN INITIAL; 
+                                            return SVGEND;
                                         }
 
 
