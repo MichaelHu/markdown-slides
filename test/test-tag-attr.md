@@ -39,11 +39,15 @@ I am Fine, thank you.
 Me too.
 
 1. One
+
     @[class="fragment"]1 * 1 = 1
     Okay, you are right.
+
 2. Two
     * W3C Related
+
         @[data-act="w3c"]RFC2109(Cookie Related)
+
     * @[class="fragment"]Rocket Reveal
 
 ## Title 6

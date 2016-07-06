@@ -31,6 +31,7 @@ typedef enum {
     , TAG_INDENT_UL
     , TAG_INDENT_OL
     , TAG_INDENT_PRE
+    , TAG_INDENT_TEXT
 
 } t_tag; 
 
@@ -60,5 +61,6 @@ char* tag_check_stack(t_tag tag, int level);
 char *get_tag_type(t_tag tag);
 int inner_pre_level(int level);
 int indent_level(char *s);
+int is_last_tag_blank();
 
 

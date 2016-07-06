@@ -127,7 +127,8 @@ ol ul{margin-left: 10px;}
 <ol><li>支持的元素：<ul><li>主要针对块级元素进行解析，包含p, h1-h6, ul, ol, blockquote </li>
 <li>內联元素只处理了code </li></ul>
 </li>
-<li>常规markdown內联元素的支持不包含在此实现中，原因是基于lex & yacc对语法的严格要求，不适合markdown语法的随意性，会出现非常多的syntax error，而error handling很不容易实现。<p>比如內联元素a, img等，编写时，直接写其HTML格式，如下：</p>
+<li>常规markdown內联元素的支持不包含在此实现中，原因是基于lex & yacc对语法的严格要求，不适合markdown语法的随意性，会出现非常多的syntax error，而error handling很不容易实现。
+比如內联元素a, img等，编写时，直接写其HTML格式，如下：
 <pre><code>&lt;a href="url">
     title
 &lt;/a>
@@ -169,7 +170,8 @@ ol ul{margin-left: 10px;}
 段落2文本
 段落2文本&lt;/p> </code></pre>
 <h3> 3.3 列表</h3>
-<ul><li>3.3.1 有序列表<p>有序列表由<code>*</code>开始，后接至少一个空格，再接文本 </p>
+<ul><li>3.3.1 有序列表
+有序列表由<code>*</code>开始，后接至少一个空格，再接文本 
 <p>语法（有序列表）：</p>
 <pre><code>1. 列表第一项
 2. 列表第二项 </code></pre>
@@ -177,7 +179,8 @@ ol ul{margin-left: 10px;}
 <pre><code>&lt;ol>&lt;li>列表第一项&lt;/li>
 &lt;li>列表第二项&lt;/li>&lt;/ol> </code></pre>
 </li>
-<li>3.3.2 无序列表<p>无序列表有<code>数字.</code>开始，后接至少一个空格，再接文本</p>
+<li>3.3.2 无序列表
+无序列表有<code>数字.</code>开始，后接至少一个空格，再接文本
 <p>语法（无序列表）：</p>
 <pre><code>* 无序列表第一项
 * 无序列表第二项 </code></pre>
@@ -185,7 +188,8 @@ ol ul{margin-left: 10px;}
 <pre><code>&lt;ul>&lt;li>无序列表第一项&lt;/li>
 &lt;li>无序列表第二项&lt;/li>&lt;/ul> </code></pre>
 </li>
-<li>3.3.3 嵌套列表<p>在上级列表的基础上，再次缩进四个空格或者一个制表符 </p>
+<li>3.3.3 嵌套列表
+在上级列表的基础上，再次缩进四个空格或者一个制表符 
 <p>语法（嵌套列表）：</p>
 <pre><code>* 无序列表第一项
     1. 嵌套有序列表第一项

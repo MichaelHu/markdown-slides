@@ -75,6 +75,7 @@ char *blocknode_output(t_blocknode *node){
         case TAG_H:
         case TAG_QUOTE_H:
         case TAG_INDENT_P:
+        case TAG_INDENT_TEXT:
             output("%s", node->ops[2]); 
             break;
 
@@ -115,6 +116,7 @@ char *blocknode_close(t_blocknode *node) {
 
         case TAG_PRE:  output("</code></pre>"); break;
         case TAG_INDENT_P: output("</p>"); break;
+        case TAG_INDENT_TEXT: output("\n"); break;
         case TAG_INDENT_UL: output("</li></ul>"); break;
         case TAG_INDENT_OL: output("</li></ol>"); break;
         case TAG_INDENT_PRE: output("</code></pre>"); break;
@@ -384,6 +386,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                 glue = str_format("<p%s>", current -> ops[1]); 
                 break;
 
+            case TAG_INDENT_TEXT: 
+                glue = ""; 
+                break;
+
             case TAG_INDENT_UL: 
                 glue = str_format("<ul><li%s>", current -> ops[1]); 
                 break;
@@ -452,6 +458,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
             case TAG_QUOTE_H: glue = str_format("<blockquote>%s", get_open_header(current)); break;
 
             case TAG_INDENT_P: glue = str_format("<p%s>", current -> ops[1]); break;
+            case TAG_INDENT_TEXT: glue = "\n"; break;
             case TAG_INDENT_UL: glue = str_format("<ul><li%s>", current -> ops[1]); break;
             case TAG_INDENT_OL: glue = str_format("<ol><li%s>", current -> ops[1]); break;
             case TAG_INDENT_PRE: glue = str_format("<pre%s><code>", current -> ops[0]); break;
@@ -488,6 +495,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_H: glue = str_format("%s\n", get_close_header(top)); blocknode_pop_stack(); break; 
 
                     case TAG_INDENT_P: glue = "</p>\n"; blocknode_pop_stack(); break;
+                    case TAG_INDENT_TEXT: glue = "\n"; blocknode_pop_stack(); break;
 
                     case TAG_QUOTE_P: glue = "</p></blockquote>"; blocknode_pop_stack(); break;
                     case TAG_QUOTE_UL: glue = "</li></ul></blockquote>"; blocknode_pop_stack(); break;
@@ -572,6 +580,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_H: glue = str_format("%s\n", get_close_header(top)); blocknode_pop_stack(); break; 
 
                     case TAG_INDENT_P: glue = "</p>\n"; blocknode_pop_stack(); break;
+                    case TAG_INDENT_TEXT: glue = "\n"; blocknode_pop_stack(); break;
 
                     case TAG_QUOTE_P: glue = "</p></blockquote>"; blocknode_pop_stack(); break;
                     case TAG_QUOTE_UL: glue = "</li></ul></blockquote>"; blocknode_pop_stack(); break;
@@ -612,6 +621,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -661,6 +671,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -706,6 +717,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -790,6 +802,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -876,6 +889,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -962,6 +976,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1045,6 +1060,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1133,6 +1149,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1217,6 +1234,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1304,6 +1322,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1392,6 +1411,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1436,6 +1456,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* higher level indent elements shouldn't exist in stack */
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                     case TAG_INDENT_PRE:
@@ -1555,7 +1576,13 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     /* the same indent node */
                     case TAG_INDENT_P: 
-                        glue = "\n"; 
+                        glue = ""; 
+                        blocknode_pop_stack(); 
+                        break;
+
+                    /* the same indent node */
+                    case TAG_INDENT_TEXT: 
+                        glue = str_format("\n<p%s>", current -> ops[1]);
                         blocknode_pop_stack(); 
                         break;
 
@@ -1576,6 +1603,70 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         break;
                 }
                 break;
+
+            case TAG_INDENT_TEXT: 
+                switch(top -> tag){
+
+                    /* tags no push */
+                    case TAG_ERROR:
+                    case TAG_BLANK:
+                    case TAG_QUOTE_BLANK:
+                    case TAG_EOF:
+
+                    /* tags with lower level */
+                    case TAG_SECTION:
+                    case TAG_VSECTION:
+
+                    /* lower level nodes except list nodes can not be in stack */
+                    case TAG_SCRIPTBLOCK:
+                    case TAG_SVGBLOCK:
+                    case TAG_STYLEBLOCK:
+                    case TAG_HTMLBLOCK:
+                    case TAG_P:
+                    case TAG_H:
+                    case TAG_PRE:
+                    case TAG_QUOTE_P:
+                    case TAG_QUOTE_UL:
+                    case TAG_QUOTE_OL:
+                    case TAG_QUOTE_PRE:
+                    case TAG_QUOTE_H:
+                        fprintf(stderr, "stack error\n");
+                        exit(1);
+                        break;
+
+                    /* lower level list nodes: append only */
+                    case TAG_OL:
+                    case TAG_UL: 
+                        fprintf(stderr, "error switch case\n");
+                        glue = str_format("\n<p%s>", current -> ops[1]); 
+                        blocknode_pop_stack(); 
+                        break;
+
+                    /* the same indent node */
+                    case TAG_INDENT_P: 
+                    case TAG_INDENT_TEXT: 
+                        glue = "\n"; 
+                        blocknode_pop_stack(); 
+                        break;
+
+                    /* other indent nodes with the same level */
+                    case TAG_INDENT_UL: 
+                        glue = str_format("</li></ul>\n");
+                        blocknode_pop_stack();
+                        break; 
+
+                    case TAG_INDENT_OL: 
+                        glue = str_format("</li></ol>\n"); 
+                        blocknode_pop_stack();
+                        break;
+
+                    case TAG_INDENT_PRE:
+                        glue = str_format("</code></pre>\n");
+                        blocknode_pop_stack();
+                        break;
+                }
+                break;
+
 
             case TAG_INDENT_UL: 
                 switch(top -> tag){
@@ -1624,6 +1715,11 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     /* other indent nodes with the same level */
                     case TAG_INDENT_P: 
                         glue = str_format("</p>\n<ul><li%s>", current -> ops[1]);  
+                        blocknode_pop_stack(); 
+                        break; 
+
+                    case TAG_INDENT_TEXT: 
+                        glue = str_format("\n<ul><li%s>", current -> ops[1]);  
                         blocknode_pop_stack(); 
                         break; 
 
@@ -1690,6 +1786,11 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack(); 
                         break; 
 
+                    case TAG_INDENT_TEXT: 
+                        glue = str_format("\n<ol><li%s>", current -> ops[1]);
+                        blocknode_pop_stack(); 
+                        break; 
+
                     case TAG_INDENT_UL: 
                         glue = str_format("</li></ul>\n<ol><li%s>", current -> ops[1]); 
                         blocknode_pop_stack(); 
@@ -1753,6 +1854,11 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack(); 
                         break; 
 
+                    case TAG_INDENT_TEXT: 
+                        glue = str_format("\n<pre%s><code>", current -> ops[0]);
+                        blocknode_pop_stack(); 
+                        break; 
+
                     case TAG_INDENT_UL: 
                         glue = str_format("</li></ul>\n<pre%s><code>", current -> ops[0]); 
                         blocknode_pop_stack(); 
@@ -1794,6 +1900,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     case TAG_INDENT_PRE:
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                         fprintf(stderr, "stack error\n");
@@ -1841,6 +1948,7 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
                     case TAG_INDENT_PRE:
                     case TAG_INDENT_P:
+                    case TAG_INDENT_TEXT:
                     case TAG_INDENT_UL:
                     case TAG_INDENT_OL:
                         fprintf(stderr, "stack error\n");

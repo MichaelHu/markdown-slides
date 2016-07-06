@@ -195,16 +195,45 @@ line:
         } 
 
     | INDENT inlineelements LINEBREAK { 
-            tag_check_stack(TAG_INDENT_P, indent_level($1)); 
-            tag_info = markdown_get_tag_info($2);
-            $$ = blocknode_create(
-                TAG_INDENT_P
-                , indent_level($1)
-                , 3
-                , $1
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            /*
+             *      * list
+             *          content
+             * 
+             *      输出：
+             *      <ul><li>listcontent</li>
+             *
+             *      * list
+             *
+             *          content
+             *
+             *      输出：
+             *      <ul><li>list
+             *      <p>content</p></li>
+             */
+            if(is_last_tag_blank()){
+                tag_check_stack(TAG_INDENT_P, indent_level($1)); 
+                tag_info = markdown_get_tag_info($2);
+                $$ = blocknode_create(
+                    TAG_INDENT_P
+                    , indent_level($1)
+                    , 3
+                    , $1
+                    , tag_info -> attr
+                    , tag_info -> content
+                );
+            }
+            else {
+                tag_check_stack(TAG_INDENT_TEXT, indent_level($1)); 
+                tag_info = markdown_get_tag_info($2);
+                $$ = blocknode_create(
+                    TAG_INDENT_TEXT
+                    , indent_level($1)
+                    , 3
+                    , $1
+                    , tag_info -> attr
+                    , tag_info -> content
+                );
+            }
         } 
     | INDENT CODETEXT {
             _inner_pre_level = inner_pre_level(indent_level($1));

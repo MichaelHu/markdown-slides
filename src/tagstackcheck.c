@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "tagstack.h"
 
+static t_tag last_tag = TAG_EOF; 
+
 void pop_bigger_level_tag(level){
     t_tag_item *item = tag_top_stack();
 
@@ -74,8 +76,15 @@ char* tag_check_stack(t_tag tag, int level){
         pop_bigger_level_tag(level);
         tag_push_stack(tag, level);
     }
+
+    last_tag = tag;
+
     return "";
 
+}
+
+int is_last_tag_blank(){
+    return last_tag == TAG_BLANK;
 }
 
 char *get_tag_type(t_tag tag){
@@ -108,6 +117,7 @@ char *get_tag_type(t_tag tag){
         case TAG_INDENT_UL: return "TAG_INDENT_UL";
         case TAG_INDENT_OL: return "TAG_INDENT_OL";
         case TAG_INDENT_PRE: return "TAG_INDENT_PRE";
+        case TAG_INDENT_TEXT: return "TAG_INDENT_TEXT";
     }
 }
 

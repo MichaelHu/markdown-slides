@@ -114,26 +114,20 @@ ol ul{margin-left: 10px;}
 </head>
 <body class="markdown-body">
 
-<ul><li><code>下载地址</code>：<a href="/docs/hudamin/markdown/download/markdown_preview.tar.gz">markdown_preview_tar.gz</a></li>
-<li><code>部署以及使用方法</code>：<ol><li><code>Windows</code>：<ol><li>下载以后解包至<code>C:\markdown_preview</code></li>
-<li>将<code>C:\markdown_preview\markdown.bat</code>拷贝至<code>C:\WINDOWS\system32</code></li>
-<li>使用方式：<pre><code>markdown.bat FILENAME </code></pre>
+<ul><li>通过<code>.then()</code>方法，自动生成新的<code>Promise</code>对象，形成<code>链式</code>调用</li>
+<li><code>resolve()</code>和<code>reject()</code>方法分别作为成功调用和发生错误情况时的处理函数，
+这两个回调函数可以通过<code>.then()</code>方法传递进去，如果不传，则使用<code>默认</code>处理函数。
+<code>resolve()</code>会将Promise对象的状态从<code>pending</code>设置为<code>resolved</code>，
+<code>reject()</code>则将Promise对象的状态从<code>pending</code>设置为<code>rejected</code>。
+<p>成功或者失败由用户代码决定，也即什么情况下调用resolve()和reject()是由用户决定的，
+比如AJAX请求成功则调用resolve，失败则调用reject。
 </li>
-<li>按以上方式解包，即可正常使用。如果需要自己更换目录，则需要修改markdown.bat对应路径</li></ol>
+<li>如果<code>resolve()</code>和<code>reject()</code>方法的返回值仍然是一个<code>Promise对象</code>，则该对象会取代<code>.then()</code>
+方法自动生成的Promise对象
 </li>
-<li><code>Mac</code>:<ol><li>下载以后解包至某一本地目录，例如<code>DIR/markdown_preview</code> </li>
-<li>修改<code>DIR/markdown_previw/markdown.sh</code>，将<pre><code>MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview/markdown.out
-ROOT=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview</code></pre>
-修改成：
-<pre><code>MARKDOWNCMD=DIR/markdown_preview/markdown.out
-ROOT=DIR/markdown_preview</code></pre>
-</li>
-<li>将<code>DIR/markdown_preview/markdown.sh</code>拷贝成<code>~/bin/markdown</code></li>
-<li>设置<code>可执行权限</code>： <code>chmod +x markdown</code></li>
-<li>使用方式：<pre><code>markdown FILENAME  </code></pre>
-</li></ol>
-</li></ol>
-</li></ul>
+<li>默认情况：如果用户没有提供调用<code>reject()</code>或者<code>resolve()</code>的条件，<code>默认会调用resolve()</code>。 </li>
+<li>参数传递：默认情况下，上一个Promise对象的<code>resolve()</code>方法的返回值，会作为下一个Promise对象的<code>resolve()</code>方法的传入值。</li>
+<li><code>错误</code>处理：<code>.catch()</code>方法可以捕获error，并且<code>冒泡</code>，通过<code>then()链</code>传递往后面传</li></ul>
 </body>
 </html>
 <script type="text/javascript" src="http://258i.com/docs/markdown_res/bootstrap/js/bootstrap.min.js"></script>
