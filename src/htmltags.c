@@ -55,6 +55,7 @@ char *str_padding_left(char *s, int count){
 t_tag_info *markdown_get_tag_info(char *s){
     char *p = s, 
          *end,
+         *start,
          *_str = NULL;
     int size;
     t_tag_info *info = NULL;
@@ -108,10 +109,12 @@ t_tag_info *markdown_get_tag_info(char *s){
     }
     else if (*p 
         && ( 
-                p == strstr(p, "<http:")
-                || p == strstr(p, "<https:")
-                || p == strstr(p, "<ftp:")
-                || p == strstr(p, "<mailto:")
+                p == strstr(p, "<http://")
+                || p == strstr(p, "<https://")
+                || p == strstr(p, "<ftp://")
+                || p == strstr(p, "<mailto://")
+                // for <ref://...>
+                || p == strstr(p, "<ref://")
            )
         ) {
         end = strstr(p, ">");
@@ -119,11 +122,12 @@ t_tag_info *markdown_get_tag_info(char *s){
         _str = (char *)malloc(size);
         memset(_str, 0, size);
 
-        if(size - 2 > 0){
-            /* prefix space */
-            strncpy(_str, p + 1, size - 1);
+        start = p + 1;
+        if ( p == strstr(p, "<ref://") ) {
+            start += 6;
+            size -= 6;
         }
-
+        strncpy(_str, start, size - 1);
         info->content = _str;
     }
 

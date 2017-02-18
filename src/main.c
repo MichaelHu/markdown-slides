@@ -4,8 +4,8 @@
 #include "blocknode.h" 
 #include "markdown.y.h"
 
-#define VERSION "0.1.6"
-#define BUILDTIME "16/07/06 17:52"
+#define VERSION "0.1.7"
+#define BUILDTIME "17/02/18 14:39"
 
 /* declare external variables and function prototypes */
 extern int yylineno;
