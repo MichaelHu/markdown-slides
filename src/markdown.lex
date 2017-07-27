@@ -147,6 +147,11 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             P("LINK");
                                             return LINK;
                                         }
+\<mailto:[^\r\n\>]+\>                   {
+                                            yylval.text = strdup(yytext);
+                                            P("LINK");
+                                            return LINK;
+                                        }
 
 
 

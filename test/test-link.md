@@ -10,3 +10,7 @@
 
 <http://www.baidu.com#note/3/2>
 
+* <mailto:hdm0571@163.com>
+* <mailto://hdm0571@163.com>
+* <mail://hdm0571@163.com>
+

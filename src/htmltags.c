@@ -112,7 +112,7 @@ t_tag_info *markdown_get_tag_info(char *s){
                 p == strstr(p, "<http://")
                 || p == strstr(p, "<https://")
                 || p == strstr(p, "<ftp://")
-                || p == strstr(p, "<mailto://")
+                || p == strstr(p, "<mailto:")
                 // for <ref://...>
                 || p == strstr(p, "<ref://")
            )
