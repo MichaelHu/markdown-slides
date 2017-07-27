@@ -142,7 +142,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); BEGIN INITIAL;  return LINEBREAK; }
 
     /* linkable text */
-\<(https?|mailto|ftp|ref):\/\/[^\r\n\>]+\>     {
+\<(https?|ftp|ref):\/\/[^\r\n\>]+\>     {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
