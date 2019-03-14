@@ -66,7 +66,7 @@ extern int GetNextChar(char *b, int maxBuffer) {
     frc = getNextLine();
     if (  frc != 0  )
       return 0;
-    }
+  }
 
   b[0] = buffer[nBuffer];
   nBuffer += 1;

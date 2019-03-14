@@ -6,10 +6,12 @@
 #include "htmltags.h" 
 #include "blocknode.h" 
 
+#define YYERROR_VERBOSE
+
 /* prototypes */
 extern int yylex(void);
 extern void yyerror(char *s);
-extern void markdown();
+extern void markdown(void);
 
 int _inner_pre_level = -1;
 t_tag_info *tag_info;
@@ -39,6 +41,7 @@ t_tag_info *tag_info;
 
 markdownfile: 
     lines { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); }
+    | error { fprintf( stderr, "==== error ====\n" ); }
     ;
 
 lines:
@@ -166,6 +169,17 @@ line:
                 , 2
                 , tag_info -> attr
                 , tag_info -> content
+            );
+        } 
+
+    | ULSTART LINEBREAK { 
+            tag_check_stack(TAG_UL, 0); 
+            $$ = blocknode_create(
+                TAG_UL
+                , 0
+                , 2
+                , ""
+                , ""
             );
         } 
 
@@ -399,6 +413,11 @@ inlineelement:
                                                 , html_escape(tag_info -> content) 
                                             ); 
                                         }
+    | BACKTICK codespan error        { 
+                                            blocknode_create(TAG_EOF, -2, 1, str_concat( "`", $2 )); 
+                                            blocklist_parse(); 
+                                            YYABORT;
+                                        }
     | DOUBLEBACKTICK codespan DOUBLEBACKTICK        { 
                                             tag_info = markdown_get_tag_info($2);
                                             $$ = create_codespan( 
@@ -457,7 +476,7 @@ code_list:
 
 
 /* export yyparse through markdown */
-void markdown(){
+void markdown( void ){
     yyparse();
 }
 

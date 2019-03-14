@@ -45,15 +45,15 @@ typedef struct {
     t_tag_item *arr[TAG_STACK_SIZE];
 } t_tag_stack;
 
-void tag_init_stack();
-t_tag_item *tag_top_stack();
-int tag_empty_stack();
-int tag_full_stack();
+void tag_init_stack(void);
+t_tag_item *tag_top_stack(void);
+int tag_empty_stack(void);
+int tag_full_stack(void);
 int tag_in_stack(t_tag tag, int level);
 void tag_push_stack(t_tag tag, int level);
-void tag_show_stack();
-t_tag_item *tag_pop_stack();
-t_tag_item *tag_shift_stack();
+void tag_show_stack(void);
+t_tag_item *tag_pop_stack(void);
+t_tag_item *tag_shift_stack(void);
 t_tag_item *tag_latest_stack(t_tag tag);
 int is_in_list(int level);
 
@@ -61,6 +61,6 @@ char* tag_check_stack(t_tag tag, int level);
 char *get_tag_type(t_tag tag);
 int inner_pre_level(int level);
 int indent_level(char *s);
-int is_last_tag_blank();
+int is_last_tag_blank(void);
 
 

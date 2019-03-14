@@ -11,7 +11,7 @@ typedef struct blocknode {
 t_blocknode *blocknode_create(t_tag tag, int level, int nops, ...);
 char* blocknode_show(t_blocknode *node);
 char* blocknode_parse(t_blocknode *node);
-void blocklist_parse();
+void blocklist_parse(void);
 
 
 
@@ -25,12 +25,12 @@ typedef struct {
     t_blocknode *arr[TAG_STACK_SIZE];
 } t_blocknode_stack;
 
-void blocknode_init_stack();
-t_blocknode *blocknode_top_stack();
-int blocknode_empty_stack();
-int blocknode_full_stack();
+void blocknode_init_stack(void);
+t_blocknode *blocknode_top_stack(void);
+int blocknode_empty_stack(void);
+int blocknode_full_stack(void);
 int blocknode_in_stack(t_tag tag, int level);
 void blocknode_push_stack(t_blocknode *node);
-void blocknode_show_stack();
-t_blocknode *blocknode_pop_stack();
-t_blocknode *blocknode_shift_stack();
+void blocknode_show_stack(void);
+t_blocknode *blocknode_pop_stack(void);
+t_blocknode *blocknode_shift_stack(void);

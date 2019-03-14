@@ -10,8 +10,9 @@
 /* declare external variables and function prototypes */
 extern int yylineno;
 extern char *yytext;
-
-extern void markdown();
+extern YYLTYPE yylloc;
+extern void yyset_debug ( int debug_flag  );
+extern void markdown(void);
 
 /* input.c */
 int GetNextChar(char *b, int maxBuffer);
@@ -53,8 +54,8 @@ extern void yyerror(char *s) {
             , yylloc.last_column
         );
     */
-    fprintf(stderr, "line %d: %s %s\n", yylineno, s, yytext);
-    PrintError(s);
+    fprintf(stderr, "[ line %d ] %s, %s\n", yylineno, s, yytext);
+    // PrintError(s);
 }
 
 
@@ -65,6 +66,9 @@ int main(int argc, char **argv){
         printHelp();
         return 0;
     }
+    
+    yyset_debug( 1 );
+
     input = fopen(argv[1], "r");
     if(setInputFile(input)){
         if(getNextLine() == 0){

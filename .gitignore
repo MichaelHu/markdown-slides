@@ -3,6 +3,9 @@
 *.swo
 *.bak
 
+# xcode project
+*.xcodeproj
+
 # Object files
 *.o
 *.ko
