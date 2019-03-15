@@ -28,7 +28,7 @@ void BeginToken(char *t);;
 %}
 
     /* lexer states */
-%x ESCAPE CODEBLOCK CODESPAN XCODESPAN
+%x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
 
     /* blankline ^[ ]{0,4}\r?\n */
@@ -72,11 +72,11 @@ quoteblankline ^>[ ]{0,4}\r?\n
     /* double-backtick will be teated as plain text */
 "``"                                    { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 
-"```"                                   { P("DOUBLEBACKTICK"); BEGIN XCODESPAN; yylval.text = strdup(yytext); return DOUBLEBACKTICK; }
-<XCODESPAN>.                            { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
-<XCODESPAN>\r?\n                        { P("CODETEXT"); yylval.text = strdup(yytext);
-                                            yylineno++; return CODETEXT; }
-<XCODESPAN>```                          { P("DOUBLEBACKTICK"); BEGIN INITIAL; yylval.text = strdup(yytext); return DOUBLEBACKTICK; }
+^"```"                                  { P("TRIPLEBACKTICK"); BEGIN XCODEBLOCK; yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
+<XCODEBLOCK>.                           { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
+<XCODEBLOCK>\r?\n                       { P("CODETEXT"); yylval.text = strdup(yytext);
+                                           yylineno++; return CODETEXT; }
+<XCODEBLOCK>^```                        { P("TRIPLEBACKTICK"); BEGIN INITIAL; yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 
 
 

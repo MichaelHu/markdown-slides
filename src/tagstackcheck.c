@@ -21,6 +21,10 @@ int inner_pre_level(int level){
     t_tag_item *item;
     int _level = -1;
 
+    /**
+     * 1. get the closest TAG_UL in the stack
+     * 2. when pre is under TAG_UL, let _level be TAG_UL's indent_level plus 1
+     */
     item = tag_latest_stack(TAG_UL);
     if(item && level >= item -> indent_level + 2){
         if(_level < item -> indent_level + 1){
@@ -28,6 +32,11 @@ int inner_pre_level(int level){
         }
     }
 
+    /**
+     * 1. get the closest TAG_INDENT_UL in the stack
+     * 2. when pre is under TAG_INDENT_UL, let _level be TAG_INDENT_UL's indent_level plus 1
+     * 3. the previous _level may be overwritten
+     */
     item = tag_latest_stack(TAG_INDENT_UL);
     if(item && level >= item -> indent_level + 2){
         if(_level < item -> indent_level + 1){

@@ -56,7 +56,7 @@
      SVGEND = 272,
      LINK = 273,
      BACKTICK = 274,
-     DOUBLEBACKTICK = 275,
+     TRIPLEBACKTICK = 275,
      EXCLAMATION = 276,
      MINUS = 277,
      PLUS = 278,
@@ -97,7 +97,7 @@
 #define SVGEND 272
 #define LINK 273
 #define BACKTICK 274
-#define DOUBLEBACKTICK 275
+#define TRIPLEBACKTICK 275
 #define EXCLAMATION 276
 #define MINUS 277
 #define PLUS 278

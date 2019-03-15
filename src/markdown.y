@@ -25,7 +25,7 @@ t_tag_info *tag_info;
 
     /* bind with terminater */
 %token <text> TEXT SPECIALCHAR CODETEXT INDENT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
-%token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK DOUBLEBACKTICK
+%token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
@@ -34,7 +34,7 @@ t_tag_info *tag_info;
 %type <text> codespan code_list error lines 
 %type <node> line
 
-%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK DOUBLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
+%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
 
 %%
@@ -282,6 +282,25 @@ line:
             }
         }
 
+    | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
+            tag_check_stack(TAG_PRE, 0); 
+            tag_info = markdown_get_tag_info($2);
+            $$ = blocknode_create(
+                    TAG_PRE
+                    , 0
+                    , 2
+                    , tag_info -> attr
+                    , tag_info -> content
+                );
+
+            // fprintf( stderr, "CODETEXT: %s\n PARSED: %s\n", $2, tag_info -> content ); 
+        }
+    | TRIPLEBACKTICK error     { 
+            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
+            blocklist_parse(); 
+            YYABORT;
+        }
+
     | HTMLBLOCK TEXT LINEBREAK {
             tag_check_stack(TAG_HTMLBLOCK, 0);
             $$ = blocknode_create(
@@ -423,18 +442,6 @@ inlineelement:
                                             $$ = $1;
                                             // fprintf( stderr, "BACKTICK error: \n\n%s\n\n", $1 );
                                             yyerrok;
-                                        }
-    | DOUBLEBACKTICK codespan DOUBLEBACKTICK        { 
-                                            tag_info = markdown_get_tag_info($2);
-                                            $$ = create_codespan( 
-                                                tag_info -> attr
-                                                , html_escape(tag_info -> content) 
-                                            ); 
-                                        }
-    | DOUBLEBACKTICK codespan error     { 
-                                            blocknode_create(TAG_EOF, -2, 1, str_concat( "`", $2 )); 
-                                            blocklist_parse(); 
-                                            YYABORT;
                                         }
 
     | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
