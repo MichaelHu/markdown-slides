@@ -20,6 +20,11 @@ console.log('javascript');
 ``
 
 @s
+```
+console.log('javascript');
+```
+
+@s
 `@[class="fragment"]window.alert(123);`
 
 @s

@@ -7,7 +7,7 @@
 #undef _ISDEBUGLEX
 
 #ifdef _ISDEBUGLEX
-#define P(token) fprintf(stdout, "token: %s\n", token); BeginToken(yytext);
+#define P(token) fprintf(stdout, "token: %s: %s\n", token, yytext); BeginToken(yytext);
 #else
 #define P(token) BeginToken(yytext);
 #endif
@@ -27,6 +27,7 @@ void BeginToken(char *t);;
 
 %}
 
+    /* lexer states */
 %x ESCAPE CODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
 
@@ -60,19 +61,22 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <ESCAPE>[\\`*_{}()#+\-.!]               { BEGIN INITIAL; yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>.                               { BEGIN INITIAL; yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 
-"`"                                     { P("BACKTICK"); BEGIN CODESPAN; return BACKTICK; }
+    /* backtick only support single line mode */
+"`"                                     { P("BACKTICK"); BEGIN CODESPAN; yylval.text = strdup(yytext); return BACKTICK; }
 <CODESPAN>\\`                           { P("SPECIALCHAR"); 
                                             yylval.text = strdup("`"); return SPECIALCHAR; }
-<CODESPAN>[^`\\\r\n]+                   { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
-<CODESPAN>\r?\n|\\                      { P("CODETEXT"); yylval.text = strdup(yytext); 
-                                            yylineno++; return CODETEXT; }
-<CODESPAN>`                             { P("BACKTICK"); BEGIN INITIAL; return BACKTICK; }
+<CODESPAN>[^\r\n`]                      { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
+<CODESPAN>\r?\n                         { P("LINEBREAK"); BEGIN INITIAL; yylval.text = strdup(yytext); return LINEBREAK; }
+<CODESPAN>`                             { P("BACKTICK"); BEGIN INITIAL; yylval.text = strdup(yytext); return BACKTICK; }
 
-"``"                                    { P("DOUBLEBACKTICK"); BEGIN XCODESPAN; return DOUBLEBACKTICK; }
+    /* double-backtick will be teated as plain text */
+"``"                                    { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+
+"```"                                   { P("DOUBLEBACKTICK"); BEGIN XCODESPAN; yylval.text = strdup(yytext); return DOUBLEBACKTICK; }
 <XCODESPAN>.                            { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
 <XCODESPAN>\r?\n                        { P("CODETEXT"); yylval.text = strdup(yytext);
                                             yylineno++; return CODETEXT; }
-<XCODESPAN>``                           { P("DOUBLEBACKTICK"); BEGIN INITIAL; return DOUBLEBACKTICK; }
+<XCODESPAN>```                          { P("DOUBLEBACKTICK"); BEGIN INITIAL; yylval.text = strdup(yytext); return DOUBLEBACKTICK; }
 
 
 
