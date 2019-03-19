@@ -1,6 +1,7 @@
 %{
 
 #include <string.h>
+#include "lex-state-stack.h"
 #include "blocknode.h"
 #include "markdown.y.h"
 
@@ -19,17 +20,39 @@
 }
 
 /* prototypes */
-int yylineno;
+extern int yylineno;
+extern int state;
 
-/* input.c */
-int GetNextChar(char *b, int maxBuffer);
-void BeginToken(char *t);;
+/* from input.c */
+extern int GetNextChar(char *b, int maxBuffer);
+extern void BeginToken(char *t);
+
+/* local functions */
+static void enterState(int state, char *desc) {
+    lex_state_push_stack(state, desc);
+    BEGIN state;
+}
+static void restoreState() {
+    lex_state_pop_stack();
+    t_lex_state_item *item = lex_state_top_stack();
+    if (item) {
+        BEGIN item -> state;
+    }
+    else {
+        /**
+         * 1. `BEGIN 0` is the same as `BEGIN INITIAL`
+         * 2. but the macro INITIAL is defined later, it can not be used here
+         */
+        BEGIN 0;
+    }
+}
 
 %}
 
     /* lexer states */
 %x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
+%x TABLEROW
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -57,26 +80,33 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return VSECTION; }
 
 
-\\                                      { P("ESCAPE"); BEGIN ESCAPE; }
-<ESCAPE>[\\`*_{}()#+\-.!]               { BEGIN INITIAL; yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
-<ESCAPE>.                               { BEGIN INITIAL; yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+<INITIAL,TABLEROW>\\                    { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
+<ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+<ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 
     /* backtick only support single line mode */
-"`"                                     { P("BACKTICK"); BEGIN CODESPAN; yylval.text = strdup(yytext); return BACKTICK; }
+<INITIAL,TABLEROW>"`"                   { P("BACKTICK"); enterState(CODESPAN, "CODESPAN"); yylval.text = strdup(yytext); return BACKTICK; }
 <CODESPAN>\\`                           { P("SPECIALCHAR"); 
                                             yylval.text = strdup("`"); return SPECIALCHAR; }
 <CODESPAN>[^\r\n`]                      { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
-<CODESPAN>\r?\n                         { P("LINEBREAK"); BEGIN INITIAL; yylval.text = strdup(yytext); return LINEBREAK; }
-<CODESPAN>`                             { P("BACKTICK"); BEGIN INITIAL; yylval.text = strdup(yytext); return BACKTICK; }
+<CODESPAN>\r?\n                         { P("LINEBREAK"); restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
+<CODESPAN>`                             { P("BACKTICK"); restoreState(); yylval.text = strdup(yytext); return BACKTICK; }
 
     /* double-backtick will be teated as plain text */
-"``"                                    { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+<INITIAL,TABLEROW>"``"                  { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 
-^"```"                                  { P("TRIPLEBACKTICK"); BEGIN XCODEBLOCK; yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
+^"```"                                  { P("TRIPLEBACKTICK"); enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 <XCODEBLOCK>.                           { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
 <XCODEBLOCK>\r?\n                       { P("CODETEXT"); yylval.text = strdup(yytext);
                                            yylineno++; return CODETEXT; }
-<XCODEBLOCK>^```                        { P("TRIPLEBACKTICK"); BEGIN INITIAL; yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
+<XCODEBLOCK>^```                        { P("TRIPLEBACKTICK"); restoreState(); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
+
+
+    /* table rows */
+^"|"                                    { P("TABLEROWSTART"); enterState(TABLEROW, "TABLEROW"); yylval.text = strdup(yytext); return TABLEROWSTART; }
+<TABLEROW>"|"                           { P("TABLECEILEND"); yylval.text = strdup(yytext); return TABLECEILEND; }
+<TABLEROW>.                             { P("TEXT"); yylval.text = strdup(yytext); return TEXT; }
+<TABLEROW>\r?\n                         { P("LINEBREAK"); restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
 
 
 
@@ -90,12 +120,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^(\t|[ ]{4})+/[ ]{0,3}[*+][ ]+            { 
                                             /* indent ul list */
                                             if(is_in_list(indent_level(yytext))){
-                                                BEGIN INDENTLIST;
+                                                enterState(INDENTLIST, "INDENTLIST");
                                                 yylval.text = strdup(yytext);
                                                 P("INDENT"); return INDENT; 
                                             }
                                             else{
-                                                BEGIN CODEBLOCK; 
+                                                enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
                                                 P("INDENT"); return INDENT;
                                             }
@@ -103,12 +133,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^(\t|[ ]{4})+/[ ]{0,3}[1-9][0-9]*\.[ ]+ { 
                                             /* indent ol list */
                                             if(is_in_list(indent_level(yytext))){
-                                                BEGIN INDENTLIST;
+                                                enterState(INDENTLIST, "INDENTLIST");
                                                 yylval.text = strdup(yytext);
                                                 P("INDENT"); return INDENT; 
                                             }
                                             else{
-                                                BEGIN CODEBLOCK; 
+                                                enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
                                                 P("INDENT"); return INDENT;
                                             }
@@ -120,16 +150,16 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                                 P("INDENT"); return INDENT; 
                                             }
                                             else{
-                                                BEGIN CODEBLOCK; 
+                                                enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
                                                 P("INDENT"); return INDENT;
                                             }
                                         }
 <CODEBLOCK>.+                           { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }
-<CODEBLOCK>\r?\n                        { P(""); BEGIN INITIAL; yylineno++; }
+<CODEBLOCK>\r?\n                        { P(""); restoreState(); yylineno++; }
 
-<INDENTLIST>[ ]{0,3}[*+][ ]+            { BEGIN INITIAL; P("ULSTART"); return ULSTART; }
-<INDENTLIST>[ ]{0,3}[1-9][0-9]*\.[ ]+   { BEGIN INITIAL; P("OLSTART"); return OLSTART; }
+<INDENTLIST>[ ]{0,3}[*+][ ]+            { restoreState(); P("ULSTART"); return ULSTART; }
+<INDENTLIST>[ ]{0,3}[1-9][0-9]*\.[ ]+   { restoreState(); P("OLSTART"); return OLSTART; }
 
 
 ^#{1,6}                       { yylval.text = strdup(yytext); P("H"); return H; }
@@ -139,11 +169,11 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^\<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|command|datalist|dd|del|details|dir|div|dfn|dialog|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h[1-6]|head|header|hr|html|i|iframe|img|input|ins|isindex|kbd|keygen|label|legend|li|link|map|mark|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|section|select|small|source|span|strike|strong|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr|xmp)([" "\r\n][^>]*\/?\>|\/?\>)   { 
                                             yylval.text = strdup(yytext); 
                                             P("HTMLBLOCK"); 
-                                            BEGIN SHTMLBLOCK; 
+                                            enterState(SHTMLBLOCK, "SHTMLBLOCK"); 
                                             return HTMLBLOCK; 
                                         }
 <SHTMLBLOCK>.+          { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
-<SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); BEGIN INITIAL;  return LINEBREAK; }
+<SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); restoreState();  return LINEBREAK; }
 
     /* linkable text */
 \<(https?|ftp|ref):\/\/[^\r\n\>]+\>     {
@@ -164,7 +194,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
     /*^\<script[^>]*>/(.|[\r\n])*\<\/script>  { */
 
 ^\<script[^>]*>                         {
-                                            BEGIN SCRIPTBLOCK; 
+                                            enterState(SCRIPTBLOCK, "SCRIPTBLOCK"); 
                                             yylval.text = strdup(yytext); 
                                             P("SCRIPTSTART"); 
                                             return SCRIPTSTART; 
@@ -177,7 +207,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return TEXT; 
                                         }
 <SCRIPTBLOCK>\<\/script>.*\r?\n         { 
-                                            BEGIN INITIAL; 
+                                            restoreState(); 
                                             yylval.text = strdup("</script>"); 
                                             P("SCRIPTEND"); 
                                             return SCRIPTEND;
@@ -192,7 +222,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^\<style[^>]*>                          {
                                             yylval.text = strdup(yytext); 
                                             P("STYLESTART"); 
-                                            BEGIN STYLEBLOCK; 
+                                            enterState(STYLEBLOCK, "STYLEBLOCK"); 
                                             return STYLESTART; 
                                         }
 <STYLEBLOCK>.                           { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
@@ -205,7 +235,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <STYLEBLOCK>\<\/style>.*\r?\n           { 
                                             yylval.text = "</style>"; 
                                             P("STYLEEND"); 
-                                            BEGIN INITIAL; 
+                                            restoreState(); 
                                             return STYLEEND;
                                         }
 
@@ -215,7 +245,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^\<svg[^>]*>                            {
                                             yylval.text = strdup(yytext); 
                                             P("SVGSTART"); 
-                                            BEGIN SVGBLOCK; 
+                                            enterState(SVGBLOCK, "SVGBLOCK"); 
                                             return SVGSTART; 
                                         }
 <SVGBLOCK>.                             { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
@@ -228,7 +258,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <SVGBLOCK>\<\/svg>.*\r?\n               { 
                                             yylval.text = "</svg>"; 
                                             P("SVGEND"); 
-                                            BEGIN INITIAL; 
+                                            restoreState(); 
                                             return SVGEND;
                                         }
 

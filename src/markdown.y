@@ -23,15 +23,18 @@ t_tag_info *tag_info;
     t_blocknode *node;
 };
 
-    /* bind with terminater */
+    /* bind union part with terminal symbol */
 %token <text> TEXT SPECIALCHAR CODETEXT INDENT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
+%token <text> TABLEROWSTART TABLECEILEND
 %token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
 
+    /* bind union part with nonterminal symbol */
 %type <text> inlineelements inlineelement plaintext text_list headertext link
 %type <text> codespan code_list error lines 
+%type <text> tablerow tableceils tableceil 
 %type <node> line
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
@@ -403,12 +406,38 @@ line:
                 );
         } 
 
+    | tablerow {
+            tag_check_stack(TAG_P, 0); 
+            tag_info = markdown_get_tag_info($1);
+            $$ = blocknode_create(
+                TAG_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+    }
+
     | error LINEBREAK { 
             /* set error indent level: 100 */
             $$ = blocknode_create(TAG_ERROR, 100, 1, str_format("%s", "@error@")); 
             yyerrok; 
             yyclearin; 
         }
+    ;
+
+tablerow:
+    TABLEROWSTART tableceils LINEBREAK                  { $$ = str_concat("<tr>", str_concat($2, "</tr>")); }
+    ;
+
+
+tableceils:
+    tableceils tableceil                                { $$ = str_concat($1, $2); }
+    | tableceil                                         { $$ = $1; }
+    ;
+
+tableceil:
+    inlineelements TABLECEILEND                         { $$ = str_concat("<td>", str_concat($1, "</td>")); }
     ;
 
 inlineelements:  
