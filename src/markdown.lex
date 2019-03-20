@@ -3,6 +3,7 @@
 #include <string.h>
 #include "lex-state-stack.h"
 #include "blocknode.h"
+#include "node.h"
 #include "markdown.y.h"
 
 #undef _ISDEBUGLEX

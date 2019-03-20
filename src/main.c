@@ -2,6 +2,7 @@
 #include <time.h>
 #include "htmltags.h" 
 #include "blocknode.h" 
+#include "node.h" 
 #include "markdown.y.h"
 
 #define VERSION "0.1.9"

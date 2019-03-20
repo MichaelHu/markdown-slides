@@ -1,3 +1,5 @@
+#define HEADER_TAGSTACK
+
 #define TAG_STACK_SIZE 20
 #undef _IS_DEBUG_TAGSTACK
 
@@ -19,6 +21,10 @@ typedef enum {
     , TAG_BLANK
     , TAG_H
     , TAG_EOF
+
+    , TAG_TABLE
+    , TAG_TR
+    , TAG_TD
 
     , TAG_QUOTE_P
     , TAG_QUOTE_UL

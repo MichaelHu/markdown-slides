@@ -95,6 +95,10 @@ char *blocknode_output(t_blocknode *node){
             output("%s", html_escape(node->ops[0])); 
             break;
 
+        default:
+            output("");
+            break;
+
     }
 
     return "";
@@ -138,6 +142,9 @@ char *blocknode_close(t_blocknode *node) {
             output("");
             break;
 
+        default:
+            output("");
+            break;
     }
 
     output("\n");
@@ -405,6 +412,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                 glue = str_format("<pre%s><code>", current -> ops[0]); 
                 break;
 
+            default:
+                glue = "";
+                break;
         }
 
 
@@ -525,9 +535,15 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = "\n";
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
             
+            default:
+                glue = "";
+                break;
 
         }
 
@@ -606,6 +622,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = "\n";
                         break;
 
+                    default:
+                        glue = "";
+                        break;
+
                 }
                 break;
             
@@ -653,6 +673,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = "";
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -702,6 +725,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_H: glue = str_format("%s</blockquote>\n", get_close_header(top)); blocknode_pop_stack();break;
 
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -785,6 +811,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = str_format("%s</blockquote>\n<p%s>"
                             , get_close_header(top), current -> ops[0]); 
                         blocknode_pop_stack();
+                        break;
+
+                    default:
+                        glue = "";
                         break;
 
                 }
@@ -874,6 +904,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack(); 
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -961,6 +994,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                             , get_close_header(top), current -> ops[0]);
                         blocknode_pop_stack();
                         break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1044,6 +1081,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = str_format("%s</blockquote>\n<pre%s><code>"
                             , get_close_header(top), current -> ops[0]); 
                         blocknode_pop_stack(); 
+                        break;
+
+                    default:
+                        glue = "";
                         break;
                 }
                 break;
@@ -1134,6 +1175,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                             , get_close_header(top), get_open_header(current)); 
                         blocknode_pop_stack(); 
                         break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1218,6 +1263,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = str_format("%s\n<p%s>"
                             , get_close_header(top), current -> ops[0]); 
                         blocknode_pop_stack(); 
+                        break;
+
+                    default:
+                        glue = "";
                         break;
                 }
                 break;
@@ -1307,6 +1356,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                             , get_close_header(top), current -> ops[0]); 
                         blocknode_pop_stack(); 
                         break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1395,6 +1448,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                             , get_close_header(top), current -> ops[0]); 
                         blocknode_pop_stack(); 
                         break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1441,6 +1498,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_QUOTE_UL: glue = "</li></ul>\n<pre><code>"; blocknode_pop_stack(); break;
                     case TAG_QUOTE_OL: glue = "</li></ol>\n<pre><code>"; blocknode_pop_stack(); break;
                     case TAG_QUOTE_H: glue = str_format("%s\n<pre><code>", get_close_header(top)); blocknode_pop_stack(); break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1529,6 +1590,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = str_format("</code></pre>\n%s", get_open_header(current));
                         blocknode_pop_stack();
                         break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1604,6 +1669,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         glue = str_format("</code></pre>\n<p%s>", current -> ops[1]);
                         blocknode_pop_stack();
                         break;
+
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1666,6 +1735,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                     case TAG_INDENT_PRE:
                         glue = str_format("</code></pre>\n");
                         blocknode_pop_stack();
+                        break;
+
+                    default:
+                        glue = "";
                         break;
                 }
                 break;
@@ -1736,6 +1809,10 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack();
                         break;
 
+                    default:
+                        glue = "";
+                        break;
+
                 }
                 break;
 
@@ -1804,6 +1881,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack(); 
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1872,6 +1952,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack();
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1920,6 +2003,9 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack();
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
@@ -1968,10 +2054,16 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
                         blocknode_pop_stack();
                         break;
 
+                    default:
+                        glue = "";
+                        break;
                 }
                 break;
 
 
+            default:
+                glue = "";
+                break;
 
         }
 
