@@ -67,9 +67,10 @@ char* node_show(t_node *node) {
     else if (node->nops == 2) {
         fprintf(
             stderr,
-            "tag: %s; nops: %d; content: %s\n",
+            "tag: %s; nops: %d; attr: %s; content: %s\n",
             get_tag_type(node->tag),
             node->nops,
+            node->ops[0],
             node->ops[1]
         );
     }

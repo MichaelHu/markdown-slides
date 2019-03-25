@@ -37,8 +37,10 @@ t_node *_node, *_tail_node;
 
     /* bind union part with nonterminal symbol */
 %type <text> inlineelements inlineelement plaintext text_list headertext link
-%type <text> codespan code_list error lines 
-%type <node> line tablerows tablerow tableceils tableceil
+%type <text> codespan code_list error
+%type <node> lines line tablerows tablerow tableceils tableceil
+%type <node> block_p line_p
+%type <node> block_blank line_blank
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -46,27 +48,102 @@ t_node *_node, *_tail_node;
 %%
 
 markdownfile: 
-    lines { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); }
+    lines { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse($1); }
     | error { fprintf( stderr, "==== error ====\n" ); }
     ;
 
 lines:
     lines line  { 
-            /* $$ = str_concat($1, blocknode_parse($2)); */ 
+            $$ = $1;
         }
     | lines tablerows {
-            node_traverse( $2 );            
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
         }
-    | /* NULL */{ $$ = ""; }
+    | lines block_p {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | lines block_blank {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | /* NULL */{
+            _node = block_node_create(
+                TAG_P
+                , 0
+                , 0
+            );
+            $$ = _node;
+        }
     ;
 
-line:
+
+block_p:
+    block_p line_p {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | line_p { $$ = $1; }
+    ;
+
+line_p:
+    inlineelements LINEBREAK { 
+            tag_check_stack(TAG_P, 0); 
+            tag_info = markdown_get_tag_info($1);
+            blocknode_create(
+                TAG_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+
+            _node = block_node_create(
+                TAG_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        } 
+    ;
+
+block_blank: 
+    block_blank line_blank {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | line_blank { $$ = $1; }
+    ;
+
+line_blank:
     BLANKLINE { 
             tag_check_stack(TAG_BLANK, 100); 
             blocknode_create(TAG_BLANK, 100, 1, "");
-        }
 
-    | QUOTEBLANKLINE { 
+            _node = block_node_create(
+                TAG_BLANK
+                , 0
+                , 0
+            );
+            $$ = _node;
+        }
+    ;
+
+
+
+
+
+
+line:
+    QUOTEBLANKLINE { 
             tag_check_stack(TAG_QUOTE_BLANK, 0); 
             blocknode_create(TAG_QUOTE_BLANK, 0, 1, "");
         }
@@ -106,18 +183,6 @@ line:
             );
         }   
 
-
-    | inlineelements LINEBREAK { 
-            tag_check_stack(TAG_P, 0); 
-            tag_info = markdown_get_tag_info($1);
-            blocknode_create(
-                TAG_P
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
-        } 
 
     | LARGERTHAN inlineelements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_P, 0); 
