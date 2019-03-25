@@ -30,6 +30,8 @@ t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list ar
     p->tag = tag;
     p->level = level;
     p->nops = nops;
+    p->next = NULL;
+    p->children = NULL;
 
     for (i = 0; i < nops; i++){
         p->ops[i] = va_arg(args, char*);
@@ -106,7 +108,6 @@ t_node *tail_node_in_list(t_node *node) {
         pre = p;
         p = p->next;
     }
-
     return pre;
 }
 
