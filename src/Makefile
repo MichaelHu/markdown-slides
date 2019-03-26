@@ -5,7 +5,7 @@ lex-yacc: doyacc dolex
 debug: clean markdown.out
 
 doyacc:
-	bison -d -t --locations -omarkdown.y.c markdown.y
+	bison -d -t --locations -v -omarkdown.y.c markdown.y
 
 dolex:
 	flex -omarkdown.lex.c markdown.lex

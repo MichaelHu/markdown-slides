@@ -131,6 +131,8 @@ char *get_tag_type(t_tag tag){
         case TAG_TABLE: return "TAG_TABLE";
         case TAG_TR: return "TAG_TR";
         case TAG_TD: return "TAG_TD";
+
+        case TAG_BLOCK_P: return "TAG_BLOCK_P";
     }
 }
 

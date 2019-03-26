@@ -39,6 +39,8 @@ typedef enum {
     , TAG_INDENT_PRE
     , TAG_INDENT_TEXT
 
+    , TAG_BLOCK_P
+
 } t_tag; 
 
 typedef struct {
