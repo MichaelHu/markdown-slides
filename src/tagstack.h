@@ -45,6 +45,8 @@ typedef enum {
     , TAG_BLOCK_OL
     , TAG_BLOCK_INDENT_UL
     , TAG_BLOCK_INDENT_OL
+    , TAG_BLOCK_QUOTE_UL
+    , TAG_BLOCK_QUOTE_OL
     , TAG_BLOCK_BLANK
 
 } t_tag; 

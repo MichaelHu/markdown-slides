@@ -112,9 +112,9 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
 ^" "{0,3}[*+-][ ]+                      { P("ULSTART"); return ULSTART; }
-^>" "+[*+-][ ]+                         { P("QUOTEULSTART"); return QUOTEULSTART; }
+^>" "{0,3}[*+-][ ]+                         { P("QUOTEULSTART"); return QUOTEULSTART; }
 ^" "{0,3}[1-9][0-9]*\.[ ]+              { P("OLSTART"); return OLSTART; }
-^>" "+[1-9][0-9]*\.[ ]+                 { P("QUOTEOLSTART"); return QUOTEOLSTART; }
+^>" "{0,3}[1-9][0-9]*\.[ ]+                 { P("QUOTEOLSTART"); return QUOTEOLSTART; }
 
 
 

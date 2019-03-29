@@ -50,6 +50,7 @@ t_node *_node, *_tail_node;
 %type <node> block_quote_p line_quote_p
 %type <node> block_ul line_ul block_ol line_ol
 %type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol
+%type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -85,12 +86,22 @@ lines:
             _tail_node->next = $2;
             $$ = $1;
         }
+    | lines block_quote_ul {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
     | lines block_ol {
             _tail_node = tail_node_in_list($1);
             _tail_node->next = $2;
             $$ = $1;
         }
     | lines block_indent_ol {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | lines block_quote_ol {
             _tail_node = tail_node_in_list($1);
             _tail_node->next = $2;
             $$ = $1;
@@ -321,6 +332,48 @@ line_indent_ul:
         } 
     ;
 
+block_quote_ul:
+    block_quote_ul line_quote_ul {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | line_quote_ul {
+            _node = block_node_create(
+                TAG_BLOCK_QUOTE_UL
+                , $1->level
+                , 0
+            );
+            _node->children = $1;
+            $$ = _node;
+        }
+    ;
+
+line_quote_ul:
+    QUOTEULSTART inlineelements LINEBREAK { 
+            tag_check_stack(TAG_QUOTE_UL, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_QUOTE_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+
+            _node = block_node_create(
+                TAG_QUOTE_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        } 
+    ;
+
+
+
 
 block_ol:
     block_ol line_ol {
@@ -423,6 +476,49 @@ line_indent_ol:
         } 
     ;
 
+block_quote_ol:
+    block_quote_ol line_quote_ol {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | line_quote_ol {
+            _node = block_node_create(
+                TAG_BLOCK_QUOTE_OL
+                , $1->level
+                , 0
+            );
+            _node->children = $1;
+            $$ = _node;
+        }
+    ;
+
+line_quote_ol:
+    QUOTEOLSTART inlineelements LINEBREAK { 
+            tag_check_stack(TAG_QUOTE_OL, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_QUOTE_OL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+                );
+
+            _node = block_node_create(
+                TAG_QUOTE_OL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        } 
+    ;
+
+
+
+
 
 
 
@@ -468,30 +564,6 @@ line:
             );
         }   
 
-
-    | QUOTEOLSTART inlineelements LINEBREAK { 
-            tag_check_stack(TAG_QUOTE_OL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_OL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-                );
-        } 
-
-    | QUOTEULSTART inlineelements LINEBREAK { 
-            tag_check_stack(TAG_QUOTE_UL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_UL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
-        } 
 
     | TEXTINDENT inlineelements LINEBREAK { 
             /*
