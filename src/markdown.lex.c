@@ -1433,12 +1433,12 @@ YY_RULE_SETUP
                                             if(is_in_list(indent_level(yytext))){
                                                 enterState(INDENTLIST, "INDENTLIST");
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT; 
+                                                P("ULINDENT"); return ULINDENT; 
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT;
+                                                P("CODEINDENT"); return CODEINDENT;
                                             }
                                         }   
 	YY_BREAK
@@ -1450,12 +1450,12 @@ YY_RULE_SETUP
                                             if(is_in_list(indent_level(yytext))){
                                                 enterState(INDENTLIST, "INDENTLIST");
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT; 
+                                                P("OLINDENT"); return OLINDENT; 
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT;
+                                                P("CODEINDENT"); return CODEINDENT;
                                             }
                                         }   
 	YY_BREAK
@@ -1469,12 +1469,12 @@ YY_RULE_SETUP
                                             /* indent p */
                                             if(is_in_list(indent_level(yytext))){
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT; 
+                                                P("TEXTINDENT"); return TEXTINDENT; 
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT;
+                                                P("CODEINDENT"); return CODEINDENT;
                                             }
                                         }
 	YY_BREAK

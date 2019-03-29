@@ -123,12 +123,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             if(is_in_list(indent_level(yytext))){
                                                 enterState(INDENTLIST, "INDENTLIST");
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT; 
+                                                P("ULINDENT"); return ULINDENT; 
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT;
+                                                P("CODEINDENT"); return CODEINDENT;
                                             }
                                         }   
 ^(\t|[ ]{4})+/[ ]{0,3}[1-9][0-9]*\.[ ]+ { 
@@ -136,24 +136,24 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             if(is_in_list(indent_level(yytext))){
                                                 enterState(INDENTLIST, "INDENTLIST");
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT; 
+                                                P("OLINDENT"); return OLINDENT; 
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT;
+                                                P("CODEINDENT"); return CODEINDENT;
                                             }
                                         }   
 ^(\t|[ ]{4})+/.                         { 
                                             /* indent p */
                                             if(is_in_list(indent_level(yytext))){
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT; 
+                                                P("TEXTINDENT"); return TEXTINDENT; 
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("INDENT"); return INDENT;
+                                                P("CODEINDENT"); return CODEINDENT;
                                             }
                                         }
 <CODEBLOCK>.+                           { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }

@@ -33,9 +33,10 @@ t_node *_node, *_tail_node;
 };
 
     /* bind union part with terminal symbol */
-%token <text> TEXT SPECIALCHAR CODETEXT INDENT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
+%token <text> TEXT SPECIALCHAR CODETEXT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token <text> TABLEROWSTART TABLECEILEND
+%token <text> ULINDENT OLINDENT TEXTINDENT CODEINDENT
 %token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
@@ -47,6 +48,8 @@ t_node *_node, *_tail_node;
 %type <node> block_p line_p
 %type <node> block_blank line_blank
 %type <node> block_quote_p line_quote_p
+%type <node> block_ul line_ul
+%type <node> block_indent_ul line_indent_ul
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -68,6 +71,16 @@ lines:
             $$ = $1;
         }
     | lines block_p {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | lines block_ul {
+            _tail_node = tail_node_in_list($1);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | lines block_indent_ul {
             _tail_node = tail_node_in_list($1);
             _tail_node->next = $2;
             $$ = $1;
@@ -196,6 +209,110 @@ line_quote_p:
         } 
     ;
 
+block_ul:
+    block_ul line_ul {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | line_ul {
+            _node = block_node_create(
+                TAG_BLOCK_UL
+                , 0
+                , 0
+            );
+            _node->children = $1;
+            $$ = _node;
+        }
+    ;
+
+line_ul:
+    ULSTART inlineelements LINEBREAK { 
+            tag_check_stack(TAG_UL, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+
+            _node = block_node_create(
+                TAG_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        } 
+
+    | ULSTART LINEBREAK { 
+            tag_check_stack(TAG_UL, 0); 
+            blocknode_create(
+                TAG_UL
+                , 0
+                , 2
+                , ""
+                , ""
+            );
+
+            _node = block_node_create(
+                TAG_UL
+                , 0
+                , 2
+                , "" 
+                , ""
+            );
+            $$ = _node;
+        } 
+    ;
+
+block_indent_ul:
+    block_indent_ul line_indent_ul {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $$ = $1;
+        }
+    | line_indent_ul {
+            _node = block_node_create(
+                TAG_BLOCK_INDENT_UL
+                , $1->level
+                , 0
+            );
+            _node->children = $1;
+            $$ = _node;
+        }
+    ;
+
+line_indent_ul:
+    ULINDENT ULSTART inlineelements LINEBREAK { 
+            tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
+            tag_info = markdown_get_tag_info($3);
+            blocknode_create(
+                TAG_INDENT_UL
+                , indent_level($1)
+                , 3
+                , $1
+                , tag_info -> attr
+                , tag_info -> content
+            );
+
+            _node = block_node_create(
+                TAG_INDENT_UL
+                , indent_level($1)
+                , 3
+                , tag_info -> attr
+                , tag_info -> content
+                , $1
+            );
+            $$ = _node;
+        } 
+    ;
+
+
+
 
 line:
     QUOTEBLANKLINE { 
@@ -238,41 +355,6 @@ line:
             );
         }   
 
-    | ULSTART inlineelements LINEBREAK { 
-            tag_check_stack(TAG_UL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_UL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
-        } 
-
-    | ULSTART LINEBREAK { 
-            tag_check_stack(TAG_UL, 0); 
-            blocknode_create(
-                TAG_UL
-                , 0
-                , 2
-                , ""
-                , ""
-            );
-        } 
-
-    | INDENT ULSTART inlineelements LINEBREAK { 
-            tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
-            tag_info = markdown_get_tag_info($3);
-            blocknode_create(
-                TAG_INDENT_UL
-                , indent_level($1)
-                , 3
-                , $1
-                , tag_info -> attr
-                , tag_info -> content
-            );
-        } 
 
     | OLSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_OL, 0); 
@@ -298,7 +380,7 @@ line:
                 );
         } 
 
-    | INDENT OLSTART inlineelements LINEBREAK { 
+    | OLINDENT OLSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_INDENT_OL, indent_level($1)); 
             tag_info = markdown_get_tag_info($3);
             blocknode_create(
@@ -323,7 +405,7 @@ line:
             );
         } 
 
-    | INDENT inlineelements LINEBREAK { 
+    | TEXTINDENT inlineelements LINEBREAK { 
             /*
              *      * list
              *          content
@@ -364,7 +446,7 @@ line:
                 );
             }
         } 
-    | INDENT CODETEXT {
+    | CODEINDENT CODETEXT {
             _inner_pre_level = inner_pre_level(indent_level($1));
             if(_inner_pre_level > -1){
                 /* PRE indent level is 1 less than the literal indent */
