@@ -84,7 +84,7 @@ lines:
         }
     | /* NULL */{
             _node = block_node_create(
-                TAG_P
+                TAG_ROOT
                 , 0
                 , 0
             );
@@ -135,11 +135,19 @@ line_p:
 
 block_blank: 
     block_blank line_blank {
-            _tail_node = tail_node_in_list($1);
+            _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $$ = $1;
         }
-    | line_blank { $$ = $1; }
+    | line_blank {
+            _node = block_node_create(
+                TAG_BLOCK_BLANK
+                , 0
+                , 0
+            );
+            _node->children = $1;
+            $$ = _node;
+        }
     ;
 
 line_blank:
@@ -189,8 +197,6 @@ line_quote_p:
     ;
 
 
-
-
 line:
     QUOTEBLANKLINE { 
             tag_check_stack(TAG_QUOTE_BLANK, 0); 
@@ -232,6 +238,41 @@ line:
             );
         }   
 
+    | ULSTART inlineelements LINEBREAK { 
+            tag_check_stack(TAG_UL, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_UL
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+        } 
+
+    | ULSTART LINEBREAK { 
+            tag_check_stack(TAG_UL, 0); 
+            blocknode_create(
+                TAG_UL
+                , 0
+                , 2
+                , ""
+                , ""
+            );
+        } 
+
+    | INDENT ULSTART inlineelements LINEBREAK { 
+            tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
+            tag_info = markdown_get_tag_info($3);
+            blocknode_create(
+                TAG_INDENT_UL
+                , indent_level($1)
+                , 3
+                , $1
+                , tag_info -> attr
+                , tag_info -> content
+            );
+        } 
 
     | OLSTART inlineelements LINEBREAK { 
             tag_check_stack(TAG_OL, 0); 
@@ -262,42 +303,6 @@ line:
             tag_info = markdown_get_tag_info($3);
             blocknode_create(
                 TAG_INDENT_OL
-                , indent_level($1)
-                , 3
-                , $1
-                , tag_info -> attr
-                , tag_info -> content
-            );
-        } 
-
-    | ULSTART inlineelements LINEBREAK { 
-            tag_check_stack(TAG_UL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_UL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
-        } 
-
-    | ULSTART LINEBREAK { 
-            tag_check_stack(TAG_UL, 0); 
-            blocknode_create(
-                TAG_UL
-                , 0
-                , 2
-                , ""
-                , ""
-            );
-        } 
-
-    | INDENT ULSTART inlineelements LINEBREAK { 
-            tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
-            tag_info = markdown_get_tag_info($3);
-            blocknode_create(
-                TAG_INDENT_UL
                 , indent_level($1)
                 , 3
                 , $1
@@ -531,8 +536,20 @@ line:
     ;
 
 tablerows:
-    tablerows tablerow                                  { _tail_node = tail_node_in_list($1); _tail_node->next = $2; $$ = $1; }
-    | tablerow                                          { $$ = $1; }
+    tablerows tablerow                                  {
+                                                            _tail_node = tail_node_in_list($1->children);
+                                                            _tail_node->next = $2; 
+                                                            $$ = $1; 
+                                                        }
+    | tablerow                                          {
+                                                            _node = block_node_create(
+                                                                TAG_TABLE
+                                                                , 0
+                                                                , 0
+                                                            );
+                                                            _node->children = $1;
+                                                            $$ = _node; 
+                                                        }
 
 tablerow:
     TABLEROWSTART tableceils LINEBREAK                  {

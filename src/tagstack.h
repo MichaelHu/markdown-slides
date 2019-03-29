@@ -39,7 +39,11 @@ typedef enum {
     , TAG_INDENT_PRE
     , TAG_INDENT_TEXT
 
+    , TAG_ROOT
     , TAG_BLOCK_P
+    , TAG_BLOCK_UL
+    , TAG_BLOCK_INDENT_UL
+    , TAG_BLOCK_BLANK
 
 } t_tag; 
 

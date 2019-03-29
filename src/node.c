@@ -76,6 +76,16 @@ char* node_show(t_node *node) {
             node->ops[1]
         );
     }
+    else if (node->nops == 3) {
+        fprintf(
+            stderr,
+            "tag: %s; nops: %d; attr: %s; content: %s\n",
+            get_tag_type(node->tag),
+            node->nops,
+            node->ops[0],
+            node->ops[1]
+        );
+    }
     return "";
 }
 
