@@ -5,6 +5,8 @@
         <img src="./img/code-in-word.png">
     * 图文混排，没法直接拷贝
         <img src="./img/code-in-word-2.png">
+2. `显示面积`：强制换行、均匀分布，太不像代码了
+    <img src="./img/line-wrap.png">
 
 
 
