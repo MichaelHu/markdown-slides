@@ -45,7 +45,9 @@ t_node *_node, *_tail_node;
 %type <text> inlineelements inlineelement plaintext text_list headertext link
 %type <text> codespan code_list error
 %type <node> blocks block
-%type <node> lines line tablerows tablerow tableceils tableceil
+%type <node> lines line
+%type <node> header
+%type <node> tablerows tablerow tableceils tableceil
 %type <node> block_p line_p
 %type <node> block_blank line_blank
 %type <node> block_quote_p line_quote_p
@@ -85,6 +87,9 @@ block:
     lines { 
             $$ = $1;
         }
+    | header {
+            $$ = $1;
+        }
     | tablerows {
             $$ = $1;
         }
@@ -115,6 +120,32 @@ block:
     | block_quote_p {
             $$ = $1;
         }
+    ;
+
+header:
+    H headertext LINEBREAK {              
+            tag_check_stack(TAG_H, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_H
+                , 0
+                , 3
+                , $1
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            _node = block_node_create(
+                TAG_H
+                , 0
+                , 3
+                , tag_info->attr
+                , tag_info->content
+                , $1
+            );
+
+            $$ = _node;
+        }   
     ;
 
 lines:
@@ -545,18 +576,6 @@ line:
             blocknode_create(TAG_VSECTION, -1, 1, $1);
         }
 
-    | H headertext LINEBREAK {              
-            tag_check_stack(TAG_H, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_H
-                , 0
-                , 3
-                , $1
-                , tag_info->attr
-                , tag_info->content
-            );
-        }   
     | QUOTEH plaintext LINEBREAK { 
             tag_check_stack(TAG_QUOTE_H, 0); 
             tag_info = markdown_get_tag_info($2);
