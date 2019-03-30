@@ -133,6 +133,7 @@ char *get_tag_type(t_tag tag){
         case TAG_TD: return "TAG_TD";
 
         case TAG_ROOT: return "TAG_ROOT";
+        case TAG_LINES: return "TAG_LINES";
         case TAG_BLOCK_P: return "TAG_BLOCK_P";
         case TAG_BLOCK_UL: return "TAG_BLOCK_UL";
         case TAG_BLOCK_OL: return "TAG_BLOCK_OL";

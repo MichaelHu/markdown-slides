@@ -44,6 +44,7 @@ t_node *_node, *_tail_node;
     /* bind union part with nonterminal symbol */
 %type <text> inlineelements inlineelement plaintext text_list headertext link
 %type <text> codespan code_list error
+%type <node> blocks block
 %type <node> lines line tablerows tablerow tableceils tableceil
 %type <node> block_p line_p
 %type <node> block_blank line_blank
@@ -58,60 +59,12 @@ t_node *_node, *_tail_node;
 %%
 
 markdownfile: 
-    lines { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse($1); }
+    blocks { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse($1); }
     | error { fprintf( stderr, "==== error ====\n" ); }
     ;
 
-lines:
-    lines line  { 
-            $$ = $1;
-        }
-    | lines tablerows {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_p {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_ul {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_indent_ul {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_quote_ul {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_ol {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_indent_ol {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_quote_ol {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_blank {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $$ = $1;
-        }
-    | lines block_quote_p {
+blocks:
+    blocks block {
             _tail_node = tail_node_in_list($1);
             _tail_node->next = $2;
             $$ = $1;
@@ -122,6 +75,59 @@ lines:
                 , 0
                 , 0
             );
+            $$ = _node;
+        }
+    ;
+
+
+
+block:
+    lines { 
+            $$ = $1;
+        }
+    | tablerows {
+            $$ = $1;
+        }
+    | block_p {
+            $$ = $1;
+        }
+    | block_ul {
+            $$ = $1;
+        }
+    | block_indent_ul {
+            $$ = $1;
+        }
+    | block_quote_ul {
+            $$ = $1;
+        }
+    | block_ol {
+            $$ = $1;
+        }
+    | block_indent_ol {
+            $$ = $1;
+        }
+    | block_quote_ol {
+            $$ = $1;
+        }
+    | block_blank {
+            $$ = $1;
+        }
+    | block_quote_p {
+            $$ = $1;
+        }
+    ;
+
+lines:
+    lines line {
+            $$ = $1;
+        }
+    | line {
+            _node = block_node_create(
+                TAG_LINES
+                , 0
+                , 0
+            );    
+
             $$ = _node;
         }
     ;

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include "htmltags.h"
 #include "node.h"
 
 /**
@@ -62,14 +63,16 @@ char* node_show(t_node *node) {
     if (!node->nops) {
         fprintf(
             stderr,
-            "tag: %s\n",
+            "%stag: %s\n",
+            str_padding_left("", node->level * 4),
             get_tag_type(node->tag)
         );
     }
     else if (node->nops == 2) {
         fprintf(
             stderr,
-            "tag: %s; nops: %d; attr: %s; content: %s\n",
+            "%stag: %s; nops: %d; attr: %s; content: %s\n",
+            str_padding_left("", node->level * 4),
             get_tag_type(node->tag),
             node->nops,
             node->ops[0],
@@ -79,7 +82,8 @@ char* node_show(t_node *node) {
     else if (node->nops == 3) {
         fprintf(
             stderr,
-            "tag: %s; nops: %d; attr: %s; content: %s\n",
+            "%stag: %s; nops: %d; attr: %s; content: %s\n",
+            str_padding_left("", node->level * 4),
             get_tag_type(node->tag),
             node->nops,
             node->ops[0],

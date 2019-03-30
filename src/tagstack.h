@@ -40,6 +40,7 @@ typedef enum {
     , TAG_INDENT_TEXT
 
     , TAG_ROOT
+    , TAG_LINES
     , TAG_BLOCK_P
     , TAG_BLOCK_UL
     , TAG_BLOCK_OL
