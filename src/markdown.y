@@ -52,7 +52,7 @@ t_node *_node, *_tail_node;
 %type <node> block_blank line_blank
 %type <node> block_quote_p line_quote_p
 %type <node> block_ul line_ul block_ol line_ol
-%type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol
+%type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
@@ -99,16 +99,19 @@ block:
     | block_ul {
             $$ = $1;
         }
-    | block_indent_ul {
-            $$ = $1;
-        }
-    | block_quote_ul {
-            $$ = $1;
-        }
     | block_ol {
             $$ = $1;
         }
+    | block_indent_ul {
+            $$ = $1;
+        }
     | block_indent_ol {
+            $$ = $1;
+        }
+    | block_indent_text {
+            $$ = $1;
+        }
+    | block_quote_ul {
             $$ = $1;
         }
     | block_quote_ol {
@@ -554,43 +557,25 @@ line_quote_ol:
     ;
 
 
-
-
-
-
-
-
-line:
-    QUOTEBLANKLINE { 
-            tag_check_stack(TAG_QUOTE_BLANK, 0); 
-            blocknode_create(TAG_QUOTE_BLANK, 0, 1, "");
+block_indent_text:
+    block_indent_text line_indent_text {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $$ = $1;
         }
-
-    | SECTION LINEBREAK {
-            tag_check_stack(TAG_SECTION, -1); 
-            blocknode_create(TAG_SECTION, -1, 1, $1);
-        }
-
-    | VSECTION LINEBREAK {
-            tag_check_stack(TAG_VSECTION, -1); 
-            blocknode_create(TAG_VSECTION, -1, 1, $1);
-        }
-
-    | QUOTEH plaintext LINEBREAK { 
-            tag_check_stack(TAG_QUOTE_H, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_H
+    | line_indent_text {
+            _node = block_node_create(
+                TAG_BLOCK_INDENT_TEXT
+                , $1->level
                 , 0
-                , 3
-                , $1
-                , tag_info->attr
-                , tag_info->content
             );
-        }   
+            _node->children = $1;
+            $$ = _node;
+        }
+    ;
 
-
-    | TEXTINDENT inlineelements LINEBREAK { 
+line_indent_text:
+    TEXTINDENT inlineelements LINEBREAK { 
             /*
              *      * list
              *          content
@@ -630,7 +615,54 @@ line:
                     , tag_info -> content
                 );
             }
+
+            _node = block_node_create(
+                TAG_INDENT_TEXT
+                , indent_level($1)
+                , 3
+                , tag_info -> attr
+                , tag_info -> content
+                , $1
+            );
+            $$ = _node;
         } 
+    ;
+
+
+
+
+
+
+line:
+    QUOTEBLANKLINE { 
+            tag_check_stack(TAG_QUOTE_BLANK, 0); 
+            blocknode_create(TAG_QUOTE_BLANK, 0, 1, "");
+        }
+
+    | SECTION LINEBREAK {
+            tag_check_stack(TAG_SECTION, -1); 
+            blocknode_create(TAG_SECTION, -1, 1, $1);
+        }
+
+    | VSECTION LINEBREAK {
+            tag_check_stack(TAG_VSECTION, -1); 
+            blocknode_create(TAG_VSECTION, -1, 1, $1);
+        }
+
+    | QUOTEH plaintext LINEBREAK { 
+            tag_check_stack(TAG_QUOTE_H, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_QUOTE_H
+                , 0
+                , 3
+                , $1
+                , tag_info->attr
+                , tag_info->content
+            );
+        }   
+
+
     | CODEINDENT CODETEXT {
             _inner_pre_level = inner_pre_level(indent_level($1));
             if(_inner_pre_level > -1){

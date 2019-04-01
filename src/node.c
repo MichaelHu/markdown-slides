@@ -62,32 +62,35 @@ t_node *inline_node_create(t_tag tag, int level, int nops, ...) {
 char* node_show(t_node *node) {
     if (!node->nops) {
         fprintf(
-            stderr,
-            "%stag: %s\n",
-            str_padding_left("", node->level * 4),
-            get_tag_type(node->tag)
+            stderr
+            , "%stag: %s; level: %d\n"
+            , str_padding_left("", node->level * 4)
+            , get_tag_type(node->tag)
+            , node->level
         );
     }
     else if (node->nops == 2) {
         fprintf(
-            stderr,
-            "%stag: %s; nops: %d; attr: %s; content: %s\n",
-            str_padding_left("", node->level * 4),
-            get_tag_type(node->tag),
-            node->nops,
-            node->ops[0],
-            node->ops[1]
+            stderr
+            , "%stag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
+            , str_padding_left("", node->level * 4)
+            , get_tag_type(node->tag)
+            , node->level
+            , node->nops
+            , node->ops[0]
+            , node->ops[1]
         );
     }
     else if (node->nops == 3) {
         fprintf(
-            stderr,
-            "%stag: %s; nops: %d; attr: %s; content: %s\n",
-            str_padding_left("", node->level * 4),
-            get_tag_type(node->tag),
-            node->nops,
-            node->ops[0],
-            node->ops[1]
+            stderr
+            , "%stag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
+            , str_padding_left("", node->level * 4)
+            , get_tag_type(node->tag)
+            , node->level
+            , node->nops
+            , node->ops[0]
+            , node->ops[1]
         );
     }
     return "";
