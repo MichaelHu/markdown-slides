@@ -182,6 +182,7 @@ block_p:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -223,6 +224,7 @@ block_blank:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -288,6 +290,7 @@ block_ul:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -349,6 +352,7 @@ block_indent_ul:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -392,6 +396,7 @@ block_quote_ul:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -436,6 +441,7 @@ block_ol:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -496,6 +502,7 @@ block_indent_ol:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -539,6 +546,7 @@ block_quote_ol:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -581,6 +589,7 @@ block_indent_text:
                 , 0
             );
             _node->children = $1;
+            $1->parent = _node;
             $$ = _node;
         }
     ;
@@ -859,6 +868,7 @@ tablerows:
                                                                 , 0
                                                             );
                                                             _node->children = $1;
+                                                            $1->parent = _node;
                                                             $$ = _node; 
                                                         }
 
@@ -870,6 +880,7 @@ tablerow:
                                                                 , 0
                                                             );
                                                             _node->children = $2;
+                                                            $2->parent = _node;
                                                             $$ = _node;
                                                         }
     ;

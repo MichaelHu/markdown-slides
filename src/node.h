@@ -22,6 +22,7 @@ typedef struct node {
     char **ops;
     struct node *prev;
     struct node *next;
+    struct node *parent;
     struct node *children;
 } t_node;
 

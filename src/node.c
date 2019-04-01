@@ -33,6 +33,7 @@ t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list ar
     p->nops = nops;
     p->prev = NULL;
     p->next = NULL;
+    p->parent = NULL;
     p->children = NULL;
 
     for (i = 0; i < nops; i++){
