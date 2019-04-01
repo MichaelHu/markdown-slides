@@ -31,6 +31,7 @@ t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list ar
     p->tag = tag;
     p->level = level;
     p->nops = nops;
+    p->prev = NULL;
     p->next = NULL;
     p->children = NULL;
 

@@ -69,6 +69,7 @@ blocks:
     blocks block {
             _tail_node = tail_node_in_list($1);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | /* NULL */{
@@ -171,6 +172,7 @@ block_p:
     block_p line_p {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_p { 
@@ -211,6 +213,7 @@ block_blank:
     block_blank line_blank {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_blank {
@@ -242,6 +245,7 @@ block_quote_p:
     block_quote_p line_quote_p {
             _tail_node = tail_node_in_list($1);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_quote_p { $$ = $1; }
@@ -274,6 +278,7 @@ block_ul:
     block_ul line_ul {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_ul {
@@ -334,6 +339,7 @@ block_indent_ul:
     block_indent_ul line_indent_ul {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_indent_ul {
@@ -376,6 +382,7 @@ block_quote_ul:
     block_quote_ul line_quote_ul {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_quote_ul {
@@ -419,6 +426,7 @@ block_ol:
     block_ol line_ol {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_ol {
@@ -478,6 +486,7 @@ block_indent_ol:
     block_indent_ol line_indent_ol {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_indent_ol {
@@ -520,6 +529,7 @@ block_quote_ol:
     block_quote_ol line_quote_ol {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_quote_ol {
@@ -561,6 +571,7 @@ block_indent_text:
     block_indent_text line_indent_text {
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
+            $2->prev = _tail_node;
             $$ = $1;
         }
     | line_indent_text {
@@ -837,7 +848,8 @@ line:
 tablerows:
     tablerows tablerow                                  {
                                                             _tail_node = tail_node_in_list($1->children);
-                                                            _tail_node->next = $2; 
+                                                            _tail_node->next = $2;
+                                                            $2->prev = _tail_node; 
                                                             $$ = $1; 
                                                         }
     | tablerow                                          {
@@ -864,7 +876,12 @@ tablerow:
 
 
 tableceils:
-    tableceils tableceil                                { _tail_node = tail_node_in_list($1); _tail_node->next = $2; $$ = $1; }
+    tableceils tableceil                                { 
+                                                            _tail_node = tail_node_in_list($1); 
+                                                            _tail_node->next = $2; 
+                                                            $2->prev = _tail_node;
+                                                            $$ = $1;
+                                                        }
     | tableceil                                         { $$ = $1; }
     ;
 

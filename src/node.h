@@ -20,6 +20,7 @@ typedef struct node {
     /* extended fields */
     int nops;
     char **ops;
+    struct node *prev;
     struct node *next;
     struct node *children;
 } t_node;
