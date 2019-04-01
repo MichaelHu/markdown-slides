@@ -61,7 +61,7 @@ t_node *inline_node_create(t_tag tag, int level, int nops, ...) {
     return p;
 }
 
-char* node_show(t_node *node) {
+void node_show(t_node *node) {
     if (!node->nops) {
         fprintf(
             stderr
@@ -95,7 +95,6 @@ char* node_show(t_node *node) {
             , node->ops[1]
         );
     }
-    return "";
 }
 
 /**
@@ -108,16 +107,26 @@ char* node_show(t_node *node) {
  *
  * 2. use pre-order depth-traverse
  */
-void node_traverse(t_node *root) {
+void node_traverse_with_visitor(t_node *root, void (*visit)(t_node *p)) {
     t_node *p;
 
     if (!root) {
         return;
     }
-    node_show(root);
+
+    if (visit) {
+        node_show(root);
+    }
 
     node_traverse(root->children);
     node_traverse(root->next);
+}
+
+void node_traverse(t_node *root) {
+    node_traverse_with_visitor(root, node_show);
+}
+
+void complement_block_node(t_node *root) {
 }
 
 t_node *tail_node_in_list(t_node *node) {
