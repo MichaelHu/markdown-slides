@@ -1739,7 +1739,7 @@ yyreduce:
     {
         case 2:
 #line 64 "markdown.y"
-    { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse((yyvsp[(1) - (1)].node)); ;}
+    { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse((yyvsp[(1) - (1)].node)); complement_block_nodes((yyvsp[(1) - (1)].node)); ;}
     break;
 
   case 3:

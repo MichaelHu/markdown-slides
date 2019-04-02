@@ -61,7 +61,7 @@ t_node *_node, *_tail_node;
 %%
 
 markdownfile: 
-    blocks { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse($1); }
+    blocks { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse($1); complement_block_nodes($1); }
     | error { fprintf( stderr, "==== error ====\n" ); }
     ;
 

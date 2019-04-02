@@ -5,6 +5,22 @@
 #include "htmltags.h"
 #include "node.h"
 
+static t_tag block_node_tags[] = {
+    TAG_ROOT
+    , TAG_TABLE
+    , TAG_LINES
+    , TAG_BLOCK_P
+    , TAG_BLOCK_UL
+    , TAG_BLOCK_OL
+    , TAG_BLOCK_INDENT_UL
+    , TAG_BLOCK_INDENT_OL
+    , TAG_BLOCK_INDENT_TEXT
+    , TAG_BLOCK_QUOTE_UL
+    , TAG_BLOCK_QUOTE_OL
+    , TAG_BLOCK_BLANK
+};
+static int block_node_tags_size = sizeof(block_node_tags) / sizeof(int);
+
 /**
  * 1. demonstrate how to write a function accepting argument of va_list
  * 2. like vprintf(char *fmt, va_list args)
@@ -107,26 +123,46 @@ void node_show(t_node *node) {
  *
  * 2. use pre-order depth-traverse
  */
-void node_traverse_with_visitor(t_node *root, void (*visit)(t_node *p)) {
-    t_node *p;
-
+static void node_traverse_with_visitor(t_node *root, void (*visit)(t_node *)) {
     if (!root) {
         return;
     }
 
     if (visit) {
-        node_show(root);
+        visit(root);
     }
 
-    node_traverse(root->children);
-    node_traverse(root->next);
+    node_traverse_with_visitor(root->children, visit);
+    node_traverse_with_visitor(root->next, visit);
 }
 
 void node_traverse(t_node *root) {
     node_traverse_with_visitor(root, node_show);
 }
 
-void complement_block_node(t_node *root) {
+static int index_of(t_tag tag) {
+    int i;
+    for (i = 0; i < block_node_tags_size; i++) {
+        if (tag == block_node_tags[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int is_block_node(t_node *node) {
+    return index_of(node->tag) > -1;
+}
+
+void visit_nonblock_node(t_node *node) {
+    if (!is_block_node(node)) {
+        node_show(node);
+    }
+}
+
+void complement_block_nodes(t_node *root) {
+    fprintf(stderr, "===========complement_block_nodes===========\n");
+    node_traverse_with_visitor(root, visit_nonblock_node);
 }
 
 t_node *tail_node_in_list(t_node *node) {
