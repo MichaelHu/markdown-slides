@@ -28,7 +28,11 @@ char *str_format(char *format, ...){
 char *str_padding_left(char *s, int count){
     char *_str, *ret;
 
-    if(0 == count){
+    /**
+     * 1. condition `0 == count` may lead to out of memory when count is less than 0
+     * 2. must use condition like `0 >= count`
+     */
+    if(0 >= count){
         return s;
     }
 

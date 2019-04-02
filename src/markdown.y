@@ -61,21 +61,37 @@ t_node *_node, *_tail_node;
 %%
 
 markdownfile: 
-    blocks { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); traverse_nodes($1); complement_block_nodes($1); }
+    blocks { 
+            blocknode_create(TAG_EOF, -2, 1, ""); 
+            blocklist_parse(); 
+            traverse_nodes($1); 
+            // complement_block_nodes($1); 
+        }
     | error { fprintf( stderr, "==== error ====\n" ); }
     ;
 
 blocks:
     blocks block {
-            _tail_node = tail_node_in_list($1);
-            _tail_node->next = $2;
-            $2->prev = _tail_node;
+            if (!$1->children) {
+                $1->children = $2;
+                $2->parent = $1;
+            }
+
+            _tail_node = tail_node_in_list($1->children);
+
+            // must avoid self-linking
+            if (_tail_node != $2) {
+                _tail_node->next = $2;
+                $2->prev = _tail_node;
+                $2->parent = _tail_node->parent;
+            }
+
             $$ = $1;
         }
     | /* NULL */{
             _node = block_node_create(
                 TAG_ROOT
-                , 0
+                , -100
                 , 0
             );
             $$ = _node;
@@ -173,6 +189,7 @@ block_p:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_p { 
@@ -215,6 +232,7 @@ block_blank:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_blank {
@@ -245,12 +263,23 @@ line_blank:
 
 block_quote_p:
     block_quote_p line_quote_p {
-            _tail_node = tail_node_in_list($1);
+            _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
-    | line_quote_p { $$ = $1; }
+    | line_quote_p {
+            _node = block_node_create(
+                TAG_BLOCK_QUOTE_P
+                , $1->level
+                , 0
+            );
+
+            _node->children = $1;
+            $1->parent = _node;
+            $$ = _node;
+        }
     ;
 
 line_quote_p:
@@ -281,6 +310,7 @@ block_ul:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_ul {
@@ -343,6 +373,7 @@ block_indent_ul:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_indent_ul {
@@ -387,6 +418,7 @@ block_quote_ul:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_quote_ul {
@@ -432,6 +464,7 @@ block_ol:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_ol {
@@ -493,6 +526,7 @@ block_indent_ol:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_indent_ol {
@@ -537,6 +571,7 @@ block_quote_ol:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_quote_ol {
@@ -580,6 +615,7 @@ block_indent_text:
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
             $$ = $1;
         }
     | line_indent_text {
@@ -859,6 +895,7 @@ tablerows:
                                                             _tail_node = tail_node_in_list($1->children);
                                                             _tail_node->next = $2;
                                                             $2->prev = _tail_node; 
+                                                            $2->parent = _tail_node->parent;
                                                             $$ = $1; 
                                                         }
     | tablerow                                          {
@@ -874,26 +911,30 @@ tablerows:
 
 tablerow:
     TABLEROWSTART tableceils LINEBREAK                  {
-                                                            _node = block_node_create(
-                                                                TAG_TR
-                                                                , 0
-                                                                , 0
-                                                            );
-                                                            _node->children = $2;
-                                                            $2->parent = _node;
-                                                            $$ = _node;
+                                                            $$ = $2;
                                                         }
     ;
 
 
 tableceils:
     tableceils tableceil                                { 
-                                                            _tail_node = tail_node_in_list($1); 
+                                                            _tail_node = tail_node_in_list($1->children); 
                                                             _tail_node->next = $2; 
                                                             $2->prev = _tail_node;
+                                                            $2->parent = _tail_node->parent;
                                                             $$ = $1;
                                                         }
-    | tableceil                                         { $$ = $1; }
+    | tableceil                                         {
+                                                            _node = inline_node_create(
+                                                                TAG_TR
+                                                                , 1
+                                                                , 0
+                                                            );
+
+                                                            _node->children = $1;
+                                                            $1->parent = _node;
+                                                            $$ = _node;
+                                                        }
     ;
 
 tableceil:
@@ -902,7 +943,7 @@ tableceil:
                                                             // fprintf(stderr, "inlineelements: %s; attr: %s; content: %s\n", $1, tag_info->attr, tag_info->content);
                                                             _node = inline_node_create(
                                                                 TAG_TD
-                                                                , 0
+                                                                , 2
                                                                 , 2
                                                                 , tag_info -> attr
                                                                 , tag_info -> content

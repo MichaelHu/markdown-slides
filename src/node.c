@@ -7,6 +7,7 @@
 
 static t_tag block_node_tags[] = {
     TAG_ROOT
+    , TAG_H
     , TAG_TABLE
     , TAG_LINES
     , TAG_BLOCK_P
@@ -78,37 +79,25 @@ t_node *inline_node_create(t_tag tag, int level, int nops, ...) {
 }
 
 void show_node(t_node *node) {
-    if (!node->nops) {
+    if (node->nops >= 2) {
+        fprintf(
+            stderr
+            , "%stag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
+            , str_padding_left("", node->level * 4)
+            , get_tag_type(node->tag)
+            , node->level
+            , node->nops
+            , node->ops[0]
+            , node->ops[1]
+        );
+    }
+    else {
         fprintf(
             stderr
             , "%stag: %s; level: %d\n"
             , str_padding_left("", node->level * 4)
             , get_tag_type(node->tag)
             , node->level
-        );
-    }
-    else if (node->nops == 2) {
-        fprintf(
-            stderr
-            , "%stag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
-            , str_padding_left("", node->level * 4)
-            , get_tag_type(node->tag)
-            , node->level
-            , node->nops
-            , node->ops[0]
-            , node->ops[1]
-        );
-    }
-    else if (node->nops == 3) {
-        fprintf(
-            stderr
-            , "%stag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
-            , str_padding_left("", node->level * 4)
-            , get_tag_type(node->tag)
-            , node->level
-            , node->nops
-            , node->ops[0]
-            , node->ops[1]
         );
     }
 }
@@ -123,7 +112,7 @@ void show_node(t_node *node) {
  *
  * 2. use pre-order depth-traverse
  */
-static void node_traverse_with_visitor(t_node *root, void (*visit)(t_node *)) {
+static void traverse_nodes_with_visitor(t_node *root, void (*visit)(t_node *)) {
     if (!root) {
         return;
     }
@@ -132,12 +121,12 @@ static void node_traverse_with_visitor(t_node *root, void (*visit)(t_node *)) {
         visit(root);
     }
 
-    node_traverse_with_visitor(root->children, visit);
-    node_traverse_with_visitor(root->next, visit);
+    traverse_nodes_with_visitor(root->children, visit);
+    traverse_nodes_with_visitor(root->next, visit);
 }
 
 void traverse_nodes(t_node *root) {
-    node_traverse_with_visitor(root, show_node);
+    traverse_nodes_with_visitor(root, show_node);
 }
 
 static int index_of(t_tag tag) {
@@ -150,19 +139,37 @@ static int index_of(t_tag tag) {
     return -1;
 }
 
+static void visit_node_to_check_parent_link(t_node *node) {
+    if (node->prev) {
+        if (!node->parent) {
+            fprintf(stderr, "==parent link error==\n");
+            show_node(node);
+        }
+    }
+}
+
+static void check_parent_links(t_node *root) {
+    traverse_nodes_with_visitor(root, visit_node_to_check_parent_link);
+}
+
+
 int is_block_node(t_node *node) {
     return index_of(node->tag) > -1;
 }
 
 void visit_nonblock_node(t_node *node) {
-    if (!is_block_node(node)) {
-        show_node(node);
+    if (is_block_node(node)) {
+        return;
     }
+    show_node(node);
 }
 
 void complement_block_nodes(t_node *root) {
+    fprintf(stderr, "===========fix_parent_links===========\n");
+    check_parent_links(root);
+
     fprintf(stderr, "===========complement_block_nodes===========\n");
-    node_traverse_with_visitor(root, visit_nonblock_node);
+    traverse_nodes_with_visitor(root, visit_nonblock_node);
 }
 
 t_node *tail_node_in_list(t_node *node) {
