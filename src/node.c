@@ -77,7 +77,7 @@ t_node *inline_node_create(t_tag tag, int level, int nops, ...) {
     return p;
 }
 
-void node_show(t_node *node) {
+void show_node(t_node *node) {
     if (!node->nops) {
         fprintf(
             stderr
@@ -136,8 +136,8 @@ static void node_traverse_with_visitor(t_node *root, void (*visit)(t_node *)) {
     node_traverse_with_visitor(root->next, visit);
 }
 
-void node_traverse(t_node *root) {
-    node_traverse_with_visitor(root, node_show);
+void traverse_nodes(t_node *root) {
+    node_traverse_with_visitor(root, show_node);
 }
 
 static int index_of(t_tag tag) {
@@ -156,7 +156,7 @@ int is_block_node(t_node *node) {
 
 void visit_nonblock_node(t_node *node) {
     if (!is_block_node(node)) {
-        node_show(node);
+        show_node(node);
     }
 }
 

@@ -61,7 +61,7 @@ t_node *_node, *_tail_node;
 %%
 
 markdownfile: 
-    blocks { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); node_traverse($1); complement_block_nodes($1); }
+    blocks { blocknode_create(TAG_EOF, -2, 1, ""); blocklist_parse(); traverse_nodes($1); complement_block_nodes($1); }
     | error { fprintf( stderr, "==== error ====\n" ); }
     ;
 
@@ -735,7 +735,7 @@ line:
                 , tag_info -> content
             );
 
-            node_show(_node);
+            // show_node(_node);
             // fprintf( stderr, "CODETEXT: %s\n PARSED: %s\n", $2, tag_info -> content ); 
         }
     | TRIPLEBACKTICK error     { 

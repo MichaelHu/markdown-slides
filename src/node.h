@@ -30,8 +30,8 @@ t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list ar
 t_node *block_node_create(t_tag tag, int level, int nops, ...);
 t_node *inline_node_create(t_tag tag, int level, int nops, ...);
 t_node *tail_node_in_list(t_node *node);
-void node_show(t_node *node);
-void node_traverse(t_node *root);
+void show_node(t_node *node);
+void traverse_nodes(t_node *root);
 void complement_block_nodes(t_node *root);
 
 
