@@ -235,6 +235,20 @@ line_p:
             );
             $$ = _node;
         } 
+    | TRIPLEBACKTICK codespan error     { 
+            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
+            blocklist_parse(); 
+
+            tag_info = markdown_get_tag_info(str_concat($1, $2));
+            _node = block_node_create(
+                TAG_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        }
     ;
 
 block_blank: 
@@ -799,6 +813,26 @@ line_indented_pre:
             );
             $$ = _node;
         }
+    | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
+            tag_check_stack(TAG_PRE, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                    TAG_PRE
+                    , 0
+                    , 2
+                    , tag_info -> attr
+                    , tag_info -> content
+                );
+
+            _node = block_node_create(
+                TAG_PRE
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        }
     ;
 
 
@@ -833,34 +867,6 @@ line:
             );
         }   
 
-
-    | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
-            tag_check_stack(TAG_PRE, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_PRE
-                    , 0
-                    , 2
-                    , tag_info -> attr
-                    , tag_info -> content
-                );
-
-            _node = block_node_create(
-                TAG_PRE
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
-
-            // show_node(_node);
-            // fprintf( stderr, "CODETEXT: %s\n PARSED: %s\n", $2, tag_info -> content ); 
-        }
-    | TRIPLEBACKTICK codespan error     { 
-            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
-            blocklist_parse(); 
-            YYABORT;
-        }
 
     | HTMLBLOCK TEXT LINEBREAK {
             tag_check_stack(TAG_HTMLBLOCK, 0);
