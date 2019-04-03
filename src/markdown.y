@@ -777,7 +777,7 @@ line:
             // show_node(_node);
             // fprintf( stderr, "CODETEXT: %s\n PARSED: %s\n", $2, tag_info -> content ); 
         }
-    | TRIPLEBACKTICK error     { 
+    | TRIPLEBACKTICK codespan error     { 
             blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
             blocklist_parse(); 
             YYABORT;

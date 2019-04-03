@@ -30,6 +30,24 @@ console.log('javascript');
 @s
 `@[class="fragment"\]window.alert(123);`
 
+## code
+
+> c code
+
+    #include <stdio.h>
+    int main(void) {
+        print("Hello, World!\n");
+    }
+
+* c code
+
+        #include <stdio.h>
+        int main(void) {
+            print("Hello, World!\n");
+        }
+    
+
 ```
 * abc
 * 123
+
