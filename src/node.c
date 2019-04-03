@@ -21,6 +21,32 @@ static t_tag block_node_tags[] = {
     , TAG_BLOCK_BLANK
 };
 static int block_node_tags_size = sizeof(block_node_tags) / sizeof(int);
+static t_tag get_parent_block_node_tag(t_tag tag) {
+    switch (tag) {
+        case TAG_P:
+            return TAG_BLOCK_P;
+        case TAG_UL:
+            return TAG_BLOCK_UL;
+        case TAG_OL:
+            return TAG_BLOCK_OL;
+        case TAG_INDENT_UL:
+            return TAG_BLOCK_INDENT_UL;
+        case TAG_INDENT_OL:
+            return TAG_BLOCK_INDENT_OL;
+        case TAG_INDENT_TEXT:
+            return TAG_BLOCK_INDENT_TEXT;
+        case TAG_QUOTE_UL:
+            return TAG_BLOCK_QUOTE_UL;
+        case TAG_QUOTE_OL:
+            return TAG_BLOCK_QUOTE_OL;
+        case TAG_QUOTE_P:
+            return TAG_BLOCK_QUOTE_P;
+        case TAG_BLANK:
+            return TAG_BLOCK_BLANK;
+        default:
+            return TAG_ROOT;
+    }
+}
 
 /**
  * 1. demonstrate how to write a function accepting argument of va_list
@@ -139,6 +165,9 @@ static int index_of(t_tag tag) {
     return -1;
 }
 
+/**
+ * 1. nodes in list must have a valid parent link
+ */
 static void visit_node_to_check_parent_link(t_node *node) {
     if (node->prev) {
         if (!node->parent) {
@@ -158,10 +187,57 @@ int is_block_node(t_node *node) {
 }
 
 void visit_nonblock_node(t_node *node) {
+    t_node *parent, *new_uncle, *tmp;
+
     if (is_block_node(node)) {
         return;
     }
-    show_node(node);
+
+    parent = node->parent;
+
+    if (!parent) {
+        fprintf(stderr, "==NULL parent link==\n");
+    }
+
+    switch (node->tag) {
+        case TAG_INDENT_UL:
+        case TAG_INDENT_OL:
+            if (parent && node->level != parent->level) {
+                // show_node(node);
+                new_uncle = block_node_create(
+                    get_parent_block_node_tag(node->tag)
+                    , node->level
+                    , 0
+                );
+
+                // 1. prepend new_uncle
+                new_uncle->next = parent->next;
+                new_uncle->next->prev = new_uncle;
+
+                // 2. append new_uncle
+                parent->next = new_uncle;
+                new_uncle->prev = parent;
+                new_uncle->parent = parent->parent;
+
+                // 3. set current node the first child of new_unclue
+                new_uncle->children = node;
+                node->parent = new_uncle;
+
+                // 4. remove connection with the previous sibling node
+                node->prev->next = NULL;
+                node->prev = NULL;
+
+                // 5. update parent links of the remained sibling nodes
+                tmp = node;
+                while (tmp) {
+                    tmp->parent = node->parent;
+                    tmp = tmp->next;
+                }
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 void complement_block_nodes(t_node *root) {

@@ -64,10 +64,13 @@ markdownfile:
     blocks { 
             blocknode_create(TAG_EOF, -2, 1, ""); 
             blocklist_parse(); 
+            complement_block_nodes($1); 
+            fprintf( stderr, "==== traverse ====\n" ); 
             traverse_nodes($1); 
-            // complement_block_nodes($1); 
         }
-    | error { fprintf( stderr, "==== error ====\n" ); }
+    | error { 
+            fprintf( stderr, "==== error ====\n" ); 
+        }
     ;
 
 blocks:
