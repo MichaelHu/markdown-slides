@@ -144,6 +144,8 @@ char *get_tag_type(t_tag tag){
         case TAG_BLOCK_QUOTE_OL: return "TAG_BLOCK_QUOTE_OL";
         case TAG_BLOCK_QUOTE_P: return "TAG_BLOCK_QUOTE_P";
         case TAG_BLOCK_BLANK: return "TAG_BLOCK_BLANK";
+        case TAG_BLOCK_PRE: return "TAG_BLOCK_PRE";
+        case TAG_BLOCK_INDENT_PRE: return "TAG_BLOCK_INDENT_PRE";
     }
 }
 

@@ -19,6 +19,8 @@ static t_tag block_node_tags[] = {
     , TAG_BLOCK_QUOTE_UL
     , TAG_BLOCK_QUOTE_OL
     , TAG_BLOCK_BLANK
+    , TAG_BLOCK_PRE
+    , TAG_BLOCK_INDENT_PRE
 };
 static int block_node_tags_size = sizeof(block_node_tags) / sizeof(int);
 static t_tag get_parent_block_node_tag(t_tag tag) {
@@ -43,6 +45,10 @@ static t_tag get_parent_block_node_tag(t_tag tag) {
             return TAG_BLOCK_QUOTE_P;
         case TAG_BLANK:
             return TAG_BLOCK_BLANK;
+        case TAG_PRE:
+            return TAG_BLOCK_PRE;
+        case TAG_INDENT_PRE:
+            return TAG_BLOCK_INDENT_PRE;
         default:
             return TAG_ROOT;
     }

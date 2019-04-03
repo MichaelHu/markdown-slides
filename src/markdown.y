@@ -54,6 +54,7 @@ t_node *_node, *_tail_node;
 %type <node> block_ul line_ul block_ol line_ol
 %type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
+%type <node> block_pre line_pre block_indented_pre line_indented_pre
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -141,6 +142,12 @@ block:
             $$ = $1;
         }
     | block_quote_p {
+            $$ = $1;
+        }
+    | block_pre {
+            $$ = $1;
+        }
+    | block_indented_pre {
             $$ = $1;
         }
     ;
@@ -688,6 +695,111 @@ line_indent_text:
     ;
 
 
+block_pre:
+    block_pre line_pre {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
+            $$ = $1;
+        }
+    | line_pre {
+            _node = block_node_create(
+                TAG_BLOCK_PRE 
+                , $1->level
+                , 0
+            );
+
+            _node->children = $1;
+            $1->parent = _node;
+
+            $$ = _node;
+        }
+    ;
+
+line_pre:
+    PRE_INDENT CODETEXT {
+            tag_check_stack(TAG_PRE, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                    TAG_PRE
+                    , 0
+                    , 2
+                    , tag_info -> attr
+                    , str_padding_left( 
+                        tag_info -> content
+                        , 4 * ( indent_level($1) - 1 ) 
+                    ) 
+                );
+
+            _node = inline_node_create(
+                TAG_PRE
+                , 0
+                , 2
+                , tag_info -> attr
+                , str_padding_left( 
+                    tag_info -> content
+                    , 4 * ( indent_level($1) - 1 ) 
+                ) 
+            );
+            $$ = _node;
+        }
+    ;
+
+
+block_indented_pre:
+    block_indented_pre line_indented_pre {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
+            $$ = $1;
+        }
+    | line_indented_pre {
+            _node = block_node_create(
+                TAG_BLOCK_INDENT_PRE 
+                , $1->level
+                , 0
+            );
+
+            _node->children = $1;
+            $1->parent = _node;
+
+            $$ = _node;
+        }
+    ;
+
+line_indented_pre:
+    INDENTED_PRE_INDENT CODETEXT {
+            _inner_pre_level = inner_pre_level(indent_level($1));
+
+            /* PRE indent level is 1 less than the literal indent */
+            tag_check_stack(TAG_INDENT_PRE, _inner_pre_level); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                    TAG_INDENT_PRE
+                    , _inner_pre_level
+                    , 2
+                    , tag_info -> attr
+                    , str_padding_left( 
+                        tag_info -> content
+                        , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
+                    )
+                );
+
+            _node = inline_node_create(
+                TAG_INDENT_PRE
+                , _inner_pre_level
+                , 2
+                , tag_info -> attr
+                , str_padding_left( 
+                    tag_info -> content
+                    , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
+                )
+            );
+            $$ = _node;
+        }
+    ;
 
 
 
@@ -721,39 +833,6 @@ line:
             );
         }   
 
-
-    | PRE_INDENT CODETEXT {
-            tag_check_stack(TAG_PRE, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_PRE
-                    , 0
-                    , 2
-                    , tag_info -> attr
-                    , str_padding_left( 
-                        tag_info -> content
-                        , 4 * ( indent_level($1) - 1 ) 
-                    ) 
-                );
-        }
-
-    | INDENTED_PRE_INDENT CODETEXT {
-            _inner_pre_level = inner_pre_level(indent_level($1));
-
-            /* PRE indent level is 1 less than the literal indent */
-            tag_check_stack(TAG_INDENT_PRE, _inner_pre_level); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_INDENT_PRE
-                    , _inner_pre_level
-                    , 2
-                    , tag_info -> attr
-                    , str_padding_left( 
-                        tag_info -> content
-                        , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
-                    )
-                );
-        }
 
     | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
             tag_check_stack(TAG_PRE, 0); 
