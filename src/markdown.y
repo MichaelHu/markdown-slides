@@ -36,7 +36,7 @@ t_node *_node, *_tail_node;
 %token <text> TEXT SPECIALCHAR CODETEXT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token <text> TABLEROWSTART TABLECEILEND
-%token <text> ULINDENT OLINDENT TEXTINDENT CODEINDENT
+%token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT
 %token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
@@ -722,37 +722,37 @@ line:
         }   
 
 
-    | CODEINDENT CODETEXT {
+    | PRE_INDENT CODETEXT {
+            tag_check_stack(TAG_PRE, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                    TAG_PRE
+                    , 0
+                    , 2
+                    , tag_info -> attr
+                    , str_padding_left( 
+                        tag_info -> content
+                        , 4 * ( indent_level($1) - 1 ) 
+                    ) 
+                );
+        }
+
+    | INDENTED_PRE_INDENT CODETEXT {
             _inner_pre_level = inner_pre_level(indent_level($1));
-            if(_inner_pre_level > -1){
-                /* PRE indent level is 1 less than the literal indent */
-                tag_check_stack(TAG_INDENT_PRE, _inner_pre_level); 
-                tag_info = markdown_get_tag_info($2);
-                blocknode_create(
-                        TAG_INDENT_PRE
-                        , _inner_pre_level
-                        , 2
-                        , tag_info -> attr
-                        , str_padding_left( 
-                            tag_info -> content
-                            , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
-                        )
-                    );
-            }
-            else{
-                tag_check_stack(TAG_PRE, 0); 
-                tag_info = markdown_get_tag_info($2);
-                blocknode_create(
-                        TAG_PRE
-                        , 0
-                        , 2
-                        , tag_info -> attr
-                        , str_padding_left( 
-                            tag_info -> content
-                            , 4 * ( indent_level($1) - 1 ) 
-                        ) 
-                    );
-            }
+
+            /* PRE indent level is 1 less than the literal indent */
+            tag_check_stack(TAG_INDENT_PRE, _inner_pre_level); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                    TAG_INDENT_PRE
+                    , _inner_pre_level
+                    , 2
+                    , tag_info -> attr
+                    , str_padding_left( 
+                        tag_info -> content
+                        , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
+                    )
+                );
         }
 
     | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {

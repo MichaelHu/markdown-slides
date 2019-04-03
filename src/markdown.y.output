@@ -5,22 +5,22 @@ Terminals which are not used
 
 
 State 0 conflicts: 1 shift/reduce
-State 39 conflicts: 11 shift/reduce
-State 40 conflicts: 10 shift/reduce
-State 42 conflicts: 1 shift/reduce
-State 44 conflicts: 1 shift/reduce
-State 46 conflicts: 1 shift/reduce
-State 48 conflicts: 1 shift/reduce
-State 50 conflicts: 1 shift/reduce
-State 52 conflicts: 1 shift/reduce
-State 54 conflicts: 1 shift/reduce
-State 56 conflicts: 1 shift/reduce
-State 58 conflicts: 1 shift/reduce
-State 61 conflicts: 1 shift/reduce
-State 150 conflicts: 1 shift/reduce
-State 151 conflicts: 1 shift/reduce
+State 40 conflicts: 12 shift/reduce
+State 41 conflicts: 10 shift/reduce
+State 43 conflicts: 1 shift/reduce
+State 45 conflicts: 1 shift/reduce
+State 47 conflicts: 1 shift/reduce
+State 49 conflicts: 1 shift/reduce
+State 51 conflicts: 1 shift/reduce
+State 53 conflicts: 1 shift/reduce
+State 55 conflicts: 1 shift/reduce
+State 57 conflicts: 1 shift/reduce
+State 59 conflicts: 1 shift/reduce
+State 62 conflicts: 1 shift/reduce
+State 152 conflicts: 1 shift/reduce
 State 153 conflicts: 1 shift/reduce
-State 154 conflicts: 1 shift/reduce
+State 155 conflicts: 1 shift/reduce
+State 156 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -108,200 +108,202 @@ Grammar
    54     | SECTION LINEBREAK
    55     | VSECTION LINEBREAK
    56     | QUOTEH plaintext LINEBREAK
-   57     | CODEINDENT CODETEXT
-   58     | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK
-   59     | TRIPLEBACKTICK error
-   60     | HTMLBLOCK TEXT LINEBREAK
-   61     | HTMLBLOCK LINEBREAK
-   62     | SCRIPTSTART inlineelements SCRIPTEND
-   63     | SCRIPTSTART SCRIPTEND
-   64     | SCRIPTSTART error LINEBREAK
-   65     | SVGSTART inlineelements SVGEND
-   66     | SVGSTART SVGEND
-   67     | SVGSTART error LINEBREAK
-   68     | STYLESTART inlineelements STYLEEND
-   69     | STYLESTART STYLEEND
-   70     | error LINEBREAK
+   57     | PRE_INDENT CODETEXT
+   58     | INDENTED_PRE_INDENT CODETEXT
+   59     | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK
+   60     | TRIPLEBACKTICK error
+   61     | HTMLBLOCK TEXT LINEBREAK
+   62     | HTMLBLOCK LINEBREAK
+   63     | SCRIPTSTART inlineelements SCRIPTEND
+   64     | SCRIPTSTART SCRIPTEND
+   65     | SCRIPTSTART error LINEBREAK
+   66     | SVGSTART inlineelements SVGEND
+   67     | SVGSTART SVGEND
+   68     | SVGSTART error LINEBREAK
+   69     | STYLESTART inlineelements STYLEEND
+   70     | STYLESTART STYLEEND
+   71     | error LINEBREAK
 
-   71 tablerows: tablerows tablerow
-   72          | tablerow
+   72 tablerows: tablerows tablerow
+   73          | tablerow
 
-   73 tablerow: TABLEROWSTART tableceils LINEBREAK
+   74 tablerow: TABLEROWSTART tableceils LINEBREAK
 
-   74 tableceils: tableceils tableceil
-   75           | tableceil
+   75 tableceils: tableceils tableceil
+   76           | tableceil
 
-   76 tableceil: inlineelements TABLECEILEND
+   77 tableceil: inlineelements TABLECEILEND
 
-   77 inlineelements: inlineelements inlineelement
-   78               | inlineelement
+   78 inlineelements: inlineelements inlineelement
+   79               | inlineelement
 
-   79 inlineelement: TEXT
-   80              | SPECIALCHAR
-   81              | STAR inlineelements STAR
-   82              | UNDERSCORE inlineelements UNDERSCORE
-   83              | DOUBLESTAR inlineelements DOUBLESTAR
-   84              | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE
-   85              | BACKTICK codespan BACKTICK
-   86              | BACKTICK codespan error
-   87              | BACKTICK error
-   88              | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
-   89              | EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
-   90              | link
+   80 inlineelement: TEXT
+   81              | SPECIALCHAR
+   82              | STAR inlineelements STAR
+   83              | UNDERSCORE inlineelements UNDERSCORE
+   84              | DOUBLESTAR inlineelements DOUBLESTAR
+   85              | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE
+   86              | BACKTICK codespan BACKTICK
+   87              | BACKTICK codespan error
+   88              | BACKTICK error
+   89              | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   90              | EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   91              | link
 
-   91 headertext: headertext TEXT
-   92           | headertext link
-   93           | headertext CODETEXT
-   94           | headertext SPECIALCHAR
-   95           | /* empty */
+   92 headertext: headertext TEXT
+   93           | headertext link
+   94           | headertext CODETEXT
+   95           | headertext SPECIALCHAR
+   96           | /* empty */
 
-   96 link: LINK
+   97 link: LINK
 
-   97 plaintext: plaintext text_list
-   98          | text_list
+   98 plaintext: plaintext text_list
+   99          | text_list
 
-   99 text_list: TEXT
-  100          | SPECIALCHAR
+  100 text_list: TEXT
+  101          | SPECIALCHAR
 
-  101 codespan: codespan code_list
-  102         | code_list
+  102 codespan: codespan code_list
+  103         | code_list
 
-  103 code_list: CODETEXT
-  104          | SPECIALCHAR
+  104 code_list: CODETEXT
+  105          | SPECIALCHAR
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256) 2 59 64 67 70 86 87
-TEXT (258) 60 79 91 99
-SPECIALCHAR (259) 80 94 100 104
-CODETEXT (260) 57 93 103
+error (256) 2 60 65 68 71 87 88
+TEXT (258) 61 80 92 100
+SPECIALCHAR (259) 81 95 101 105
+CODETEXT (260) 57 58 94 104
 H (261) 18
 QUOTEH (262) 56
-HTMLBLOCK (263) 60 61
+HTMLBLOCK (263) 61 62
 SECTION (264) 54
 VSECTION (265) 55
-SCRIPTSTART (266) 62 63 64
-SCRIPTEND (267) 62 63
-STYLESTART (268) 68 69
-STYLEEND (269) 68 69
-SVGSTART (270) 65 66 67
-SVGEND (271) 65 66
-LINK (272) 96
-BACKTICK (273) 85 86 87
-TRIPLEBACKTICK (274) 58 59
-TABLEROWSTART (275) 73
-TABLECEILEND (276) 76
+SCRIPTSTART (266) 63 64 65
+SCRIPTEND (267) 63 64
+STYLESTART (268) 69 70
+STYLEEND (269) 69 70
+SVGSTART (270) 66 67 68
+SVGEND (271) 66 67
+LINK (272) 97
+BACKTICK (273) 86 87 88
+TRIPLEBACKTICK (274) 59 60
+TABLEROWSTART (275) 74
+TABLECEILEND (276) 77
 ULINDENT (277) 36
 OLINDENT (278) 46
 TEXTINDENT (279) 52
-CODEINDENT (280) 57
-EXCLAMATION (281) 89
-MINUS (282)
-PLUS (283)
-RIGHTPARENTHESES (284) 88 89
-LEFTPARENTHESES (285) 88 89
-RIGHTSQUARE (286) 88 89
-LEFTSQUARE (287) 88 89
-UNDERSCORE (288) 82
-STAR (289) 81
-BLANKLINE (290) 26
-LINEBREAK (291) 18 23 29 32 33 36 39 42 43 46 49 52 54 55 56 58 60
-    61 64 67 70 73
-LARGERTHAN (292) 29
-DOUBLESTAR (293) 83
-DOUBLEUNDERSCORE (294) 84
-OLSTART (295) 42 43 46
-ULSTART (296) 32 33 36
-QUOTEBLANKLINE (297) 53
-QUOTEOLSTART (298) 49
-QUOTEULSTART (299) 39
-STARX (300)
+PRE_INDENT (280) 57
+INDENTED_PRE_INDENT (281) 58
+EXCLAMATION (282) 90
+MINUS (283)
+PLUS (284)
+RIGHTPARENTHESES (285) 89 90
+LEFTPARENTHESES (286) 89 90
+RIGHTSQUARE (287) 89 90
+LEFTSQUARE (288) 89 90
+UNDERSCORE (289) 83
+STAR (290) 82
+BLANKLINE (291) 26
+LINEBREAK (292) 18 23 29 32 33 36 39 42 43 46 49 52 54 55 56 59 61
+    62 65 68 71 74
+LARGERTHAN (293) 29
+DOUBLESTAR (294) 84
+DOUBLEUNDERSCORE (295) 85
+OLSTART (296) 42 43 46
+ULSTART (297) 32 33 36
+QUOTEBLANKLINE (298) 53
+QUOTEOLSTART (299) 49
+QUOTEULSTART (300) 39
+STARX (301)
 
 
 Nonterminals, with rules where they appear
 
-$accept (46)
+$accept (47)
     on left: 0
-markdownfile (47)
+markdownfile (48)
     on left: 1 2, on right: 0
-blocks (48)
+blocks (49)
     on left: 3 4, on right: 1 3
-block (49)
+block (50)
     on left: 5 6 7 8 9 10 11 12 13 14 15 16 17, on right: 3
-header (50)
+header (51)
     on left: 18, on right: 6
-lines (51)
+lines (52)
     on left: 19 20, on right: 5 19
-block_p (52)
+block_p (53)
     on left: 21 22, on right: 8 21
-line_p (53)
+line_p (54)
     on left: 23, on right: 21 22
-block_blank (54)
+block_blank (55)
     on left: 24 25, on right: 16 24
-line_blank (55)
+line_blank (56)
     on left: 26, on right: 24 25
-block_quote_p (56)
+block_quote_p (57)
     on left: 27 28, on right: 17 27
-line_quote_p (57)
+line_quote_p (58)
     on left: 29, on right: 27 28
-block_ul (58)
+block_ul (59)
     on left: 30 31, on right: 9 30
-line_ul (59)
+line_ul (60)
     on left: 32 33, on right: 30 31
-block_indent_ul (60)
+block_indent_ul (61)
     on left: 34 35, on right: 11 34
-line_indent_ul (61)
+line_indent_ul (62)
     on left: 36, on right: 34 35
-block_quote_ul (62)
+block_quote_ul (63)
     on left: 37 38, on right: 14 37
-line_quote_ul (63)
+line_quote_ul (64)
     on left: 39, on right: 37 38
-block_ol (64)
+block_ol (65)
     on left: 40 41, on right: 10 40
-line_ol (65)
+line_ol (66)
     on left: 42 43, on right: 40 41
-block_indent_ol (66)
+block_indent_ol (67)
     on left: 44 45, on right: 12 44
-line_indent_ol (67)
+line_indent_ol (68)
     on left: 46, on right: 44 45
-block_quote_ol (68)
+block_quote_ol (69)
     on left: 47 48, on right: 15 47
-line_quote_ol (69)
+line_quote_ol (70)
     on left: 49, on right: 47 48
-block_indent_text (70)
+block_indent_text (71)
     on left: 50 51, on right: 13 50
-line_indent_text (71)
+line_indent_text (72)
     on left: 52, on right: 50 51
-line (72)
+line (73)
     on left: 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
-   , on right: 19 20
-tablerows (73)
-    on left: 71 72, on right: 7 71
-tablerow (74)
-    on left: 73, on right: 71 72
-tableceils (75)
-    on left: 74 75, on right: 73 74
-tableceil (76)
-    on left: 76, on right: 74 75
-inlineelements (77)
-    on left: 77 78, on right: 23 29 32 36 39 42 46 49 52 62 65 68 76
-    77 81 82 83 84
-inlineelement (78)
-    on left: 79 80 81 82 83 84 85 86 87 88 89 90, on right: 77 78
-headertext (79)
-    on left: 91 92 93 94 95, on right: 18 91 92 93 94
-link (80)
-    on left: 96, on right: 90 92
-plaintext (81)
-    on left: 97 98, on right: 56 88 89 97
-text_list (82)
-    on left: 99 100, on right: 97 98
-codespan (83)
-    on left: 101 102, on right: 58 85 86 101
-code_list (84)
-    on left: 103 104, on right: 101 102
+    71, on right: 19 20
+tablerows (74)
+    on left: 72 73, on right: 7 72
+tablerow (75)
+    on left: 74, on right: 72 73
+tableceils (76)
+    on left: 75 76, on right: 74 75
+tableceil (77)
+    on left: 77, on right: 75 76
+inlineelements (78)
+    on left: 78 79, on right: 23 29 32 36 39 42 46 49 52 63 66 69 77
+    78 82 83 84 85
+inlineelement (79)
+    on left: 80 81 82 83 84 85 86 87 88 89 90 91, on right: 78 79
+headertext (80)
+    on left: 92 93 94 95 96, on right: 18 92 93 94 95
+link (81)
+    on left: 97, on right: 91 93
+plaintext (82)
+    on left: 98 99, on right: 56 89 90 98
+text_list (83)
+    on left: 100 101, on right: 98 99
+codespan (84)
+    on left: 102 103, on right: 59 86 87 102
+code_list (85)
+    on left: 104 105, on right: 102 103
 
 
 state 0
@@ -310,39 +312,40 @@ state 0
 
     error  shift, and go to state 1
 
-    $end              reduce using rule 4 (blocks)
-    error             [reduce using rule 4 (blocks)]
-    TEXT              reduce using rule 4 (blocks)
-    SPECIALCHAR       reduce using rule 4 (blocks)
-    H                 reduce using rule 4 (blocks)
-    QUOTEH            reduce using rule 4 (blocks)
-    HTMLBLOCK         reduce using rule 4 (blocks)
-    SECTION           reduce using rule 4 (blocks)
-    VSECTION          reduce using rule 4 (blocks)
-    SCRIPTSTART       reduce using rule 4 (blocks)
-    STYLESTART        reduce using rule 4 (blocks)
-    SVGSTART          reduce using rule 4 (blocks)
-    LINK              reduce using rule 4 (blocks)
-    BACKTICK          reduce using rule 4 (blocks)
-    TRIPLEBACKTICK    reduce using rule 4 (blocks)
-    TABLEROWSTART     reduce using rule 4 (blocks)
-    ULINDENT          reduce using rule 4 (blocks)
-    OLINDENT          reduce using rule 4 (blocks)
-    TEXTINDENT        reduce using rule 4 (blocks)
-    CODEINDENT        reduce using rule 4 (blocks)
-    EXCLAMATION       reduce using rule 4 (blocks)
-    LEFTSQUARE        reduce using rule 4 (blocks)
-    UNDERSCORE        reduce using rule 4 (blocks)
-    STAR              reduce using rule 4 (blocks)
-    BLANKLINE         reduce using rule 4 (blocks)
-    LARGERTHAN        reduce using rule 4 (blocks)
-    DOUBLESTAR        reduce using rule 4 (blocks)
-    DOUBLEUNDERSCORE  reduce using rule 4 (blocks)
-    OLSTART           reduce using rule 4 (blocks)
-    ULSTART           reduce using rule 4 (blocks)
-    QUOTEBLANKLINE    reduce using rule 4 (blocks)
-    QUOTEOLSTART      reduce using rule 4 (blocks)
-    QUOTEULSTART      reduce using rule 4 (blocks)
+    $end                 reduce using rule 4 (blocks)
+    error                [reduce using rule 4 (blocks)]
+    TEXT                 reduce using rule 4 (blocks)
+    SPECIALCHAR          reduce using rule 4 (blocks)
+    H                    reduce using rule 4 (blocks)
+    QUOTEH               reduce using rule 4 (blocks)
+    HTMLBLOCK            reduce using rule 4 (blocks)
+    SECTION              reduce using rule 4 (blocks)
+    VSECTION             reduce using rule 4 (blocks)
+    SCRIPTSTART          reduce using rule 4 (blocks)
+    STYLESTART           reduce using rule 4 (blocks)
+    SVGSTART             reduce using rule 4 (blocks)
+    LINK                 reduce using rule 4 (blocks)
+    BACKTICK             reduce using rule 4 (blocks)
+    TRIPLEBACKTICK       reduce using rule 4 (blocks)
+    TABLEROWSTART        reduce using rule 4 (blocks)
+    ULINDENT             reduce using rule 4 (blocks)
+    OLINDENT             reduce using rule 4 (blocks)
+    TEXTINDENT           reduce using rule 4 (blocks)
+    PRE_INDENT           reduce using rule 4 (blocks)
+    INDENTED_PRE_INDENT  reduce using rule 4 (blocks)
+    EXCLAMATION          reduce using rule 4 (blocks)
+    LEFTSQUARE           reduce using rule 4 (blocks)
+    UNDERSCORE           reduce using rule 4 (blocks)
+    STAR                 reduce using rule 4 (blocks)
+    BLANKLINE            reduce using rule 4 (blocks)
+    LARGERTHAN           reduce using rule 4 (blocks)
+    DOUBLESTAR           reduce using rule 4 (blocks)
+    DOUBLEUNDERSCORE     reduce using rule 4 (blocks)
+    OLSTART              reduce using rule 4 (blocks)
+    ULSTART              reduce using rule 4 (blocks)
+    QUOTEBLANKLINE       reduce using rule 4 (blocks)
+    QUOTEOLSTART         reduce using rule 4 (blocks)
+    QUOTEULSTART         reduce using rule 4 (blocks)
 
     markdownfile  go to state 2
     blocks        go to state 3
@@ -367,70 +370,71 @@ state 3
     1 markdownfile: blocks .
     3 blocks: blocks . block
 
-    error             shift, and go to state 5
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    H                 shift, and go to state 8
-    QUOTEH            shift, and go to state 9
-    HTMLBLOCK         shift, and go to state 10
-    SECTION           shift, and go to state 11
-    VSECTION          shift, and go to state 12
-    SCRIPTSTART       shift, and go to state 13
-    STYLESTART        shift, and go to state 14
-    SVGSTART          shift, and go to state 15
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    TRIPLEBACKTICK    shift, and go to state 18
-    TABLEROWSTART     shift, and go to state 19
-    ULINDENT          shift, and go to state 20
-    OLINDENT          shift, and go to state 21
-    TEXTINDENT        shift, and go to state 22
-    CODEINDENT        shift, and go to state 23
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    BLANKLINE         shift, and go to state 28
-    LARGERTHAN        shift, and go to state 29
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-    OLSTART           shift, and go to state 32
-    ULSTART           shift, and go to state 33
-    QUOTEBLANKLINE    shift, and go to state 34
-    QUOTEOLSTART      shift, and go to state 35
-    QUOTEULSTART      shift, and go to state 36
+    error                shift, and go to state 5
+    TEXT                 shift, and go to state 6
+    SPECIALCHAR          shift, and go to state 7
+    H                    shift, and go to state 8
+    QUOTEH               shift, and go to state 9
+    HTMLBLOCK            shift, and go to state 10
+    SECTION              shift, and go to state 11
+    VSECTION             shift, and go to state 12
+    SCRIPTSTART          shift, and go to state 13
+    STYLESTART           shift, and go to state 14
+    SVGSTART             shift, and go to state 15
+    LINK                 shift, and go to state 16
+    BACKTICK             shift, and go to state 17
+    TRIPLEBACKTICK       shift, and go to state 18
+    TABLEROWSTART        shift, and go to state 19
+    ULINDENT             shift, and go to state 20
+    OLINDENT             shift, and go to state 21
+    TEXTINDENT           shift, and go to state 22
+    PRE_INDENT           shift, and go to state 23
+    INDENTED_PRE_INDENT  shift, and go to state 24
+    EXCLAMATION          shift, and go to state 25
+    LEFTSQUARE           shift, and go to state 26
+    UNDERSCORE           shift, and go to state 27
+    STAR                 shift, and go to state 28
+    BLANKLINE            shift, and go to state 29
+    LARGERTHAN           shift, and go to state 30
+    DOUBLESTAR           shift, and go to state 31
+    DOUBLEUNDERSCORE     shift, and go to state 32
+    OLSTART              shift, and go to state 33
+    ULSTART              shift, and go to state 34
+    QUOTEBLANKLINE       shift, and go to state 35
+    QUOTEOLSTART         shift, and go to state 36
+    QUOTEULSTART         shift, and go to state 37
 
     $end  reduce using rule 1 (markdownfile)
 
-    block              go to state 37
-    header             go to state 38
-    lines              go to state 39
-    block_p            go to state 40
-    line_p             go to state 41
-    block_blank        go to state 42
-    line_blank         go to state 43
-    block_quote_p      go to state 44
-    line_quote_p       go to state 45
-    block_ul           go to state 46
-    line_ul            go to state 47
-    block_indent_ul    go to state 48
-    line_indent_ul     go to state 49
-    block_quote_ul     go to state 50
-    line_quote_ul      go to state 51
-    block_ol           go to state 52
-    line_ol            go to state 53
-    block_indent_ol    go to state 54
-    line_indent_ol     go to state 55
-    block_quote_ol     go to state 56
-    line_quote_ol      go to state 57
-    block_indent_text  go to state 58
-    line_indent_text   go to state 59
-    line               go to state 60
-    tablerows          go to state 61
-    tablerow           go to state 62
-    inlineelements     go to state 63
-    inlineelement      go to state 64
-    link               go to state 65
+    block              go to state 38
+    header             go to state 39
+    lines              go to state 40
+    block_p            go to state 41
+    line_p             go to state 42
+    block_blank        go to state 43
+    line_blank         go to state 44
+    block_quote_p      go to state 45
+    line_quote_p       go to state 46
+    block_ul           go to state 47
+    line_ul            go to state 48
+    block_indent_ul    go to state 49
+    line_indent_ul     go to state 50
+    block_quote_ul     go to state 51
+    line_quote_ul      go to state 52
+    block_ol           go to state 53
+    line_ol            go to state 54
+    block_indent_ol    go to state 55
+    line_indent_ol     go to state 56
+    block_quote_ol     go to state 57
+    line_quote_ol      go to state 58
+    block_indent_text  go to state 59
+    line_indent_text   go to state 60
+    line               go to state 61
+    tablerows          go to state 62
+    tablerow           go to state 63
+    inlineelements     go to state 64
+    inlineelement      go to state 65
+    link               go to state 66
 
 
 state 4
@@ -442,206 +446,206 @@ state 4
 
 state 5
 
-   70 line: error . LINEBREAK
+   71 line: error . LINEBREAK
 
-    LINEBREAK  shift, and go to state 66
+    LINEBREAK  shift, and go to state 67
 
 
 state 6
 
-   79 inlineelement: TEXT .
+   80 inlineelement: TEXT .
 
-    $default  reduce using rule 79 (inlineelement)
+    $default  reduce using rule 80 (inlineelement)
 
 
 state 7
 
-   80 inlineelement: SPECIALCHAR .
+   81 inlineelement: SPECIALCHAR .
 
-    $default  reduce using rule 80 (inlineelement)
+    $default  reduce using rule 81 (inlineelement)
 
 
 state 8
 
    18 header: H . headertext LINEBREAK
 
-    $default  reduce using rule 95 (headertext)
+    $default  reduce using rule 96 (headertext)
 
-    headertext  go to state 67
+    headertext  go to state 68
 
 
 state 9
 
    56 line: QUOTEH . plaintext LINEBREAK
 
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
 
-    plaintext  go to state 70
-    text_list  go to state 71
+    plaintext  go to state 71
+    text_list  go to state 72
 
 
 state 10
 
-   60 line: HTMLBLOCK . TEXT LINEBREAK
-   61     | HTMLBLOCK . LINEBREAK
+   61 line: HTMLBLOCK . TEXT LINEBREAK
+   62     | HTMLBLOCK . LINEBREAK
 
-    TEXT       shift, and go to state 72
-    LINEBREAK  shift, and go to state 73
+    TEXT       shift, and go to state 73
+    LINEBREAK  shift, and go to state 74
 
 
 state 11
 
    54 line: SECTION . LINEBREAK
 
-    LINEBREAK  shift, and go to state 74
+    LINEBREAK  shift, and go to state 75
 
 
 state 12
 
    55 line: VSECTION . LINEBREAK
 
-    LINEBREAK  shift, and go to state 75
+    LINEBREAK  shift, and go to state 76
 
 
 state 13
 
-   62 line: SCRIPTSTART . inlineelements SCRIPTEND
-   63     | SCRIPTSTART . SCRIPTEND
-   64     | SCRIPTSTART . error LINEBREAK
+   63 line: SCRIPTSTART . inlineelements SCRIPTEND
+   64     | SCRIPTSTART . SCRIPTEND
+   65     | SCRIPTSTART . error LINEBREAK
 
-    error             shift, and go to state 76
+    error             shift, and go to state 77
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
-    SCRIPTEND         shift, and go to state 77
+    SCRIPTEND         shift, and go to state 78
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 78
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 79
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 14
 
-   68 line: STYLESTART . inlineelements STYLEEND
-   69     | STYLESTART . STYLEEND
+   69 line: STYLESTART . inlineelements STYLEEND
+   70     | STYLESTART . STYLEEND
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
-    STYLEEND          shift, and go to state 79
+    STYLEEND          shift, and go to state 80
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 80
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 81
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 15
 
-   65 line: SVGSTART . inlineelements SVGEND
-   66     | SVGSTART . SVGEND
-   67     | SVGSTART . error LINEBREAK
+   66 line: SVGSTART . inlineelements SVGEND
+   67     | SVGSTART . SVGEND
+   68     | SVGSTART . error LINEBREAK
 
-    error             shift, and go to state 81
+    error             shift, and go to state 82
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
-    SVGEND            shift, and go to state 82
+    SVGEND            shift, and go to state 83
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 83
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 84
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 16
 
-   96 link: LINK .
+   97 link: LINK .
 
-    $default  reduce using rule 96 (link)
+    $default  reduce using rule 97 (link)
 
 
 state 17
 
-   85 inlineelement: BACKTICK . codespan BACKTICK
-   86              | BACKTICK . codespan error
-   87              | BACKTICK . error
+   86 inlineelement: BACKTICK . codespan BACKTICK
+   87              | BACKTICK . codespan error
+   88              | BACKTICK . error
 
-    error        shift, and go to state 84
-    SPECIALCHAR  shift, and go to state 85
-    CODETEXT     shift, and go to state 86
+    error        shift, and go to state 85
+    SPECIALCHAR  shift, and go to state 86
+    CODETEXT     shift, and go to state 87
 
-    codespan   go to state 87
-    code_list  go to state 88
+    codespan   go to state 88
+    code_list  go to state 89
 
 
 state 18
 
-   58 line: TRIPLEBACKTICK . codespan TRIPLEBACKTICK LINEBREAK
-   59     | TRIPLEBACKTICK . error
+   59 line: TRIPLEBACKTICK . codespan TRIPLEBACKTICK LINEBREAK
+   60     | TRIPLEBACKTICK . error
 
-    error        shift, and go to state 89
-    SPECIALCHAR  shift, and go to state 85
-    CODETEXT     shift, and go to state 86
+    error        shift, and go to state 90
+    SPECIALCHAR  shift, and go to state 86
+    CODETEXT     shift, and go to state 87
 
-    codespan   go to state 90
-    code_list  go to state 88
+    codespan   go to state 91
+    code_list  go to state 89
 
 
 state 19
 
-   73 tablerow: TABLEROWSTART . tableceils LINEBREAK
+   74 tablerow: TABLEROWSTART . tableceils LINEBREAK
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    tableceils      go to state 91
-    tableceil       go to state 92
-    inlineelements  go to state 93
-    inlineelement   go to state 64
-    link            go to state 65
+    tableceils      go to state 92
+    tableceil       go to state 93
+    inlineelements  go to state 94
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 20
 
    36 line_indent_ul: ULINDENT . ULSTART inlineelements LINEBREAK
 
-    ULSTART  shift, and go to state 94
+    ULSTART  shift, and go to state 95
 
 
 state 21
 
    46 line_indent_ol: OLINDENT . OLSTART inlineelements LINEBREAK
 
-    OLSTART  shift, and go to state 95
+    OLSTART  shift, and go to state 96
 
 
 state 22
@@ -652,91 +656,98 @@ state 22
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 96
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 97
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 23
 
-   57 line: CODEINDENT . CODETEXT
+   57 line: PRE_INDENT . CODETEXT
 
-    CODETEXT  shift, and go to state 97
+    CODETEXT  shift, and go to state 98
 
 
 state 24
 
-   89 inlineelement: EXCLAMATION . LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   58 line: INDENTED_PRE_INDENT . CODETEXT
 
-    LEFTSQUARE  shift, and go to state 98
+    CODETEXT  shift, and go to state 99
 
 
 state 25
 
-   88 inlineelement: LEFTSQUARE . plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   90 inlineelement: EXCLAMATION . LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
 
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-
-    plaintext  go to state 99
-    text_list  go to state 71
+    LEFTSQUARE  shift, and go to state 100
 
 
 state 26
 
-   82 inlineelement: UNDERSCORE . inlineelements UNDERSCORE
+   89 inlineelement: LEFTSQUARE . plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
 
-    inlineelements  go to state 100
-    inlineelement   go to state 64
-    link            go to state 65
+    plaintext  go to state 101
+    text_list  go to state 72
 
 
 state 27
 
-   81 inlineelement: STAR . inlineelements STAR
+   83 inlineelement: UNDERSCORE . inlineelements UNDERSCORE
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 101
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 102
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 28
+
+   82 inlineelement: STAR . inlineelements STAR
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelements  go to state 103
+    inlineelement   go to state 65
+    link            go to state 66
+
+
+state 29
 
    26 line_blank: BLANKLINE .
 
     $default  reduce using rule 26 (line_blank)
 
 
-state 29
+state 30
 
    29 line_quote_p: LARGERTHAN . inlineelements LINEBREAK
 
@@ -744,59 +755,59 @@ state 29
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 102
-    inlineelement   go to state 64
-    link            go to state 65
-
-
-state 30
-
-   83 inlineelement: DOUBLESTAR . inlineelements DOUBLESTAR
-
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelements  go to state 103
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 104
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 31
 
-   84 inlineelement: DOUBLEUNDERSCORE . inlineelements DOUBLEUNDERSCORE
+   84 inlineelement: DOUBLESTAR . inlineelements DOUBLESTAR
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 104
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 105
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 32
+
+   85 inlineelement: DOUBLEUNDERSCORE . inlineelements DOUBLEUNDERSCORE
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelements  go to state 106
+    inlineelement   go to state 65
+    link            go to state 66
+
+
+state 33
 
    42 line_ol: OLSTART . inlineelements LINEBREAK
    43        | OLSTART . LINEBREAK
@@ -805,20 +816,20 @@ state 32
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 105
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 107
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 106
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 108
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 33
+state 34
 
    32 line_ul: ULSTART . inlineelements LINEBREAK
    33        | ULSTART . LINEBREAK
@@ -827,27 +838,27 @@ state 33
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 107
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 109
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 108
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 110
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 34
+state 35
 
    53 line: QUOTEBLANKLINE .
 
     $default  reduce using rule 53 (line)
 
 
-state 35
+state 36
 
    49 line_quote_ol: QUOTEOLSTART . inlineelements LINEBREAK
 
@@ -855,19 +866,19 @@ state 35
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 109
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 111
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 36
+state 37
 
    39 line_quote_ul: QUOTEULSTART . inlineelements LINEBREAK
 
@@ -875,87 +886,89 @@ state 36
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 110
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 112
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 37
+state 38
 
     3 blocks: blocks block .
 
     $default  reduce using rule 3 (blocks)
 
 
-state 38
+state 39
 
     6 block: header .
 
     $default  reduce using rule 6 (block)
 
 
-state 39
+state 40
 
     5 block: lines .
    19 lines: lines . line
 
-    error           shift, and go to state 5
-    QUOTEH          shift, and go to state 9
-    HTMLBLOCK       shift, and go to state 10
-    SECTION         shift, and go to state 11
-    VSECTION        shift, and go to state 12
-    SCRIPTSTART     shift, and go to state 13
-    STYLESTART      shift, and go to state 14
-    SVGSTART        shift, and go to state 15
-    TRIPLEBACKTICK  shift, and go to state 18
-    CODEINDENT      shift, and go to state 23
-    QUOTEBLANKLINE  shift, and go to state 34
+    error                shift, and go to state 5
+    QUOTEH               shift, and go to state 9
+    HTMLBLOCK            shift, and go to state 10
+    SECTION              shift, and go to state 11
+    VSECTION             shift, and go to state 12
+    SCRIPTSTART          shift, and go to state 13
+    STYLESTART           shift, and go to state 14
+    SVGSTART             shift, and go to state 15
+    TRIPLEBACKTICK       shift, and go to state 18
+    PRE_INDENT           shift, and go to state 23
+    INDENTED_PRE_INDENT  shift, and go to state 24
+    QUOTEBLANKLINE       shift, and go to state 35
 
-    $end              reduce using rule 5 (block)
-    error             [reduce using rule 5 (block)]
-    TEXT              reduce using rule 5 (block)
-    SPECIALCHAR       reduce using rule 5 (block)
-    H                 reduce using rule 5 (block)
-    QUOTEH            [reduce using rule 5 (block)]
-    HTMLBLOCK         [reduce using rule 5 (block)]
-    SECTION           [reduce using rule 5 (block)]
-    VSECTION          [reduce using rule 5 (block)]
-    SCRIPTSTART       [reduce using rule 5 (block)]
-    STYLESTART        [reduce using rule 5 (block)]
-    SVGSTART          [reduce using rule 5 (block)]
-    LINK              reduce using rule 5 (block)
-    BACKTICK          reduce using rule 5 (block)
-    TRIPLEBACKTICK    [reduce using rule 5 (block)]
-    TABLEROWSTART     reduce using rule 5 (block)
-    ULINDENT          reduce using rule 5 (block)
-    OLINDENT          reduce using rule 5 (block)
-    TEXTINDENT        reduce using rule 5 (block)
-    CODEINDENT        [reduce using rule 5 (block)]
-    EXCLAMATION       reduce using rule 5 (block)
-    LEFTSQUARE        reduce using rule 5 (block)
-    UNDERSCORE        reduce using rule 5 (block)
-    STAR              reduce using rule 5 (block)
-    BLANKLINE         reduce using rule 5 (block)
-    LARGERTHAN        reduce using rule 5 (block)
-    DOUBLESTAR        reduce using rule 5 (block)
-    DOUBLEUNDERSCORE  reduce using rule 5 (block)
-    OLSTART           reduce using rule 5 (block)
-    ULSTART           reduce using rule 5 (block)
-    QUOTEBLANKLINE    [reduce using rule 5 (block)]
-    QUOTEOLSTART      reduce using rule 5 (block)
-    QUOTEULSTART      reduce using rule 5 (block)
+    $end                 reduce using rule 5 (block)
+    error                [reduce using rule 5 (block)]
+    TEXT                 reduce using rule 5 (block)
+    SPECIALCHAR          reduce using rule 5 (block)
+    H                    reduce using rule 5 (block)
+    QUOTEH               [reduce using rule 5 (block)]
+    HTMLBLOCK            [reduce using rule 5 (block)]
+    SECTION              [reduce using rule 5 (block)]
+    VSECTION             [reduce using rule 5 (block)]
+    SCRIPTSTART          [reduce using rule 5 (block)]
+    STYLESTART           [reduce using rule 5 (block)]
+    SVGSTART             [reduce using rule 5 (block)]
+    LINK                 reduce using rule 5 (block)
+    BACKTICK             reduce using rule 5 (block)
+    TRIPLEBACKTICK       [reduce using rule 5 (block)]
+    TABLEROWSTART        reduce using rule 5 (block)
+    ULINDENT             reduce using rule 5 (block)
+    OLINDENT             reduce using rule 5 (block)
+    TEXTINDENT           reduce using rule 5 (block)
+    PRE_INDENT           [reduce using rule 5 (block)]
+    INDENTED_PRE_INDENT  [reduce using rule 5 (block)]
+    EXCLAMATION          reduce using rule 5 (block)
+    LEFTSQUARE           reduce using rule 5 (block)
+    UNDERSCORE           reduce using rule 5 (block)
+    STAR                 reduce using rule 5 (block)
+    BLANKLINE            reduce using rule 5 (block)
+    LARGERTHAN           reduce using rule 5 (block)
+    DOUBLESTAR           reduce using rule 5 (block)
+    DOUBLEUNDERSCORE     reduce using rule 5 (block)
+    OLSTART              reduce using rule 5 (block)
+    ULSTART              reduce using rule 5 (block)
+    QUOTEBLANKLINE       [reduce using rule 5 (block)]
+    QUOTEOLSTART         reduce using rule 5 (block)
+    QUOTEULSTART         reduce using rule 5 (block)
 
-    line  go to state 111
+    line  go to state 113
 
 
-state 40
+state 41
 
     8 block: block_p .
    21 block_p: block_p . line_p
@@ -964,12 +977,12 @@ state 40
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
     TEXT              [reduce using rule 8 (block)]
     SPECIALCHAR       [reduce using rule 8 (block)]
@@ -983,80 +996,80 @@ state 40
     DOUBLEUNDERSCORE  [reduce using rule 8 (block)]
     $default          reduce using rule 8 (block)
 
-    line_p          go to state 112
-    inlineelements  go to state 63
-    inlineelement   go to state 64
-    link            go to state 65
+    line_p          go to state 114
+    inlineelements  go to state 64
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 41
+state 42
 
    22 block_p: line_p .
 
     $default  reduce using rule 22 (block_p)
 
 
-state 42
+state 43
 
    16 block: block_blank .
    24 block_blank: block_blank . line_blank
 
-    BLANKLINE  shift, and go to state 28
+    BLANKLINE  shift, and go to state 29
 
     BLANKLINE  [reduce using rule 16 (block)]
     $default   reduce using rule 16 (block)
 
-    line_blank  go to state 113
+    line_blank  go to state 115
 
 
-state 43
+state 44
 
    25 block_blank: line_blank .
 
     $default  reduce using rule 25 (block_blank)
 
 
-state 44
+state 45
 
    17 block: block_quote_p .
    27 block_quote_p: block_quote_p . line_quote_p
 
-    LARGERTHAN  shift, and go to state 29
+    LARGERTHAN  shift, and go to state 30
 
     LARGERTHAN  [reduce using rule 17 (block)]
     $default    reduce using rule 17 (block)
 
-    line_quote_p  go to state 114
+    line_quote_p  go to state 116
 
 
-state 45
+state 46
 
    28 block_quote_p: line_quote_p .
 
     $default  reduce using rule 28 (block_quote_p)
 
 
-state 46
+state 47
 
     9 block: block_ul .
    30 block_ul: block_ul . line_ul
 
-    ULSTART  shift, and go to state 33
+    ULSTART  shift, and go to state 34
 
     ULSTART   [reduce using rule 9 (block)]
     $default  reduce using rule 9 (block)
 
-    line_ul  go to state 115
+    line_ul  go to state 117
 
 
-state 47
+state 48
 
    31 block_ul: line_ul .
 
     $default  reduce using rule 31 (block_ul)
 
 
-state 48
+state 49
 
    11 block: block_indent_ul .
    34 block_indent_ul: block_indent_ul . line_indent_ul
@@ -1066,57 +1079,57 @@ state 48
     ULINDENT  [reduce using rule 11 (block)]
     $default  reduce using rule 11 (block)
 
-    line_indent_ul  go to state 116
+    line_indent_ul  go to state 118
 
 
-state 49
+state 50
 
    35 block_indent_ul: line_indent_ul .
 
     $default  reduce using rule 35 (block_indent_ul)
 
 
-state 50
+state 51
 
    14 block: block_quote_ul .
    37 block_quote_ul: block_quote_ul . line_quote_ul
 
-    QUOTEULSTART  shift, and go to state 36
+    QUOTEULSTART  shift, and go to state 37
 
     QUOTEULSTART  [reduce using rule 14 (block)]
     $default      reduce using rule 14 (block)
 
-    line_quote_ul  go to state 117
+    line_quote_ul  go to state 119
 
 
-state 51
+state 52
 
    38 block_quote_ul: line_quote_ul .
 
     $default  reduce using rule 38 (block_quote_ul)
 
 
-state 52
+state 53
 
    10 block: block_ol .
    40 block_ol: block_ol . line_ol
 
-    OLSTART  shift, and go to state 32
+    OLSTART  shift, and go to state 33
 
     OLSTART   [reduce using rule 10 (block)]
     $default  reduce using rule 10 (block)
 
-    line_ol  go to state 118
+    line_ol  go to state 120
 
 
-state 53
+state 54
 
    41 block_ol: line_ol .
 
     $default  reduce using rule 41 (block_ol)
 
 
-state 54
+state 55
 
    12 block: block_indent_ol .
    44 block_indent_ol: block_indent_ol . line_indent_ol
@@ -1126,37 +1139,37 @@ state 54
     OLINDENT  [reduce using rule 12 (block)]
     $default  reduce using rule 12 (block)
 
-    line_indent_ol  go to state 119
+    line_indent_ol  go to state 121
 
 
-state 55
+state 56
 
    45 block_indent_ol: line_indent_ol .
 
     $default  reduce using rule 45 (block_indent_ol)
 
 
-state 56
+state 57
 
    15 block: block_quote_ol .
    47 block_quote_ol: block_quote_ol . line_quote_ol
 
-    QUOTEOLSTART  shift, and go to state 35
+    QUOTEOLSTART  shift, and go to state 36
 
     QUOTEOLSTART  [reduce using rule 15 (block)]
     $default      reduce using rule 15 (block)
 
-    line_quote_ol  go to state 120
+    line_quote_ol  go to state 122
 
 
-state 57
+state 58
 
    48 block_quote_ol: line_quote_ol .
 
     $default  reduce using rule 48 (block_quote_ol)
 
 
-state 58
+state 59
 
    13 block: block_indent_text .
    50 block_indent_text: block_indent_text . line_indent_text
@@ -1166,374 +1179,374 @@ state 58
     TEXTINDENT  [reduce using rule 13 (block)]
     $default    reduce using rule 13 (block)
 
-    line_indent_text  go to state 121
+    line_indent_text  go to state 123
 
 
-state 59
+state 60
 
    51 block_indent_text: line_indent_text .
 
     $default  reduce using rule 51 (block_indent_text)
 
 
-state 60
+state 61
 
    20 lines: line .
 
     $default  reduce using rule 20 (lines)
 
 
-state 61
+state 62
 
     7 block: tablerows .
-   71 tablerows: tablerows . tablerow
+   72 tablerows: tablerows . tablerow
 
     TABLEROWSTART  shift, and go to state 19
 
     TABLEROWSTART  [reduce using rule 7 (block)]
     $default       reduce using rule 7 (block)
 
-    tablerow  go to state 122
-
-
-state 62
-
-   72 tablerows: tablerow .
-
-    $default  reduce using rule 72 (tablerows)
+    tablerow  go to state 124
 
 
 state 63
 
+   73 tablerows: tablerow .
+
+    $default  reduce using rule 73 (tablerows)
+
+
+state 64
+
    23 line_p: inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
+   78 inlineelements: inlineelements . inlineelement
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 123
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 125
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
-
-
-state 64
-
-   78 inlineelements: inlineelement .
-
-    $default  reduce using rule 78 (inlineelements)
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 65
 
-   90 inlineelement: link .
+   79 inlineelements: inlineelement .
 
-    $default  reduce using rule 90 (inlineelement)
+    $default  reduce using rule 79 (inlineelements)
 
 
 state 66
 
-   70 line: error LINEBREAK .
+   91 inlineelement: link .
 
-    $default  reduce using rule 70 (line)
+    $default  reduce using rule 91 (inlineelement)
 
 
 state 67
 
-   18 header: H headertext . LINEBREAK
-   91 headertext: headertext . TEXT
-   92           | headertext . link
-   93           | headertext . CODETEXT
-   94           | headertext . SPECIALCHAR
+   71 line: error LINEBREAK .
 
-    TEXT         shift, and go to state 125
-    SPECIALCHAR  shift, and go to state 126
-    CODETEXT     shift, and go to state 127
-    LINK         shift, and go to state 16
-    LINEBREAK    shift, and go to state 128
-
-    link  go to state 129
+    $default  reduce using rule 71 (line)
 
 
 state 68
 
-   99 text_list: TEXT .
+   18 header: H headertext . LINEBREAK
+   92 headertext: headertext . TEXT
+   93           | headertext . link
+   94           | headertext . CODETEXT
+   95           | headertext . SPECIALCHAR
 
-    $default  reduce using rule 99 (text_list)
+    TEXT         shift, and go to state 127
+    SPECIALCHAR  shift, and go to state 128
+    CODETEXT     shift, and go to state 129
+    LINK         shift, and go to state 16
+    LINEBREAK    shift, and go to state 130
+
+    link  go to state 131
 
 
 state 69
 
-  100 text_list: SPECIALCHAR .
+  100 text_list: TEXT .
 
     $default  reduce using rule 100 (text_list)
 
 
 state 70
 
-   56 line: QUOTEH plaintext . LINEBREAK
-   97 plaintext: plaintext . text_list
+  101 text_list: SPECIALCHAR .
 
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-    LINEBREAK    shift, and go to state 130
-
-    text_list  go to state 131
+    $default  reduce using rule 101 (text_list)
 
 
 state 71
 
-   98 plaintext: text_list .
+   56 line: QUOTEH plaintext . LINEBREAK
+   98 plaintext: plaintext . text_list
 
-    $default  reduce using rule 98 (plaintext)
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
+    LINEBREAK    shift, and go to state 132
+
+    text_list  go to state 133
 
 
 state 72
 
-   60 line: HTMLBLOCK TEXT . LINEBREAK
+   99 plaintext: text_list .
 
-    LINEBREAK  shift, and go to state 132
+    $default  reduce using rule 99 (plaintext)
 
 
 state 73
 
-   61 line: HTMLBLOCK LINEBREAK .
+   61 line: HTMLBLOCK TEXT . LINEBREAK
 
-    $default  reduce using rule 61 (line)
+    LINEBREAK  shift, and go to state 134
 
 
 state 74
+
+   62 line: HTMLBLOCK LINEBREAK .
+
+    $default  reduce using rule 62 (line)
+
+
+state 75
 
    54 line: SECTION LINEBREAK .
 
     $default  reduce using rule 54 (line)
 
 
-state 75
+state 76
 
    55 line: VSECTION LINEBREAK .
 
     $default  reduce using rule 55 (line)
 
 
-state 76
-
-   64 line: SCRIPTSTART error . LINEBREAK
-
-    LINEBREAK  shift, and go to state 133
-
-
 state 77
 
-   63 line: SCRIPTSTART SCRIPTEND .
+   65 line: SCRIPTSTART error . LINEBREAK
 
-    $default  reduce using rule 63 (line)
+    LINEBREAK  shift, and go to state 135
 
 
 state 78
 
-   62 line: SCRIPTSTART inlineelements . SCRIPTEND
-   77 inlineelements: inlineelements . inlineelement
+   64 line: SCRIPTSTART SCRIPTEND .
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    SCRIPTEND         shift, and go to state 134
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
+    $default  reduce using rule 64 (line)
 
 
 state 79
 
-   69 line: STYLESTART STYLEEND .
+   63 line: SCRIPTSTART inlineelements . SCRIPTEND
+   78 inlineelements: inlineelements . inlineelement
 
-    $default  reduce using rule 69 (line)
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    SCRIPTEND         shift, and go to state 136
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 80
 
-   68 line: STYLESTART inlineelements . STYLEEND
-   77 inlineelements: inlineelements . inlineelement
+   70 line: STYLESTART STYLEEND .
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    STYLEEND          shift, and go to state 135
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
+    $default  reduce using rule 70 (line)
 
 
 state 81
 
-   67 line: SVGSTART error . LINEBREAK
+   69 line: STYLESTART inlineelements . STYLEEND
+   78 inlineelements: inlineelements . inlineelement
 
-    LINEBREAK  shift, and go to state 136
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    STYLEEND          shift, and go to state 137
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 82
 
-   66 line: SVGSTART SVGEND .
+   68 line: SVGSTART error . LINEBREAK
 
-    $default  reduce using rule 66 (line)
+    LINEBREAK  shift, and go to state 138
 
 
 state 83
 
-   65 line: SVGSTART inlineelements . SVGEND
-   77 inlineelements: inlineelements . inlineelement
+   67 line: SVGSTART SVGEND .
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    SVGEND            shift, and go to state 137
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
+    $default  reduce using rule 67 (line)
 
 
 state 84
 
-   87 inlineelement: BACKTICK error .
+   66 line: SVGSTART inlineelements . SVGEND
+   78 inlineelements: inlineelements . inlineelement
 
-    $default  reduce using rule 87 (inlineelement)
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    SVGEND            shift, and go to state 139
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 85
 
-  104 code_list: SPECIALCHAR .
+   88 inlineelement: BACKTICK error .
 
-    $default  reduce using rule 104 (code_list)
+    $default  reduce using rule 88 (inlineelement)
 
 
 state 86
 
-  103 code_list: CODETEXT .
+  105 code_list: SPECIALCHAR .
 
-    $default  reduce using rule 103 (code_list)
+    $default  reduce using rule 105 (code_list)
 
 
 state 87
 
-   85 inlineelement: BACKTICK codespan . BACKTICK
-   86              | BACKTICK codespan . error
-  101 codespan: codespan . code_list
+  104 code_list: CODETEXT .
 
-    error        shift, and go to state 138
-    SPECIALCHAR  shift, and go to state 85
-    CODETEXT     shift, and go to state 86
-    BACKTICK     shift, and go to state 139
-
-    code_list  go to state 140
+    $default  reduce using rule 104 (code_list)
 
 
 state 88
 
-  102 codespan: code_list .
+   86 inlineelement: BACKTICK codespan . BACKTICK
+   87              | BACKTICK codespan . error
+  102 codespan: codespan . code_list
 
-    $default  reduce using rule 102 (codespan)
+    error        shift, and go to state 140
+    SPECIALCHAR  shift, and go to state 86
+    CODETEXT     shift, and go to state 87
+    BACKTICK     shift, and go to state 141
+
+    code_list  go to state 142
 
 
 state 89
 
-   59 line: TRIPLEBACKTICK error .
+  103 codespan: code_list .
 
-    $default  reduce using rule 59 (line)
+    $default  reduce using rule 103 (codespan)
 
 
 state 90
 
-   58 line: TRIPLEBACKTICK codespan . TRIPLEBACKTICK LINEBREAK
-  101 codespan: codespan . code_list
+   60 line: TRIPLEBACKTICK error .
 
-    SPECIALCHAR     shift, and go to state 85
-    CODETEXT        shift, and go to state 86
-    TRIPLEBACKTICK  shift, and go to state 141
-
-    code_list  go to state 140
+    $default  reduce using rule 60 (line)
 
 
 state 91
 
-   73 tablerow: TABLEROWSTART tableceils . LINEBREAK
-   74 tableceils: tableceils . tableceil
+   59 line: TRIPLEBACKTICK codespan . TRIPLEBACKTICK LINEBREAK
+  102 codespan: codespan . code_list
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 142
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    SPECIALCHAR     shift, and go to state 86
+    CODETEXT        shift, and go to state 87
+    TRIPLEBACKTICK  shift, and go to state 143
 
-    tableceil       go to state 143
-    inlineelements  go to state 93
-    inlineelement   go to state 64
-    link            go to state 65
+    code_list  go to state 142
 
 
 state 92
 
-   75 tableceils: tableceil .
-
-    $default  reduce using rule 75 (tableceils)
-
-
-state 93
-
-   76 tableceil: inlineelements . TABLECEILEND
-   77 inlineelements: inlineelements . inlineelement
+   74 tablerow: TABLEROWSTART tableceils . LINEBREAK
+   75 tableceils: tableceils . tableceil
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    TABLECEILEND      shift, and go to state 144
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 144
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    tableceil       go to state 145
+    inlineelements  go to state 94
+    inlineelement   go to state 65
+    link            go to state 66
+
+
+state 93
+
+   76 tableceils: tableceil .
+
+    $default  reduce using rule 76 (tableceils)
 
 
 state 94
+
+   77 tableceil: inlineelements . TABLECEILEND
+   78 inlineelements: inlineelements . inlineelement
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    TABLECEILEND      shift, and go to state 146
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
+
+
+state 95
 
    36 line_indent_ul: ULINDENT ULSTART . inlineelements LINEBREAK
 
@@ -1541,19 +1554,19 @@ state 94
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 145
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 147
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 95
+state 96
 
    46 line_indent_ol: OLINDENT OLSTART . inlineelements LINEBREAK
 
@@ -1561,752 +1574,759 @@ state 95
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelements  go to state 146
-    inlineelement   go to state 64
-    link            go to state 65
-
-
-state 96
-
-   52 line_indent_text: TEXTINDENT inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
-
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 147
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelements  go to state 148
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 97
 
-   57 line: CODEINDENT CODETEXT .
+   52 line_indent_text: TEXTINDENT inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
 
-    $default  reduce using rule 57 (line)
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 149
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 98
 
-   89 inlineelement: EXCLAMATION LEFTSQUARE . plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   57 line: PRE_INDENT CODETEXT .
 
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-
-    plaintext  go to state 148
-    text_list  go to state 71
+    $default  reduce using rule 57 (line)
 
 
 state 99
 
-   88 inlineelement: LEFTSQUARE plaintext . RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
-   97 plaintext: plaintext . text_list
+   58 line: INDENTED_PRE_INDENT CODETEXT .
 
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-    RIGHTSQUARE  shift, and go to state 149
-
-    text_list  go to state 131
+    $default  reduce using rule 58 (line)
 
 
 state 100
 
-   77 inlineelements: inlineelements . inlineelement
-   82 inlineelement: UNDERSCORE inlineelements . UNDERSCORE
+   90 inlineelement: EXCLAMATION LEFTSQUARE . plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 150
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
 
-    inlineelement  go to state 124
-    link           go to state 65
+    plaintext  go to state 150
+    text_list  go to state 72
 
 
 state 101
 
-   77 inlineelements: inlineelements . inlineelement
-   81 inlineelement: STAR inlineelements . STAR
+   89 inlineelement: LEFTSQUARE plaintext . RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   98 plaintext: plaintext . text_list
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 151
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
+    RIGHTSQUARE  shift, and go to state 151
 
-    inlineelement  go to state 124
-    link           go to state 65
+    text_list  go to state 133
 
 
 state 102
 
-   29 line_quote_p: LARGERTHAN inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
+   78 inlineelements: inlineelements . inlineelement
+   83 inlineelement: UNDERSCORE inlineelements . UNDERSCORE
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 152
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 152
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 103
 
-   77 inlineelements: inlineelements . inlineelement
-   83 inlineelement: DOUBLESTAR inlineelements . DOUBLESTAR
+   78 inlineelements: inlineelements . inlineelement
+   82 inlineelement: STAR inlineelements . STAR
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 153
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 153
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 104
 
-   77 inlineelements: inlineelements . inlineelement
-   84 inlineelement: DOUBLEUNDERSCORE inlineelements . DOUBLEUNDERSCORE
+   29 line_quote_p: LARGERTHAN inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 154
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 154
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 105
+
+   78 inlineelements: inlineelements . inlineelement
+   84 inlineelement: DOUBLESTAR inlineelements . DOUBLESTAR
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 155
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
+
+
+state 106
+
+   78 inlineelements: inlineelements . inlineelement
+   85 inlineelement: DOUBLEUNDERSCORE inlineelements . DOUBLEUNDERSCORE
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 156
+
+    inlineelement  go to state 126
+    link           go to state 66
+
+
+state 107
 
    43 line_ol: OLSTART LINEBREAK .
 
     $default  reduce using rule 43 (line_ol)
 
 
-state 106
+state 108
 
    42 line_ol: OLSTART inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
+   78 inlineelements: inlineelements . inlineelement
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 155
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 157
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelement  go to state 126
+    link           go to state 66
 
 
-state 107
+state 109
 
    33 line_ul: ULSTART LINEBREAK .
 
     $default  reduce using rule 33 (line_ul)
 
 
-state 108
-
-   32 line_ul: ULSTART inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
-
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 156
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
-
-
-state 109
-
-   49 line_quote_ol: QUOTEOLSTART inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
-
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 157
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
-
-
 state 110
 
-   39 line_quote_ul: QUOTEULSTART inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
+   32 line_ul: ULSTART inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
     LINEBREAK         shift, and go to state 158
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelement  go to state 126
+    link           go to state 66
 
 
 state 111
+
+   49 line_quote_ol: QUOTEOLSTART inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 159
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
+
+
+state 112
+
+   39 line_quote_ul: QUOTEULSTART inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 160
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
+
+
+state 113
 
    19 lines: lines line .
 
     $default  reduce using rule 19 (lines)
 
 
-state 112
+state 114
 
    21 block_p: block_p line_p .
 
     $default  reduce using rule 21 (block_p)
 
 
-state 113
+state 115
 
    24 block_blank: block_blank line_blank .
 
     $default  reduce using rule 24 (block_blank)
 
 
-state 114
+state 116
 
    27 block_quote_p: block_quote_p line_quote_p .
 
     $default  reduce using rule 27 (block_quote_p)
 
 
-state 115
+state 117
 
    30 block_ul: block_ul line_ul .
 
     $default  reduce using rule 30 (block_ul)
 
 
-state 116
+state 118
 
    34 block_indent_ul: block_indent_ul line_indent_ul .
 
     $default  reduce using rule 34 (block_indent_ul)
 
 
-state 117
+state 119
 
    37 block_quote_ul: block_quote_ul line_quote_ul .
 
     $default  reduce using rule 37 (block_quote_ul)
 
 
-state 118
+state 120
 
    40 block_ol: block_ol line_ol .
 
     $default  reduce using rule 40 (block_ol)
 
 
-state 119
+state 121
 
    44 block_indent_ol: block_indent_ol line_indent_ol .
 
     $default  reduce using rule 44 (block_indent_ol)
 
 
-state 120
+state 122
 
    47 block_quote_ol: block_quote_ol line_quote_ol .
 
     $default  reduce using rule 47 (block_quote_ol)
 
 
-state 121
+state 123
 
    50 block_indent_text: block_indent_text line_indent_text .
 
     $default  reduce using rule 50 (block_indent_text)
 
 
-state 122
+state 124
 
-   71 tablerows: tablerows tablerow .
+   72 tablerows: tablerows tablerow .
 
-    $default  reduce using rule 71 (tablerows)
+    $default  reduce using rule 72 (tablerows)
 
 
-state 123
+state 125
 
    23 line_p: inlineelements LINEBREAK .
 
     $default  reduce using rule 23 (line_p)
 
 
-state 124
-
-   77 inlineelements: inlineelements inlineelement .
-
-    $default  reduce using rule 77 (inlineelements)
-
-
-state 125
-
-   91 headertext: headertext TEXT .
-
-    $default  reduce using rule 91 (headertext)
-
-
 state 126
 
-   94 headertext: headertext SPECIALCHAR .
+   78 inlineelements: inlineelements inlineelement .
 
-    $default  reduce using rule 94 (headertext)
+    $default  reduce using rule 78 (inlineelements)
 
 
 state 127
 
-   93 headertext: headertext CODETEXT .
+   92 headertext: headertext TEXT .
 
-    $default  reduce using rule 93 (headertext)
+    $default  reduce using rule 92 (headertext)
 
 
 state 128
+
+   95 headertext: headertext SPECIALCHAR .
+
+    $default  reduce using rule 95 (headertext)
+
+
+state 129
+
+   94 headertext: headertext CODETEXT .
+
+    $default  reduce using rule 94 (headertext)
+
+
+state 130
 
    18 header: H headertext LINEBREAK .
 
     $default  reduce using rule 18 (header)
 
 
-state 129
+state 131
 
-   92 headertext: headertext link .
+   93 headertext: headertext link .
 
-    $default  reduce using rule 92 (headertext)
+    $default  reduce using rule 93 (headertext)
 
 
-state 130
+state 132
 
    56 line: QUOTEH plaintext LINEBREAK .
 
     $default  reduce using rule 56 (line)
 
 
-state 131
-
-   97 plaintext: plaintext text_list .
-
-    $default  reduce using rule 97 (plaintext)
-
-
-state 132
-
-   60 line: HTMLBLOCK TEXT LINEBREAK .
-
-    $default  reduce using rule 60 (line)
-
-
 state 133
 
-   64 line: SCRIPTSTART error LINEBREAK .
+   98 plaintext: plaintext text_list .
 
-    $default  reduce using rule 64 (line)
+    $default  reduce using rule 98 (plaintext)
 
 
 state 134
 
-   62 line: SCRIPTSTART inlineelements SCRIPTEND .
+   61 line: HTMLBLOCK TEXT LINEBREAK .
 
-    $default  reduce using rule 62 (line)
+    $default  reduce using rule 61 (line)
 
 
 state 135
 
-   68 line: STYLESTART inlineelements STYLEEND .
-
-    $default  reduce using rule 68 (line)
-
-
-state 136
-
-   67 line: SVGSTART error LINEBREAK .
-
-    $default  reduce using rule 67 (line)
-
-
-state 137
-
-   65 line: SVGSTART inlineelements SVGEND .
+   65 line: SCRIPTSTART error LINEBREAK .
 
     $default  reduce using rule 65 (line)
 
 
+state 136
+
+   63 line: SCRIPTSTART inlineelements SCRIPTEND .
+
+    $default  reduce using rule 63 (line)
+
+
+state 137
+
+   69 line: STYLESTART inlineelements STYLEEND .
+
+    $default  reduce using rule 69 (line)
+
+
 state 138
 
-   86 inlineelement: BACKTICK codespan error .
+   68 line: SVGSTART error LINEBREAK .
 
-    $default  reduce using rule 86 (inlineelement)
+    $default  reduce using rule 68 (line)
 
 
 state 139
 
-   85 inlineelement: BACKTICK codespan BACKTICK .
+   66 line: SVGSTART inlineelements SVGEND .
 
-    $default  reduce using rule 85 (inlineelement)
+    $default  reduce using rule 66 (line)
 
 
 state 140
 
-  101 codespan: codespan code_list .
+   87 inlineelement: BACKTICK codespan error .
 
-    $default  reduce using rule 101 (codespan)
+    $default  reduce using rule 87 (inlineelement)
 
 
 state 141
 
-   58 line: TRIPLEBACKTICK codespan TRIPLEBACKTICK . LINEBREAK
+   86 inlineelement: BACKTICK codespan BACKTICK .
 
-    LINEBREAK  shift, and go to state 159
+    $default  reduce using rule 86 (inlineelement)
 
 
 state 142
 
-   73 tablerow: TABLEROWSTART tableceils LINEBREAK .
+  102 codespan: codespan code_list .
 
-    $default  reduce using rule 73 (tablerow)
+    $default  reduce using rule 102 (codespan)
 
 
 state 143
 
-   74 tableceils: tableceils tableceil .
+   59 line: TRIPLEBACKTICK codespan TRIPLEBACKTICK . LINEBREAK
 
-    $default  reduce using rule 74 (tableceils)
+    LINEBREAK  shift, and go to state 161
 
 
 state 144
 
-   76 tableceil: inlineelements TABLECEILEND .
+   74 tablerow: TABLEROWSTART tableceils LINEBREAK .
 
-    $default  reduce using rule 76 (tableceil)
+    $default  reduce using rule 74 (tablerow)
 
 
 state 145
 
-   36 line_indent_ul: ULINDENT ULSTART inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
+   75 tableceils: tableceils tableceil .
 
-    TEXT              shift, and go to state 6
-    SPECIALCHAR       shift, and go to state 7
-    LINK              shift, and go to state 16
-    BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 160
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
-
-    inlineelement  go to state 124
-    link           go to state 65
+    $default  reduce using rule 75 (tableceils)
 
 
 state 146
 
-   46 line_indent_ol: OLINDENT OLSTART inlineelements . LINEBREAK
-   77 inlineelements: inlineelements . inlineelement
+   77 tableceil: inlineelements TABLECEILEND .
+
+    $default  reduce using rule 77 (tableceil)
+
+
+state 147
+
+   36 line_indent_ul: ULINDENT ULSTART inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
 
     TEXT              shift, and go to state 6
     SPECIALCHAR       shift, and go to state 7
     LINK              shift, and go to state 16
     BACKTICK          shift, and go to state 17
-    EXCLAMATION       shift, and go to state 24
-    LEFTSQUARE        shift, and go to state 25
-    UNDERSCORE        shift, and go to state 26
-    STAR              shift, and go to state 27
-    LINEBREAK         shift, and go to state 161
-    DOUBLESTAR        shift, and go to state 30
-    DOUBLEUNDERSCORE  shift, and go to state 31
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 162
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
 
-    inlineelement  go to state 124
-    link           go to state 65
+    inlineelement  go to state 126
+    link           go to state 66
 
 
-state 147
+state 148
+
+   46 line_indent_ol: OLINDENT OLSTART inlineelements . LINEBREAK
+   78 inlineelements: inlineelements . inlineelement
+
+    TEXT              shift, and go to state 6
+    SPECIALCHAR       shift, and go to state 7
+    LINK              shift, and go to state 16
+    BACKTICK          shift, and go to state 17
+    EXCLAMATION       shift, and go to state 25
+    LEFTSQUARE        shift, and go to state 26
+    UNDERSCORE        shift, and go to state 27
+    STAR              shift, and go to state 28
+    LINEBREAK         shift, and go to state 163
+    DOUBLESTAR        shift, and go to state 31
+    DOUBLEUNDERSCORE  shift, and go to state 32
+
+    inlineelement  go to state 126
+    link           go to state 66
+
+
+state 149
 
    52 line_indent_text: TEXTINDENT inlineelements LINEBREAK .
 
     $default  reduce using rule 52 (line_indent_text)
 
 
-state 148
-
-   89 inlineelement: EXCLAMATION LEFTSQUARE plaintext . RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
-   97 plaintext: plaintext . text_list
-
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-    RIGHTSQUARE  shift, and go to state 162
-
-    text_list  go to state 131
-
-
-state 149
-
-   88 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE . LEFTPARENTHESES plaintext RIGHTPARENTHESES
-
-    LEFTPARENTHESES  shift, and go to state 163
-
-
 state 150
 
-   82 inlineelement: UNDERSCORE . inlineelements UNDERSCORE
-   82              | UNDERSCORE inlineelements UNDERSCORE .
+   90 inlineelement: EXCLAMATION LEFTSQUARE plaintext . RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES
+   98 plaintext: plaintext . text_list
 
-    LINK  shift, and go to state 16
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
+    RIGHTSQUARE  shift, and go to state 164
 
-    LINK      [reduce using rule 82 (inlineelement)]
-    $default  reduce using rule 82 (inlineelement)
-
-    inlineelements  go to state 100
-    inlineelement   go to state 64
-    link            go to state 65
+    text_list  go to state 133
 
 
 state 151
 
-   81 inlineelement: STAR . inlineelements STAR
-   81              | STAR inlineelements STAR .
+   89 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE . LEFTPARENTHESES plaintext RIGHTPARENTHESES
 
-    LINK  shift, and go to state 16
-
-    LINK      [reduce using rule 81 (inlineelement)]
-    $default  reduce using rule 81 (inlineelement)
-
-    inlineelements  go to state 101
-    inlineelement   go to state 64
-    link            go to state 65
+    LEFTPARENTHESES  shift, and go to state 165
 
 
 state 152
 
-   29 line_quote_p: LARGERTHAN inlineelements LINEBREAK .
-
-    $default  reduce using rule 29 (line_quote_p)
-
-
-state 153
-
-   83 inlineelement: DOUBLESTAR . inlineelements DOUBLESTAR
-   83              | DOUBLESTAR inlineelements DOUBLESTAR .
+   83 inlineelement: UNDERSCORE . inlineelements UNDERSCORE
+   83              | UNDERSCORE inlineelements UNDERSCORE .
 
     LINK  shift, and go to state 16
 
     LINK      [reduce using rule 83 (inlineelement)]
     $default  reduce using rule 83 (inlineelement)
 
+    inlineelements  go to state 102
+    inlineelement   go to state 65
+    link            go to state 66
+
+
+state 153
+
+   82 inlineelement: STAR . inlineelements STAR
+   82              | STAR inlineelements STAR .
+
+    LINK  shift, and go to state 16
+
+    LINK      [reduce using rule 82 (inlineelement)]
+    $default  reduce using rule 82 (inlineelement)
+
     inlineelements  go to state 103
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelement   go to state 65
+    link            go to state 66
 
 
 state 154
 
-   84 inlineelement: DOUBLEUNDERSCORE . inlineelements DOUBLEUNDERSCORE
-   84              | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE .
+   29 line_quote_p: LARGERTHAN inlineelements LINEBREAK .
+
+    $default  reduce using rule 29 (line_quote_p)
+
+
+state 155
+
+   84 inlineelement: DOUBLESTAR . inlineelements DOUBLESTAR
+   84              | DOUBLESTAR inlineelements DOUBLESTAR .
 
     LINK  shift, and go to state 16
 
     LINK      [reduce using rule 84 (inlineelement)]
     $default  reduce using rule 84 (inlineelement)
 
-    inlineelements  go to state 104
-    inlineelement   go to state 64
-    link            go to state 65
+    inlineelements  go to state 105
+    inlineelement   go to state 65
+    link            go to state 66
 
 
-state 155
+state 156
+
+   85 inlineelement: DOUBLEUNDERSCORE . inlineelements DOUBLEUNDERSCORE
+   85              | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE .
+
+    LINK  shift, and go to state 16
+
+    LINK      [reduce using rule 85 (inlineelement)]
+    $default  reduce using rule 85 (inlineelement)
+
+    inlineelements  go to state 106
+    inlineelement   go to state 65
+    link            go to state 66
+
+
+state 157
 
    42 line_ol: OLSTART inlineelements LINEBREAK .
 
     $default  reduce using rule 42 (line_ol)
 
 
-state 156
+state 158
 
    32 line_ul: ULSTART inlineelements LINEBREAK .
 
     $default  reduce using rule 32 (line_ul)
 
 
-state 157
+state 159
 
    49 line_quote_ol: QUOTEOLSTART inlineelements LINEBREAK .
 
     $default  reduce using rule 49 (line_quote_ol)
 
 
-state 158
+state 160
 
    39 line_quote_ul: QUOTEULSTART inlineelements LINEBREAK .
 
     $default  reduce using rule 39 (line_quote_ul)
 
 
-state 159
+state 161
 
-   58 line: TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK .
+   59 line: TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK .
 
-    $default  reduce using rule 58 (line)
+    $default  reduce using rule 59 (line)
 
 
-state 160
+state 162
 
    36 line_indent_ul: ULINDENT ULSTART inlineelements LINEBREAK .
 
     $default  reduce using rule 36 (line_indent_ul)
 
 
-state 161
+state 163
 
    46 line_indent_ol: OLINDENT OLSTART inlineelements LINEBREAK .
 
     $default  reduce using rule 46 (line_indent_ol)
 
 
-state 162
-
-   89 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE . LEFTPARENTHESES plaintext RIGHTPARENTHESES
-
-    LEFTPARENTHESES  shift, and go to state 164
-
-
-state 163
-
-   88 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES . plaintext RIGHTPARENTHESES
-
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-
-    plaintext  go to state 165
-    text_list  go to state 71
-
-
 state 164
 
-   89 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES . plaintext RIGHTPARENTHESES
+   90 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE . LEFTPARENTHESES plaintext RIGHTPARENTHESES
 
-    TEXT         shift, and go to state 68
-    SPECIALCHAR  shift, and go to state 69
-
-    plaintext  go to state 166
-    text_list  go to state 71
+    LEFTPARENTHESES  shift, and go to state 166
 
 
 state 165
 
-   88 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext . RIGHTPARENTHESES
-   97 plaintext: plaintext . text_list
+   89 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES . plaintext RIGHTPARENTHESES
 
-    TEXT              shift, and go to state 68
-    SPECIALCHAR       shift, and go to state 69
-    RIGHTPARENTHESES  shift, and go to state 167
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
 
-    text_list  go to state 131
+    plaintext  go to state 167
+    text_list  go to state 72
 
 
 state 166
 
-   89 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext . RIGHTPARENTHESES
-   97 plaintext: plaintext . text_list
+   90 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES . plaintext RIGHTPARENTHESES
 
-    TEXT              shift, and go to state 68
-    SPECIALCHAR       shift, and go to state 69
-    RIGHTPARENTHESES  shift, and go to state 168
+    TEXT         shift, and go to state 69
+    SPECIALCHAR  shift, and go to state 70
 
-    text_list  go to state 131
+    plaintext  go to state 168
+    text_list  go to state 72
 
 
 state 167
 
-   88 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES .
+   89 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext . RIGHTPARENTHESES
+   98 plaintext: plaintext . text_list
 
-    $default  reduce using rule 88 (inlineelement)
+    TEXT              shift, and go to state 69
+    SPECIALCHAR       shift, and go to state 70
+    RIGHTPARENTHESES  shift, and go to state 169
+
+    text_list  go to state 133
 
 
 state 168
 
-   89 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES .
+   90 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext . RIGHTPARENTHESES
+   98 plaintext: plaintext . text_list
+
+    TEXT              shift, and go to state 69
+    SPECIALCHAR       shift, and go to state 70
+    RIGHTPARENTHESES  shift, and go to state 170
+
+    text_list  go to state 133
+
+
+state 169
+
+   89 inlineelement: LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES .
 
     $default  reduce using rule 89 (inlineelement)
+
+
+state 170
+
+   90 inlineelement: EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES .
+
+    $default  reduce using rule 90 (inlineelement)

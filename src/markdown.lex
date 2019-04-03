@@ -128,7 +128,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("CODEINDENT"); return CODEINDENT;
+                                                if (inner_pre_level(indent_level(yytext)) > -1) {
+                                                    P("INDENTED_PRE_INDENT"); return INDENTED_PRE_INDENT;
+                                                }
+                                                else {
+                                                    P("PRE_INDENT"); return PRE_INDENT;
+                                                }
                                             }
                                         }   
 ^(\t|[ ]{4})+/[ ]{0,3}[1-9][0-9]*\.[ ]+ { 
@@ -141,7 +146,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("CODEINDENT"); return CODEINDENT;
+                                                if (inner_pre_level(indent_level(yytext)) > -1) {
+                                                    P("INDENTED_PRE_INDENT"); return INDENTED_PRE_INDENT;
+                                                }
+                                                else {
+                                                    P("PRE_INDENT"); return PRE_INDENT;
+                                                }
                                             }
                                         }   
 ^(\t|[ ]{4})+/.                         { 
@@ -153,7 +163,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 
                                                 yylval.text = strdup(yytext);
-                                                P("CODEINDENT"); return CODEINDENT;
+                                                if (inner_pre_level(indent_level(yytext)) > -1) {
+                                                    P("INDENTED_PRE_INDENT"); return INDENTED_PRE_INDENT;
+                                                }
+                                                else {
+                                                    P("PRE_INDENT"); return PRE_INDENT;
+                                                }
                                             }
                                         }
 <CODEBLOCK>.+                           { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }
