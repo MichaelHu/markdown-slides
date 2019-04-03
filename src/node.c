@@ -208,6 +208,7 @@ void visit_nonblock_node(t_node *node) {
     switch (node->tag) {
         case TAG_INDENT_UL:
         case TAG_INDENT_OL:
+        case TAG_INDENT_TEXT:
             if (parent && node->level != parent->level) {
                 // show_node(node);
                 new_uncle = block_node_create(

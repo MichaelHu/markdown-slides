@@ -45,6 +45,23 @@ console.log('javascript');
         int main(void) {
             print("Hello, World!\n");
         }
+
+    the above is c code.
+
+    * js code
+        
+            $('#tip').html('<b>Hello</b>');
+
+        the above is js code.
+
+```
+#list {
+    height: 30px;
+    color: #999;
+    font-size: 30px;
+    line-height: 1.2;
+}
+```
     
 
 ```
