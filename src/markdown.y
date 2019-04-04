@@ -66,6 +66,7 @@ markdownfile:
             blocknode_create(TAG_EOF, -2, 1, ""); 
             blocklist_parse(); 
             complement_block_nodes($1); 
+            rearrange_block_nodes($1);
             fprintf( stderr, "==== traverse ====\n" ); 
             traverse_nodes($1); 
         }
