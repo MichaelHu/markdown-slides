@@ -69,6 +69,10 @@ markdownfile:
             rearrange_block_nodes($1);
             fprintf( stderr, "==== traverse ====\n" ); 
             traverse_nodes($1); 
+            fprintf( stderr, "==== merge block nodes ====\n" ); 
+            merge_block_nodes($1);
+            fprintf( stderr, "==== traverse again ====\n" ); 
+            traverse_nodes($1); 
         }
     | error { 
             fprintf( stderr, "==== error ====\n" ); 

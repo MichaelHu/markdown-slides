@@ -5,7 +5,7 @@
 #include "htmltags.h"
 #include "node.h"
 
-static t_tag block_node_tags[] = {
+static t_tag tags_of_block_node[] = {
     TAG_ROOT
     , TAG_H
     , TAG_TABLE
@@ -22,7 +22,28 @@ static t_tag block_node_tags[] = {
     , TAG_BLOCK_PRE
     , TAG_BLOCK_INDENT_PRE
 };
-static int block_node_tags_size = sizeof(block_node_tags) / sizeof(int);
+static int tags_of_block_node_size = sizeof(tags_of_block_node) / sizeof(t_tag);
+
+static t_tag tags_of_node_need_merged_when_adjacent[] = {
+    TAG_BLOCK_UL
+    , TAG_BLOCK_OL
+    , TAG_BLOCK_INDENT_UL
+    , TAG_BLOCK_INDENT_OL
+    , TAG_BLOCK_BLANK
+    , TAG_BLOCK_QUOTE_UL
+    , TAG_BLOCK_QUOTE_OL
+};
+static int tags_of_node_need_merged_when_adjacent_size 
+    = sizeof(tags_of_node_need_merged_when_adjacent) / sizeof(t_tag);
+
+static t_tag tags_of_node_need_merged_even_seperated_by_blanks[] = {
+    TAG_BLOCK_PRE
+    , TAG_BLOCK_INDENT_PRE
+};
+static int tags_of_node_need_merged_even_seperated_by_blanks_size
+    = sizeof(tags_of_node_need_merged_even_seperated_by_blanks) / sizeof(t_tag);
+
+
 static t_tag get_parent_block_node_tag(t_tag tag) {
     switch (tag) {
         case TAG_P:
@@ -68,6 +89,37 @@ static int is_blank_node(t_node *node) {
         || node->tag == TAG_BLOCK_BLANK
     );
 }
+
+static int index_of(t_tag *arr, int size, t_tag tag) {
+    int i;
+    for (i = 0; i < size; i++) {
+        if (tag == arr[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static int is_block_node(t_node *node) {
+    return index_of(tags_of_block_node, tags_of_block_node_size, node->tag) > -1;
+}
+
+static int is_node_need_merged_when_adjacent(t_node *node) {
+    return index_of(
+        tags_of_node_need_merged_when_adjacent
+        , tags_of_node_need_merged_when_adjacent_size
+        , node->tag
+    ) > -1;
+}
+
+static int is_node_need_merged_even_seperated_by_blanks(t_node *node) {
+    return index_of(
+        tags_of_node_need_merged_even_seperated_by_blanks
+        , tags_of_node_need_merged_even_seperated_by_blanks_size
+        , node->tag
+    ) > -1;
+}
+
 
 /**
  * 1. demonstrate how to write a function accepting argument of va_list
@@ -208,16 +260,6 @@ void traverse_nodes(t_node *root) {
     traverse_nodes_with_visitor(root, show_links);
 }
 
-static int index_of(t_tag tag) {
-    int i;
-    for (i = 0; i < block_node_tags_size; i++) {
-        if (tag == block_node_tags[i]) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 /**
  * 1. nodes in list must have a valid parent link
  */
@@ -235,10 +277,6 @@ static void check_parent_links(t_node *root) {
     traverse_nodes_with_visitor(root, visit_node_to_check_parent_link);
 }
 
-
-int is_block_node(t_node *node) {
-    return index_of(node->tag) > -1;
-}
 
 static t_link *visit_nonblock_node(t_node *node) {
     t_node *parent, *new_uncle, *tmp;
@@ -434,5 +472,93 @@ void rearrange_block_nodes(t_node *root) {
     prev_node = NULL;
     traverse_nodes_with_visitor(root, visit_to_rearrange_block_node);
 }
+
+
+
+static t_link *merge_children_then_clean_the_useless(t_node *to, t_node *from) {
+    t_link *new_link;
+    t_node *tail_node, *tmp;
+
+    if (!to || !from) {
+        fprintf(stderr, "merge_children(to, from): NULL to or NULL from\n");
+    }
+
+    // `from` and `to` always have children list
+    tail_node = tail_node_in_list(to->children);
+
+    // 1. append node's children list to the target node's children list
+    tail_node->next = from->children;
+    from->children->prev = tail_node;
+
+    // 2. update children's parent links
+    tmp = from->children;
+    while (tmp) {
+        tmp->parent = tail_node->parent;
+        tmp = tmp->next;
+    }
+
+    // 3. save links
+    new_link = (t_link *)malloc(sizeof(t_node));
+    new_link->next = from->next;
+    new_link->children = from->children;
+
+    // 4. remove the `from` node from list 
+    from->prev->next = from->next;
+    if (from->next) {
+        from->next->prev = from->prev;
+    }
+    from->prev = NULL;
+    from->next = NULL;
+    from->children = NULL;
+
+    // 5. free the node
+    free(from);
+
+    return new_link;
+}
+
+static t_link *visit_to_merge_block_nodes(t_node *node) {
+    t_link *new_link = NULL;
+    t_node *tail_node, *tmp;
+
+    if (!is_block_node(node)) {
+        return new_link;
+    }
+
+    if (is_node_need_merged_when_adjacent(node)) {
+        if (node->prev && node->tag == node->prev->tag) {
+            new_link = merge_children_then_clean_the_useless(node->prev, node);
+        }
+    }
+    else if (is_node_need_merged_even_seperated_by_blanks(node)) {
+        if (node->prev) {
+
+            /**
+             * try to find 
+             * 1. adjacent node with the same tag
+             * 2. or previous sibling node with the same tag seperated by one or more blank line node
+             */
+            tmp = node->prev;
+            while (tmp) {
+                if (tmp->tag == node->tag || !is_blank_node(tmp)) {
+                    break;
+                }
+                tmp = tmp->prev;
+            }
+
+            // find it
+            if (tmp && tmp->tag == node->tag) {
+                new_link = merge_children_then_clean_the_useless(tmp, node);
+            }
+        }
+    }
+
+    return new_link;
+}
+
+void merge_block_nodes(t_node *root) {
+    traverse_nodes_with_visitor(root, visit_to_merge_block_nodes);
+}
+
 
 
