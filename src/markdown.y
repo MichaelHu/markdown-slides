@@ -67,12 +67,14 @@ markdownfile:
             blocklist_parse(); 
             complement_block_nodes($1); 
             rearrange_block_nodes($1);
-            fprintf( stderr, "==== traverse ====\n" ); 
-            traverse_nodes($1); 
+            // fprintf( stderr, "==== traverse ====\n" ); 
+            // traverse_nodes($1); 
             fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
-            fprintf( stderr, "==== traverse again ====\n" ); 
-            traverse_nodes($1); 
+            // fprintf( stderr, "==== traverse again ====\n" ); 
+            // traverse_nodes($1); 
+            fprintf( stderr, "==== parse doc tree ====\n" ); 
+            parse_doc_tree($1);
         }
     | error { 
             fprintf( stderr, "==== error ====\n" ); 

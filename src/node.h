@@ -41,6 +41,7 @@ void traverse_nodes(t_node *root);
 void complement_block_nodes(t_node *root);
 void rearrange_block_nodes(t_node *root);
 void merge_block_nodes(t_node *root);
+void parse_doc_tree(t_node *root);
 
 
 /*

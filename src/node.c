@@ -226,11 +226,19 @@ static t_link *show_links(t_node *node) {
  *
  * 2. use pre-order depth-traverse
  * 3. new_link can be used when the tree has been changed in visit method
+ * 4. post-visit method is optional, it can be supplied by variable argument list
  */
-static void traverse_nodes_with_visitor(t_node *root, t_link* (*visit)(t_node *)) {
+static void traverse_nodes_with_visitor(
+        t_node *root
+        , t_link* (*visit)(t_node *)
+        , int ext_args_count
+        , ...
+    ) {
+    va_list args;
     t_link *new_link;
     t_node *new_children;
     t_node *new_next;
+    void (*post_visit)(t_node *) = NULL;
 
     if (!root) {
         return;
@@ -251,13 +259,27 @@ static void traverse_nodes_with_visitor(t_node *root, t_link* (*visit)(t_node *)
         new_children = new_link->children;
     }
 
-    traverse_nodes_with_visitor(new_children, visit);
-    traverse_nodes_with_visitor(new_next, visit);
+    if (ext_args_count <= 0) {
+        traverse_nodes_with_visitor(new_children, visit, 0);
+        traverse_nodes_with_visitor(new_next, visit, 0);
+    }
+    else {
+        va_start(args, ext_args_count);
+        post_visit = va_arg(args, void (*)(t_node *));
+
+        traverse_nodes_with_visitor(new_children, visit, ext_args_count, post_visit);
+        traverse_nodes_with_visitor(new_next, visit, ext_args_count, post_visit);
+
+        if (post_visit) {
+            post_visit(root);
+        }
+        va_end(args);
+    }
 }
 
 void traverse_nodes(t_node *root) {
-    // traverse_nodes_with_visitor(root, show_node);
-    traverse_nodes_with_visitor(root, show_links);
+    // traverse_nodes_with_visitor(root, show_node, 0);
+    traverse_nodes_with_visitor(root, show_links, 0);
 }
 
 /**
@@ -274,7 +296,7 @@ static t_link *visit_node_to_check_parent_link(t_node *node) {
 }
 
 static void check_parent_links(t_node *root) {
-    traverse_nodes_with_visitor(root, visit_node_to_check_parent_link);
+    traverse_nodes_with_visitor(root, visit_node_to_check_parent_link, 0);
 }
 
 
@@ -341,7 +363,7 @@ void complement_block_nodes(t_node *root) {
     check_parent_links(root);
 
     fprintf(stderr, "===========complement_block_nodes===========\n");
-    traverse_nodes_with_visitor(root, visit_nonblock_node);
+    traverse_nodes_with_visitor(root, visit_nonblock_node, 0);
 }
 
 t_node *tail_node_in_list(t_node *node) {
@@ -470,7 +492,7 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
 
 void rearrange_block_nodes(t_node *root) {
     prev_node = NULL;
-    traverse_nodes_with_visitor(root, visit_to_rearrange_block_node);
+    traverse_nodes_with_visitor(root, visit_to_rearrange_block_node, 0);
 }
 
 
@@ -557,8 +579,21 @@ static t_link *visit_to_merge_block_nodes(t_node *node) {
 }
 
 void merge_block_nodes(t_node *root) {
-    traverse_nodes_with_visitor(root, visit_to_merge_block_nodes);
+    traverse_nodes_with_visitor(root, visit_to_merge_block_nodes, 0);
 }
 
 
+static t_link *pre_visit_parse(t_node *node) {
+    fprintf(stderr, "pre_visit_parse\n");
+    return NULL;
+}
+
+static void post_visit_parse(t_node *node) {
+    fprintf(stderr, "post_visit_parse\n");
+    return;
+}
+
+void parse_doc_tree(t_node *root) {
+    traverse_nodes_with_visitor(root, pre_visit_parse, 1, post_visit_parse);
+}
 
