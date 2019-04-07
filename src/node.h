@@ -16,7 +16,6 @@ typedef enum {
 typedef struct node {
     t_node_type type;
     t_tag tag;
-    char *attr;
     int level;
 
     /* extended fields */

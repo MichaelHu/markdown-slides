@@ -214,7 +214,8 @@ block_p:
             _node = block_node_create(
                 TAG_BLOCK_P
                 , 0
-                , 0
+                , 1
+                , *($1->ops)
             );
             _node->children = $1;
             $1->parent = _node;
@@ -654,7 +655,8 @@ block_indent_text:
             _node = block_node_create(
                 TAG_BLOCK_INDENT_TEXT
                 , $1->level
-                , 0
+                , 1
+                , *($1->ops)
             );
             _node->children = $1;
             $1->parent = _node;
