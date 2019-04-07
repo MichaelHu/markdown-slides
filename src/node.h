@@ -2,6 +2,8 @@
 #include "tagstack.h"
 #endif
 
+#define HEADER_NODE
+
 typedef enum {
     NODE_TYPE_BLOCK,
     NODE_TYPE_INLINE
@@ -37,38 +39,14 @@ t_node *block_node_create(t_tag tag, int level, int nops, ...);
 t_node *inline_node_create(t_tag tag, int level, int nops, ...);
 t_node *tail_node_in_list(t_node *node);
 t_link *show_node(t_node *node);
+void traverse_nodes_with_visitor(
+    t_node *root
+    , t_link* (*visit)(t_node *)
+    , int ext_args_count
+    , ...
+);
 void traverse_nodes(t_node *root);
 void complement_block_nodes(t_node *root);
 void rearrange_block_nodes(t_node *root);
 void merge_block_nodes(t_node *root);
-void parse_doc_tree(t_node *root);
 
-
-/*
-char* blocknode_parse(t_blocknode *node);
-void blocklist_parse(void);
-*/
-
-
-
-
-
-/* blocknode stack */
-/*
-#define BLOCKNODE_STACK_SIZE 20
-
-typedef struct { 
-    int size;
-    t_blocknode *arr[TAG_STACK_SIZE];
-} t_blocknode_stack;
-
-void blocknode_init_stack(void);
-t_blocknode *blocknode_top_stack(void);
-int blocknode_empty_stack(void);
-int blocknode_full_stack(void);
-int blocknode_in_stack(t_tag tag, int level);
-void blocknode_push_stack(t_blocknode *node);
-void blocknode_show_stack(void);
-t_blocknode *blocknode_pop_stack(void);
-t_blocknode *blocknode_shift_stack(void);
-*/
