@@ -47,6 +47,9 @@ static char *block_pre_post_parse(t_node *);
 static char *pre_pre_parse(t_node *);
 static char *pre_post_parse(t_node *);
 
+static char *rawhtml_pre_parse(t_node *);
+static char *rawhtml_post_parse(t_node *);
+
 
 static t_parser *get_parser(t_node *node) {
     t_parser *p;
@@ -167,6 +170,14 @@ static t_parser *get_parser(t_node *node) {
             p->post_parse = pre_post_parse;
             break;
 
+
+        /**
+         * rawhtml parsers
+         */
+        case TAG_HTMLBLOCK:
+            p->pre_parse = rawhtml_pre_parse;
+            p->post_parse = rawhtml_post_parse;
+            break;
 
 
         default:
@@ -454,3 +465,20 @@ static char *pre_post_parse(t_node *node) {
 }
 
 
+/**
+ * rawhtml parsers
+ */
+static char *rawhtml_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s%s%s"
+        , str_padding_left("", node->level * 4)
+        , *node->ops
+        , *(node->ops + 1)
+    );
+}
+
+static char *rawhtml_post_parse(t_node *node) {
+    return str_format(
+        ""
+    );
+}

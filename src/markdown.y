@@ -57,6 +57,7 @@ t_node *_node, *_tail_node;
 %type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
+%type <node> raw_html
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -160,6 +161,9 @@ block:
     | block_indented_pre {
             $$ = $1;
         }
+    | raw_html {
+            $$ = $1;
+        }
     ;
 
 header:
@@ -210,9 +214,76 @@ header:
 
             $$ = _node;
         }   
-
-
     ;
+
+raw_html:
+    HTMLBLOCK TEXT LINEBREAK {
+            tag_check_stack(TAG_HTMLBLOCK, 0);
+            blocknode_create(
+                    TAG_HTMLBLOCK
+                    , 0
+                    , 2
+                    , $1
+                    , $2
+                );
+
+            _node = block_node_create(
+                TAG_HTMLBLOCK
+                , 0
+                , 2
+                , $1
+                , $2
+            );
+
+            $$ = _node;
+            fprintf(stderr, "htmlblock 1: %s\n", $1);
+        }
+
+    | HTMLBLOCK LINEBREAK {
+            tag_check_stack(TAG_HTMLBLOCK, 0);
+            blocknode_create(
+                    TAG_HTMLBLOCK
+                    , 0
+                    , 2
+                    , $1
+                    , ""
+                );
+
+            _node = block_node_create(
+                TAG_HTMLBLOCK
+                , 0
+                , 2
+                , $1
+                , ""
+            );
+
+            $$ = _node;
+            fprintf(stderr, "htmlblock 2: %s\n", $1);
+        }
+
+    | HTMLBLOCK error {
+            tag_check_stack(TAG_HTMLBLOCK, 0);
+            blocknode_create(
+                    TAG_HTMLBLOCK
+                    , 0
+                    , 2
+                    , $1
+                    , ""
+                );
+
+            _node = block_node_create(
+                TAG_HTMLBLOCK
+                , 0
+                , 2
+                , $1
+                , ""
+            );
+
+            $$ = _node;
+            fprintf(stderr, "htmlblock 3: %s\n", $1);
+        }
+    ;
+
 
 lines:
     lines line {
@@ -893,28 +964,6 @@ line:
     | VSECTION LINEBREAK {
             tag_check_stack(TAG_VSECTION, -1); 
             blocknode_create(TAG_VSECTION, -1, 1, $1);
-        }
-
-    | HTMLBLOCK TEXT LINEBREAK {
-            tag_check_stack(TAG_HTMLBLOCK, 0);
-            blocknode_create(
-                    TAG_HTMLBLOCK
-                    , 0
-                    , 2
-                    , $1
-                    , $2
-                );
-        }
-
-    | HTMLBLOCK LINEBREAK {
-            tag_check_stack(TAG_HTMLBLOCK, 0);
-            blocknode_create(
-                    TAG_HTMLBLOCK
-                    , 0
-                    , 2
-                    , $1
-                    , ""
-                );
         }
 
     | SCRIPTSTART inlineelements SCRIPTEND {
