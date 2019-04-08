@@ -47,8 +47,11 @@ static char *block_pre_post_parse(t_node *);
 static char *pre_pre_parse(t_node *);
 static char *pre_post_parse(t_node *);
 
-static char *rawhtml_pre_parse(t_node *);
-static char *rawhtml_post_parse(t_node *);
+static char *htmlblock_pre_parse(t_node *);
+static char *htmlblock_post_parse(t_node *);
+
+static char *pairedblock_pre_parse(t_node *);
+static char *pairedblock_post_parse(t_node *);
 
 
 static t_parser *get_parser(t_node *node) {
@@ -172,11 +175,22 @@ static t_parser *get_parser(t_node *node) {
 
 
         /**
-         * rawhtml parsers
+         * htmlblock parsers
          */
         case TAG_HTMLBLOCK:
-            p->pre_parse = rawhtml_pre_parse;
-            p->post_parse = rawhtml_post_parse;
+            p->pre_parse = htmlblock_pre_parse;
+            p->post_parse = htmlblock_post_parse;
+            break;
+
+
+        /**
+         * pairedblock parsers
+         */
+        case TAG_SCRIPTBLOCK:
+        case TAG_STYLEBLOCK:
+        case TAG_SVGBLOCK:
+            p->pre_parse = pairedblock_pre_parse;
+            p->post_parse = pairedblock_post_parse;
             break;
 
 
@@ -466,9 +480,9 @@ static char *pre_post_parse(t_node *node) {
 
 
 /**
- * rawhtml parsers
+ * htmlblock parsers
  */
-static char *rawhtml_pre_parse(t_node *node) {
+static char *htmlblock_pre_parse(t_node *node) {
     return str_format(
         "\n%s%s%s"
         , str_padding_left("", node->level * 4)
@@ -477,7 +491,27 @@ static char *rawhtml_pre_parse(t_node *node) {
     );
 }
 
-static char *rawhtml_post_parse(t_node *node) {
+static char *htmlblock_post_parse(t_node *node) {
+    return str_format(
+        ""
+    );
+}
+
+
+/**
+ * pairedblock parsers
+ */
+static char *pairedblock_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s%s%s%s"
+        , str_padding_left("", node->level * 4)
+        , *node->ops
+        , *(node->ops + 1)
+        , *(node->ops + 2)
+    );
+}
+
+static char *pairedblock_post_parse(t_node *node) {
     return str_format(
         ""
     );

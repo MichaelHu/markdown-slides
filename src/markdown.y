@@ -57,7 +57,7 @@ t_node *_node, *_tail_node;
 %type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
-%type <node> raw_html
+%type <node> htmlblock pairedblock
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -161,7 +161,10 @@ block:
     | block_indented_pre {
             $$ = $1;
         }
-    | raw_html {
+    | htmlblock {
+            $$ = $1;
+        }
+    | pairedblock {
             $$ = $1;
         }
     ;
@@ -216,7 +219,7 @@ header:
         }   
     ;
 
-raw_html:
+htmlblock:
     HTMLBLOCK TEXT LINEBREAK {
             tag_check_stack(TAG_HTMLBLOCK, 0);
             blocknode_create(
@@ -343,6 +346,7 @@ line_p:
             );
             $$ = _node;
         } 
+
     | TRIPLEBACKTICK codespan error     { 
             blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
             blocklist_parse(); 
@@ -357,6 +361,21 @@ line_p:
             );
             $$ = _node;
         }
+
+    | SCRIPTSTART inlineelements error {
+            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
+            blocklist_parse(); 
+
+            tag_info = markdown_get_tag_info(str_concat($1, $2));
+            _node = block_node_create(
+                TAG_P
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        } 
     ;
 
 block_blank: 
@@ -948,6 +967,146 @@ line_indented_pre:
     ;
 
 
+pairedblock:
+    SCRIPTSTART inlineelements SCRIPTEND {
+            tag_check_stack(TAG_SCRIPTBLOCK, 0);
+            blocknode_create(
+                    TAG_SCRIPTBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , $2
+                    , $3
+                );
+
+            _node = block_node_create(
+                TAG_SCRIPTBLOCK
+                , 0
+                , 3
+                , $1
+                , $2
+                , $3
+            );
+
+            $$ = _node;
+        } 
+
+    | SCRIPTSTART SCRIPTEND {
+            tag_check_stack(TAG_SCRIPTBLOCK, 0);
+            blocknode_create(
+                    TAG_SCRIPTBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , ""
+                    , $2
+                );
+
+            _node = block_node_create(
+                TAG_SCRIPTBLOCK
+                , 0
+                , 3
+                , $1
+                , ""
+                , $2
+            );
+
+            $$ = _node;
+        } 
+
+    | STYLESTART inlineelements STYLEEND {
+            tag_check_stack(TAG_STYLEBLOCK, 0);
+            blocknode_create(
+                    TAG_STYLEBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , $2
+                    , $3
+                );
+
+            _node = block_node_create(
+                TAG_SCRIPTBLOCK
+                , 0
+                , 3
+                , $1
+                , $2
+                , $3
+            );
+
+            $$ = _node;
+        } 
+
+    | STYLESTART STYLEEND {
+            tag_check_stack(TAG_STYLEBLOCK, 0);
+            blocknode_create(
+                    TAG_STYLEBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , ""
+                    , $2
+                );
+
+            _node = block_node_create(
+                TAG_SCRIPTBLOCK
+                , 0
+                , 3
+                , $1
+                , ""
+                , $2
+            );
+
+            $$ = _node;
+        } 
+
+    | SVGSTART inlineelements SVGEND {
+            tag_check_stack(TAG_SVGBLOCK, 0);
+            blocknode_create(
+                    TAG_SVGBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , $2
+                    , $3
+                );
+
+            _node = block_node_create(
+                TAG_SVGBLOCK
+                , 0
+                , 3
+                , $1
+                , $2
+                , $3
+            );
+
+            $$ = _node;
+        } 
+
+    | SVGSTART SVGEND {
+            tag_check_stack(TAG_SVGBLOCK, 0);
+            blocknode_create(
+                    TAG_SVGBLOCK
+                    , 0
+                    , 3
+                    , $1
+                    , ""
+                    , $2
+                );
+
+            _node = block_node_create(
+                TAG_SVGBLOCK
+                , 0
+                , 3
+                , $1
+                , ""
+                , $2
+            );
+
+            $$ = _node;
+        } 
+    ;
+
 
 
 line:
@@ -964,93 +1123,6 @@ line:
     | VSECTION LINEBREAK {
             tag_check_stack(TAG_VSECTION, -1); 
             blocknode_create(TAG_VSECTION, -1, 1, $1);
-        }
-
-    | SCRIPTSTART inlineelements SCRIPTEND {
-            tag_check_stack(TAG_SCRIPTBLOCK, 0);
-            blocknode_create(
-                    TAG_SCRIPTBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , $2
-                    , $3
-                );
-        } 
-
-    | SCRIPTSTART SCRIPTEND {
-            tag_check_stack(TAG_SCRIPTBLOCK, 0);
-            blocknode_create(
-                    TAG_SCRIPTBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , ""
-                    , $2
-                );
-        } 
-
-    | SCRIPTSTART error LINEBREAK {
-            fprintf(stderr, "expect </script>\n");
-        } 
-
-    | SVGSTART inlineelements SVGEND {
-            tag_check_stack(TAG_SVGBLOCK, 0);
-            blocknode_create(
-                    TAG_SVGBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , $2
-                    , $3
-                );
-        } 
-
-    | SVGSTART SVGEND {
-            tag_check_stack(TAG_SVGBLOCK, 0);
-            blocknode_create(
-                    TAG_SVGBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , ""
-                    , $2
-                );
-        } 
-
-    | SVGSTART error LINEBREAK {
-            fprintf(stderr, "expect </svg>\n");
-        } 
-
-    | STYLESTART inlineelements STYLEEND {
-            tag_check_stack(TAG_STYLEBLOCK, 0);
-            blocknode_create(
-                    TAG_STYLEBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , $2
-                    , $3
-                );
-        } 
-
-    | STYLESTART STYLEEND {
-            tag_check_stack(TAG_STYLEBLOCK, 0);
-            blocknode_create(
-                    TAG_STYLEBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , ""
-                    , $2
-                );
-        } 
-
-    | error LINEBREAK { 
-            /* set error indent level: 100 */
-            blocknode_create(TAG_ERROR, 100, 1, str_format("%s", "@error@")); 
-            yyerrok; 
-            yyclearin; 
         }
     ;
 
