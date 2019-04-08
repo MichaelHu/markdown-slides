@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
+#include "strutils.h"
 #include "htmltags.h" 
 #include "blocknode.h" 
 #include "node.h"
@@ -66,14 +67,15 @@ markdownfile:
     blocks { 
             blocknode_create(TAG_EOF, -2, 1, ""); 
             blocklist_parse(); 
+
             complement_block_nodes($1); 
             rearrange_block_nodes($1);
             // fprintf( stderr, "==== traverse ====\n" ); 
             // traverse_nodes($1); 
             fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
-            fprintf( stderr, "==== traverse again ====\n" ); 
-            traverse_nodes($1); 
+            // fprintf( stderr, "==== traverse again ====\n" ); 
+            // traverse_nodes($1); 
             fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
         }
@@ -731,7 +733,8 @@ block_pre:
             _node = block_node_create(
                 TAG_BLOCK_PRE 
                 , $1->level
-                , 0
+                , 1
+                , *($1->ops)
             );
 
             _node->children = $1;
@@ -768,6 +771,26 @@ line_pre:
             );
             $$ = _node;
         }
+    | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
+            tag_check_stack(TAG_PRE, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                    TAG_PRE
+                    , 0
+                    , 2
+                    , tag_info -> attr
+                    , tag_info -> content
+                );
+
+            _node = block_node_create(
+                TAG_PRE
+                , 0
+                , 2
+                , tag_info -> attr
+                , tag_info -> content
+            );
+            $$ = _node;
+        }
     ;
 
 
@@ -783,7 +806,8 @@ block_indented_pre:
             _node = block_node_create(
                 TAG_BLOCK_INDENT_PRE 
                 , $1->level
-                , 0
+                , 1
+                , *($1->ops)
             );
 
             _node->children = $1;
@@ -820,26 +844,6 @@ line_indented_pre:
                     tag_info -> content
                     , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
                 )
-            );
-            $$ = _node;
-        }
-    | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
-            tag_check_stack(TAG_PRE, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_PRE
-                    , 0
-                    , 2
-                    , tag_info -> attr
-                    , tag_info -> content
-                );
-
-            _node = block_node_create(
-                TAG_PRE
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
             );
             $$ = _node;
         }

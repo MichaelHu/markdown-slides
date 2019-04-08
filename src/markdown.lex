@@ -96,7 +96,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
     /* double-backtick will be teated as plain text */
 <INITIAL,TABLEROW>"``"                  { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 
-^"```"                                  { P("TRIPLEBACKTICK"); enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
+^```.*\r?\n                             { P("TRIPLEBACKTICK"); enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 <XCODEBLOCK>.                           { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
 <XCODEBLOCK>\r?\n                       { P("CODETEXT"); yylval.text = strdup(yytext);
                                            yylineno++; return CODETEXT; }

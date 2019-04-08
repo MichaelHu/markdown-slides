@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include "strutils.h"
 #include "htmltags.h"
 #include "nodetree.h"
 #include "strbuf.h"
@@ -33,6 +34,12 @@ static char *p_pre_parse(t_node *);
 static char *p_post_parse(t_node *);
 static char *text_pre_parse(t_node *);
 static char *text_post_parse(t_node *);
+
+static char *block_pre_pre_parse(t_node *);
+static char *block_pre_post_parse(t_node *);
+static char *pre_pre_parse(t_node *);
+static char *pre_post_parse(t_node *);
+
 
 static t_parser *get_parser(t_node *node) {
     t_parser *p;
@@ -121,6 +128,22 @@ static t_parser *get_parser(t_node *node) {
             break;
 
 
+        /**
+         * code parsers
+         */
+        case TAG_BLOCK_PRE:
+        case TAG_BLOCK_INDENT_PRE:
+            p->pre_parse = block_pre_pre_parse;
+            p->post_parse = block_pre_post_parse;
+            break;
+        case TAG_PRE:
+        case TAG_INDENT_PRE:
+            p->pre_parse = pre_pre_parse;
+            p->post_parse = pre_post_parse;
+            break;
+
+
+
         default:
             break;
     }
@@ -157,9 +180,16 @@ void parse_node_tree(t_node *root) {
 
 
 /**
+ * ==========================================================
  * Parsers
  */
 
+
+
+
+/**
+ * list parsers
+ */
 static char *block_ul_pre_parse(t_node *node) {
     return str_format(
         "\n%s<ul>\n"
@@ -312,6 +342,38 @@ static char *text_pre_parse(t_node *node) {
 }
 
 static char *text_post_parse(t_node *node) {
+    return str_format(
+        ""
+    );
+}
+
+
+/**
+ * code parsers
+ */
+static char *block_pre_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s<pre><code%s>"
+        , str_padding_left("", node->level * 4)
+        , *node->ops
+    );
+}
+
+static char *block_pre_post_parse(t_node *node) {
+    return str_format(
+        "%s</code></pre>\n"
+        , str_padding_left("", node->level * 4)
+    );
+}
+
+static char *pre_pre_parse(t_node *node) {
+    return str_format(
+        "%s\n"
+        , str_trim_right(*(node->ops + 1))
+    );
+}
+
+static char *pre_post_parse(t_node *node) {
     return str_format(
         ""
     );

@@ -5,57 +5,6 @@
 #include "htmltags.h" 
 #include "config.h"
 
-
-char *str_concat(char *s1, char *s2){
-    char *_str;
-
-    _str = (char *)malloc(strlen(s1) + strlen(s2) + 1);     
-    sprintf(_str, "%s%s", s1, s2); 
-    return _str;
-}
-
-char *str_format(char *format, ...){
-    char *_str = NULL;
-    va_list args; 
-
-    _str = (char *)malloc(1000000);     
-    va_start(args, format);
-    vsprintf(_str, format, args); 
-    va_end(args);
-    return _str;
-}
-
-char *str_padding_left(char *s, int count){
-    char *_str, *ret;
-
-    /**
-     * 1. condition `0 == count` may lead to out of memory when count is less than 0
-     * 2. must use condition like `0 >= count`
-     */
-    if(0 >= count){
-        return s;
-    }
-
-    _str = (char *)malloc(count + 1);     
-    if(!_str){
-        fprintf(stderr, "out of memory!\n");
-        exit(1);
-    }
-
-    memset(_str, ' ', count);
-    _str[count] = 0;
-
-    ret = str_concat(_str, s);
-    free(_str);
-
-    return ret;
-}
-
-
-
-
-
-
 t_tag_info *markdown_get_tag_info(char *s){
     char *p = s, 
          *end,

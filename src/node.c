@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include "strutils.h"
 #include "htmltags.h"
 #include "node.h"
 
@@ -132,14 +133,14 @@ t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list ar
     if( ( p = 
             (t_node *)malloc(sizeof(t_node)) ) 
         == NULL){
-        fprintf(stderr, "out of memory");
+        fprintf(stderr, "node_create(): out of memory");
         exit(1);
     }
 
     if( ( p -> ops = 
             (char **)malloc(nops * sizeof(char *)) ) 
         == NULL){
-        fprintf(stderr, "out of memory");
+        fprintf(stderr, "node_create(): out of memory");
         exit(1);
     }
 
@@ -381,10 +382,10 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
     t_link *new_link = NULL;
     t_node *p, *tail, *tmp;
 
-    show_node(node);
+    // show_node(node);
 
     if (node->parent == node) {
-        fprintf(stderr, "1: parent self-looping\n");
+        fprintf(stderr, "visit_to_rearrange_block_node() 1: parent self-looping\n");
         show_node(node);
     }
 
@@ -393,16 +394,16 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
         /* indented block node */
         if (node->level > 0) {
             if (!prev_node) {
-                fprintf(stderr, "prev_node NULL\n");
+                // fprintf(stderr, "prev_node NULL\n");
             }
 
             p = prev_node;
 
-            fprintf(stderr, "search closest parent list_node\n");
+            // fprintf(stderr, "search closest parent list_node\n");
             while (p) {
 
                 if (p->parent == p) {
-                    fprintf(stderr, "2: parent self-looping\n");
+                    fprintf(stderr, "visit_to_rearrange_block_node() 2: parent self-looping\n");
                     show_node(node);
                 }
 
@@ -412,17 +413,17 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
 
                 p = p->parent;
             }
-            fprintf(stderr, "finish searching closest parent list_node\n");
-            show_node(p);
+            // fprintf(stderr, "finish searching closest parent list_node\n");
+            // show_node(p);
 
             if (!is_line_list_node(p)) {
-                fprintf(stderr, "error containing list node\n");
+                fprintf(stderr, "visit_to_rearrange_block_nod(): error containing list node\n");
             }
 
             new_link = (t_link *)malloc(sizeof(t_node));
             
             if (!p->children) {
-                fprintf(stderr, "p->children NULL\n");
+                // fprintf(stderr, "p->children NULL\n");
                 p->children = node;
 
                 /**
@@ -448,12 +449,12 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
                 node->prev = NULL;
             }
             else {
-                fprintf(stderr, "p->children exists\n");
+                // fprintf(stderr, "p->children exists\n");
                 tail = tail_node_in_list(p->children);
-                fprintf(stderr, "parent node:\n");
-                show_node(p);
-                fprintf(stderr, "tail node:\n");
-                show_node(tail);
+                // fprintf(stderr, "parent node:\n");
+                // show_node(p);
+                // fprintf(stderr, "tail node:\n");
+                // show_node(tail);
 
                 if (node->parent->children == node) {
                     node->parent->children = node->next;
