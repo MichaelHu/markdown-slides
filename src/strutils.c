@@ -91,5 +91,16 @@ char *str_trim_right(char *s) {
     return str;
 }
 
+int count_of_char(char *s, char c){
+    int count = 0;
+    while (*s) {
+        if (c == *s) {
+            count++;
+        }
+        s++;
+    }
+    return count;
+}
+
 
 

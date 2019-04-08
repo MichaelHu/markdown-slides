@@ -20,7 +20,6 @@ void output(char *format, ...);
 
 void remove_extra_blanklines_of_codeblock(void);
 
-int count_of_char(char *s, char c);
 char *get_open_header(t_blocknode *node);
 char *get_close_header(t_blocknode *node);
 
@@ -2075,17 +2074,6 @@ char *blocknode_glue(t_blocknode *top, t_blocknode *current) {
 
     output("%s", glue);
     return glue;
-}
-
-int count_of_char(char *s, char c){
-    int count = 0;
-    while(*s){
-        if(c == *s){
-            count++;
-        }
-        s++;
-    }
-    return count;
 }
 
 char *get_open_header(t_blocknode *node){

@@ -308,7 +308,8 @@ block_quote_p:
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_P
                 , $1->level
-                , 0
+                , 1
+                , *($1->ops)
             );
 
             _node->children = $1;

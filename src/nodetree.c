@@ -12,6 +12,9 @@ typedef struct {
     char *(*post_parse)(t_node *);
 } t_parser;
 
+static char *h_pre_parse(t_node *);
+static char *h_post_parse(t_node *);
+
 static char *block_ul_pre_parse(t_node *);
 static char *block_ul_post_parse(t_node *);
 static char *block_ol_pre_parse(t_node *);
@@ -32,6 +35,8 @@ static char *td_post_parse(t_node *);
 
 static char *p_pre_parse(t_node *);
 static char *p_post_parse(t_node *);
+static char *blockquote_p_pre_parse(t_node *);
+static char *blockquote_p_post_parse(t_node *);
 static char *text_pre_parse(t_node *);
 static char *text_post_parse(t_node *);
 
@@ -55,6 +60,15 @@ static t_parser *get_parser(t_node *node) {
     p->post_parse = NULL;
 
     switch (node->tag) {
+
+        /**
+         * header
+         */
+        case TAG_H:
+            p->pre_parse = h_pre_parse;
+            p->post_parse = h_post_parse;
+            break;
+
 
         /**
          * list 
@@ -104,7 +118,7 @@ static t_parser *get_parser(t_node *node) {
             break;
 
         /**
-         * paragraph, indented paragraph, indented text parsers
+         * paragraph, indented paragraph, indented text, and blockquote paragraph parsers
          */
         case TAG_BLOCK_P:
             p->pre_parse = p_pre_parse;
@@ -120,8 +134,13 @@ static t_parser *get_parser(t_node *node) {
                 p->post_parse = p_post_parse;
             }
             break;
+        case TAG_BLOCK_QUOTE_P:
+            p->pre_parse = blockquote_p_pre_parse;
+            p->post_parse = blockquote_p_post_parse;
+            break;
         case TAG_P:
         case TAG_INDENT_P:
+        case TAG_QUOTE_P:
         case TAG_INDENT_TEXT:
             p->pre_parse = text_pre_parse;
             p->post_parse = text_post_parse;
@@ -185,6 +204,24 @@ void parse_node_tree(t_node *root) {
  */
 
 
+/**
+ * header parsers
+ */
+static char *h_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s<h%d%s>%s"
+        , str_padding_left("", node->level * 4)
+        , count_of_char(*(node->ops + 2), '#') 
+        , *node->ops 
+        , *(node->ops + 1)
+    );
+};
+static char *h_post_parse(t_node *node) {
+    return str_format(
+        "</h%d>\n"
+        , count_of_char(*(node->ops + 2), '#') 
+    );
+}
 
 
 /**
@@ -317,7 +354,7 @@ static char *td_post_parse(t_node *node) {
 
 
 /**
- * paragraph, indented paragraph, indented text parsers
+ * paragraph, indented paragraph, indented text, blockquote paragraph parsers
  */
 static char *p_pre_parse(t_node *node) {
     return str_format(
@@ -330,6 +367,21 @@ static char *p_pre_parse(t_node *node) {
 static char *p_post_parse(t_node *node) {
     return str_format(
         "\n%s</p>\n"
+        , str_padding_left("", node->level * 4)
+    );
+}
+
+static char *blockquote_p_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s<blockquote><p%s>"
+        , str_padding_left("", node->level * 4)
+        , *node->ops
+    );
+}
+
+static char *blockquote_p_post_parse(t_node *node) {
+    return str_format(
+        "\n%s</p></blockquote>"
         , str_padding_left("", node->level * 4)
     );
 }
