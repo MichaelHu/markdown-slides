@@ -186,6 +186,32 @@ header:
 
             $$ = _node;
         }   
+
+    | QUOTEH headertext LINEBREAK { 
+            tag_check_stack(TAG_QUOTE_H, 0); 
+            tag_info = markdown_get_tag_info($2);
+            blocknode_create(
+                TAG_QUOTE_H
+                , 0
+                , 3
+                , $1
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            _node = block_node_create(
+                TAG_QUOTE_H
+                , 0
+                , 3
+                , tag_info->attr
+                , tag_info->content
+                , $1
+            );
+
+            $$ = _node;
+        }   
+
+
     ;
 
 lines:
@@ -868,20 +894,6 @@ line:
             tag_check_stack(TAG_VSECTION, -1); 
             blocknode_create(TAG_VSECTION, -1, 1, $1);
         }
-
-    | QUOTEH plaintext LINEBREAK { 
-            tag_check_stack(TAG_QUOTE_H, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_H
-                , 0
-                , 3
-                , $1
-                , tag_info->attr
-                , tag_info->content
-            );
-        }   
-
 
     | HTMLBLOCK TEXT LINEBREAK {
             tag_check_stack(TAG_HTMLBLOCK, 0);

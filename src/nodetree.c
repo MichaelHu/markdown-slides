@@ -14,6 +14,8 @@ typedef struct {
 
 static char *h_pre_parse(t_node *);
 static char *h_post_parse(t_node *);
+static char *quote_h_pre_parse(t_node *);
+static char *quote_h_post_parse(t_node *);
 
 static char *block_ul_pre_parse(t_node *);
 static char *block_ul_post_parse(t_node *);
@@ -67,6 +69,10 @@ static t_parser *get_parser(t_node *node) {
         case TAG_H:
             p->pre_parse = h_pre_parse;
             p->post_parse = h_post_parse;
+            break;
+        case TAG_QUOTE_H:
+            p->pre_parse = quote_h_pre_parse;
+            p->post_parse = quote_h_post_parse;
             break;
 
 
@@ -219,6 +225,22 @@ static char *h_pre_parse(t_node *node) {
 static char *h_post_parse(t_node *node) {
     return str_format(
         "</h%d>\n"
+        , count_of_char(*(node->ops + 2), '#') 
+    );
+}
+
+static char *quote_h_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s<blockquote><h%d%s>%s"
+        , str_padding_left("", node->level * 4)
+        , count_of_char(*(node->ops + 2), '#') 
+        , *node->ops 
+        , *(node->ops + 1)
+    );
+};
+static char *quote_h_post_parse(t_node *node) {
+    return str_format(
+        "</h%d></blockquote>\n"
         , count_of_char(*(node->ops + 2), '#') 
     );
 }
