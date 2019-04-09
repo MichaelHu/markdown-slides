@@ -76,8 +76,8 @@ markdownfile:
             // traverse_nodes($1); 
             // fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
-            fprintf( stderr, "==== traverse again ====\n" ); 
-            traverse_nodes($1); 
+            // fprintf( stderr, "==== traverse again ====\n" ); 
+            // traverse_nodes($1); 
             // fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
         }
@@ -248,11 +248,36 @@ raw_text:
             $$ = _node;
         }
 
-    | SCRIPTSTART inlineelements error {
-            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
-            blocklist_parse(); 
+    | SCRIPTSTART inline_elements error {
+            tag_info = markdown_get_tag_info(str_concat($1, *($2->ops + 1)));
+            _node = line_node_create(
+                TAG_RAW_TEXT
+                , 0
+                , 2
+                , tag_info->attr
+                , tag_info->content
+            );
 
-            tag_info = markdown_get_tag_info(str_concat($1, $2));
+            $$ = _node;
+            yyerrok;
+        } 
+
+    | STYLESTART inline_elements error {
+            tag_info = markdown_get_tag_info(str_concat($1, *($2->ops + 1)));
+            _node = line_node_create(
+                TAG_RAW_TEXT
+                , 0
+                , 2
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            $$ = _node;
+            yyerrok;
+        } 
+
+    | SVGSTART inline_elements error {
+            tag_info = markdown_get_tag_info(str_concat($1, *($2->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
                 , 0
@@ -405,24 +430,20 @@ block_quote_p:
     ;
 
 line_quote_p:
-    LARGERTHAN inlineelements LINEBREAK { 
+    LARGERTHAN inline_elements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_P, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_P
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_QUOTE_P
                 , 0
                 , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , *($2->ops)
+                , *($2->ops + 1)
             );
+
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         } 
     ;
@@ -448,37 +469,25 @@ block_ul:
     ;
 
 line_ul:
-    ULSTART inlineelements LINEBREAK { 
+    ULSTART inline_elements LINEBREAK { 
             tag_check_stack(TAG_UL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_UL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_UL
                 , 0
                 , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , *($2->ops)
+                , *($2->ops + 1)
             );
+
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         } 
 
     | ULSTART LINEBREAK { 
             tag_check_stack(TAG_UL, 0); 
-            blocknode_create(
-                TAG_UL
-                , 0
-                , 2
-                , ""
-                , ""
-            );
-
             _node = line_node_create(
                 TAG_UL
                 , 0
@@ -511,26 +520,20 @@ block_indent_ul:
     ;
 
 line_indent_ul:
-    ULINDENT ULSTART inlineelements LINEBREAK { 
+    ULINDENT ULSTART inline_elements LINEBREAK { 
             tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
-            tag_info = markdown_get_tag_info($3);
-            blocknode_create(
-                TAG_INDENT_UL
-                , indent_level($1)
-                , 3
-                , $1
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            tag_info = markdown_get_tag_info(*($3->ops + 1));
 
             _node = line_node_create(
                 TAG_INDENT_UL
                 , indent_level($1)
-                , 3
-                , tag_info -> attr
-                , tag_info -> content
-                , $1
+                , 2
+                , *($3->ops)
+                , *($3->ops + 1)
             );
+
+            _node->children = $3;
+            $3->parent = _node;
             $$ = _node;
         } 
     ;
@@ -556,24 +559,20 @@ block_quote_ul:
     ;
 
 line_quote_ul:
-    QUOTEULSTART inlineelements LINEBREAK { 
+    QUOTEULSTART inline_elements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_UL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_UL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_QUOTE_UL
                 , 0
                 , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , *($2->ops)
+                , *($2->ops + 1)
             );
+
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         } 
     ;
@@ -602,35 +601,24 @@ block_ol:
     ;
 
 line_ol:
-    OLSTART inlineelements LINEBREAK { 
+    OLSTART inline_elements LINEBREAK { 
             tag_check_stack(TAG_OL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_OL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_OL
                 , 0
                 , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , *($2->ops)
+                , *($2->ops + 1)
             );
+
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         } 
     | OLSTART LINEBREAK { 
             tag_check_stack(TAG_OL, 0); 
-            blocknode_create(
-                TAG_OL
-                , 0
-                , 2
-                , ""
-                , ""
-            );
 
             _node = line_node_create(
                 TAG_OL
@@ -664,26 +652,20 @@ block_indent_ol:
     ;
 
 line_indent_ol:
-    OLINDENT OLSTART inlineelements LINEBREAK { 
+    OLINDENT OLSTART inline_elements LINEBREAK { 
             tag_check_stack(TAG_INDENT_OL, indent_level($1)); 
-            tag_info = markdown_get_tag_info($3);
-            blocknode_create(
-                TAG_INDENT_OL
-                , indent_level($1)
-                , 3
-                , $1
-                , tag_info -> attr
-                , tag_info -> content
-            );
+            tag_info = markdown_get_tag_info(*($3->ops + 1));
 
             _node = line_node_create(
                 TAG_INDENT_OL
                 , indent_level($1)
-                , 3
-                , tag_info -> attr
-                , tag_info -> content
-                , $1
+                , 2
+                , *($3->ops)
+                , *($3->ops + 1)
             );
+
+            _node->children = $3;
+            $3->parent = _node;
             $$ = _node;
         } 
     ;
@@ -709,24 +691,20 @@ block_quote_ol:
     ;
 
 line_quote_ol:
-    QUOTEOLSTART inlineelements LINEBREAK { 
+    QUOTEOLSTART inline_elements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_OL, 0); 
-            tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_OL
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-                );
+            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_QUOTE_OL
                 , 0
                 , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , *($2->ops)
+                , *($2->ops + 1)
             );
+
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         } 
     ;
@@ -747,6 +725,7 @@ block_indent_text:
                 , 1
                 , *($1->ops)
             );
+
             _node->children = $1;
             $1->parent = _node;
             $$ = _node;
@@ -754,7 +733,7 @@ block_indent_text:
     ;
 
 line_indent_text:
-    TEXTINDENT inlineelements LINEBREAK { 
+    TEXTINDENT inline_elements LINEBREAK { 
             /*
              *      * list
              *          content
@@ -770,6 +749,8 @@ line_indent_text:
              *      <ul><li>list
              *      <p>content</p></li>
              */
+
+            /*
             if(is_last_tag_blank()){
                 tag_check_stack(TAG_INDENT_P, indent_level($1)); 
                 tag_info = markdown_get_tag_info($2);
@@ -794,15 +775,21 @@ line_indent_text:
                     , tag_info -> content
                 );
             }
+            */
+
+            tag_check_stack(TAG_INDENT_TEXT, indent_level($1)); 
+            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_INDENT_TEXT
                 , indent_level($1)
-                , 3
-                , tag_info -> attr
-                , tag_info -> content
-                , $1
+                , 2
+                , *($2->ops)
+                , *($2->ops + 1)
             );
+
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         } 
     ;
@@ -938,138 +925,93 @@ line_indented_pre:
 
 
 pairedblock:
-    SCRIPTSTART inlineelements SCRIPTEND {
+    SCRIPTSTART inline_elements SCRIPTEND {
             tag_check_stack(TAG_SCRIPTBLOCK, 0);
-            blocknode_create(
-                    TAG_SCRIPTBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , $2
-                    , $3
-                );
 
             _node = block_node_create(
                 TAG_SCRIPTBLOCK
                 , 0
-                , 3
+                , 2
                 , $1
-                , $2
                 , $3
             );
+
+            _node->children = $2;
+            $2->parent = _node;
 
             $$ = _node;
         } 
 
     | SCRIPTSTART SCRIPTEND {
             tag_check_stack(TAG_SCRIPTBLOCK, 0);
-            blocknode_create(
-                    TAG_SCRIPTBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , ""
-                    , $2
-                );
 
             _node = block_node_create(
                 TAG_SCRIPTBLOCK
                 , 0
-                , 3
+                , 2
                 , $1
-                , ""
                 , $2
             );
 
             $$ = _node;
         } 
 
-    | STYLESTART inlineelements STYLEEND {
+    | STYLESTART inline_elements STYLEEND {
             tag_check_stack(TAG_STYLEBLOCK, 0);
-            blocknode_create(
-                    TAG_STYLEBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , $2
-                    , $3
-                );
 
             _node = block_node_create(
-                TAG_SCRIPTBLOCK
+                TAG_STYLEBLOCK
                 , 0
-                , 3
+                , 2
                 , $1
-                , $2
                 , $3
             );
+
+            _node->children = $2;
+            $2->parent = _node;
 
             $$ = _node;
         } 
 
     | STYLESTART STYLEEND {
             tag_check_stack(TAG_STYLEBLOCK, 0);
-            blocknode_create(
-                    TAG_STYLEBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , ""
-                    , $2
-                );
 
             _node = block_node_create(
-                TAG_SCRIPTBLOCK
+                TAG_STYLEBLOCK
                 , 0
-                , 3
+                , 2
                 , $1
-                , ""
                 , $2
             );
 
             $$ = _node;
         } 
 
-    | SVGSTART inlineelements SVGEND {
+    | SVGSTART inline_elements SVGEND {
             tag_check_stack(TAG_SVGBLOCK, 0);
-            blocknode_create(
-                    TAG_SVGBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , $2
-                    , $3
-                );
 
             _node = block_node_create(
                 TAG_SVGBLOCK
                 , 0
-                , 3
+                , 2
                 , $1
-                , $2
                 , $3
             );
+
+            _node->children = $2;
+            $2->parent = _node;
 
             $$ = _node;
         } 
 
     | SVGSTART SVGEND {
             tag_check_stack(TAG_SVGBLOCK, 0);
-            blocknode_create(
-                    TAG_SVGBLOCK
-                    , 0
-                    , 3
-                    , $1
-                    , ""
-                    , $2
-                );
 
             _node = block_node_create(
                 TAG_SVGBLOCK
                 , 0
-                , 3
+                , 2
                 , $1
-                , ""
                 , $2
             );
 

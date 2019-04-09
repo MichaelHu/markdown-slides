@@ -369,10 +369,10 @@ static t_link *visit_nonblock_node(t_node *node) {
 }
 
 void complement_block_nodes(t_node *root) {
-    fprintf(stderr, "===========fix_parent_links===========\n");
+    // fprintf(stderr, "===========fix_parent_links===========\n");
     check_parent_links(root);
 
-    fprintf(stderr, "===========complement_block_nodes===========\n");
+    // fprintf(stderr, "===========complement_block_nodes===========\n");
     traverse_nodes_with_visitor(root, visit_nonblock_node, 0);
 }
 

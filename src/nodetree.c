@@ -147,7 +147,7 @@ static t_parser *get_parser(t_node *node) {
              * 1. parse only if it's not the first child
              * 2. if it's the first child, it outputs nothing
              */
-            if (node->prev) {
+            if (node->prev && node->prev->tag != TAG_INLINE_ELEMENTS) {
                 p->pre_parse = p_pre_parse;
                 p->post_parse = p_post_parse;
             }
@@ -156,12 +156,17 @@ static t_parser *get_parser(t_node *node) {
             p->pre_parse = blockquote_p_pre_parse;
             p->post_parse = blockquote_p_post_parse;
             break;
-        /*
+
         case TAG_P:
-        */
         case TAG_INDENT_P:
-        case TAG_QUOTE_P:
         case TAG_INDENT_TEXT:
+        case TAG_QUOTE_P:
+            /**
+             * 1. these line-level tags contain tag TAG_INLINE_TEXT
+             * 2. so, they don't need to output
+             */
+            break;
+
         case TAG_INLINE_TEXT:
             p->pre_parse = text_pre_parse;
             p->post_parse = text_post_parse;
@@ -229,7 +234,7 @@ static t_link *pre_visit_parse(t_node *node) {
     if (p->pre_parse) {
         output = p->pre_parse(node);
         // fprintf(stderr, "pre_visit_parse: %s\n", output);
-        fprintf(stderr, "%s", output);
+        fprintf(stdout, "%s", output);
     }
     return NULL;
 }
@@ -240,7 +245,7 @@ static void post_visit_parse(t_node *node) {
     if (p->post_parse) {
         output = p->post_parse(node);
         // fprintf(stderr, "post_visit_parse: %s\n", output);
-        fprintf(stderr, "%s", output);
+        fprintf(stdout, "%s", output);
     }
     return;
 }
@@ -354,10 +359,9 @@ static char *block_quote_ol_post_parse(t_node *node) {
 
 static char *li_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<li%s>%s"
+        "\n%s<li%s>"
         , str_padding_left("", node->level * 4)
         , *node->ops
-        , *(node->ops + 1)
     );
 }
 
@@ -524,17 +528,17 @@ static char *raw_text_post_parse(t_node *node) {
  */
 static char *pairedblock_pre_parse(t_node *node) {
     return str_format(
-        "\n%s%s%s%s"
+        "\n%s%s"
         , str_padding_left("", node->level * 4)
         , *node->ops
-        , *(node->ops + 1)
-        , *(node->ops + 2)
     );
 }
 
 static char *pairedblock_post_parse(t_node *node) {
     return str_format(
-        ""
+        "%s%s\n"
+        , str_padding_left("", node->level * 4)
+        , *(node->ops + 1)
     );
 }
 
