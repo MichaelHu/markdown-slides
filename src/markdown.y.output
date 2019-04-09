@@ -143,7 +143,7 @@ Grammar
    78 tableceils: tableceils tableceil
    79           | tableceil
 
-   80 tableceil: inlineelements TABLECEILEND
+   80 tableceil: inline_elements TABLECEILEND
 
    81 line: QUOTEBLANKLINE
    82     | SECTION LINEBREAK
@@ -319,7 +319,7 @@ tableceil (82)
 line (83)
     on left: 81 82 83, on right: 28 29
 inline_elements (84)
-    on left: 84 85, on right: 32 84
+    on left: 84 85, on right: 32 80 84
 inline_element (85)
     on left: 86 87 88, on right: 84 85
 plaintext (86)
@@ -327,8 +327,8 @@ plaintext (86)
 text_list (87)
     on left: 91 92, on right: 89 90
 inlineelements (88)
-    on left: 93 94, on right: 26 38 41 45 48 51 55 58 61 69 71 73 80
-    93 97 98 99 100
+    on left: 93 94, on right: 26 38 41 45 48 51 55 58 61 69 71 73 93
+    97 98 99 100
 inlineelement (89)
     on left: 95 96 97 98 99 100, on right: 93 94
 headertext (90)
@@ -620,17 +620,19 @@ state 18
 
    77 tablerow: TABLEROWSTART . tableceils LINEBREAK
 
-    TEXT              shift, and go to state 75
-    SPECIALCHAR       shift, and go to state 76
-    UNDERSCORE        shift, and go to state 78
-    STAR              shift, and go to state 79
-    DOUBLESTAR        shift, and go to state 80
-    DOUBLEUNDERSCORE  shift, and go to state 81
+    TEXT         shift, and go to state 5
+    SPECIALCHAR  shift, and go to state 6
+    LINK         shift, and go to state 15
+    BACKTICK     shift, and go to state 16
 
-    tableceils      go to state 94
-    tableceil       go to state 95
-    inlineelements  go to state 96
-    inlineelement   go to state 83
+    tableceils       go to state 94
+    tableceil        go to state 95
+    inline_elements  go to state 96
+    inline_element   go to state 64
+    plaintext        go to state 65
+    text_list        go to state 66
+    link             go to state 67
+    inline_code      go to state 68
 
 
 state 19
@@ -1423,17 +1425,19 @@ state 94
    77 tablerow: TABLEROWSTART tableceils . LINEBREAK
    78 tableceils: tableceils . tableceil
 
-    TEXT              shift, and go to state 75
-    SPECIALCHAR       shift, and go to state 76
-    UNDERSCORE        shift, and go to state 78
-    STAR              shift, and go to state 79
-    LINEBREAK         shift, and go to state 147
-    DOUBLESTAR        shift, and go to state 80
-    DOUBLEUNDERSCORE  shift, and go to state 81
+    TEXT         shift, and go to state 5
+    SPECIALCHAR  shift, and go to state 6
+    LINK         shift, and go to state 15
+    BACKTICK     shift, and go to state 16
+    LINEBREAK    shift, and go to state 147
 
-    tableceil       go to state 148
-    inlineelements  go to state 96
-    inlineelement   go to state 83
+    tableceil        go to state 148
+    inline_elements  go to state 96
+    inline_element   go to state 64
+    plaintext        go to state 65
+    text_list        go to state 66
+    link             go to state 67
+    inline_code      go to state 68
 
 
 state 95
@@ -1445,18 +1449,20 @@ state 95
 
 state 96
 
-   80 tableceil: inlineelements . TABLECEILEND
-   93 inlineelements: inlineelements . inlineelement
+   80 tableceil: inline_elements . TABLECEILEND
+   84 inline_elements: inline_elements . inline_element
 
-    TEXT              shift, and go to state 75
-    SPECIALCHAR       shift, and go to state 76
-    TABLECEILEND      shift, and go to state 149
-    UNDERSCORE        shift, and go to state 78
-    STAR              shift, and go to state 79
-    DOUBLESTAR        shift, and go to state 80
-    DOUBLEUNDERSCORE  shift, and go to state 81
+    TEXT          shift, and go to state 5
+    SPECIALCHAR   shift, and go to state 6
+    LINK          shift, and go to state 15
+    BACKTICK      shift, and go to state 16
+    TABLECEILEND  shift, and go to state 149
 
-    inlineelement  go to state 139
+    inline_element  go to state 125
+    plaintext       go to state 65
+    text_list       go to state 66
+    link            go to state 67
+    inline_code     go to state 68
 
 
 state 97
@@ -1931,7 +1937,7 @@ state 148
 
 state 149
 
-   80 tableceil: inlineelements TABLECEILEND .
+   80 tableceil: inline_elements TABLECEILEND .
 
     $default  reduce using rule 80 (tableceil)
 

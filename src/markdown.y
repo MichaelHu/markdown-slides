@@ -67,8 +67,8 @@ t_node *_node, *_tail_node, *_tmp_node;
 
 markdownfile: 
     blocks { 
-            blocknode_create(TAG_EOF, -2, 1, ""); 
-            blocklist_parse(); 
+            // blocknode_create(TAG_EOF, -2, 1, ""); 
+            // blocklist_parse(); 
 
             complement_block_nodes($1); 
             rearrange_block_nodes($1);
@@ -1127,18 +1127,18 @@ tableceils:
     ;
 
 tableceil:
-    inlineelements TABLECEILEND                         {
-                                                            tag_info = markdown_get_tag_info($1);
-                                                            // fprintf(stderr, "inlineelements: %s; attr: %s; content: %s\n", $1, tag_info->attr, tag_info->content);
-                                                            _node = inline_node_create(
-                                                                TAG_TD
-                                                                , 2
-                                                                , 2
-                                                                , tag_info -> attr
-                                                                , tag_info -> content
-                                                            );
-                                                            $$ = _node;
-                                                        }
+    inline_elements TABLECEILEND {
+            _node = inline_node_create(
+                TAG_TD
+                , 2
+                , 1
+                , *($1->ops)
+            );
+
+            _node->children = $1;
+            $1->parent = _node;
+            $$ = _node;
+        }
     ;
 
 
@@ -1189,7 +1189,13 @@ inline_elements:
     ;
 
 inline_element:
-    plaintext { $$ = $1; }
+    plaintext { 
+            tag_info = markdown_get_tag_info(*($1->ops + 1));     
+            *($1->ops) = tag_info->attr;
+            *($1->ops + 1) = tag_info->content;
+
+            $$ = $1; 
+        }
     | link { $$ = $1; }
     | inline_code { $$ = $1; }
     ;
@@ -1197,7 +1203,6 @@ inline_element:
 plaintext:
     plaintext text_list {
             *($1->ops + 1) = str_concat(*($1->ops + 1), $2);
-            fprintf(stderr, "plaintext: %s\n", *($1->ops + 1));
             $$ = $1;
         } 
     | text_list {
@@ -1262,12 +1267,13 @@ headertext:
 link:                        
     LINK {
             tag_info = markdown_get_tag_info($1);
+            tag_info = markdown_get_tag_info(tag_info->content);
 
             _node = inline_node_create(
                 TAG_LINK
                 , 0
                 , 2 
-                , ""
+                , tag_info->attr
                 , tag_info->content
             );
 
@@ -1278,12 +1284,6 @@ link:
 inline_code:
     BACKTICK codespan BACKTICK { 
             tag_info = markdown_get_tag_info($2);
-            /*
-            $$ = create_codespan( 
-                tag_info -> attr
-                , html_escape(tag_info -> content) 
-            ); 
-            */
 
             _node = inline_node_create(
                 TAG_INLINE_CODE

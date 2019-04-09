@@ -192,12 +192,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); restoreState();  return LINEBREAK; }
 
     /* linkable text */
-\<(https?|ftp|ref):\/\/[^\r\n\>]+\>     {
+<INITIAL,TABLEROW>\<(https?|ftp|ref):\/\/[^\r\n\>]+\> {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
                                         }
-\<mailto:[^\r\n\>]+\>                   {
+<INITIAL,TABLEROW>\<mailto:[^\r\n\>]+\> {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;

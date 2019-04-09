@@ -406,10 +406,9 @@ static char *tr_post_parse(t_node *node) {
 
 static char *td_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<td%s>%s"
+        "\n%s<td%s>"
         , str_padding_left("", node->level * 4)
         , *node->ops
-        , *(node->ops + 1)
     );
 }
 

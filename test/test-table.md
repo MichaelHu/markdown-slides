@@ -1,4 +1,6 @@
-# table
+# test table
+
+## test 1
 
 |a|``b|c|
 |`1`|2|3|
@@ -6,32 +8,22 @@
 |hudamin|#dda|even|
 
 
+## test 2
 
-p1
-p1
-
-
-
-
-p2
-p2
+|年份|@[style="color: red;"]平均分|最低分|
+|2017|--|520|
+|2016|530|`@[style="color: blue;"]523`|
+|2015<http://258i.com>|--|503|
 
 
-# \`abc\`
+## test 3
 
-# \`<http://258i.com>\`
+|\|link\||
+|@[class="c-1"]`1`|2|3|
+|<mailto:hdm258i@gmail.com>|#dda|
+|http://fe.pub|#dda|
 
-* list 1
-* list 2
-* 
-* list 3
+## test 4
 
-
-
-* list 1
-* list 2
-* 
-* list 3
-    * a
-    * b
-    * c
+|<mailto:hdm258i@gmail.com>|#dda|
+|<http://258i.com|

@@ -71,17 +71,19 @@ t_tag_info *markdown_get_tag_info(char *s){
            )
         ) {
         end = strstr(p, ">");
-        size = end - p;
-        _str = (char *)malloc(size);
-        memset(_str, 0, size);
+        if (end) {
+            size = end - p;
+            _str = (char *)malloc(size);
+            memset(_str, 0, size);
 
-        start = p + 1;
-        if ( p == strstr(p, "<ref://") ) {
-            start += 6;
-            size -= 6;
+            start = p + 1;
+            if ( p == strstr(p, "<ref://") ) {
+                start += 6;
+                size -= 6;
+            }
+            strncpy(_str, start, size - 1);
+            info->content = _str;
         }
-        strncpy(_str, start, size - 1);
-        info->content = _str;
     }
 
     if(config_debug_tag_info){
