@@ -72,6 +72,8 @@ typedef enum {
     , TAG_SECTION
     , TAG_VSECTION
 
+    , TAG_RAW_TEXT
+
     , TAG_LINES
 
 

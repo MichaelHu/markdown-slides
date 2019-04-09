@@ -48,7 +48,7 @@ t_node *_node, *_tail_node, *_tmp_node;
 %type <text> codespan code_list error
 %type <node> blocks block
 %type <node> lines line
-%type <node> header
+%type <node> header raw_text pairedblock
 %type <node> tablerows tablerow tableceils tableceil
 %type <node> block_p line_p
 %type <node> block_blank line_blank
@@ -57,7 +57,6 @@ t_node *_node, *_tail_node, *_tmp_node;
 %type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
-%type <node> htmlblock pairedblock
 %type <node> inline_elements inline_element
 %type <node> plaintext link inline_code
 
@@ -163,10 +162,10 @@ block:
     | block_indented_pre {
             $$ = $1;
         }
-    | htmlblock {
+    | pairedblock {
             $$ = $1;
         }
-    | pairedblock {
+    | raw_text {
             $$ = $1;
         }
     ;
@@ -221,19 +220,12 @@ header:
         }   
     ;
 
-htmlblock:
-    HTMLBLOCK TEXT LINEBREAK {
-            tag_check_stack(TAG_HTMLBLOCK, 0);
-            blocknode_create(
-                    TAG_HTMLBLOCK
-                    , 0
-                    , 2
-                    , $1
-                    , $2
-                );
 
+raw_text: 
+    HTMLBLOCK TEXT LINEBREAK {
+            tag_check_stack(TAG_RAW_TEXT, 0);
             _node = block_node_create(
-                TAG_HTMLBLOCK
+                TAG_RAW_TEXT
                 , 0
                 , 2
                 , $1
@@ -241,21 +233,12 @@ htmlblock:
             );
 
             $$ = _node;
-            fprintf(stderr, "htmlblock 1: %s\n", $1);
         }
 
     | HTMLBLOCK LINEBREAK {
-            tag_check_stack(TAG_HTMLBLOCK, 0);
-            blocknode_create(
-                    TAG_HTMLBLOCK
-                    , 0
-                    , 2
-                    , $1
-                    , ""
-                );
-
+            tag_check_stack(TAG_RAW_TEXT, 0);
             _node = block_node_create(
-                TAG_HTMLBLOCK
+                TAG_RAW_TEXT
                 , 0
                 , 2
                 , $1
@@ -263,29 +246,39 @@ htmlblock:
             );
 
             $$ = _node;
-            fprintf(stderr, "htmlblock 2: %s\n", $1);
         }
 
-    | HTMLBLOCK error {
-            tag_check_stack(TAG_HTMLBLOCK, 0);
-            blocknode_create(
-                    TAG_HTMLBLOCK
-                    , 0
-                    , 2
-                    , $1
-                    , ""
-                );
+    | SCRIPTSTART inlineelements error {
+            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
+            blocklist_parse(); 
 
-            _node = block_node_create(
-                TAG_HTMLBLOCK
+            tag_info = markdown_get_tag_info(str_concat($1, $2));
+            _node = line_node_create(
+                TAG_RAW_TEXT
                 , 0
                 , 2
-                , $1
-                , ""
+                , tag_info->attr
+                , tag_info->content
             );
 
             $$ = _node;
-            fprintf(stderr, "htmlblock 3: %s\n", $1);
+            yyerrok;
+        } 
+
+    | TRIPLEBACKTICK codespan error     { 
+            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
+            blocklist_parse(); 
+
+            tag_info = markdown_get_tag_info(str_concat($1, $2));
+            _node = line_node_create(
+                TAG_RAW_TEXT
+                , 0
+                , 2
+                , tag_info->attr
+                , tag_info->content
+            );
+            $$ = _node;
+            yyerrok;
         }
     ;
 
@@ -351,58 +344,6 @@ line_p:
             _node->children = $1;
             $1->parent = _node;
 
-            $$ = _node;
-        } 
-
-    | TRIPLEBACKTICK codespan error     { 
-            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
-            blocklist_parse(); 
-
-            tag_info = markdown_get_tag_info(str_concat($1, $2));
-            _node = inline_node_create(
-                TAG_INLINE_TEXT
-                , 0
-                , 2
-                , tag_info->attr
-                , tag_info->content
-            );
-
-            _tmp_node = inline_node_create(
-                TAG_INLINE_ELEMENTS
-                , 0
-                , 2
-                , tag_info->attr
-                , tag_info->content
-            );
-
-            _tmp_node->children = _node;
-            _node->parent = _tmp_node;
-
-            _node = line_node_create(
-                TAG_P
-                , 0
-                , 1
-                , tag_info->attr
-            );
-            _node->children = _tmp_node;
-            _tmp_node->parent = _node;
-
-            $$ = _node;
-            yyerrok;
-        }
-
-    | SCRIPTSTART inlineelements error {
-            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
-            blocklist_parse(); 
-
-            tag_info = markdown_get_tag_info(str_concat($1, $2));
-            _node = line_node_create(
-                TAG_P
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
             $$ = _node;
         } 
     ;

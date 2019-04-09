@@ -47,8 +47,8 @@ static char *block_pre_post_parse(t_node *);
 static char *pre_pre_parse(t_node *);
 static char *pre_post_parse(t_node *);
 
-static char *htmlblock_pre_parse(t_node *);
-static char *htmlblock_post_parse(t_node *);
+static char *raw_text_pre_parse(t_node *);
+static char *raw_text_post_parse(t_node *);
 
 static char *pairedblock_pre_parse(t_node *);
 static char *pairedblock_post_parse(t_node *);
@@ -184,11 +184,11 @@ static t_parser *get_parser(t_node *node) {
 
 
         /**
-         * htmlblock parsers
+         * raw_text parsers
          */
-        case TAG_HTMLBLOCK:
-            p->pre_parse = htmlblock_pre_parse;
-            p->post_parse = htmlblock_post_parse;
+        case TAG_RAW_TEXT:
+            p->pre_parse = raw_text_pre_parse;
+            p->post_parse = raw_text_post_parse;
             break;
 
 
@@ -502,9 +502,9 @@ static char *pre_post_parse(t_node *node) {
 
 
 /**
- * htmlblock parsers
+ * raw_text parsers
  */
-static char *htmlblock_pre_parse(t_node *node) {
+static char *raw_text_pre_parse(t_node *node) {
     return str_format(
         "\n%s%s%s"
         , str_padding_left("", node->level * 4)
@@ -513,7 +513,7 @@ static char *htmlblock_pre_parse(t_node *node) {
     );
 }
 
-static char *htmlblock_post_parse(t_node *node) {
+static char *raw_text_post_parse(t_node *node) {
     return str_format(
         ""
     );
