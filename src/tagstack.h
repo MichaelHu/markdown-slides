@@ -5,33 +5,21 @@
 
 /* tag name representing each line */
 typedef enum {
-    TAG_ERROR
 
-    , TAG_HTMLBLOCK
-    , TAG_SCRIPTBLOCK
-    , TAG_STYLEBLOCK
-    , TAG_SVGBLOCK
+    /**
+     * inline-level tags
+     */
+    TAG_TD
 
-    , TAG_SECTION
-    , TAG_VSECTION
+
+    /**
+     * line-level tags
+     */
     , TAG_P
     , TAG_UL
     , TAG_OL
     , TAG_PRE
-    , TAG_BLANK
-    , TAG_H
-    , TAG_EOF
-
-    , TAG_TABLE
     , TAG_TR
-    , TAG_TD
-
-    , TAG_QUOTE_P
-    , TAG_QUOTE_UL
-    , TAG_QUOTE_OL
-    , TAG_QUOTE_PRE
-    , TAG_QUOTE_BLANK
-    , TAG_QUOTE_H
 
     , TAG_INDENT_P
     , TAG_INDENT_UL
@@ -39,20 +27,56 @@ typedef enum {
     , TAG_INDENT_PRE
     , TAG_INDENT_TEXT
 
+    , TAG_QUOTE_P
+    , TAG_QUOTE_UL
+    , TAG_QUOTE_OL
+    , TAG_QUOTE_PRE
+    , TAG_QUOTE_BLANK
+
+    , TAG_BLANK
+
+
+    /**
+     * block-level tags
+     */
     , TAG_ROOT
-    , TAG_LINES
+
+    , TAG_H
+
+    , TAG_TABLE
+
     , TAG_BLOCK_P
     , TAG_BLOCK_UL
     , TAG_BLOCK_OL
+    , TAG_BLOCK_BLANK
+    , TAG_BLOCK_PRE
+
     , TAG_BLOCK_INDENT_UL
     , TAG_BLOCK_INDENT_OL
     , TAG_BLOCK_INDENT_TEXT
+    , TAG_BLOCK_INDENT_PRE
+
+    , TAG_QUOTE_H
     , TAG_BLOCK_QUOTE_UL
     , TAG_BLOCK_QUOTE_OL
     , TAG_BLOCK_QUOTE_P
-    , TAG_BLOCK_BLANK
-    , TAG_BLOCK_PRE
-    , TAG_BLOCK_INDENT_PRE
+
+    , TAG_HTMLBLOCK
+    , TAG_SCRIPTBLOCK
+    , TAG_STYLEBLOCK
+    , TAG_SVGBLOCK
+    , TAG_SECTION
+    , TAG_VSECTION
+
+    , TAG_LINES
+
+
+    /**
+     * other tags
+     */
+    , TAG_ERROR
+    , TAG_EOF
+
 
 } t_tag; 
 

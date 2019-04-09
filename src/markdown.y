@@ -73,11 +73,11 @@ markdownfile:
             rearrange_block_nodes($1);
             // fprintf( stderr, "==== traverse ====\n" ); 
             // traverse_nodes($1); 
-            fprintf( stderr, "==== merge block nodes ====\n" ); 
+            // fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
             // fprintf( stderr, "==== traverse again ====\n" ); 
             // traverse_nodes($1); 
-            fprintf( stderr, "==== parse doc tree ====\n" ); 
+            // fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
         }
     | error { 
@@ -337,7 +337,7 @@ line_p:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_P
                 , 0
                 , 2
@@ -352,7 +352,7 @@ line_p:
             blocklist_parse(); 
 
             tag_info = markdown_get_tag_info(str_concat($1, $2));
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_P
                 , 0
                 , 2
@@ -367,7 +367,7 @@ line_p:
             blocklist_parse(); 
 
             tag_info = markdown_get_tag_info(str_concat($1, $2));
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_P
                 , 0
                 , 2
@@ -403,7 +403,7 @@ line_blank:
             tag_check_stack(TAG_BLANK, 100); 
             blocknode_create(TAG_BLANK, 100, 1, "");
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_BLANK
                 , 0
                 , 0
@@ -446,7 +446,7 @@ line_quote_p:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_QUOTE_P
                 , 0
                 , 2
@@ -489,7 +489,7 @@ line_ul:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_UL
                 , 0
                 , 2
@@ -509,7 +509,7 @@ line_ul:
                 , ""
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_UL
                 , 0
                 , 2
@@ -553,7 +553,7 @@ line_indent_ul:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_INDENT_UL
                 , indent_level($1)
                 , 3
@@ -597,7 +597,7 @@ line_quote_ul:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_QUOTE_UL
                 , 0
                 , 2
@@ -643,7 +643,7 @@ line_ol:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_OL
                 , 0
                 , 2
@@ -662,7 +662,7 @@ line_ol:
                 , ""
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_OL
                 , 0
                 , 2
@@ -706,7 +706,7 @@ line_indent_ol:
                 , tag_info -> content
             );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_INDENT_OL
                 , indent_level($1)
                 , 3
@@ -750,7 +750,7 @@ line_quote_ol:
                 , tag_info -> content
                 );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_QUOTE_OL
                 , 0
                 , 2
@@ -825,7 +825,7 @@ line_indent_text:
                 );
             }
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_INDENT_TEXT
                 , indent_level($1)
                 , 3
@@ -876,7 +876,7 @@ line_pre:
                     ) 
                 );
 
-            _node = inline_node_create(
+            _node = line_node_create(
                 TAG_PRE
                 , 0
                 , 2
@@ -899,7 +899,7 @@ line_pre:
                     , tag_info -> content
                 );
 
-            _node = block_node_create(
+            _node = line_node_create(
                 TAG_PRE
                 , 0
                 , 2
@@ -952,7 +952,7 @@ line_indented_pre:
                     )
                 );
 
-            _node = inline_node_create(
+            _node = line_node_create(
                 TAG_INDENT_PRE
                 , _inner_pre_level
                 , 2
@@ -1109,23 +1109,6 @@ pairedblock:
 
 
 
-line:
-    QUOTEBLANKLINE { 
-            tag_check_stack(TAG_QUOTE_BLANK, 0); 
-            blocknode_create(TAG_QUOTE_BLANK, 0, 1, "");
-        }
-
-    | SECTION LINEBREAK {
-            tag_check_stack(TAG_SECTION, -1); 
-            blocknode_create(TAG_SECTION, -1, 1, $1);
-        }
-
-    | VSECTION LINEBREAK {
-            tag_check_stack(TAG_VSECTION, -1); 
-            blocknode_create(TAG_VSECTION, -1, 1, $1);
-        }
-    ;
-
 tablerows:
     tablerows tablerow                                  {
                                                             _tail_node = tail_node_in_list($1->children);
@@ -1161,7 +1144,7 @@ tableceils:
                                                             $$ = $1;
                                                         }
     | tableceil                                         {
-                                                            _node = inline_node_create(
+                                                            _node = line_node_create(
                                                                 TAG_TR
                                                                 , 1
                                                                 , 0
@@ -1187,6 +1170,26 @@ tableceil:
                                                             $$ = _node;
                                                         }
     ;
+
+
+
+line:
+    QUOTEBLANKLINE { 
+            tag_check_stack(TAG_QUOTE_BLANK, 0); 
+            blocknode_create(TAG_QUOTE_BLANK, 0, 1, "");
+        }
+
+    | SECTION LINEBREAK {
+            tag_check_stack(TAG_SECTION, -1); 
+            blocknode_create(TAG_SECTION, -1, 1, $1);
+        }
+
+    | VSECTION LINEBREAK {
+            tag_check_stack(TAG_VSECTION, -1); 
+            blocknode_create(TAG_VSECTION, -1, 1, $1);
+        }
+    ;
+
 
 inlineelements:  
     inlineelements inlineelement                        { $$ = str_concat($1, $2); }

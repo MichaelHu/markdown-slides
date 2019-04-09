@@ -169,6 +169,15 @@ t_node *block_node_create(t_tag tag, int level, int nops, ...) {
     return p;
 }
 
+t_node *line_node_create(t_tag tag, int level, int nops, ...) {
+    t_node *p;
+    va_list args;
+    va_start(args, nops);
+    p = node_create(NODE_TYPE_LINE, tag, level, nops, args);
+    va_end(args);
+    return p;
+}
+
 t_node *inline_node_create(t_tag tag, int level, int nops, ...) {
     t_node *p;
     va_list args;

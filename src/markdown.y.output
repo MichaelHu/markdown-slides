@@ -17,7 +17,7 @@ State 57 conflicts: 1 shift/reduce
 State 59 conflicts: 1 shift/reduce
 State 61 conflicts: 2 shift/reduce
 State 63 conflicts: 1 shift/reduce
-State 67 conflicts: 1 shift/reduce
+State 66 conflicts: 1 shift/reduce
 State 159 conflicts: 1 shift/reduce
 State 160 conflicts: 1 shift/reduce
 State 162 conflicts: 1 shift/reduce
@@ -134,19 +134,19 @@ Grammar
    74            | SVGSTART inlineelements SVGEND
    75            | SVGSTART SVGEND
 
-   76 line: QUOTEBLANKLINE
-   77     | SECTION LINEBREAK
-   78     | VSECTION LINEBREAK
+   76 tablerows: tablerows tablerow
+   77          | tablerow
 
-   79 tablerows: tablerows tablerow
-   80          | tablerow
+   78 tablerow: TABLEROWSTART tableceils LINEBREAK
 
-   81 tablerow: TABLEROWSTART tableceils LINEBREAK
+   79 tableceils: tableceils tableceil
+   80           | tableceil
 
-   82 tableceils: tableceils tableceil
-   83           | tableceil
+   81 tableceil: inlineelements TABLECEILEND
 
-   84 tableceil: inlineelements TABLECEILEND
+   82 line: QUOTEBLANKLINE
+   83     | SECTION LINEBREAK
+   84     | VSECTION LINEBREAK
 
    85 inlineelements: inlineelements inlineelement
    86               | inlineelement
@@ -195,8 +195,8 @@ CODETEXT (260) 65 69 101 111
 H (261) 22
 QUOTEH (262) 23
 HTMLBLOCK (263) 24 25 26
-SECTION (264) 77
-VSECTION (265) 78
+SECTION (264) 83
+VSECTION (265) 84
 SCRIPTSTART (266) 33 70 71
 SCRIPTEND (267) 70 71
 STYLESTART (268) 72 73
@@ -206,8 +206,8 @@ SVGEND (271) 74 75
 LINK (272) 104
 BACKTICK (273) 93 94 95
 TRIPLEBACKTICK (274) 32 66
-TABLEROWSTART (275) 81
-TABLECEILEND (276) 84
+TABLEROWSTART (275) 78
+TABLECEILEND (276) 81
 ULINDENT (277) 46
 OLINDENT (278) 56
 TEXTINDENT (279) 62
@@ -223,14 +223,14 @@ LEFTSQUARE (288) 96 97
 UNDERSCORE (289) 90
 STAR (290) 89
 BLANKLINE (291) 36
-LINEBREAK (292) 22 23 24 25 31 39 42 43 46 49 52 53 56 59 62 66 77
-    78 81
+LINEBREAK (292) 22 23 24 25 31 39 42 43 46 49 52 53 56 59 62 66 78
+    83 84
 LARGERTHAN (293) 39
 DOUBLESTAR (294) 91
 DOUBLEUNDERSCORE (295) 92
 OLSTART (296) 52 53 56
 ULSTART (297) 42 43 46
-QUOTEBLANKLINE (298) 76
+QUOTEBLANKLINE (298) 82
 QUOTEOLSTART (299) 59
 QUOTEULSTART (300) 49
 STARX (301)
@@ -303,19 +303,19 @@ line_indented_pre (77)
     on left: 69, on right: 67 68
 pairedblock (78)
     on left: 70 71 72 73 74 75, on right: 21
-line (79)
-    on left: 76 77 78, on right: 27 28
-tablerows (80)
-    on left: 79 80, on right: 7 79
-tablerow (81)
+tablerows (79)
+    on left: 76 77, on right: 7 76
+tablerow (80)
+    on left: 78, on right: 76 77
+tableceils (81)
+    on left: 79 80, on right: 78 79
+tableceil (82)
     on left: 81, on right: 79 80
-tableceils (82)
-    on left: 82 83, on right: 81 82
-tableceil (83)
-    on left: 84, on right: 82 83
+line (83)
+    on left: 82 83 84, on right: 27 28
 inlineelements (84)
     on left: 85 86, on right: 31 33 39 42 46 49 52 56 59 62 70 72 74
-    84 85 89 90 91 92
+    81 85 89 90 91 92
 inlineelement (85)
     on left: 87 88 89 90 91 92 93 94 95 96 97 98, on right: 85 86
 headertext (86)
@@ -459,9 +459,9 @@ state 3
     block_indented_pre  go to state 63
     line_indented_pre   go to state 64
     pairedblock         go to state 65
-    line                go to state 66
-    tablerows           go to state 67
-    tablerow            go to state 68
+    tablerows           go to state 66
+    tablerow            go to state 67
+    line                go to state 68
     inlineelements      go to state 69
     inlineelement       go to state 70
     link                go to state 71
@@ -519,14 +519,14 @@ state 9
 
 state 10
 
-   77 line: SECTION . LINEBREAK
+   83 line: SECTION . LINEBREAK
 
     LINEBREAK  shift, and go to state 77
 
 
 state 11
 
-   78 line: VSECTION . LINEBREAK
+   84 line: VSECTION . LINEBREAK
 
     LINEBREAK  shift, and go to state 78
 
@@ -633,7 +633,7 @@ state 17
 
 state 18
 
-   81 tablerow: TABLEROWSTART . tableceils LINEBREAK
+   78 tablerow: TABLEROWSTART . tableceils LINEBREAK
 
     TEXT              shift, and go to state 5
     SPECIALCHAR       shift, and go to state 6
@@ -872,9 +872,9 @@ state 33
 
 state 34
 
-   76 line: QUOTEBLANKLINE .
+   82 line: QUOTEBLANKLINE .
 
-    $default  reduce using rule 76 (line)
+    $default  reduce using rule 82 (line)
 
 
 state 35
@@ -1231,15 +1231,8 @@ state 65
 
 state 66
 
-   28 lines: line .
-
-    $default  reduce using rule 28 (lines)
-
-
-state 67
-
     7 block: tablerows .
-   79 tablerows: tablerows . tablerow
+   76 tablerows: tablerows . tablerow
 
     TABLEROWSTART  shift, and go to state 18
 
@@ -1249,11 +1242,18 @@ state 67
     tablerow  go to state 131
 
 
+state 67
+
+   77 tablerows: tablerow .
+
+    $default  reduce using rule 77 (tablerows)
+
+
 state 68
 
-   80 tablerows: tablerow .
+   28 lines: line .
 
-    $default  reduce using rule 80 (tablerows)
+    $default  reduce using rule 28 (lines)
 
 
 state 69
@@ -1348,16 +1348,16 @@ state 76
 
 state 77
 
-   77 line: SECTION LINEBREAK .
+   83 line: SECTION LINEBREAK .
 
-    $default  reduce using rule 77 (line)
+    $default  reduce using rule 83 (line)
 
 
 state 78
 
-   78 line: VSECTION LINEBREAK .
+   84 line: VSECTION LINEBREAK .
 
-    $default  reduce using rule 78 (line)
+    $default  reduce using rule 84 (line)
 
 
 state 79
@@ -1504,8 +1504,8 @@ state 90
 
 state 91
 
-   81 tablerow: TABLEROWSTART tableceils . LINEBREAK
-   82 tableceils: tableceils . tableceil
+   78 tablerow: TABLEROWSTART tableceils . LINEBREAK
+   79 tableceils: tableceils . tableceil
 
     TEXT              shift, and go to state 5
     SPECIALCHAR       shift, and go to state 6
@@ -1527,14 +1527,14 @@ state 91
 
 state 92
 
-   83 tableceils: tableceil .
+   80 tableceils: tableceil .
 
-    $default  reduce using rule 83 (tableceils)
+    $default  reduce using rule 80 (tableceils)
 
 
 state 93
 
-   84 tableceil: inlineelements . TABLECEILEND
+   81 tableceil: inlineelements . TABLECEILEND
    85 inlineelements: inlineelements . inlineelement
 
     TEXT              shift, and go to state 5
@@ -2006,9 +2006,9 @@ state 130
 
 state 131
 
-   79 tablerows: tablerows tablerow .
+   76 tablerows: tablerows tablerow .
 
-    $default  reduce using rule 79 (tablerows)
+    $default  reduce using rule 76 (tablerows)
 
 
 state 132
@@ -2139,23 +2139,23 @@ state 149
 
 state 150
 
-   81 tablerow: TABLEROWSTART tableceils LINEBREAK .
+   78 tablerow: TABLEROWSTART tableceils LINEBREAK .
 
-    $default  reduce using rule 81 (tablerow)
+    $default  reduce using rule 78 (tablerow)
 
 
 state 151
 
-   82 tableceils: tableceils tableceil .
+   79 tableceils: tableceils tableceil .
 
-    $default  reduce using rule 82 (tableceils)
+    $default  reduce using rule 79 (tableceils)
 
 
 state 152
 
-   84 tableceil: inlineelements TABLECEILEND .
+   81 tableceil: inlineelements TABLECEILEND .
 
-    $default  reduce using rule 84 (tableceil)
+    $default  reduce using rule 81 (tableceil)
 
 
 state 153

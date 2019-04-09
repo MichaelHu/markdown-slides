@@ -6,6 +6,7 @@
 
 typedef enum {
     NODE_TYPE_BLOCK,
+    NODE_TYPE_LINE,
     NODE_TYPE_INLINE
 } t_node_type;
 
@@ -35,6 +36,7 @@ typedef struct {
 
 t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list args);
 t_node *block_node_create(t_tag tag, int level, int nops, ...);
+t_node *line_node_create(t_tag tag, int level, int nops, ...);
 t_node *inline_node_create(t_tag tag, int level, int nops, ...);
 t_node *tail_node_in_list(t_node *node);
 t_link *show_node(t_node *node);
