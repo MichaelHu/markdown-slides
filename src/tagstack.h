@@ -10,6 +10,10 @@ typedef enum {
      * inline-level tags
      */
     TAG_TD
+    , TAG_INLINE_ELEMENTS
+    , TAG_INLINE_TEXT
+    , TAG_INLINE_CODE
+    , TAG_LINK
 
 
     /**

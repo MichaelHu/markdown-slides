@@ -44,7 +44,7 @@ t_node *_node, *_tail_node;
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
 
     /* bind union part with nonterminal symbol */
-%type <text> inlineelements inlineelement plaintext text_list headertext link
+%type <text> inlineelements inlineelement text_list headertext
 %type <text> codespan code_list error
 %type <node> blocks block
 %type <node> lines line
@@ -58,6 +58,8 @@ t_node *_node, *_tail_node;
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
 %type <node> htmlblock pairedblock
+%type <node> inline_elements inline_element
+%type <node> plaintext link inline_code
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
 %nonassoc STARX
@@ -75,8 +77,8 @@ markdownfile:
             // traverse_nodes($1); 
             // fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
-            // fprintf( stderr, "==== traverse again ====\n" ); 
-            // traverse_nodes($1); 
+            fprintf( stderr, "==== traverse again ====\n" ); 
+            traverse_nodes($1); 
             // fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
         }
@@ -326,8 +328,9 @@ block_p:
     ;
 
 line_p:
-    inlineelements LINEBREAK { 
+    inline_elements LINEBREAK { 
             tag_check_stack(TAG_P, 0); 
+            /*
             tag_info = markdown_get_tag_info($1);
             blocknode_create(
                 TAG_P
@@ -336,14 +339,18 @@ line_p:
                 , tag_info -> attr
                 , tag_info -> content
             );
+            */
 
             _node = line_node_create(
                 TAG_P
                 , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , 1
+                , *($1->ops) 
             );
+
+            _node->children = $1;
+            $1->parent = _node;
+
             $$ = _node;
         } 
 
@@ -1191,6 +1198,67 @@ line:
     ;
 
 
+
+
+
+inline_elements:
+    inline_elements inline_element {
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
+            $$ = $1;
+        }
+    | inline_element {
+            _node = inline_node_create(
+                TAG_INLINE_ELEMENTS
+                , 0
+                , 2
+                /* attr of the first child */
+                , *$1->ops
+                , *($1->ops + 1)
+            );
+
+            _node->children = $1;
+            $1->parent = _node;
+            $$ = _node;
+        }
+    ;
+
+inline_element:
+    plaintext { $$ = $1; }
+    | link { $$ = $1; }
+    | inline_code { $$ = $1; }
+    ;
+
+plaintext:
+    plaintext text_list {
+            *($1->ops + 1) = str_concat(*($1->ops + 1), $2);
+            fprintf(stderr, "plaintext: %s\n", *($1->ops + 1));
+            $$ = $1;
+        } 
+    | text_list {
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , 0
+                , 2
+                , ""
+                , $1 
+            );
+
+            $$ = _node;
+        }
+    ;
+
+text_list:
+    TEXT                            { $$ = str_format("%s", $1); }
+    | SPECIALCHAR                   { $$ = str_format("%s", $1); }
+    ;
+
+
+
+
+
 inlineelements:  
     inlineelements inlineelement                        { $$ = str_concat($1, $2); }
     | inlineelement                     { $$ = $1; }
@@ -1205,63 +1273,97 @@ inlineelement:
     | DOUBLESTAR inlineelements DOUBLESTAR %prec STARX              { $$ = create_strong($2); }
     | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE %prec STARX  { $$ = create_strong($2); }
 
-    | BACKTICK codespan BACKTICK        { 
-                                            tag_info = markdown_get_tag_info($2);
-                                            $$ = create_codespan( 
-                                                tag_info -> attr
-                                                , html_escape(tag_info -> content) 
-                                            ); 
-                                        }
-    | BACKTICK codespan error           { 
-                                            $$ = str_concat( $1, $2 );
-                                            // fprintf( stderr, "BACKTICK codespan error: \n\n%s\n\n", $2 );
-                                            yyerrok;
-                                            yyclearin;
-                                        }
-    | BACKTICK error                    { 
-                                            $$ = $1;
-                                            // fprintf( stderr, "BACKTICK error: \n\n%s\n\n", $1 );
-                                            yyerrok;
-                                        }
 
+    /*
     | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
                                  $$ = create_link($2, $5);
                                 } 
     | EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
                                  $$ = create_image($3, $6);
                                 } 
-    | link                      { 
-                                    $$ = $1; 
-                                }
+    */
     ;
+
+
 
 headertext:
     headertext TEXT                 { $$ = str_concat($1, $2); }
+    /*
     | headertext link               { $$ = str_concat($1, $2); }
+    */
     | headertext CODETEXT           { $$ = str_concat($1, $2); }
     | headertext SPECIALCHAR        { $$ = str_concat($1, $2); }
     | /* NULL */                    { $$ = ""; }
     ;
 
 link:                        
-    LINK                            {
-                                        tag_info = markdown_get_tag_info($1);
-                                        $$ = create_link( 
-                                            tag_info -> content
-                                            , html_escape(tag_info -> content) 
-                                        ); 
-                                    }
+    LINK {
+            tag_info = markdown_get_tag_info($1);
+
+            _node = inline_node_create(
+                TAG_LINK
+                , 0
+                , 2 
+                , ""
+                , tag_info->content
+            );
+
+            $$ = _node;
+        }
     ;
 
-plaintext:
-    plaintext text_list             { $$ = str_concat($1, $2); }
-    | text_list                     { $$ = $1; }
+inline_code:
+    BACKTICK codespan BACKTICK { 
+            tag_info = markdown_get_tag_info($2);
+            /*
+            $$ = create_codespan( 
+                tag_info -> attr
+                , html_escape(tag_info -> content) 
+            ); 
+            */
+
+            _node = inline_node_create(
+                TAG_INLINE_CODE
+                , 0
+                , 2 
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            $$ = _node;
+        }
+
+    | BACKTICK codespan error       { 
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , 0
+                , 2
+                , ""
+                , str_format("%s%s", $1, $2)
+            );
+
+            $$ = _node;
+
+            yyerrok; 
+        }
+
+    | BACKTICK error                { 
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , 0
+                , 2
+                , ""
+                , str_format("%s", $1)
+            );
+
+            $$ = _node;
+
+            yyerrok; 
+        }
     ;
 
-text_list:
-    TEXT                            { $$ = str_format("%s", $1); }
-    | SPECIALCHAR                   { $$ = str_format("%s", $1); }
-    ;
+
+
 
 codespan:
     codespan code_list              { $$ = str_concat($1, $2); }

@@ -53,6 +53,12 @@ static char *htmlblock_post_parse(t_node *);
 static char *pairedblock_pre_parse(t_node *);
 static char *pairedblock_post_parse(t_node *);
 
+static char *link_pre_parse(t_node *);
+static char *link_post_parse(t_node *);
+
+static char *inline_code_pre_parse(t_node *);
+static char *inline_code_post_parse(t_node *);
+
 
 static t_parser *get_parser(t_node *node) {
     t_parser *p;
@@ -150,10 +156,13 @@ static t_parser *get_parser(t_node *node) {
             p->pre_parse = blockquote_p_pre_parse;
             p->post_parse = blockquote_p_post_parse;
             break;
+        /*
         case TAG_P:
+        */
         case TAG_INDENT_P:
         case TAG_QUOTE_P:
         case TAG_INDENT_TEXT:
+        case TAG_INLINE_TEXT:
             p->pre_parse = text_pre_parse;
             p->post_parse = text_post_parse;
             break;
@@ -191,6 +200,19 @@ static t_parser *get_parser(t_node *node) {
         case TAG_SVGBLOCK:
             p->pre_parse = pairedblock_pre_parse;
             p->post_parse = pairedblock_post_parse;
+            break;
+
+
+        /**
+         * some inline element parsers
+         */
+        case TAG_LINK:
+            p->pre_parse = link_pre_parse;
+            p->post_parse = link_post_parse;
+            break;
+        case TAG_INLINE_CODE:
+            p->pre_parse = inline_code_pre_parse;
+            p->post_parse = inline_code_post_parse;
             break;
 
 
@@ -512,6 +534,42 @@ static char *pairedblock_pre_parse(t_node *node) {
 }
 
 static char *pairedblock_post_parse(t_node *node) {
+    return str_format(
+        ""
+    );
+}
+
+
+/**
+ * inline element parsers
+ */
+static char *link_pre_parse(t_node *node) {
+    char *attr = *(node->ops);
+    char *content = *(node->ops + 1);
+    return str_format(
+        "<a href=\"%s\">%s</a>"
+        , html_escape(content)
+        , content
+    );
+}
+
+static char *link_post_parse(t_node *node) {
+    return str_format(
+        ""
+    );
+}
+
+static char *inline_code_pre_parse(t_node *node) {
+    char *attr = *(node->ops);
+    char *content = *(node->ops + 1);
+    return str_format(
+        "<code%s>%s</code>"
+        , attr
+        , html_escape(content)
+    );
+}
+
+static char *inline_code_post_parse(t_node *node) {
     return str_format(
         ""
     );
