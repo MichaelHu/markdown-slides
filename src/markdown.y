@@ -18,7 +18,7 @@ extern void markdown(void);
 
 int _inner_pre_level = -1;
 t_tag_info *tag_info;
-t_node *_node, *_tail_node;
+t_node *_node, *_tail_node, *_tmp_node;
 
 /**
  * @sed_append_to_tail_and_return_the_first
@@ -359,14 +359,36 @@ line_p:
             blocklist_parse(); 
 
             tag_info = markdown_get_tag_info(str_concat($1, $2));
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , 0
+                , 2
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            _tmp_node = inline_node_create(
+                TAG_INLINE_ELEMENTS
+                , 0
+                , 2
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            _tmp_node->children = _node;
+            _node->parent = _tmp_node;
+
             _node = line_node_create(
                 TAG_P
                 , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
+                , 1
+                , tag_info->attr
             );
+            _node->children = _tmp_node;
+            _tmp_node->parent = _node;
+
             $$ = _node;
+            yyerrok;
         }
 
     | SCRIPTSTART inlineelements error {

@@ -1,5 +1,7 @@
 # test-code-190404
 
+## test 1
+
     static t_link *show_links(t_node *node) {
 
         fprintf(
@@ -14,5 +16,20 @@
 
         return NULL;
     }
+
+
+## test 2
+
+```
+code line 1
+code line 2
+```
+
+
+## test 3
+
+```
+code line 1
+code line 2
 
 
