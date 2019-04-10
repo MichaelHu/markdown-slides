@@ -5,7 +5,6 @@
 #include <string.h>
 #include "strutils.h"
 #include "htmltags.h" 
-#include "blocknode.h" 
 #include "node.h"
 #include "nodetree.h"
 
@@ -30,7 +29,6 @@ t_node *_node, *_tail_node, *_tmp_node;
 
 %union{
     char *text;
-    t_blocknode *block_node;
     t_node *node;
 };
 
@@ -44,7 +42,7 @@ t_node *_node, *_tail_node, *_tmp_node;
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
 
     /* bind union part with nonterminal symbol */
-%type <text> inlineelements inlineelement text_list headertext
+%type <text> text_list headertext
 %type <text> codespan code_list error
 %type <node> blocks block
 %type <node> lines line
@@ -67,17 +65,18 @@ t_node *_node, *_tail_node, *_tmp_node;
 
 markdownfile: 
     blocks { 
-            // blocknode_create(TAG_EOF, -2, 1, ""); 
-            // blocklist_parse(); 
-
             complement_block_nodes($1); 
             rearrange_block_nodes($1);
+
             // fprintf( stderr, "==== traverse ====\n" ); 
             // traverse_nodes($1); 
+
             // fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
+
             // fprintf( stderr, "==== traverse again ====\n" ); 
             // traverse_nodes($1); 
+
             // fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
         }
@@ -174,14 +173,6 @@ header:
     H headertext LINEBREAK {              
             tag_check_stack(TAG_H, 0); 
             tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_H
-                , 0
-                , 3
-                , $1
-                , tag_info->attr
-                , tag_info->content
-            );
 
             _node = block_node_create(
                 TAG_H
@@ -198,14 +189,6 @@ header:
     | QUOTEH headertext LINEBREAK { 
             tag_check_stack(TAG_QUOTE_H, 0); 
             tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                TAG_QUOTE_H
-                , 0
-                , 3
-                , $1
-                , tag_info->attr
-                , tag_info->content
-            );
 
             _node = block_node_create(
                 TAG_QUOTE_H
@@ -291,9 +274,6 @@ raw_text:
         } 
 
     | TRIPLEBACKTICK codespan error     { 
-            blocknode_create(TAG_EOF, -2, 1, str_concat( $1, $2 )); 
-            blocklist_parse(); 
-
             tag_info = markdown_get_tag_info(str_concat($1, $2));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -348,16 +328,6 @@ block_p:
 line_p:
     inline_elements LINEBREAK { 
             tag_check_stack(TAG_P, 0); 
-            /*
-            tag_info = markdown_get_tag_info($1);
-            blocknode_create(
-                TAG_P
-                , 0
-                , 2
-                , tag_info -> attr
-                , tag_info -> content
-            );
-            */
 
             _node = line_node_create(
                 TAG_P
@@ -396,7 +366,6 @@ block_blank:
 line_blank:
     BLANKLINE { 
             tag_check_stack(TAG_BLANK, 100); 
-            blocknode_create(TAG_BLANK, 100, 1, "");
 
             _node = line_node_create(
                 TAG_BLANK
@@ -734,6 +703,7 @@ block_indent_text:
 
 line_indent_text:
     TEXTINDENT inline_elements LINEBREAK { 
+
             /*
              *      * list
              *          content
@@ -749,33 +719,6 @@ line_indent_text:
              *      <ul><li>list
              *      <p>content</p></li>
              */
-
-            /*
-            if(is_last_tag_blank()){
-                tag_check_stack(TAG_INDENT_P, indent_level($1)); 
-                tag_info = markdown_get_tag_info($2);
-                blocknode_create(
-                    TAG_INDENT_P
-                    , indent_level($1)
-                    , 3
-                    , $1
-                    , tag_info -> attr
-                    , tag_info -> content
-                );
-            }
-            else {
-                tag_check_stack(TAG_INDENT_TEXT, indent_level($1)); 
-                tag_info = markdown_get_tag_info($2);
-                blocknode_create(
-                    TAG_INDENT_TEXT
-                    , indent_level($1)
-                    , 3
-                    , $1
-                    , tag_info -> attr
-                    , tag_info -> content
-                );
-            }
-            */
 
             tag_check_stack(TAG_INDENT_TEXT, indent_level($1)); 
             tag_info = markdown_get_tag_info(*($2->ops + 1));
@@ -822,16 +765,6 @@ line_pre:
     PRE_INDENT CODETEXT {
             tag_check_stack(TAG_PRE, 0); 
             tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_PRE
-                    , 0
-                    , 2
-                    , tag_info -> attr
-                    , str_padding_left( 
-                        tag_info -> content
-                        , 4 * ( indent_level($1) - 1 ) 
-                    ) 
-                );
 
             _node = line_node_create(
                 TAG_PRE
@@ -848,13 +781,6 @@ line_pre:
     | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
             tag_check_stack(TAG_PRE, 0); 
             tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_PRE
-                    , 0
-                    , 2
-                    , tag_info -> attr
-                    , tag_info -> content
-                );
 
             _node = line_node_create(
                 TAG_PRE
@@ -898,16 +824,6 @@ line_indented_pre:
             /* PRE indent level is 1 less than the literal indent */
             tag_check_stack(TAG_INDENT_PRE, _inner_pre_level); 
             tag_info = markdown_get_tag_info($2);
-            blocknode_create(
-                    TAG_INDENT_PRE
-                    , _inner_pre_level
-                    , 2
-                    , tag_info -> attr
-                    , str_padding_left( 
-                        tag_info -> content
-                        , 4 * ( indent_level($1) - _inner_pre_level - 1 ) 
-                    )
-                );
 
             _node = line_node_create(
                 TAG_INDENT_PRE
@@ -1088,17 +1004,14 @@ tableceil:
 line:
     QUOTEBLANKLINE { 
             tag_check_stack(TAG_QUOTE_BLANK, 0); 
-            blocknode_create(TAG_QUOTE_BLANK, 0, 1, "");
         }
 
     | SECTION LINEBREAK {
             tag_check_stack(TAG_SECTION, -1); 
-            blocknode_create(TAG_SECTION, -1, 1, $1);
         }
 
     | VSECTION LINEBREAK {
             tag_check_stack(TAG_VSECTION, -1); 
-            blocknode_create(TAG_VSECTION, -1, 1, $1);
         }
     ;
 
@@ -1169,12 +1082,8 @@ text_list:
 
 
 
-inlineelements:  
-    inlineelements inlineelement                        { $$ = str_concat($1, $2); }
-    | inlineelement                     { $$ = $1; }
-    ;
+    /*
 
-inlineelement:
     TEXT                                { $$ = $1; }
     | SPECIALCHAR                       { $$ = $1; }
 
@@ -1184,15 +1093,14 @@ inlineelement:
     | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE %prec STARX  { $$ = create_strong($2); }
 
 
-    /*
     | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
                                  $$ = create_link($2, $5);
                                 } 
     | EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
                                  $$ = create_image($3, $6);
                                 } 
-    */
     ;
+    */
 
 
 

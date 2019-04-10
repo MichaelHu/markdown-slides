@@ -136,14 +136,13 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 31 "markdown.y"
+#line 30 "markdown.y"
 {
     char *text;
-    t_blocknode *block_node;
     t_node *node;
 }
 /* Line 1529 of yacc.c.  */
-#line 147 "markdown.y.h"
+#line 146 "markdown.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

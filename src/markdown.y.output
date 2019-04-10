@@ -1,9 +1,3 @@
-Useless nonterminals
-
-   inlineelements
-   inlineelement
-
-
 Terminals which are not used
 
    EXCLAMATION
@@ -17,19 +11,7 @@ Terminals which are not used
    STAR
    DOUBLESTAR
    DOUBLEUNDERSCORE
-
-
-Useless rules
-
-  107 inlineelements: inlineelements inlineelement
-  108               | inlineelement
-
-  109 inlineelement: TEXT
-  110              | SPECIALCHAR
-  111              | STAR inlineelements STAR
-  112              | UNDERSCORE inlineelements UNDERSCORE
-  113              | DOUBLESTAR inlineelements DOUBLESTAR
-  114              | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE
+   STARX
 
 
 State 34 conflicts: 3 shift/reduce

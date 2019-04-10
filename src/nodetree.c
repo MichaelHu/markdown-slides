@@ -491,8 +491,15 @@ static char *block_pre_post_parse(t_node *node) {
 }
 
 static char *pre_pre_parse(t_node *node) {
+    char *format = "%s\n";
+
+    // when last node, no newline
+    if (!node->next) {
+        format = "%s";
+    }
+
     return str_format(
-        "%s\n"
+        format
         , str_trim_right(*(node->ops + 1))
     );
 }
