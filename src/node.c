@@ -380,7 +380,7 @@ static void check_parent_links(t_node *root) {
 static t_link *visit_nonblock_node(t_node *node) {
     t_node *parent, *new_uncle, *tmp;
 
-    show_node(node);
+    // show_node(node);
     if (is_block_node(node)) {
         return NULL;
     }
@@ -396,16 +396,20 @@ static t_link *visit_nonblock_node(t_node *node) {
         case TAG_INDENT_OL:
         case TAG_INDENT_TEXT:
             if (parent && node->level != parent->level) {
-                // show_node(node);
                 new_uncle = block_node_create(
                     get_parent_block_node_tag(node->tag)
                     , node->level
                     , 0
                 );
 
+                // show_node(new_uncle);
+
                 // 1. insert new_uncle after parent node
                 new_uncle->next = parent->next;
-                new_uncle->next->prev = new_uncle;
+                // 1.1 bugfix@1904110125: Segmentation fault: 11, we should check if new_uncle->next is valid
+                if (new_uncle->next) {
+                    new_uncle->next->prev = new_uncle;
+                }
                 parent->next = new_uncle;
                 new_uncle->prev = parent;
                 new_uncle->parent = parent->parent;
@@ -413,13 +417,20 @@ static t_link *visit_nonblock_node(t_node *node) {
                 // 2. set current node the first child of new_unclue
                 new_uncle->children = node;
                 if (node->parent->children == node) {
+                    /**
+                     * Note: 
+                     * all the nodes following current node are also moved 
+                     * so parent's children link is set to NULL
+                     */
                     node->parent->children = NULL;
                 }
                 node->parent = new_uncle;
 
                 // 3. remove connection with the previous sibling node
-                node->prev->next = NULL;
-                node->prev = NULL;
+                if (node->prev) {
+                    node->prev->next = NULL;
+                    node->prev = NULL;
+                }
 
                 // 4. update parent links of the remained sibling nodes
                 tmp = node;
@@ -440,7 +451,7 @@ void complement_block_nodes(t_node *root) {
     // fprintf(stderr, "===========fix_parent_links===========\n");
     check_parent_links(root);
 
-    fprintf(stderr, "===========complement_block_nodes===========\n");
+    // fprintf(stderr, "===========complement_block_nodes===========\n");
     traverse_nodes_with_visitor(root, visit_nonblock_node, 0);
 }
 

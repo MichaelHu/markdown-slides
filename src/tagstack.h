@@ -1,6 +1,6 @@
 #define HEADER_TAGSTACK
 
-#define TAG_STACK_SIZE 20
+#define TAG_STACK_SIZE 200
 #undef _IS_DEBUG_TAGSTACK
 
 /* tag name representing each line */
