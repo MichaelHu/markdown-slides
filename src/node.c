@@ -292,6 +292,31 @@ void traverse_nodes(t_node *root) {
     traverse_nodes_with_visitor(root, show_links, 0);
 }
 
+
+static t_link *visit_node_to_fix_level(t_node *node) {
+    int level = node->level, parent_level;
+
+    if (NODE_LEVEL_SPECIAL == level) {
+        level = 0;
+        if (node->parent) {
+            parent_level = node->parent->level;
+            if (parent_level < 0) {
+                parent_level = 0;
+            }
+            level = parent_level + 1;
+        }
+    }
+
+    node->level = level;
+    return NULL;
+}
+
+void fix_node_level(t_node *root) {
+    traverse_nodes_with_visitor(root, visit_node_to_fix_level, 0);
+}
+
+
+
 /**
  * 1. nodes in list must have a valid parent link
  */

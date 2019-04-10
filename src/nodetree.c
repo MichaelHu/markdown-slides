@@ -211,7 +211,7 @@ static t_parser *get_parser(t_node *node) {
         /**
          * some inline element parsers
          */
-        case TAG_LINK:
+        case TAG_INLINE_LINK:
             p->pre_parse = link_pre_parse;
             p->post_parse = link_post_parse;
             break;

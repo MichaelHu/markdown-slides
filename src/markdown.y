@@ -65,6 +65,7 @@ t_node *_node, *_tail_node, *_tmp_node;
 
 markdownfile: 
     blocks { 
+            fix_node_level($1);
             complement_block_nodes($1); 
             rearrange_block_nodes($1);
 
@@ -74,8 +75,8 @@ markdownfile:
             // fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
 
-            // fprintf( stderr, "==== traverse again ====\n" ); 
-            // traverse_nodes($1); 
+            fprintf( stderr, "==== traverse again ====\n" ); 
+            traverse_nodes($1); 
 
             // fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
@@ -1030,7 +1031,7 @@ inline_elements:
     | inline_element {
             _node = inline_node_create(
                 TAG_INLINE_ELEMENTS
-                , 0
+                , NODE_LEVEL_SPECIAL
                 , 2
                 /* attr of the first child */
                 , *$1->ops
@@ -1063,7 +1064,7 @@ plaintext:
     | text_list {
             _node = inline_node_create(
                 TAG_INLINE_TEXT
-                , 0
+                , NODE_LEVEL_SPECIAL
                 , 2
                 , ""
                 , $1 
@@ -1120,8 +1121,8 @@ link:
             tag_info = markdown_get_tag_info(tag_info->content);
 
             _node = inline_node_create(
-                TAG_LINK
-                , 0
+                TAG_INLINE_LINK
+                , NODE_LEVEL_SPECIAL
                 , 2 
                 , tag_info->attr
                 , tag_info->content
@@ -1137,7 +1138,7 @@ inline_code:
 
             _node = inline_node_create(
                 TAG_INLINE_CODE
-                , 0
+                , NODE_LEVEL_SPECIAL
                 , 2 
                 , tag_info->attr
                 , tag_info->content
@@ -1149,7 +1150,7 @@ inline_code:
     | BACKTICK codespan error       { 
             _node = inline_node_create(
                 TAG_INLINE_TEXT
-                , 0
+                , NODE_LEVEL_SPECIAL
                 , 2
                 , ""
                 , str_format("%s%s", $1, $2)
@@ -1163,7 +1164,7 @@ inline_code:
     | BACKTICK error                { 
             _node = inline_node_create(
                 TAG_INLINE_TEXT
-                , 0
+                , NODE_LEVEL_SPECIAL
                 , 2
                 , ""
                 , str_format("%s", $1)
