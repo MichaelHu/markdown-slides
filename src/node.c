@@ -22,10 +22,19 @@ static t_tag tags_of_block_node[] = {
     , TAG_BLOCK_BLANK
     , TAG_BLOCK_PRE
     , TAG_BLOCK_INDENT_PRE
+
+    , TAG_BLOCK_BLANK
 };
 static int tags_of_block_node_size = sizeof(tags_of_block_node) / sizeof(t_tag);
 
 static t_tag tags_of_node_need_merged_when_adjacent[] = {
+    TAG_BLOCK_PRE
+    , TAG_BLOCK_INDENT_PRE
+};
+static int tags_of_node_need_merged_when_adjacent_size 
+    = sizeof(tags_of_node_need_merged_when_adjacent) / sizeof(t_tag);
+
+static t_tag tags_of_node_need_merged_when_adjacent_and_not_blank_seperated[] = {
     TAG_BLOCK_UL
     , TAG_BLOCK_OL
     , TAG_BLOCK_INDENT_UL
@@ -34,15 +43,8 @@ static t_tag tags_of_node_need_merged_when_adjacent[] = {
     , TAG_BLOCK_QUOTE_UL
     , TAG_BLOCK_QUOTE_OL
 };
-static int tags_of_node_need_merged_when_adjacent_size 
-    = sizeof(tags_of_node_need_merged_when_adjacent) / sizeof(t_tag);
-
-static t_tag tags_of_node_need_merged_even_seperated_by_blanks[] = {
-    TAG_BLOCK_PRE
-    , TAG_BLOCK_INDENT_PRE
-};
-static int tags_of_node_need_merged_even_seperated_by_blanks_size
-    = sizeof(tags_of_node_need_merged_even_seperated_by_blanks) / sizeof(t_tag);
+static int tags_of_node_need_merged_when_adjacent_and_not_blank_seperated_size
+    = sizeof(tags_of_node_need_merged_when_adjacent_and_not_blank_seperated) / sizeof(t_tag);
 
 
 static t_tag get_parent_block_node_tag(t_tag tag) {
@@ -113,18 +115,28 @@ static int is_node_need_merged_when_adjacent(t_node *node) {
     ) > -1;
 }
 
-static int is_node_need_merged_even_seperated_by_blanks(t_node *node) {
+static int is_node_need_merged_when_adjacent_and_not_blank_seperated(t_node *node) {
     return index_of(
-        tags_of_node_need_merged_even_seperated_by_blanks
-        , tags_of_node_need_merged_even_seperated_by_blanks_size
+        tags_of_node_need_merged_when_adjacent_and_not_blank_seperated
+        , tags_of_node_need_merged_when_adjacent_and_not_blank_seperated_size
         , node->tag
     ) > -1;
 }
 
+t_node *tail_node_in_list(t_node *node) {
+    t_node *p = node, *pre = node;
+
+    while (p) {
+        pre = p;
+        p = p->next;
+    }
+    return pre;
+}
 
 /**
  * 1. demonstrate how to write a function accepting argument of va_list
  * 2. like vprintf(char *fmt, va_list args)
+ * ===================================================================================
  */
 t_node *node_create(t_node_type type, t_tag tag, int level, int nops, va_list args) {
     t_node *p;
@@ -261,38 +273,61 @@ void traverse_nodes_with_visitor(
         new_link = visit(root);
     }
 
-    if (new_link && new_link->next) {
+    if (new_link) {
         new_next = new_link->next;
     }
 
-    if (new_link && new_link->children) {
+    if (new_link) {
         new_children = new_link->children;
     }
 
     if (ext_args_count <= 0) {
-        traverse_nodes_with_visitor(new_children, visit, 0);
-        traverse_nodes_with_visitor(new_next, visit, 0);
+        if (new_children) {
+            traverse_nodes_with_visitor(new_children, visit, 0);
+        }
+
+        if (new_next) {
+            traverse_nodes_with_visitor(new_next, visit, 0);
+        }
     }
     else {
         va_start(args, ext_args_count);
         post_visit = va_arg(args, void (*)(t_node *));
 
-        traverse_nodes_with_visitor(new_children, visit, ext_args_count, post_visit);
+        if (new_children) {
+            traverse_nodes_with_visitor(new_children, visit, ext_args_count, post_visit);
+        }
+
         if (post_visit) {
             post_visit(root);
         }
 
-        traverse_nodes_with_visitor(new_next, visit, ext_args_count, post_visit);
+        if (new_next) {
+            traverse_nodes_with_visitor(new_next, visit, ext_args_count, post_visit);
+        }
         va_end(args);
     }
 }
 
+
+
+
+/**
+ * Traverse
+ * ===================================================================================
+ */
 void traverse_nodes(t_node *root) {
     // traverse_nodes_with_visitor(root, show_node, 0);
     traverse_nodes_with_visitor(root, show_links, 0);
 }
 
 
+
+
+/**
+ * Fix node level
+ * ===================================================================================
+ */
 static t_link *visit_node_to_fix_level(t_node *node) {
     int level = node->level, parent_level;
 
@@ -316,12 +351,14 @@ void fix_node_level(t_node *root) {
 }
 
 
-
 /**
- * 1. nodes in list must have a valid parent link
+ * Check parent links
+ * ===================================================================================
  */
+
 static t_link *visit_node_to_check_parent_link(t_node *node) {
     if (node->prev) {
+        // nodes in list must have a valid parent link
         if (!node->parent) {
             fprintf(stderr, "==parent link error==\n");
             show_node(node);
@@ -335,9 +372,15 @@ static void check_parent_links(t_node *root) {
 }
 
 
+/**
+ * Complement block nodes
+ * ===================================================================================
+ */
+
 static t_link *visit_nonblock_node(t_node *node) {
     t_node *parent, *new_uncle, *tmp;
 
+    show_node(node);
     if (is_block_node(node)) {
         return NULL;
     }
@@ -397,26 +440,56 @@ void complement_block_nodes(t_node *root) {
     // fprintf(stderr, "===========fix_parent_links===========\n");
     check_parent_links(root);
 
-    // fprintf(stderr, "===========complement_block_nodes===========\n");
+    fprintf(stderr, "===========complement_block_nodes===========\n");
     traverse_nodes_with_visitor(root, visit_nonblock_node, 0);
 }
 
-t_node *tail_node_in_list(t_node *node) {
-    t_node *p = node, *pre = node;
 
-    while (p) {
-        pre = p;
-        p = p->next;
-    }
-    return pre;
-}
+
+
+/**
+ * Rearrange block nodes
+ * ===================================================================================
+ */
 
 static t_node *prev_node;
+static t_link *move_as_the_tail(t_node *target, t_node *node) {
+    t_link *new_link = NULL;
+    t_node *tail = target;
+
+    if (!tail || !node) {
+        fprintf(stderr, "move_as_tail(): NULL target or NULL node\n");
+        return NULL;
+    }
+
+    new_link = (t_link *)malloc(sizeof(t_node));
+
+    if (node->parent && node->parent->children == node) {
+        node->parent->children = node->next;
+    }
+    node->parent = tail->parent;
+
+    if (node->next) {
+        node->next->prev = node->prev;
+    }
+    if (node->prev) {
+        node->prev->next = node->next;
+    }
+
+    new_link->children = node->children;
+    new_link->next = node->next;
+
+    tail->next = node;
+    node->prev = tail;
+    // node is now be the tail node
+    node->next = NULL;
+
+    return new_link;
+}
+
 static t_link *visit_to_rearrange_block_node(t_node *node) {
     t_link *new_link = NULL;
     t_node *p, *tail, *tmp;
-
-    // show_node(node);
 
     if (node->parent == node) {
         fprintf(stderr, "visit_to_rearrange_block_node() 1: parent self-looping\n");
@@ -428,12 +501,12 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
         /* indented block node */
         if (node->level > 0) {
             if (!prev_node) {
-                // fprintf(stderr, "prev_node NULL\n");
+                fprintf(stderr, "prev_node NULL\n");
             }
 
             p = prev_node;
 
-            // fprintf(stderr, "search closest parent list_node\n");
+            // search the closest parent list node
             while (p) {
 
                 if (p->parent == p) {
@@ -447,8 +520,6 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
 
                 p = p->parent;
             }
-            // fprintf(stderr, "finish searching closest parent list_node\n");
-            // show_node(p);
 
             if (!is_line_list_node(p)) {
                 fprintf(stderr, "visit_to_rearrange_block_nod(): error containing list node\n");
@@ -457,7 +528,6 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
             new_link = (t_link *)malloc(sizeof(t_node));
             
             if (!p->children) {
-                // fprintf(stderr, "p->children NULL\n");
                 p->children = node;
 
                 /**
@@ -483,37 +553,44 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
                 node->prev = NULL;
             }
             else {
-                // fprintf(stderr, "p->children exists\n");
                 tail = tail_node_in_list(p->children);
-                // fprintf(stderr, "parent node:\n");
-                // show_node(p);
-                // fprintf(stderr, "tail node:\n");
-                // show_node(tail);
+                new_link = move_as_the_tail(tail, node);
+            }
 
-                if (node->parent->children == node) {
-                    node->parent->children = node->next;
+        }
+        else if (TAG_BLOCK_BLANK == node->tag) {
+            p = prev_node;
+
+            // search the closest parent block node
+            while (p) {
+                if (is_block_node(p)) {
+                    break;
+                } 
+
+                p = p->parent;
+            }
+
+            if (!is_block_node(p)) {
+                fprintf(stderr, "visit_to_rearrange_block_node(): p is not a block node\n");
+            }
+
+            if (p->children) {
+                tail = tail_node_in_list(p->children);
+                new_link = move_as_the_tail(tail, node);
+
+                // update the level
+                node->level = tail->level;
+                tmp = node->children;
+                while (tmp) {
+                    tmp->level = node->level;
+                    tmp = tmp->next;
                 }
-                node->parent = tail->parent;
-
-                if (node->next) {
-                    node->next->prev = node->prev;
-                }
-                if (node->prev) {
-                    node->prev->next = node->next;
-                }
-
-                new_link->next = node->next;
-                new_link->children = node->children;
-
-                tail->next = node;
-                node->prev = tail;
-                // node is now be the tail node
-                node->next = NULL;
             }
 
         }
 
     }
+
 
     /**
      * 1. blank node cannot be prev_node
@@ -531,6 +608,12 @@ void rearrange_block_nodes(t_node *root) {
 }
 
 
+
+
+/**
+ * Merge nodes
+ * ===================================================================================
+ */
 
 static t_link *merge_children_then_clean_the_useless(t_node *to, t_node *from) {
     t_link *new_link;
@@ -576,45 +659,32 @@ static t_link *merge_children_then_clean_the_useless(t_node *to, t_node *from) {
 
 static t_link *visit_to_merge_block_nodes(t_node *node) {
     t_link *new_link = NULL;
-    t_node *tail_node, *tmp;
 
     if (!is_block_node(node)) {
         return new_link;
     }
 
-    if (is_node_need_merged_when_adjacent(node)) {
-        if (node->prev && node->tag == node->prev->tag) {
+    if (node->prev && node->tag == node->prev->tag) {
+        if (
+            is_node_need_merged_when_adjacent(node)
+            || (
+                is_node_need_merged_when_adjacent_and_not_blank_seperated(node) 
+                && !is_blank_node(prev_node)
+                )
+            ) {
             new_link = merge_children_then_clean_the_useless(node->prev, node);
         }
     }
-    else if (is_node_need_merged_even_seperated_by_blanks(node)) {
-        if (node->prev) {
 
-            /**
-             * try to find 
-             * 1. adjacent node with the same tag
-             * 2. or previous sibling node with the same tag seperated by one or more blank line node
-             */
-            tmp = node->prev;
-            while (tmp) {
-                if (tmp->tag == node->tag || !is_blank_node(tmp)) {
-                    break;
-                }
-                tmp = tmp->prev;
-            }
-
-            // find it
-            if (tmp && tmp->tag == node->tag) {
-                new_link = merge_children_then_clean_the_useless(tmp, node);
-            }
-        }
-    }
+    prev_node = node;
 
     return new_link;
 }
 
 void merge_block_nodes(t_node *root) {
+    prev_node = NULL;
     traverse_nodes_with_visitor(root, visit_to_merge_block_nodes, 0);
 }
+
 
 

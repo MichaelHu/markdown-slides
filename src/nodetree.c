@@ -12,6 +12,19 @@ typedef struct {
     char *(*post_parse)(t_node *);
 } t_parser;
 
+typedef t_link *(*t_pre_visit)(t_node *);
+typedef void (*t_post_visit)(t_node *);
+typedef struct {
+    t_pre_visit pre_visit;
+    t_post_visit post_visit;
+} t_visitor;
+
+
+
+/**
+ * Parser prototypes
+ */
+
 static char *h_pre_parse(t_node *);
 static char *h_post_parse(t_node *);
 static char *quote_h_pre_parse(t_node *);
@@ -47,6 +60,9 @@ static char *block_pre_post_parse(t_node *);
 static char *pre_pre_parse(t_node *);
 static char *pre_post_parse(t_node *);
 
+static char *blank_pre_parse(t_node *);
+static char *blank_post_parse(t_node *);
+
 static char *raw_text_pre_parse(t_node *);
 static char *raw_text_post_parse(t_node *);
 
@@ -58,6 +74,13 @@ static char *link_post_parse(t_node *);
 
 static char *inline_code_pre_parse(t_node *);
 static char *inline_code_post_parse(t_node *);
+
+
+/**
+ * Visitor prototypes
+ */
+static t_link *block_blank_pre_visit(t_node *);
+static void block_blank_post_visit(t_node *);
 
 
 static t_parser *get_parser(t_node *node) {
@@ -221,6 +244,18 @@ static t_parser *get_parser(t_node *node) {
             break;
 
 
+        /**
+         * blank line parsers
+         */
+        case TAG_BLOCK_BLANK:
+            break;
+
+        case TAG_BLANK:
+            p->pre_parse = blank_pre_parse;
+            p->post_parse = blank_post_parse;
+            break;
+
+
         default:
             break;
     }
@@ -228,25 +263,67 @@ static t_parser *get_parser(t_node *node) {
     return p;
 }
 
+static t_visitor *get_visitor(t_node *node) {
+    t_visitor *p = NULL;
+
+    if( ( p = 
+            (t_visitor *)malloc(sizeof(t_visitor)) ) 
+        == NULL){
+        fprintf(stderr, "get_visitor: out of memory\n");
+        exit(1);
+    }
+
+    p->pre_visit = NULL;
+    p->post_visit = NULL;
+
+    switch (node->tag) {
+        case TAG_BLOCK_BLANK:
+            p->pre_visit = block_blank_pre_visit;
+            p->post_visit = block_blank_post_visit;
+            break;
+
+        default:
+            break;
+    }
+
+    return p;
+}
+
+
 static t_link *pre_visit_parse(t_node *node) {
     t_parser *p = get_parser(node);
+    t_visitor *v = get_visitor(node);
+    t_link *new_link = NULL;
     char *output = NULL;
+
     if (p->pre_parse) {
         output = p->pre_parse(node);
         // fprintf(stderr, "pre_visit_parse: %s\n", output);
         fprintf(stdout, "%s", output);
     }
-    return NULL;
+
+    if (v->pre_visit) {
+        new_link = v->pre_visit(node);
+    }
+
+    return new_link;
 }
 
 static void post_visit_parse(t_node *node) {
     t_parser *p = get_parser(node);
+    t_visitor *v = get_visitor(node);
     char *output = NULL;
+
     if (p->post_parse) {
         output = p->post_parse(node);
         // fprintf(stderr, "post_visit_parse: %s\n", output);
         fprintf(stdout, "%s", output);
     }
+
+    if (v->post_visit) {
+        v->post_visit(node);
+    }
+
     return;
 }
 
@@ -255,10 +332,9 @@ void parse_node_tree(t_node *root) {
 }
 
 
-
 /**
  * ==========================================================
- * Parsers
+ * 1. Parsers
  */
 
 
@@ -500,7 +576,7 @@ static char *pre_pre_parse(t_node *node) {
 
     return str_format(
         format
-        , str_trim_right(*(node->ops + 1))
+        , html_escape(str_trim_right(*(node->ops + 1)))
     );
 }
 
@@ -551,6 +627,23 @@ static char *pairedblock_post_parse(t_node *node) {
 
 
 /**
+ * blank line parsers
+ */
+static char *blank_pre_parse(t_node *node) {
+    return str_format(
+        "\n"
+    );
+}
+
+static char *blank_post_parse(t_node *node) {
+    return str_format(
+        ""
+    );
+}
+
+
+
+/**
  * inline element parsers
  */
 static char *link_pre_parse(t_node *node) {
@@ -584,3 +677,41 @@ static char *inline_code_post_parse(t_node *node) {
         ""
     );
 }
+
+
+
+/**
+ * ==========================================================
+ * 2. Visitors
+ */
+
+static t_link *block_blank_pre_visit(t_node *node) {
+    t_link *new_link = NULL;
+
+    /**
+     * 1. only if the block_blank node is under TAG_BLOCK_PRE or TAG_BLOCK_INDENT_PRE,
+     * 2. and is not the last child 
+     * 3. then, we should output the blank lines  
+     * 4. otherwise, we output nothing
+     */
+    if (
+            (
+            node->parent->tag != TAG_BLOCK_PRE 
+            && node->parent->tag != TAG_BLOCK_INDENT_PRE 
+            )
+            || !node->next
+       ) {
+        new_link = (t_link *)malloc(sizeof(t_link)); 
+        new_link->children = NULL;
+        new_link->next = node->next;
+    }
+
+    return new_link;
+}
+
+static void block_blank_post_visit(t_node *node) {
+    return;
+}
+
+
+
