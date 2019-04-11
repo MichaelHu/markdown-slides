@@ -54,8 +54,24 @@ char *str_padding_left(char *s, int count){
 }
 
 char *str_trim_left(char *s) {
-    // todo
-    return s;
+    char *p = s, *str;
+    int len = strlen(s), trim_count = 0;
+
+    while (
+        *p == '\n'
+        || *p == '\r'
+        || *p == '\t'
+        || *p == ' '
+        ) {
+        p++;
+        trim_count++;
+    }
+
+    str = (char *)malloc(len + 1 - trim_count);
+    strncpy(str, p, len - trim_count);
+    *(str + len - trim_count) = '\0';
+
+    return str;
 }
 
 char *str_trim_right(char *s) {
@@ -89,6 +105,46 @@ char *str_trim_right(char *s) {
 
 
     return str;
+}
+
+char *str_trim(char *s) {
+    return str_trim_right(str_trim_left(s));
+}
+
+char *str_new_copy(char *start, char *end) {
+    int len = end - start;
+    char *str = (char *)malloc((len + 1) * sizeof(char));
+    strncpy(str, start, len);
+    *(str + len ) = '\0';
+    return str;
+}
+
+t_str_collection *str_split(char *s, char *sep) {
+    char *p = s, *t = s;
+    int str_len = strlen(s), sep_len = strlen(sep);
+    int current_index = 0, current_size = 10, inc_size = 10;
+    t_str_collection *collection;
+
+    collection = (t_str_collection *)malloc(sizeof(t_str_collection));
+    collection->size = 0;
+    collection->arr = (char **)malloc(current_size * sizeof(char *));
+
+    while ((t = strstr(p, sep))) {
+        if (current_index + 2 == current_size) {
+            collection->arr = (char **)realloc(
+                collection->arr
+                , current_size + inc_size
+            ); 
+            current_size += inc_size;
+        }
+        collection->arr[current_index] = str_new_copy(p, t);
+        current_index++;
+        p = p + sep_len;
+    }
+    collection->arr[current_index] = str_new_copy(p, s + str_len);
+    collection->size = current_index + 1;
+
+    return collection;
 }
 
 int count_of_char(char *s, char c){
