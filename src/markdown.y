@@ -37,7 +37,9 @@ t_node *_node, *_tail_node, *_tmp_node;
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token <text> TABLEROWSTART TABLECEILEND
 %token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT
-%token EXCLAMATION MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES RIGHTSQUARE LEFTSQUARE
+%token <text> LEFTSQUARE RIGHTSQUARE LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
+
+%token MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES 
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
 
@@ -56,9 +58,9 @@ t_node *_node, *_tail_node, *_tmp_node;
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
 %type <node> inline_elements inline_element
-%type <node> plaintext link inline_code
+%type <node> plaintext link inline_code standard_link standard_image
 
-%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK LEFTPARENTHESES RIGHTSQUARE RIGHTPARENTHESES error
+%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK RIGHTSQUARE error
 %nonassoc STARX
 
 %%
@@ -1057,33 +1059,10 @@ inline_element:
             $$ = $1; 
         }
     | link { $$ = $1; }
+    | standard_link { $$ = $1; }
+    | standard_image { $$ = $1; }
     | inline_code { $$ = $1; }
     ;
-
-plaintext:
-    plaintext text_list {
-            *($1->ops + 1) = str_concat(*($1->ops + 1), $2);
-            $$ = $1;
-        } 
-    | text_list {
-            _node = inline_node_create(
-                TAG_INLINE_TEXT
-                , NODE_LEVEL_SPECIAL
-                , 2
-                , ""
-                , $1 
-            );
-
-            $$ = _node;
-        }
-    ;
-
-text_list:
-    TEXT                            { $$ = str_format("%s", $1); }
-    | SPECIALCHAR                   { $$ = str_format("%s", $1); }
-    ;
-
-
 
 
 
@@ -1121,7 +1100,9 @@ headertext:
 
 link:                        
     LINK {
+            // get content A between `<` and `>`
             tag_info = markdown_get_tag_info($1);
+            // get tag info from A
             tag_info = markdown_get_tag_info(tag_info->content);
 
             _node = inline_node_create(
@@ -1135,6 +1116,46 @@ link:
             $$ = _node;
         }
     ;
+
+standard_link:
+    LEFTSQUARE plaintext RIGHTSQUARE LEFTBRACKET plaintext RIGHTBRACKET {
+            fprintf(stderr, "%s %s %s %s %s %s\n", $1, *($2->ops + 1), $3, $4, *($5->ops + 1), $6);
+            $$ = $2;
+        } 
+    ;
+
+standard_image:
+    EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE LEFTBRACKET plaintext RIGHTBRACKET {
+            fprintf(stderr, "%s %s %s %s %s %s\n", $1, *($2->ops + 1), $3, $4, *($5->ops + 1), $6);
+            $$ = $2;
+        } 
+    ;
+
+
+plaintext:
+    plaintext text_list {
+            *($1->ops + 1) = str_concat(*($1->ops + 1), $2);
+            $$ = $1;
+        } 
+    | text_list {
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , NODE_LEVEL_SPECIAL
+                , 2
+                , ""
+                , $1 
+            );
+
+            $$ = _node;
+        }
+    ;
+
+text_list:
+    TEXT                            { $$ = str_format("%s", $1); }
+    | SPECIALCHAR                   { $$ = str_format("%s", $1); }
+    ;
+
+
 
 inline_code:
     BACKTICK codespan BACKTICK { 

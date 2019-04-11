@@ -6,10 +6,10 @@
 #include "node.h"
 #include "markdown.y.h"
 
-#undef _ISDEBUGLEX
+#define _ISDEBUGLEX
 
 #ifdef _ISDEBUGLEX
-#define P(token) fprintf(stdout, "token: %s: %s\n", token, yytext); BeginToken(yytext);
+#define P(token) fprintf(stderr, "token: %s: %s\n", token, yytext); BeginToken(yytext);
 #else
 #define P(token) BeginToken(yytext);
 #endif
@@ -53,7 +53,7 @@ static void restoreState() {
     /* lexer states */
 %x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
-%x TABLEROW
+%x TABLEROW LINKSTART LINKATTR
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -81,7 +81,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return VSECTION; }
 
 
-<INITIAL,TABLEROW>\\                    { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
+<INITIAL,TABLEROW,LINKSTART,LINKATTR>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
 <ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 
@@ -201,6 +201,50 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
+                                        }
+
+    /* image: ![Alt text](/path/to/img.jpg "optional title") */
+<INITIAL,TABLEROW>!\[/[^\r\n]+\]\([^\r\n]+\) {
+                                            yylval.text = strdup(yytext);
+                                            P("EXCLAMATION_LEFTSQUARE");
+                                            enterState(LINKSTART, "LINKSTART"); 
+                                            return EXCLAMATION_LEFTSQUARE;
+                                        }
+
+    /* link: [an example](http://example.com/ "Title") */
+<INITIAL,TABLEROW>\[/[^\r\n]+\]\([^\r\n]+\) {
+                                            yylval.text = strdup(yytext);
+                                            P("LEFTSQUARE");
+                                            enterState(LINKSTART, "LINKSTART"); 
+                                            return LEFTSQUARE;
+                                        }
+<LINKSTART>\]                           {
+                                            yylval.text = strdup(yytext);
+                                            P("RIGHTSQUARE");
+                                            return RIGHTSQUARE;
+                                        }
+<LINKSTART>\(                           {
+                                            yylval.text = strdup(yytext);
+                                            P("LEFTBRACKET");
+                                            restoreState();
+                                            enterState(LINKATTR, "LINKATTR"); 
+                                            return LEFTBRACKET;
+                                        }
+<LINKSTART>[^\r\n\]]                    {
+                                            yylval.text = strdup(yytext);
+                                            P("TEXT");
+                                            return TEXT;
+                                        }
+<LINKATTR>[^\r\n\)]                     {
+                                            yylval.text = strdup(yytext);
+                                            P("TEXT");
+                                            return TEXT;
+                                        }
+<LINKATTR>\)                            {
+                                            yylval.text = strdup(yytext);
+                                            P("RIGHTBRACKET");
+                                            restoreState();
+                                            return RIGHTBRACKET;
                                         }
 
 
