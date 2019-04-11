@@ -553,16 +553,15 @@ static char *text_post_parse(t_node *node) {
  */
 static char *block_pre_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<pre><code%s>"
-        , str_padding_left("", node->level * 4)
+        "\n<pre%s><code>"
         , *node->ops
     );
 }
 
 static char *block_pre_post_parse(t_node *node) {
     return str_format(
-        "%s</code></pre>\n"
-        , str_padding_left("", node->level * 4)
+        // Note: no prefix blank padding
+        "</code></pre>\n"
     );
 }
 
@@ -691,7 +690,7 @@ static t_link *block_blank_pre_visit(t_node *node) {
     /**
      * 1. only if the block_blank node is under TAG_BLOCK_PRE or TAG_BLOCK_INDENT_PRE,
      * 2. and is not the last child 
-     * 3. then, we should output the blank lines  
+     * 3. then, we output the blank lines  
      * 4. otherwise, we output nothing
      */
     if (
@@ -704,6 +703,10 @@ static t_link *block_blank_pre_visit(t_node *node) {
         new_link = (t_link *)malloc(sizeof(t_link)); 
         new_link->children = NULL;
         new_link->next = node->next;
+    }
+    else {
+        fprintf(stderr, "@show node:\n");
+        show_node(node);
     }
 
     return new_link;

@@ -19,6 +19,7 @@ static t_tag tags_of_block_node[] = {
     , TAG_BLOCK_INDENT_TEXT
     , TAG_BLOCK_QUOTE_UL
     , TAG_BLOCK_QUOTE_OL
+    , TAG_BLOCK_QUOTE_P
     , TAG_BLOCK_BLANK
     , TAG_BLOCK_PRE
     , TAG_BLOCK_INDENT_PRE
@@ -45,6 +46,18 @@ static t_tag tags_of_node_need_merged_when_adjacent_and_not_blank_seperated[] = 
 };
 static int tags_of_node_need_merged_when_adjacent_and_not_blank_seperated_size
     = sizeof(tags_of_node_need_merged_when_adjacent_and_not_blank_seperated) / sizeof(t_tag);
+
+static t_tag tags_of_list_node[] = {
+    TAG_UL
+    , TAG_OL
+    , TAG_INDENT_UL
+    , TAG_INDENT_OL
+    , TAG_QUOTE_UL
+    , TAG_QUOTE_OL
+};
+static int tags_of_list_node_size
+    = sizeof(tags_of_list_node) / sizeof(t_tag);
+
 
 
 static t_tag get_parent_block_node_tag(t_tag tag) {
@@ -77,15 +90,6 @@ static t_tag get_parent_block_node_tag(t_tag tag) {
             return TAG_ROOT;
     }
 }
-static int is_line_list_node(t_node *node) {
-    return (
-        node->tag == TAG_UL
-        || node->tag == TAG_OL
-        || node->tag == TAG_INDENT_UL
-        || node->tag == TAG_INDENT_OL
-    );
-}
-
 static int is_blank_node(t_node *node) {
     return (
         node->tag == TAG_BLANK
@@ -105,6 +109,14 @@ static int index_of(t_tag *arr, int size, t_tag tag) {
 
 static int is_block_node(t_node *node) {
     return index_of(tags_of_block_node, tags_of_block_node_size, node->tag) > -1;
+}
+
+static int is_line_list_node(t_node *node) {
+    return index_of(
+        tags_of_list_node
+        , tags_of_list_node_size
+        , node->tag
+    ) > -1;
 }
 
 static int is_node_need_merged_when_adjacent(t_node *node) {
@@ -203,7 +215,7 @@ t_link *show_node(t_node *node) {
     if (node->nops >= 2) {
         fprintf(
             stderr
-            , "%stag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
+            , "%s@tag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
             , str_padding_left("", node->level * 4)
             , get_tag_type(node->tag)
             , node->level
@@ -215,7 +227,7 @@ t_link *show_node(t_node *node) {
     else {
         fprintf(
             stderr
-            , "%stag: %s; level: %d\n"
+            , "%s@tag: %s; level: %d\n"
             , str_padding_left("", node->level * 4)
             , get_tag_type(node->tag)
             , node->level
@@ -228,7 +240,7 @@ t_link *show_node(t_node *node) {
 static t_link *show_links(t_node *node) {
     fprintf(
         stderr
-        , "%stag: %s; level: %d; parent: %s; parent-level: %d\n"
+        , "%s>tag: %s; level: %d; parent: %s; parent-level: %d\n"
         , str_padding_left("", node->level * 4)
         , get_tag_type(node->tag)
         , node->level
@@ -572,18 +584,21 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
         else if (TAG_BLOCK_BLANK == node->tag) {
             p = prev_node;
 
-            // search the closest parent block node
+            // search the closest parent block node or line-level list node
             while (p) {
-                if (is_block_node(p)) {
+                if (is_block_node(p) || is_line_list_node(p)) {
                     break;
                 } 
 
                 p = p->parent;
             }
 
-            if (!is_block_node(p)) {
-                fprintf(stderr, "visit_to_rearrange_block_node(): p is not a block node\n");
+            if (!is_block_node(p) || !is_line_list_node(p)) {
+                fprintf(stderr, "visit_to_rearrange_block_node(): p is neither a block node, nor a line-level list node\n");
             }
+
+            fprintf(stderr, "show node:\n");
+            show_node(p);
 
             if (p->children) {
                 tail = tail_node_in_list(p->children);
@@ -602,14 +617,9 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
 
     }
 
+    // save previous visited node
+    prev_node = node;
 
-    /**
-     * 1. blank node cannot be prev_node
-     * 2. if so, we cannot find the nearest ancestor list node, because blank node is of level 0
-     */
-    if (!is_blank_node(node)){
-        prev_node = node;
-    }
     return new_link;
 }
 
@@ -672,6 +682,8 @@ static t_link *visit_to_merge_block_nodes(t_node *node) {
     t_link *new_link = NULL;
 
     if (!is_block_node(node)) {
+        // Note: prev_node should always be updated even if it's not a block node
+        prev_node = node;
         return new_link;
     }
 
@@ -679,10 +691,19 @@ static t_link *visit_to_merge_block_nodes(t_node *node) {
         if (
             is_node_need_merged_when_adjacent(node)
             || (
-                is_node_need_merged_when_adjacent_and_not_blank_seperated(node) 
-                && !is_blank_node(prev_node)
+                    (
+                        is_node_need_merged_when_adjacent_and_not_blank_seperated(node) 
+                        && !is_blank_node(prev_node)
+                    )
+                || 
+                    (
+                        is_node_need_merged_when_adjacent_and_not_blank_seperated(node) 
+                            && is_blank_node(prev_node)
+                            && !prev_node->prev
+                    )
                 )
             ) {
+            show_node(prev_node);
             new_link = merge_children_then_clean_the_useless(node->prev, node);
         }
     }

@@ -1650,8 +1650,8 @@ yyreduce:
 #line 67 "markdown.y"
     { 
             fix_node_level((yyvsp[(1) - (1)].node));
-            // fprintf( stderr, "==== traverse ====\n" ); 
-            // traverse_nodes($1); 
+            fprintf( stderr, "==== traverse ====\n" ); 
+            traverse_nodes((yyvsp[(1) - (1)].node)); 
 
             complement_block_nodes((yyvsp[(1) - (1)].node)); 
 
@@ -1660,10 +1660,10 @@ yyreduce:
 
             rearrange_block_nodes((yyvsp[(1) - (1)].node));
 
-            // fprintf( stderr, "==== traverse ====\n" ); 
-            // traverse_nodes($1); 
+            fprintf( stderr, "==== traverse ====\n" ); 
+            traverse_nodes((yyvsp[(1) - (1)].node)); 
 
-            // fprintf( stderr, "==== merge block nodes ====\n" ); 
+            fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes((yyvsp[(1) - (1)].node));
 
             // fprintf( stderr, "==== parse doc tree ====\n" ); 
