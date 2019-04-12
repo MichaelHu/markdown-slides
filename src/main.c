@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <time.h>
-#include "htmltags.h" 
 #include "blocknode.h" 
 #include "node.h" 
 #include "markdown.y.h"

@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "strutils.h"
-#include "htmltags.h" 
+#include "markdown-utils.h" 
 #include "node.h"
 #include "nodetree.h"
 

@@ -10,9 +10,10 @@ doyacc:
 dolex:
 	flex -omarkdown.lex.c markdown.lex
 
-markdown.out: main.o input.o markdown.y.o markdown.lex.o htmltags.o tagstack.o \
+markdown.out: main.o input.o markdown.y.o markdown.lex.o tagstack.o \
 	tagstackcheck.o blocknode.o blocknodestack.o strbuf.o strutils.o \
-	lex-state-stack.o node.o nodetree.o
+	lex-state-stack.o node.o nodetree.o \
+	markdown-utils.o
 	gcc $^ -o $@ -g
 
 .c.o:

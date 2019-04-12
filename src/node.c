@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include "strutils.h"
-#include "htmltags.h"
 #include "node.h"
 
 static t_tag tags_of_block_node[] = {

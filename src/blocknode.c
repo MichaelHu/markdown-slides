@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include "strutils.h"
-#include "htmltags.h"
 #include "blocknode.h"
 #include "strbuf.h"
 

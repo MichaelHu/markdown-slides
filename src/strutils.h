@@ -14,3 +14,5 @@ char *str_trim(char *s);
 char *str_new_copy(char *start, char *end);
 t_str_collection *str_split(char *s, char *sep);
 int count_of_char(char *s, char c);
+
+char *html_escape(char *s);
