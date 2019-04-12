@@ -31,6 +31,7 @@
 # Executables
 src/*.exe
 src/*.out
+test/*.out
 *.app
 *.i*86
 *.x86_64
