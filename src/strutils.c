@@ -122,14 +122,30 @@ char *str_new_copy(char *start, char *end) {
 t_str_collection *str_split(char *s, char *sep) {
     char *p = s, *t = s;
     int str_len = strlen(s), sep_len = strlen(sep);
+    char *end = s + str_len - 1;
     int current_index = 0, current_size = 10, inc_size = 10;
+    int empty_sep = (sep_len == 0);
     t_str_collection *collection;
 
     collection = (t_str_collection *)malloc(sizeof(t_str_collection));
     collection->size = 0;
     collection->arr = (char **)malloc(current_size * sizeof(char *));
 
-    while ((t = strstr(p, sep))) {
+    while (
+        p <= end 
+        && (
+                // if empty seperator, t = p + 1
+                (
+                    empty_sep
+                    && (t = p + 1)
+                )
+                || 
+                // otherwise, find sep in p
+                (
+                    t = strstr(p, sep)
+                )
+            )
+        ) {
         if (current_index + 2 == current_size) {
             collection->arr = (char **)realloc(
                 collection->arr
@@ -137,12 +153,19 @@ t_str_collection *str_split(char *s, char *sep) {
             ); 
             current_size += inc_size;
         }
+
         collection->arr[current_index] = str_new_copy(p, t);
         current_index++;
-        p = p + sep_len;
+        p = t + sep_len;
     }
-    collection->arr[current_index] = str_new_copy(p, s + str_len);
-    collection->size = current_index + 1;
+
+    if (p > end) {
+        collection->size = current_index;
+    }
+    else {
+        collection->arr[current_index] = str_new_copy(p, s + str_len);
+        collection->size = current_index + 1;
+    }
 
     return collection;
 }
