@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "blocknode.h"
 #include "node.h"
 #include "markdown.y.h"
 
