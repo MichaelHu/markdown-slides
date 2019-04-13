@@ -647,10 +647,13 @@ static char *blank_post_parse(t_node *node) {
 static char *link_pre_parse(t_node *node) {
     char *attr = *(node->ops);
     char *content = *(node->ops + 1);
+    int is_simple_link = 0 == strlen(attr);
     return str_format(
-        "<a href=\"%s\">%s</a>"
+        is_simple_link
+            ? "<a href=\"%s\">%s</a>"
+            : "<a%s>%s</a>"
+        , html_escape(is_simple_link ? content : attr)
         , html_escape(content)
-        , content
     );
 }
 

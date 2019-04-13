@@ -124,12 +124,19 @@ t_str_collection *str_split(char *s, char *sep) {
     int str_len = strlen(s), sep_len = strlen(sep);
     char *end = s + str_len - 1;
     int current_index = 0, current_size = 10, inc_size = 10;
+    int empty_str = (str_len == 0);
     int empty_sep = (sep_len == 0);
     t_str_collection *collection;
 
     collection = (t_str_collection *)malloc(sizeof(t_str_collection));
     collection->size = 0;
     collection->arr = (char **)malloc(current_size * sizeof(char *));
+
+    if (empty_str) {
+        collection->size = 1;
+        collection->arr[0] = str_format("");
+        return collection;
+    }
 
     while (
         p <= end 
@@ -232,4 +239,25 @@ char *html_escape(char *s){
     return ret;
 }
 
+char *str_from_arr(char **arr, int size) {
+    return str_from_arr_with_glue(arr, size, "");
+}
+
+char *str_from_arr_with_glue(char **arr, int size, char *glue) {
+    char *str;
+    int i = 1;
+
+    if (size <= 0) {
+        fprintf(stderr, "str_from_arr_with_glue(char **arr, int size): empty arr\n");
+        exit(1);
+    }
+   
+    str = str_format("%s", *arr);
+    while (i < size) {
+        str = str_concat(str, glue);
+        str = str_concat(str, *(arr + i));
+        i++;
+    }
+    return str;
+}
 

@@ -1035,14 +1035,26 @@ inline_elements:
             $$ = $1;
         }
     | inline_element {
-            _node = inline_node_create(
-                TAG_INLINE_ELEMENTS
-                , NODE_LEVEL_SPECIAL
-                , 2
-                /* attr of the first child */
-                , *$1->ops
-                , *($1->ops + 1)
-            );
+            if (TAG_INLINE_LINK == $1->tag) {
+                _node = inline_node_create(
+                    TAG_INLINE_ELEMENTS
+                    , NODE_LEVEL_SPECIAL
+                    , 2
+                    /* attr of the first child */
+                    , ""
+                    , ""
+                );
+            }
+            else {
+                _node = inline_node_create(
+                    TAG_INLINE_ELEMENTS
+                    , NODE_LEVEL_SPECIAL
+                    , 2
+                    /* attr of the first child */
+                    , *$1->ops
+                    , *($1->ops + 1)
+                );
+            }
 
             _node->children = $1;
             $1->parent = _node;
@@ -1119,8 +1131,17 @@ link:
 
 standard_link:
     LEFTSQUARE plaintext RIGHTSQUARE LEFTBRACKET plaintext RIGHTBRACKET {
-            fprintf(stderr, "%s %s %s %s %s %s\n", $1, *($2->ops + 1), $3, $4, *($5->ops + 1), $6);
-            $$ = $2;
+            tag_info = markdown_get_standard_link_tag_info(*($2->ops + 1), *($5->ops + 1));
+
+            _node = inline_node_create(
+                TAG_INLINE_LINK
+                , NODE_LEVEL_SPECIAL
+                , 2 
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            $$ = _node;
         } 
     ;
 

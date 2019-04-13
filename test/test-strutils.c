@@ -178,6 +178,57 @@ static void test_str_split(void) {
         , 1 
     );
 
+    test_util_str_equal(
+        "test 8: split an empty string"
+        , str_split("", "xxx")->arr[0]
+        , "" 
+    );
+
+    test_util_int_equal(
+        "test 9: split an empty string"
+        , str_split("", "xxx")->size
+        , 1 
+    );
+
+}
+
+static void test_str_from_arr(void) {
+    char *arr_1[3] = {
+            "a"
+            , "b"
+            , "c"
+        };
+
+    char *arr_2[1] = {
+            "a"
+        };
+
+    test_util_log_str("\n# test_str_from_arr");
+
+    test_util_str_equal(
+        "test 1"
+        , str_from_arr(arr_1, 3)
+        , "abc" 
+    );
+
+    test_util_str_equal(
+        "test 2"
+        , str_from_arr(arr_2, 1)
+        , "a" 
+    );
+
+    test_util_str_equal(
+        "test 3"
+        , str_from_arr_with_glue(arr_1, 3, "-")
+        , "a-b-c" 
+    );
+
+    test_util_str_equal(
+        "test 4"
+        , str_from_arr_with_glue(arr_2, 1, "-")
+        , "a" 
+    );
+
 }
 
 void test_strutils(void) {
@@ -188,4 +239,5 @@ void test_strutils(void) {
     test_str_new_copy();
 
     test_str_split();
+    test_str_from_arr();
 }

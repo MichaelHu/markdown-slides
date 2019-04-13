@@ -7,11 +7,16 @@ test: build
 
 test.out: main.o test-utils.o \
 	strutils.o \
-	test-strutils.o
+	markdown-utils.o \
+	test-strutils.o \
+	test-markdown-utils.o
 	gcc $^ -o $@ -g
 
 strutils.o:
 	gcc -c ../src/strutils.c -g
+
+markdown-utils.o:
+	gcc -c ../src/markdown-utils.c -g
 
 test-utils.o:
 	gcc -c ./test-lib/test-utils.c -g
