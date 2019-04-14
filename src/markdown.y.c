@@ -586,10 +586,10 @@ static const yytype_uint16 yyrline[] =
      525,   538,   560,   567,   580,   596,   611,   618,   631,   650,
      657,   670,   690,   697,   712,   749,   756,   772,   788,   805,
      812,   828,   851,   868,   882,   899,   913,   930,   948,   955,
-     967,   974,   981,   995,  1012,  1016,  1020,  1030,  1037,  1066,
-    1073,  1074,  1075,  1076,  1104,  1108,  1109,  1110,  1114,  1133,
-    1149,  1157,  1161,  1175,  1176,  1182,  1196,  1210,  1229,  1230,
-    1234,  1235
+     967,   974,   981,   995,  1012,  1016,  1020,  1030,  1037,  1073,
+    1080,  1081,  1082,  1083,  1111,  1115,  1116,  1117,  1121,  1140,
+    1156,  1173,  1177,  1191,  1192,  1198,  1212,  1226,  1245,  1246,
+    1250,  1251
 };
 #endif
 
@@ -2857,7 +2857,14 @@ yyreduce:
   case 88:
 #line 1037 "markdown.y"
     {
-            if (TAG_INLINE_LINK == (yyvsp[(1) - (1)].node)->tag) {
+            if (
+                /**
+                 * 1. if the first child is a link or image
+                 * 2. then, the attr and content attributes will not be transfer to parent
+                 */
+                TAG_INLINE_LINK == (yyvsp[(1) - (1)].node)->tag
+                || TAG_INLINE_IMAGE == (yyvsp[(1) - (1)].node)->tag
+                ) {
                 _node = inline_node_create(
                     TAG_INLINE_ELEMENTS
                     , NODE_LEVEL_SPECIAL
@@ -2885,7 +2892,7 @@ yyreduce:
     break;
 
   case 89:
-#line 1066 "markdown.y"
+#line 1073 "markdown.y"
     { 
             tag_info = markdown_get_tag_info(*((yyvsp[(1) - (1)].node)->ops + 1));     
             *((yyvsp[(1) - (1)].node)->ops) = tag_info->attr;
@@ -2896,47 +2903,47 @@ yyreduce:
     break;
 
   case 90:
-#line 1073 "markdown.y"
+#line 1080 "markdown.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 91:
-#line 1074 "markdown.y"
+#line 1081 "markdown.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 92:
-#line 1075 "markdown.y"
+#line 1082 "markdown.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 93:
-#line 1076 "markdown.y"
+#line 1083 "markdown.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 94:
-#line 1104 "markdown.y"
+#line 1111 "markdown.y"
     { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 95:
-#line 1108 "markdown.y"
+#line 1115 "markdown.y"
     { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 96:
-#line 1109 "markdown.y"
+#line 1116 "markdown.y"
     { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 97:
-#line 1110 "markdown.y"
+#line 1117 "markdown.y"
     { (yyval.text) = ""; ;}
     break;
 
   case 98:
-#line 1114 "markdown.y"
+#line 1121 "markdown.y"
     {
             // get content A between `<` and `>`
             tag_info = markdown_get_tag_info((yyvsp[(1) - (1)].text));
@@ -2956,7 +2963,7 @@ yyreduce:
     break;
 
   case 99:
-#line 1133 "markdown.y"
+#line 1140 "markdown.y"
     {
             tag_info = markdown_get_standard_link_tag_info(*((yyvsp[(2) - (6)].node)->ops + 1), *((yyvsp[(5) - (6)].node)->ops + 1));
 
@@ -2973,15 +2980,24 @@ yyreduce:
     break;
 
   case 100:
-#line 1149 "markdown.y"
+#line 1156 "markdown.y"
     {
-            fprintf(stderr, "%s %s %s %s %s %s\n", (yyvsp[(1) - (6)].text), *((yyvsp[(2) - (6)].node)->ops + 1), (yyvsp[(3) - (6)].text), (yyvsp[(4) - (6)].text), *((yyvsp[(5) - (6)].node)->ops + 1), (yyvsp[(6) - (6)].text));
-            (yyval.node) = (yyvsp[(2) - (6)].node);
+            tag_info = markdown_get_standard_image_tag_info(*((yyvsp[(2) - (6)].node)->ops + 1), *((yyvsp[(5) - (6)].node)->ops + 1));
+
+            _node = inline_node_create(
+                TAG_INLINE_IMAGE
+                , NODE_LEVEL_SPECIAL
+                , 2 
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            (yyval.node) = _node;
         ;}
     break;
 
   case 101:
-#line 1157 "markdown.y"
+#line 1173 "markdown.y"
     {
             *((yyvsp[(1) - (2)].node)->ops + 1) = str_concat(*((yyvsp[(1) - (2)].node)->ops + 1), (yyvsp[(2) - (2)].text));
             (yyval.node) = (yyvsp[(1) - (2)].node);
@@ -2989,7 +3005,7 @@ yyreduce:
     break;
 
   case 102:
-#line 1161 "markdown.y"
+#line 1177 "markdown.y"
     {
             _node = inline_node_create(
                 TAG_INLINE_TEXT
@@ -3004,17 +3020,17 @@ yyreduce:
     break;
 
   case 103:
-#line 1175 "markdown.y"
+#line 1191 "markdown.y"
     { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 104:
-#line 1176 "markdown.y"
+#line 1192 "markdown.y"
     { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 105:
-#line 1182 "markdown.y"
+#line 1198 "markdown.y"
     { 
             tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
 
@@ -3031,7 +3047,7 @@ yyreduce:
     break;
 
   case 106:
-#line 1196 "markdown.y"
+#line 1212 "markdown.y"
     { 
             _node = inline_node_create(
                 TAG_INLINE_TEXT
@@ -3048,7 +3064,7 @@ yyreduce:
     break;
 
   case 107:
-#line 1210 "markdown.y"
+#line 1226 "markdown.y"
     { 
             _node = inline_node_create(
                 TAG_INLINE_TEXT
@@ -3065,28 +3081,28 @@ yyreduce:
     break;
 
   case 108:
-#line 1229 "markdown.y"
+#line 1245 "markdown.y"
     { (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 109:
-#line 1230 "markdown.y"
+#line 1246 "markdown.y"
     { (yyval.text) = (yyvsp[(1) - (1)].text); ;}
     break;
 
   case 110:
-#line 1234 "markdown.y"
+#line 1250 "markdown.y"
     { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 111:
-#line 1235 "markdown.y"
+#line 1251 "markdown.y"
     { (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 3090 "markdown.y.c"
+#line 3106 "markdown.y.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3306,7 +3322,7 @@ yyreturn:
 }
 
 
-#line 1238 "markdown.y"
+#line 1254 "markdown.y"
 
 
 

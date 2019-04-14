@@ -49,13 +49,13 @@ static void test_markdown_get_standard_link_tag_info(void) {
     test_util_str_equal(
         "test 7: no title"
         , markdown_get_standard_link_tag_info("    an example", "      http://example.com/       ")->attr
-        , " href=\"http://example.com/\" title=\"\""
+        , " href=\"http://example.com/\" title=\"an example\""
     );
 
     test_util_str_equal(
         "test 8: empty attr"
         , markdown_get_standard_link_tag_info("    an example", "")->attr
-        , " href=\"\" title=\"\""
+        , " href=\"\" title=\"an example\""
     );
 
     test_util_str_equal(
@@ -121,13 +121,13 @@ static void test_markdown_get_standard_image_tag_info(void) {
     test_util_str_equal(
         "test 7: no title"
         , markdown_get_standard_image_tag_info("    Alt text", "      /path/to/img.jpg       ")->attr
-        , " src=\"/path/to/img.jpg\" title=\"\" alt=\"Alt text\""
+        , " src=\"/path/to/img.jpg\" title=\"Alt text\" alt=\"Alt text\""
     );
 
     test_util_str_equal(
         "test 8: empty attr"
         , markdown_get_standard_image_tag_info("    Alt text", "")->attr
-        , " src=\"\" title=\"\" alt=\"Alt text\""
+        , " src=\"\" title=\"Alt text\" alt=\"Alt text\""
     );
 
     test_util_str_equal(

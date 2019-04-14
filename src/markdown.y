@@ -1035,7 +1035,14 @@ inline_elements:
             $$ = $1;
         }
     | inline_element {
-            if (TAG_INLINE_LINK == $1->tag) {
+            if (
+                /**
+                 * 1. if the first child is a link or image
+                 * 2. then, the attr and content attributes will not be transfer to parent
+                 */
+                TAG_INLINE_LINK == $1->tag
+                || TAG_INLINE_IMAGE == $1->tag
+                ) {
                 _node = inline_node_create(
                     TAG_INLINE_ELEMENTS
                     , NODE_LEVEL_SPECIAL
@@ -1147,8 +1154,17 @@ standard_link:
 
 standard_image:
     EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE LEFTBRACKET plaintext RIGHTBRACKET {
-            fprintf(stderr, "%s %s %s %s %s %s\n", $1, *($2->ops + 1), $3, $4, *($5->ops + 1), $6);
-            $$ = $2;
+            tag_info = markdown_get_standard_image_tag_info(*($2->ops + 1), *($5->ops + 1));
+
+            _node = inline_node_create(
+                TAG_INLINE_IMAGE
+                , NODE_LEVEL_SPECIAL
+                , 2 
+                , tag_info->attr
+                , tag_info->content
+            );
+
+            $$ = _node;
         } 
     ;
 

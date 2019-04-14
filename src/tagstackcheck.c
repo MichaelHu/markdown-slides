@@ -150,6 +150,7 @@ char *get_tag_type(t_tag tag){
         case TAG_INLINE_ELEMENTS: return "TAG_INLINE_ELEMENTS";
         case TAG_INLINE_TEXT: return "TAG_INLINE_TEXT";
         case TAG_INLINE_LINK: return "TAG_INLINE_LINK";
+        case TAG_INLINE_IMAGE: return "TAG_INLINE_IMAGE";
         case TAG_INLINE_CODE: return "TAG_INLINE_CODE";
 
         case TAG_RAW_TEXT: return "TAG_RAW_TEXT";

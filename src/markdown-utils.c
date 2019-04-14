@@ -32,6 +32,8 @@ static t_tag_info *markdown_get_standard_link_or_image_tag_info(
     }
 
     info->content = alt = str_trim(content);
+
+    // content is an empty string for img tag
     if (1 == type) {
         info->content = "";
     }
@@ -50,7 +52,7 @@ static t_tag_info *markdown_get_standard_link_or_image_tag_info(
         exit(1);
     }
     else if(collection->size == 1) {
-        title = "";
+        title = alt;
     }
     else {
         str = str_from_arr_with_glue(collection->arr + 1, collection->size - 1, " ");
