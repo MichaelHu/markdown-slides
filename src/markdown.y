@@ -68,8 +68,8 @@ t_node *_node, *_tail_node, *_tmp_node;
 markdownfile: 
     blocks { 
             fix_node_level($1);
-            fprintf( stderr, "==== traverse ====\n" ); 
-            traverse_nodes($1); 
+            // fprintf( stderr, "==== traverse ====\n" ); 
+            // traverse_nodes($1); 
 
             complement_block_nodes($1); 
 
@@ -78,8 +78,8 @@ markdownfile:
 
             rearrange_block_nodes($1);
 
-            fprintf( stderr, "==== traverse ====\n" ); 
-            traverse_nodes($1); 
+            // fprintf( stderr, "==== traverse ====\n" ); 
+            // traverse_nodes($1); 
 
             fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);

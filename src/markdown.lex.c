@@ -937,7 +937,7 @@ char *yytext;
 #include "node.h"
 #include "markdown.y.h"
 
-#define _ISDEBUGLEX
+#undef _ISDEBUGLEX
 
 #ifdef _ISDEBUGLEX
 #define P(token) fprintf(stderr, "token: %s: %s\n", token, yytext); BeginToken(yytext);

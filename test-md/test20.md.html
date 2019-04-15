@@ -1,14 +1,25 @@
-<ul><li>通过<code>.then()</code>方法，自动生成新的<code>Promise</code>对象，形成<code>链式</code>调用</li>
-<li><code>resolve()</code>和<code>reject()</code>方法分别作为成功调用和发生错误情况时的处理函数，
-这两个回调函数可以通过<code>.then()</code>方法传递进去，如果不传，则使用<code>默认</code>处理函数。
-<code>resolve()</code>会将Promise对象的状态从<code>pending</code>设置为<code>resolved</code>，
-<code>reject()</code>则将Promise对象的状态从<code>pending</code>设置为<code>rejected</code>。
-<p>成功或者失败由用户代码决定，也即什么情况下调用resolve()和reject()是由用户决定的，
-比如AJAX请求成功则调用resolve，失败则调用reject。
+
+<ul>
+
+<li>通过<code>.then()</code>方法，自动生成新的<code>Promise</code>对象，形成<code>链式</code>调用
 </li>
-<li>如果<code>resolve()</code>和<code>reject()</code>方法的返回值仍然是一个<code>Promise对象</code>，则该对象会取代<code>.then()</code>
-方法自动生成的Promise对象
+
+<li><code>resolve()</code>和<code>reject()</code>方法分别作为成功调用和发生错误情况时的处理函数，这两个回调函数可以通过<code>.then()</code>方法传递进去，如果不传，则使用<code>默认</code>处理函数。<code>resolve()</code>会将Promise对象的状态从<code>pending</code>设置为<code>resolved</code>，<code>reject()</code>则将Promise对象的状态从<code>pending</code>设置为<code>rejected</code>。
+    <p>成功或者失败由用户代码决定，也即什么情况下调用resolve()和reject()是由用户决定的，比如AJAX请求成功则调用resolve，失败则调用reject。
+    </p>
+
 </li>
-<li>默认情况：如果用户没有提供调用<code>reject()</code>或者<code>resolve()</code>的条件，<code>默认会调用resolve()</code>。 </li>
-<li>参数传递：默认情况下，上一个Promise对象的<code>resolve()</code>方法的返回值，会作为下一个Promise对象的<code>resolve()</code>方法的传入值。</li>
-<li><code>错误</code>处理：<code>.catch()</code>方法可以捕获error，并且<code>冒泡</code>，通过<code>then()链</code>传递往后面传</li></ul>
+
+<li>如果<code>resolve()</code>和<code>reject()</code>方法的返回值仍然是一个<code>Promise对象</code>，则该对象会取代<code>.then()</code>方法自动生成的Promise对象
+</li>
+
+<li>默认情况：如果用户没有提供调用<code>reject()</code>或者<code>resolve()</code>的条件，<code>默认会调用resolve()</code>。 
+</li>
+
+<li>参数传递：默认情况下，上一个Promise对象的<code>resolve()</code>方法的返回值，会作为下一个Promise对象的<code>resolve()</code>方法的传入值。
+</li>
+
+<li><code>错误</code>处理：<code>.catch()</code>方法可以捕获error，并且<code>冒泡</code>，通过<code>then()链</code>传递往后面传
+</li>
+
+</ul>

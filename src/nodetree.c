@@ -728,8 +728,6 @@ static t_link *block_blank_pre_visit(t_node *node) {
         new_link->next = node->next;
     }
     else {
-        fprintf(stderr, "@show node:\n");
-        show_node(node);
     }
 
     return new_link;

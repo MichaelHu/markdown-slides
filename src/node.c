@@ -592,12 +592,10 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
                 p = p->parent;
             }
 
-            if (!is_block_node(p) || !is_line_list_node(p)) {
+            if (!is_block_node(p) && !is_line_list_node(p)) {
                 fprintf(stderr, "visit_to_rearrange_block_node(): p is neither a block node, nor a line-level list node\n");
+                // show_node(p);
             }
-
-            fprintf(stderr, "show node:\n");
-            show_node(p);
 
             if (p->children) {
                 tail = tail_node_in_list(p->children);
@@ -702,7 +700,7 @@ static t_link *visit_to_merge_block_nodes(t_node *node) {
                     )
                 )
             ) {
-            show_node(prev_node);
+            // show_node(prev_node);
             new_link = merge_children_then_clean_the_useless(node->prev, node);
         }
     }

@@ -1,7 +1,13 @@
+
 <h1> C语言的可变参数列表</h1>
+
 <h2> header files</h2>
-<pre><code>#include &lt;stdarg.h>     </code></pre>
+
+<pre><code>#include &lt;stdarg.h>
+</code></pre>
+
 <h2> examples</h2>
+
 <pre><code>char *str_format(char *format, ...){
     char *_str = NULL;
     va_list args;
@@ -11,4 +17,5 @@
     vsprintf(_str, format, args);
     va_end(args);
     return _str;
-} </code></pre>
+}
+</code></pre>
