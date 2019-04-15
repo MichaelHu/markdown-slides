@@ -1,4 +1,4 @@
-# @[class="fragment"]Title 1
+#@[class="fragment"]Title 1
 
 * Red
 * @[class="fragment"]Green
@@ -12,7 +12,7 @@
 
     console.log(123);
 
-> ### @[class="header"]SubTitle 2
+> ###@[class="header"]SubTitle 2
 
 ## Title 3
 1. One
@@ -51,7 +51,7 @@ Me too.
     * @[class="fragment"]Rocket Reveal
 
 ## Title 6
-> @[style="font-weight:bold"]MCPHP Framework, PHP开源大全
+>@[style="font-weight:bold"]MCPHP Framework, PHP开源大全
 > PHP Manual
 
 ## Title 7

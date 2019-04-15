@@ -17,11 +17,34 @@ extern void markdown(void);
 
 int _inner_pre_level = -1;
 t_tag_info *tag_info;
+t_node *_root_node;
 t_node *_node, *_tail_node, *_tmp_node;
 
 /**
  * @sed_append_to_tail_and_return_the_first
  */
+
+static void parse_doc(void) {
+    fix_node_level(_root_node);
+    // fprintf( stderr, "==== traverse ====\n" ); 
+    // traverse_nodes(_root_node); 
+
+    complement_block_nodes(_root_node); 
+
+    // fprintf( stderr, "==== traverse ====\n" ); 
+    // traverse_nodes(_root_node); 
+
+    rearrange_block_nodes(_root_node);
+
+    // fprintf( stderr, "==== merge block nodes ====\n" ); 
+    merge_block_nodes(_root_node);
+
+    // fprintf( stderr, "==== traverse ====\n" ); 
+    // traverse_nodes(_root_node); 
+
+    // fprintf( stderr, "==== parse doc tree ====\n" ); 
+    parse_node_tree(_root_node);
+}
 
 
 %}
@@ -38,6 +61,7 @@ t_node *_node, *_tail_node, *_tmp_node;
 %token <text> TABLEROWSTART TABLECEILEND
 %token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT
 %token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
+%token <text> ATTRLEFT ATTRRIGHT EMPTYATTR
 
 %token MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES 
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
@@ -67,28 +91,15 @@ t_node *_node, *_tail_node, *_tmp_node;
 
 markdownfile: 
     blocks { 
-            fix_node_level($1);
-            // fprintf( stderr, "==== traverse ====\n" ); 
-            // traverse_nodes($1); 
-
-            complement_block_nodes($1); 
-
-            // fprintf( stderr, "==== traverse ====\n" ); 
-            // traverse_nodes($1); 
-
-            rearrange_block_nodes($1);
-
-            fprintf( stderr, "==== merge block nodes ====\n" ); 
-            merge_block_nodes($1);
-
-            // fprintf( stderr, "==== traverse ====\n" ); 
-            // traverse_nodes($1); 
-
-            // fprintf( stderr, "==== parse doc tree ====\n" ); 
-            parse_node_tree($1);
+            /**
+             * 1. _root_node == $1
+             */
+            parse_doc();
         }
     | error { 
             fprintf( stderr, "==== error ====\n" ); 
+            parse_doc();
+            yyerrok;
         }
     ;
 
@@ -111,12 +122,12 @@ blocks:
             $$ = $1;
         }
     | /* NULL */{
-            _node = block_node_create(
+            _root_node = block_node_create(
                 TAG_ROOT
                 , -100
                 , 0
             );
-            $$ = _node;
+            $$ = _root_node;
         }
     ;
 
@@ -1164,11 +1175,22 @@ plaintext:
 
             $$ = _node;
         }
+    | ATTRLEFT plaintext ATTRRIGHT {
+            *($2->ops + 1) = str_concat($1, *($2->ops + 1));
+            *($2->ops + 1) = str_concat(*($2->ops + 1), $3);
+            $$ = $2;
+        }
+    | ATTRLEFT plaintext error {
+            *($2->ops + 1) = str_concat($1, *($2->ops + 1));
+            $$ = $2;
+            yyerrok;
+        }
     ;
 
 text_list:
     TEXT                            { $$ = str_format("%s", $1); }
     | SPECIALCHAR                   { $$ = str_format("%s", $1); }
+    | EMPTYATTR                     { $$ = str_format("%s", $1); }
     ;
 
 

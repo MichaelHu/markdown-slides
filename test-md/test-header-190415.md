@@ -12,4 +12,9 @@
 
 ## support standard link: [about truth](http://www.258i.com)
 
-## @[style="color: red;"]support standard link: [about truth](http://www.258i.com)
+##@[style="color: red;"]support standard link: [about truth](http://www.258i.com)
+
+## @[style="color: red;"support standard link: [about truth(http://www.258i.com)
+
+## @[]empty attributes
+

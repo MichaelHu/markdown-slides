@@ -67,24 +67,27 @@
      RIGHTSQUARE_LEFTBRACKET = 283,
      RIGHTBRACKET = 284,
      EXCLAMATION_LEFTSQUARE = 285,
-     MINUS = 286,
-     PLUS = 287,
-     RIGHTPARENTHESES = 288,
-     LEFTPARENTHESES = 289,
-     UNDERSCORE = 290,
-     STAR = 291,
-     BLANKLINE = 292,
-     LINEBREAK = 293,
-     LARGERTHAN = 294,
-     DOUBLESTAR = 295,
-     DOUBLEUNDERSCORE = 296,
-     OLSTART = 297,
-     ULSTART = 298,
-     QUOTEBLANKLINE = 299,
-     QUOTEOLSTART = 300,
-     QUOTEULSTART = 301,
-     EXCLAMATION = 302,
-     STARX = 303
+     ATTRLEFT = 286,
+     ATTRRIGHT = 287,
+     EMPTYATTR = 288,
+     MINUS = 289,
+     PLUS = 290,
+     RIGHTPARENTHESES = 291,
+     LEFTPARENTHESES = 292,
+     UNDERSCORE = 293,
+     STAR = 294,
+     BLANKLINE = 295,
+     LINEBREAK = 296,
+     LARGERTHAN = 297,
+     DOUBLESTAR = 298,
+     DOUBLEUNDERSCORE = 299,
+     OLSTART = 300,
+     ULSTART = 301,
+     QUOTEBLANKLINE = 302,
+     QUOTEOLSTART = 303,
+     QUOTEULSTART = 304,
+     EXCLAMATION = 305,
+     STARX = 306
    };
 #endif
 /* Tokens.  */
@@ -116,37 +119,40 @@
 #define RIGHTSQUARE_LEFTBRACKET 283
 #define RIGHTBRACKET 284
 #define EXCLAMATION_LEFTSQUARE 285
-#define MINUS 286
-#define PLUS 287
-#define RIGHTPARENTHESES 288
-#define LEFTPARENTHESES 289
-#define UNDERSCORE 290
-#define STAR 291
-#define BLANKLINE 292
-#define LINEBREAK 293
-#define LARGERTHAN 294
-#define DOUBLESTAR 295
-#define DOUBLEUNDERSCORE 296
-#define OLSTART 297
-#define ULSTART 298
-#define QUOTEBLANKLINE 299
-#define QUOTEOLSTART 300
-#define QUOTEULSTART 301
-#define EXCLAMATION 302
-#define STARX 303
+#define ATTRLEFT 286
+#define ATTRRIGHT 287
+#define EMPTYATTR 288
+#define MINUS 289
+#define PLUS 290
+#define RIGHTPARENTHESES 291
+#define LEFTPARENTHESES 292
+#define UNDERSCORE 293
+#define STAR 294
+#define BLANKLINE 295
+#define LINEBREAK 296
+#define LARGERTHAN 297
+#define DOUBLESTAR 298
+#define DOUBLEUNDERSCORE 299
+#define OLSTART 300
+#define ULSTART 301
+#define QUOTEBLANKLINE 302
+#define QUOTEOLSTART 303
+#define QUOTEULSTART 304
+#define EXCLAMATION 305
+#define STARX 306
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 30 "markdown.y"
+#line 53 "markdown.y"
 {
     char *text;
     t_node *node;
 }
 /* Line 1529 of yacc.c.  */
-#line 150 "markdown.y.h"
+#line 156 "markdown.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

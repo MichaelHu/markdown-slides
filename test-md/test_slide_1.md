@@ -2,7 +2,7 @@
 # Main Slider Title
 
 @s
-## @[class="fragment"] Slider Title 1
+##@[class="fragment"] Slider Title 1
 
 * list 1
 * list 2
