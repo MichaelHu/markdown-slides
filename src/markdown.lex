@@ -203,7 +203,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 
     /* image: ![Alt text](/path/to/img.jpg "optional title") */
-<INITIAL,TABLEROW>!\[/[^\r\n]+\]\([^\r\n]+\) {
+<INITIAL,TABLEROW>!\[/[^\r\n\]]+\]\([^\r\n\)]+\) {
                                             yylval.text = strdup(yytext);
                                             P("EXCLAMATION_LEFTSQUARE");
                                             enterState(LINKSTART, "LINKSTART"); 
@@ -211,23 +211,18 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 
     /* link: [an example](http://example.com/ "Title") */
-<INITIAL,TABLEROW>\[/[^\r\n]+\]\([^\r\n]+\) {
+<INITIAL,TABLEROW>\[/[^\r\n\]]+\]\([^\r\n\)]+\) {
                                             yylval.text = strdup(yytext);
                                             P("LEFTSQUARE");
                                             enterState(LINKSTART, "LINKSTART"); 
                                             return LEFTSQUARE;
                                         }
-<LINKSTART>\]                           {
+<LINKSTART>\]\(                         {
                                             yylval.text = strdup(yytext);
-                                            P("RIGHTSQUARE");
-                                            return RIGHTSQUARE;
-                                        }
-<LINKSTART>\(                           {
-                                            yylval.text = strdup(yytext);
-                                            P("LEFTBRACKET");
+                                            P("RIGHSQUARE_LEFTBRACKET");
                                             restoreState();
                                             enterState(LINKATTR, "LINKATTR"); 
-                                            return LEFTBRACKET;
+                                            return RIGHTSQUARE_LEFTBRACKET;
                                         }
 <LINKSTART>[^\r\n\]]                    {
                                             yylval.text = strdup(yytext);

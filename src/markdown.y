@@ -37,14 +37,14 @@ t_node *_node, *_tail_node, *_tmp_node;
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token <text> TABLEROWSTART TABLECEILEND
 %token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT
-%token <text> LEFTSQUARE RIGHTSQUARE LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
+%token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
 
 %token MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES 
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
 %token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
 
     /* bind union part with nonterminal symbol */
-%type <text> text_list headertext
+%type <text> text_list
 %type <text> codespan code_list error
 %type <node> blocks block
 %type <node> lines line
@@ -60,7 +60,7 @@ t_node *_node, *_tail_node, *_tmp_node;
 %type <node> inline_elements inline_element
 %type <node> plaintext link inline_code standard_link standard_image
 
-%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK RIGHTSQUARE error
+%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK error
 %nonassoc STARX
 
 %%
@@ -78,11 +78,11 @@ markdownfile:
 
             rearrange_block_nodes($1);
 
-            // fprintf( stderr, "==== traverse ====\n" ); 
-            // traverse_nodes($1); 
-
             fprintf( stderr, "==== merge block nodes ====\n" ); 
             merge_block_nodes($1);
+
+            // fprintf( stderr, "==== traverse ====\n" ); 
+            // traverse_nodes($1); 
 
             // fprintf( stderr, "==== parse doc tree ====\n" ); 
             parse_node_tree($1);
@@ -177,35 +177,37 @@ block:
     ;
 
 header:
-    H headertext LINEBREAK {              
+    H inline_elements LINEBREAK {              
             tag_check_stack(TAG_H, 0); 
-            tag_info = markdown_get_tag_info($2);
 
             _node = block_node_create(
                 TAG_H
                 , 0
                 , 3
-                , tag_info->attr
-                , tag_info->content
+                , *($2->ops) 
+                , "" 
                 , $1
             );
 
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         }   
 
-    | QUOTEH headertext LINEBREAK { 
+    | QUOTEH inline_elements LINEBREAK { 
             tag_check_stack(TAG_QUOTE_H, 0); 
-            tag_info = markdown_get_tag_info($2);
 
             _node = block_node_create(
                 TAG_QUOTE_H
                 , 0
                 , 3
-                , tag_info->attr
-                , tag_info->content
+                , *($2->ops)
+                , ""
                 , $1
             );
 
+            _node->children = $2;
+            $2->parent = _node;
             $$ = _node;
         }   
     ;
@@ -1086,36 +1088,13 @@ inline_element:
 
 
     /*
-
-    TEXT                                { $$ = $1; }
-    | SPECIALCHAR                       { $$ = $1; }
-
     | STAR inlineelements STAR %prec STARX              { $$ = create_emphasis($2); } 
     | UNDERSCORE inlineelements UNDERSCORE %prec STARX             { $$ = create_emphasis($2); } 
     | DOUBLESTAR inlineelements DOUBLESTAR %prec STARX              { $$ = create_strong($2); }
     | DOUBLEUNDERSCORE inlineelements DOUBLEUNDERSCORE %prec STARX  { $$ = create_strong($2); }
-
-
-    | LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
-                                 $$ = create_link($2, $5);
-                                } 
-    | EXCLAMATION LEFTSQUARE plaintext RIGHTSQUARE LEFTPARENTHESES plaintext RIGHTPARENTHESES {
-                                 $$ = create_image($3, $6);
-                                } 
     ;
     */
 
-
-
-headertext:
-    headertext TEXT                 { $$ = str_concat($1, $2); }
-    /*
-    | headertext link               { $$ = str_concat($1, $2); }
-    */
-    | headertext CODETEXT           { $$ = str_concat($1, $2); }
-    | headertext SPECIALCHAR        { $$ = str_concat($1, $2); }
-    | /* NULL */                    { $$ = ""; }
-    ;
 
 link:                        
     LINK {
@@ -1137,8 +1116,8 @@ link:
     ;
 
 standard_link:
-    LEFTSQUARE plaintext RIGHTSQUARE LEFTBRACKET plaintext RIGHTBRACKET {
-            tag_info = markdown_get_standard_link_tag_info(*($2->ops + 1), *($5->ops + 1));
+    LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET {
+            tag_info = markdown_get_standard_link_tag_info(*($2->ops + 1), *($4->ops + 1));
 
             _node = inline_node_create(
                 TAG_INLINE_LINK
@@ -1153,8 +1132,8 @@ standard_link:
     ;
 
 standard_image:
-    EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE LEFTBRACKET plaintext RIGHTBRACKET {
-            tag_info = markdown_get_standard_image_tag_info(*($2->ops + 1), *($5->ops + 1));
+    EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET {
+            tag_info = markdown_get_standard_image_tag_info(*($2->ops + 1), *($4->ops + 1));
 
             _node = inline_node_create(
                 TAG_INLINE_IMAGE

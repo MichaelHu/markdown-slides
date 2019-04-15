@@ -348,11 +348,10 @@ void parse_node_tree(t_node *root) {
  */
 static char *h_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<h%d%s>%s"
+        "\n%s<h%d%s>"
         , str_padding_left("", node->level * 4)
         , count_of_char(*(node->ops + 2), '#') 
         , *node->ops 
-        , *(node->ops + 1)
     );
 };
 static char *h_post_parse(t_node *node) {
