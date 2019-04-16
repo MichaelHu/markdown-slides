@@ -1176,12 +1176,21 @@ plaintext:
             $$ = _node;
         }
     | ATTRLEFT plaintext ATTRRIGHT {
-            *($2->ops + 1) = str_concat($1, *($2->ops + 1));
+            *($2->ops + 1) = str_concat(
+                $1
+                /**
+                 * 1. @[data-title="def\]"]abc => @[data-title="def&#93;"]abc
+                 */
+                , str_replace(*($2->ops + 1), "]", "&#93;")
+            );
             *($2->ops + 1) = str_concat(*($2->ops + 1), $3);
             $$ = $2;
         }
     | ATTRLEFT plaintext error {
-            *($2->ops + 1) = str_concat($1, *($2->ops + 1));
+            *($2->ops + 1) = str_concat(
+                $1
+                , str_replace(*($2->ops + 1), "]", "&#93;")
+            );
             $$ = $2;
             yyerrok;
         }

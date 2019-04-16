@@ -261,3 +261,23 @@ char *str_from_arr_with_glue(char **arr, int size, char *glue) {
     return str;
 }
 
+char *str_replace(char *s, char *pattern, char *replacement) {
+    char *p = s, *t = s, *str_ret = "";
+    int str_len = strlen(s), pattern_len = strlen(pattern);
+
+    while ((t = strstr(p, pattern))) {
+        str_ret = str_concat(str_ret, str_new_copy(p, t));
+        str_ret = str_concat(str_ret, replacement);
+        p = t + pattern_len;
+        if (p - s >= str_len) {
+            break;
+        }
+    }
+
+    if (!t) {
+        str_ret = str_concat(str_ret, str_new_copy(p, s + str_len));
+    }
+
+    return str_ret;
+}
+

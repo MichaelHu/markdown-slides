@@ -78,6 +78,41 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^@vs.*                                  { P("VSECTION"); 
                                             yylval.text = strdup(yytext);
                                             return VSECTION; }
+
+    /* escape */
+<INITIAL,TABLEROW,LINKSTART,LINKATTR,ATTRSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
+<ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+<ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+
+
+    /* emphasis */
+    /*
+<INITIAL,TABLEROW,EMSTART>[ ]\*[ ]     {
+                                            P("TEXT");
+                                            yylval.text = strdup(yytext);
+                                            return TEXT;
+                                        }
+<INITIAL,TABLEROW>[\*_]/[^ ]            {
+                                            P("EM_BEGIN");
+                                            yylval.text = strdup(yytext);
+                                            enterState(EMSTART, "EMSTART");
+                                            return EM_BEGIN;
+                                        }
+<EMSTART>.                              {
+                                            P("TEXT");
+                                            yylval.text = strdup(yytext);
+                                            return TEXT;
+                                        }
+<EMSTART>[^ ][\*_]                      {
+                                            P("EMEND");
+                                            yylval.text = strdup(yytext);
+                                            restoreState();
+                                            return EM_END;
+                                        }
+    */
+
+
+    /* attribute list */
 @\[\]                                   { 
                                             P("EMPTYATTR");
                                             yylval.text = strdup(yytext);
@@ -108,10 +143,6 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return TEXT; 
                                         }
 
-
-<INITIAL,TABLEROW,LINKSTART,LINKATTR,ATTRSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
-<ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
-<ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 
     /* backtick only support single line mode */
 <INITIAL,TABLEROW>"`"                   { P("BACKTICK"); enterState(CODESPAN, "CODESPAN"); yylval.text = strdup(yytext); return BACKTICK; }

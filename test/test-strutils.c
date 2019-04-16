@@ -231,6 +231,38 @@ static void test_str_from_arr(void) {
 
 }
 
+static void test_str_replace(void) {
+    char *s1 = "Hello, Michael!";
+
+    test_util_log_str("\n# test_str_replace");
+
+    test_util_str_equal(
+        "test 1"
+        , str_replace(s1, "Michael", "Even")
+        , "Hello, Even!" 
+    );
+
+    test_util_str_equal(
+        "test 2"
+        , str_replace(s1, "e", "@")
+        , "H@llo, Micha@l!" 
+    );
+
+    test_util_str_equal(
+        "test 3"
+        , str_replace(s1, "Michael", "")
+        , "Hello, !" 
+    );
+
+    test_util_str_equal(
+        "test 4"
+        , str_replace(s1, "xxx", "")
+        , "Hello, Michael!" 
+    );
+
+}
+
+
 void test_strutils(void) {
     test_str_trim_right();
     test_str_trim_left();
@@ -240,4 +272,6 @@ void test_strutils(void) {
 
     test_str_split();
     test_str_from_arr();
+
+    test_str_replace();
 }

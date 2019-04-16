@@ -373,11 +373,11 @@ struct yy_trans_info
 static yyconst flex_int16_t yy_acclist[234] =
     {   0,
        71,   68,   70,   69,   70,   68,   70,   68,   70,   68,
-       70,   68,   70,   68,   70,   15,   68,   70,   18,   68,
+       70,   68,   70,   68,   70,   10,   68,   70,   18,   68,
        70,   68,   70,16420,16421,    1,   69,   70,   68,   70,
        68,   70,   43,   68,   70,   68,   70,   68,   70,   68,
        70,    7,   68,   70,   68,   70,   18,   68,   70,   28,
-       68,   70,   17,   70,   70,   16,   17,   70,   39,   70,
+       68,   70,   12,   70,   70,   11,   12,   70,   39,   70,
        40,   70,   39,   70,   25,   70,   26,   70,   25,   70,
        25,   70,   20,   70,   21,   70,   70,   20,   70,   22,
        70,   70,   70,   70,   46,   70,   47,   70,   46,   70,
@@ -385,14 +385,14 @@ static yyconst flex_int16_t yy_acclist[234] =
 
        70,   61,   70,   61,   70,   65,   70,   66,   70,   65,
        70,   65,   70,   30,   70,   31,   70,   30,   70,   30,
-       70,   30,   70,   30,   70,   15,   30,   70,   18,   30,
-       70,   29,   30,   70,   54,   70,   15,   54,   70,   54,
-       70,   55,   70,   53,   55,   70,   15,   55,   70,   14,
-       70,   13,   70,   14,   70,   14,   15,   70,   12,   14,
-       70,   69,   11,   23,   38,   38,16420,16421,    1,   38,
+       70,   30,   70,   30,   70,   10,   30,   70,   18,   30,
+       70,   29,   30,   70,   54,   70,   10,   54,   70,   54,
+       70,   55,   70,   53,   55,   70,   10,   55,   70,   17,
+       70,   16,   70,   17,   70,   10,   17,   70,   15,   17,
+       70,   69,   14,   23,   38,   38,16420,16421,    1,   38,
        38,   38,   38,    1,   69,   43,   32,    2,    8,   23,
        39,   40,   26,   21,   19,   41,   46,   47,   58,   62,
-       66,   31,   52,   13,   10, 8228,   43,   34,   45,    3,
+       66,   31,   52,   16,   13, 8228,   43,   34,   45,    3,
 
        44,   33,    8,    9,   27,   42, 8229,16420,16421,   43,
         4,   44,   35,    9,   24,   43,   64,    5,   44,   51,
@@ -1367,18 +1367,60 @@ YY_RULE_SETUP
                                             yylval.text = strdup(yytext);
                                             return VSECTION; }
 	YY_BREAK
+/* escape */
 case 10:
 YY_RULE_SETUP
-#line 81 "markdown.lex"
+#line 83 "markdown.lex"
+{ P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
+	YY_BREAK
+case 11:
+YY_RULE_SETUP
+#line 84 "markdown.lex"
+{ restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+	YY_BREAK
+case 12:
+YY_RULE_SETUP
+#line 85 "markdown.lex"
+{ restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+	YY_BREAK
+/* emphasis */
+/*
+<INITIAL,TABLEROW,EMSTART>[ ]\*[ ]     {
+                                            P("TEXT");
+                                            yylval.text = strdup(yytext);
+                                            return TEXT;
+                                        }
+<INITIAL,TABLEROW>[\*_]/[^ ]            {
+                                            P("EM_BEGIN");
+                                            yylval.text = strdup(yytext);
+                                            enterState(EMSTART, "EMSTART");
+                                            return EM_BEGIN;
+                                        }
+<EMSTART>.                              {
+                                            P("TEXT");
+                                            yylval.text = strdup(yytext);
+                                            return TEXT;
+                                        }
+<EMSTART>[^ ][\*_]                      {
+                                            P("EMEND");
+                                            yylval.text = strdup(yytext);
+                                            restoreState();
+                                            return EM_END;
+                                        }
+    */
+/* attribute list */
+case 13:
+YY_RULE_SETUP
+#line 116 "markdown.lex"
 { 
                                             P("EMPTYATTR");
                                             yylval.text = strdup(yytext);
                                             return EMPTYATTR;
                                         }
 	YY_BREAK
-case 11:
+case 14:
 YY_RULE_SETUP
-#line 86 "markdown.lex"
+#line 121 "markdown.lex"
 { 
                                             P("ATTRLEFT");
                                             yylval.text = strdup(yytext);
@@ -1386,9 +1428,9 @@ YY_RULE_SETUP
                                             return ATTRLEFT;
                                         }
 	YY_BREAK
-case 12:
+case 15:
 YY_RULE_SETUP
-#line 92 "markdown.lex"
+#line 127 "markdown.lex"
 {
                                             P("ATTRRIGHT");
                                             yylval.text = strdup(yytext);
@@ -1396,10 +1438,10 @@ YY_RULE_SETUP
                                             return ATTRRIGHT;
                                         }
 	YY_BREAK
-case 13:
-/* rule 13 can match eol */
+case 16:
+/* rule 16 can match eol */
 YY_RULE_SETUP
-#line 98 "markdown.lex"
+#line 133 "markdown.lex"
 {
                                             yylineno++;
                                             P("LINEBREAK");
@@ -1408,132 +1450,117 @@ YY_RULE_SETUP
                                             return LINEBREAK;
                                         }
 	YY_BREAK
-case 14:
+case 17:
 YY_RULE_SETUP
-#line 105 "markdown.lex"
+#line 140 "markdown.lex"
 {
                                             P("TEXT");
                                             yylval.text = strdup(yytext);
                                             return TEXT; 
                                         }
 	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 112 "markdown.lex"
-{ P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
-	YY_BREAK
-case 16:
-YY_RULE_SETUP
-#line 113 "markdown.lex"
-{ restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
-	YY_BREAK
-case 17:
-YY_RULE_SETUP
-#line 114 "markdown.lex"
-{ restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
-	YY_BREAK
 /* backtick only support single line mode */
 case 18:
 YY_RULE_SETUP
-#line 117 "markdown.lex"
+#line 148 "markdown.lex"
 { P("BACKTICK"); enterState(CODESPAN, "CODESPAN"); yylval.text = strdup(yytext); return BACKTICK; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 118 "markdown.lex"
+#line 149 "markdown.lex"
 { P("SPECIALCHAR"); 
                                             yylval.text = strdup("`"); return SPECIALCHAR; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 120 "markdown.lex"
+#line 151 "markdown.lex"
 { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 121 "markdown.lex"
+#line 152 "markdown.lex"
 { P("LINEBREAK"); restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 122 "markdown.lex"
+#line 153 "markdown.lex"
 { P("BACKTICK"); restoreState(); yylval.text = strdup(yytext); return BACKTICK; }
 	YY_BREAK
 /* double-backtick will be teated as plain text */
 case 23:
 YY_RULE_SETUP
-#line 125 "markdown.lex"
+#line 156 "markdown.lex"
 { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 127 "markdown.lex"
+#line 158 "markdown.lex"
 { P("TRIPLEBACKTICK"); enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 128 "markdown.lex"
+#line 159 "markdown.lex"
 { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 129 "markdown.lex"
+#line 160 "markdown.lex"
 { P("CODETEXT"); yylval.text = strdup(yytext);
                                            yylineno++; return CODETEXT; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 131 "markdown.lex"
+#line 162 "markdown.lex"
 { P("TRIPLEBACKTICK"); restoreState(); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 	YY_BREAK
 /* table rows */
 case 28:
 YY_RULE_SETUP
-#line 135 "markdown.lex"
+#line 166 "markdown.lex"
 { P("TABLEROWSTART"); enterState(TABLEROW, "TABLEROW"); yylval.text = strdup(yytext); return TABLEROWSTART; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 136 "markdown.lex"
+#line 167 "markdown.lex"
 { P("TABLECEILEND"); yylval.text = strdup(yytext); return TABLECEILEND; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 137 "markdown.lex"
+#line 168 "markdown.lex"
 { P("TEXT"); yylval.text = strdup(yytext); return TEXT; }
 	YY_BREAK
 case 31:
 /* rule 31 can match eol */
 YY_RULE_SETUP
-#line 138 "markdown.lex"
+#line 169 "markdown.lex"
 { P("LINEBREAK"); restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 142 "markdown.lex"
+#line 173 "markdown.lex"
 { P("ULSTART"); return ULSTART; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 143 "markdown.lex"
+#line 174 "markdown.lex"
 { P("QUOTEULSTART"); return QUOTEULSTART; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 144 "markdown.lex"
+#line 175 "markdown.lex"
 { P("OLSTART"); return OLSTART; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 145 "markdown.lex"
+#line 176 "markdown.lex"
 { P("QUOTEOLSTART"); return QUOTEOLSTART; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 149 "markdown.lex"
+#line 180 "markdown.lex"
 { 
                                             /* indent ul list */
                                             if(is_in_list(indent_level(yytext))){
@@ -1555,7 +1582,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 167 "markdown.lex"
+#line 198 "markdown.lex"
 { 
                                             /* indent ol list */
                                             if(is_in_list(indent_level(yytext))){
@@ -1580,7 +1607,7 @@ case 38:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 185 "markdown.lex"
+#line 216 "markdown.lex"
 { 
                                             /* indent p */
                                             if(is_in_list(indent_level(yytext))){
@@ -1601,40 +1628,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 202 "markdown.lex"
+#line 233 "markdown.lex"
 { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }
 	YY_BREAK
 case 40:
 /* rule 40 can match eol */
 YY_RULE_SETUP
-#line 203 "markdown.lex"
+#line 234 "markdown.lex"
 { P(""); restoreState(); yylineno++; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 205 "markdown.lex"
+#line 236 "markdown.lex"
 { restoreState(); P("ULSTART"); return ULSTART; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 206 "markdown.lex"
+#line 237 "markdown.lex"
 { restoreState(); P("OLSTART"); return OLSTART; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 209 "markdown.lex"
+#line 240 "markdown.lex"
 { yylval.text = strdup(yytext); P("H"); return H; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 210 "markdown.lex"
+#line 241 "markdown.lex"
 { yylval.text = strdup(yytext); P("QUOTEH"); return QUOTEH; }
 	YY_BREAK
 /* block and functional html tags must be in one line and must start at first column */
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 213 "markdown.lex"
+#line 244 "markdown.lex"
 { 
                                             yylval.text = strdup(yytext); 
                                             P("HTMLBLOCK"); 
@@ -1644,19 +1671,19 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 219 "markdown.lex"
+#line 250 "markdown.lex"
 { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 	YY_BREAK
 case 47:
 /* rule 47 can match eol */
 YY_RULE_SETUP
-#line 220 "markdown.lex"
+#line 251 "markdown.lex"
 { yylineno++; P("LINEBREAK"); restoreState();  return LINEBREAK; }
 	YY_BREAK
 /* linkable text */
 case 48:
 YY_RULE_SETUP
-#line 223 "markdown.lex"
+#line 254 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
@@ -1665,7 +1692,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 228 "markdown.lex"
+#line 259 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
@@ -1678,7 +1705,7 @@ case 50:
 (yy_c_buf_p) = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 235 "markdown.lex"
+#line 266 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("EXCLAMATION_LEFTSQUARE");
@@ -1692,7 +1719,7 @@ case 51:
 (yy_c_buf_p) = yy_cp = yy_bp + 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 243 "markdown.lex"
+#line 274 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("LEFTSQUARE");
@@ -1702,7 +1729,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 249 "markdown.lex"
+#line 280 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("RIGHSQUARE_LEFTBRACKET");
@@ -1713,7 +1740,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 256 "markdown.lex"
+#line 287 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("RIGHTBRACKET");
@@ -1723,7 +1750,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 262 "markdown.lex"
+#line 293 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("TEXT");
@@ -1732,7 +1759,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 267 "markdown.lex"
+#line 298 "markdown.lex"
 {
                                             yylval.text = strdup(yytext);
                                             P("TEXT");
@@ -1745,7 +1772,7 @@ YY_RULE_SETUP
 case 56:
 /* rule 56 can match eol */
 YY_RULE_SETUP
-#line 279 "markdown.lex"
+#line 310 "markdown.lex"
 {
                                             enterState(SCRIPTBLOCK, "SCRIPTBLOCK"); 
                                             yylval.text = strdup(yytext); 
@@ -1755,13 +1782,13 @@ YY_RULE_SETUP
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 285 "markdown.lex"
+#line 316 "markdown.lex"
 { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 	YY_BREAK
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 286 "markdown.lex"
+#line 317 "markdown.lex"
 { 
                                             yylineno++; 
                                             yylval.text = strdup(yytext); 
@@ -1772,7 +1799,7 @@ YY_RULE_SETUP
 case 59:
 /* rule 59 can match eol */
 YY_RULE_SETUP
-#line 292 "markdown.lex"
+#line 323 "markdown.lex"
 { 
                                             restoreState(); 
                                             yylval.text = strdup("</script>"); 
@@ -1785,7 +1812,7 @@ YY_RULE_SETUP
 case 60:
 /* rule 60 can match eol */
 YY_RULE_SETUP
-#line 305 "markdown.lex"
+#line 336 "markdown.lex"
 {
                                             yylval.text = strdup(yytext); 
                                             P("STYLESTART"); 
@@ -1795,13 +1822,13 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 311 "markdown.lex"
+#line 342 "markdown.lex"
 { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 	YY_BREAK
 case 62:
 /* rule 62 can match eol */
 YY_RULE_SETUP
-#line 312 "markdown.lex"
+#line 343 "markdown.lex"
 { 
                                             yylineno++; 
                                             yylval.text = strdup(yytext); 
@@ -1812,7 +1839,7 @@ YY_RULE_SETUP
 case 63:
 /* rule 63 can match eol */
 YY_RULE_SETUP
-#line 318 "markdown.lex"
+#line 349 "markdown.lex"
 { 
                                             yylval.text = "</style>"; 
                                             P("STYLEEND"); 
@@ -1824,7 +1851,7 @@ YY_RULE_SETUP
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 328 "markdown.lex"
+#line 359 "markdown.lex"
 {
                                             yylval.text = strdup(yytext); 
                                             P("SVGSTART"); 
@@ -1834,13 +1861,13 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 334 "markdown.lex"
+#line 365 "markdown.lex"
 { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 	YY_BREAK
 case 66:
 /* rule 66 can match eol */
 YY_RULE_SETUP
-#line 335 "markdown.lex"
+#line 366 "markdown.lex"
 { 
                                             yylineno++; 
                                             yylval.text = strdup(yytext); 
@@ -1851,7 +1878,7 @@ YY_RULE_SETUP
 case 67:
 /* rule 67 can match eol */
 YY_RULE_SETUP
-#line 341 "markdown.lex"
+#line 372 "markdown.lex"
 { 
                                             yylval.text = "</svg>"; 
                                             P("SVGEND"); 
@@ -1861,21 +1888,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 352 "markdown.lex"
+#line 383 "markdown.lex"
 { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 	YY_BREAK
 case 69:
 /* rule 69 can match eol */
 YY_RULE_SETUP
-#line 353 "markdown.lex"
+#line 384 "markdown.lex"
 { yylineno++; P("LINEBREAK"); return LINEBREAK; }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 356 "markdown.lex"
+#line 387 "markdown.lex"
 ECHO;
 	YY_BREAK
-#line 1879 "markdown.lex.c"
+#line 1906 "markdown.lex.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(ESCAPE):
 			case YY_STATE_EOF(CODEBLOCK):
@@ -2863,7 +2890,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 356 "markdown.lex"
+#line 387 "markdown.lex"
 
 
 

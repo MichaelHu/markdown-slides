@@ -130,6 +130,7 @@ t_tag_info *markdown_get_tag_info(char *s){
     /* attr start */
     if(*p && p == strstr(p, "@[")){
         end = strstr(p, "]");
+
         if(end 
             /* non-escaped ']' */
             && *(end - 1) != '\\'){

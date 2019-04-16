@@ -144,7 +144,49 @@ static void test_markdown_get_standard_image_tag_info(void) {
 
 };
 
+static void test_markdown_get_tag_info(void) {
+    test_util_log_str("\n# test_markdown_get_tag_info");
+
+    test_util_str_equal(
+        "test 1"
+        , markdown_get_tag_info("abc")->content
+        , "abc"
+    );
+
+    test_util_str_equal(
+        "test 2"
+        , markdown_get_tag_info("@[]abc")->content
+        , "abc"
+    );
+
+    test_util_str_equal(
+        "test 3"
+        , markdown_get_tag_info("@[]abc")->attr
+        , ""
+    );
+
+    test_util_str_equal(
+        "test 4"
+        , markdown_get_tag_info("@[data-title=\"def\"]abc")->attr
+        , " data-title=\"def\""
+    );
+
+    test_util_str_equal(
+        "test 5"
+        , markdown_get_tag_info("@[data-title=\"def\\]\"]abc")->attr
+        , ""
+    );
+
+    test_util_str_equal(
+        "test 6"
+        , markdown_get_tag_info("@[data-title=\"def\\]\"]abc")->content
+        , "@[data-title=\"def\\]\"]abc"
+    );
+
+}
+
 void test_markdown_utils(void) {
     test_markdown_get_standard_link_tag_info(); 
     test_markdown_get_standard_image_tag_info(); 
+    test_markdown_get_tag_info(); 
 }
