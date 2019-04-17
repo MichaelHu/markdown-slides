@@ -91,13 +91,13 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             yylval.text = strdup(yytext);
                                             return TEXT;
                                         }
-<INITIAL,TABLEROW>\*/[^ ].*\*           {
+<INITIAL,TABLEROW>\*/[^ \*]             {
                                             P("EM_BEGIN");
                                             yylval.text = strdup(yytext);
                                             enterState(XEMSTART, "XEMSTART");
                                             return EM_BEGIN;
                                         }
-<INITIAL,TABLEROW>_/[^ ].*_             {
+<INITIAL,TABLEROW>_/[^ _]               {
                                             P("EM_BEGIN");
                                             yylval.text = strdup(yytext);
                                             enterState(YEMSTART, "YEMSTART");

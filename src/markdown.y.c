@@ -187,8 +187,8 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 1
-#define MAX_RULE_LEVEL 2
+#define _ISDEBUGPARSER 0
+#define MAX_RULE_LEVEL 10
 #define YYERROR_VERBOSE
 
 /* prototypes */
@@ -2944,7 +2944,7 @@ yyreduce:
   case 80:
 #line 1088 "markdown.y"
     {
-                                                            show_rule("tablerows: TABLEROWSTART tableceils LINEBREAK", 4);
+                                                            show_rule("tablerow: TABLEROWSTART tableceils LINEBREAK", 4);
                                                             (yyval.node) = (yyvsp[(2) - (3)].node);
                                                         ;}
     break;
@@ -2952,7 +2952,7 @@ yyreduce:
   case 81:
 #line 1092 "markdown.y"
     {
-                                                            show_rule("tablerows: TABLEROWSTART tableceils error LINEBREAK", 4);
+                                                            show_rule("tablerow: TABLEROWSTART tableceils error LINEBREAK", 4);
                                                             (yyval.node) = (yyvsp[(2) - (4)].node);
                                                             yyerrok;
                                                         ;}
