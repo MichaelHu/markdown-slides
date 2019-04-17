@@ -73,7 +73,7 @@ static void parse_doc(void) {
 %token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT
 %token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
 %token <text> ATTRLEFT ATTRRIGHT EMPTYATTR
-%token <text> EM_BEGIN EM_END
+%token <text> EM_BEGIN EM_END STRONG_BEGIN STRONG_END
 
 %token MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES 
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
@@ -94,7 +94,7 @@ static void parse_doc(void) {
 %type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
 %type <node> inline_elements inline_element inline_text_collection inline_text
-%type <node> plaintext link inline_code standard_link standard_image inline_emphasis
+%type <node> plaintext link inline_code standard_link standard_image inline_emphasis inline_strong
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK error
 %nonassoc STARX
@@ -1231,6 +1231,7 @@ inline_element:
     | standard_image { show_rule("inline_element: standard_image", 6); $$ = $1; }
     | inline_code { show_rule("inline_element: inline_code", 6); $$ = $1; }
     | inline_emphasis { show_rule("inline_element: inline_emphasis", 6); $$ = $1; }
+    | inline_strong { show_rule("inline_element: inline_strong", 6); $$ = $1; }
     ;
 
 
@@ -1261,6 +1262,46 @@ inline_emphasis:
 
     | EM_BEGIN EM_END {
             show_rule("inline_emphasis: EM_BEGIN EM_END", 7);
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , NODE_LEVEL_SPECIAL
+                , 2
+                , ""
+                , str_concat($1, $2)
+            );
+
+            $$ = _node;
+        }
+    ;
+
+
+inline_strong:
+    STRONG_BEGIN inline_text_collection STRONG_END {
+            show_rule("inline_strong: STRONG_BEGIN inline_text_collection STRONG_END", 7);
+            _node = inline_node_create(
+                TAG_INLINE_STRONG
+                , NODE_LEVEL_SPECIAL
+                , 2
+                , *($2->ops)
+                , ""
+            );
+
+            _node->children = $2;
+            $2->parent = _node;
+            $$ = _node;
+        }
+
+    | STRONG_BEGIN inline_text_collection error {
+            show_rule("inline_strong: STRONG_BEGIN inline_text_collection error", 7);
+            str = str_concat($1, *($2->children->ops + 1));
+            *($2->children->ops + 1) = str;
+
+            $$ = $2;
+            yyerrok;
+        }
+
+    | STRONG_BEGIN STRONG_END {
+            show_rule("inline_strong: STRONG_BEGIN STRONG_END", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL

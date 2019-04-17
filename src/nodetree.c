@@ -80,6 +80,9 @@ static char *inline_img_post_parse(t_node *);
 static char *inline_em_pre_parse(t_node *);
 static char *inline_em_post_parse(t_node *);
 
+static char *inline_strong_pre_parse(t_node *);
+static char *inline_strong_post_parse(t_node *);
+
 /**
  * Visitor prototypes
  */
@@ -253,6 +256,10 @@ static t_parser *get_parser(t_node *node) {
         case TAG_INLINE_EM:
             p->pre_parse = inline_em_pre_parse;
             p->post_parse = inline_em_post_parse;
+            break;
+        case TAG_INLINE_STRONG:
+            p->pre_parse = inline_strong_pre_parse;
+            p->post_parse = inline_strong_post_parse;
             break;
 
 
@@ -716,6 +723,18 @@ static char *inline_em_pre_parse(t_node *node) {
 
 static char *inline_em_post_parse(t_node *node) {
     return "</em>";
+}
+
+static char *inline_strong_pre_parse(t_node *node) {
+    char *attr = *(node->ops);
+    return str_format(
+        "<strong%s>"
+        , attr
+    );
+}
+
+static char *inline_strong_post_parse(t_node *node) {
+    return "</strong>";
 }
 
 

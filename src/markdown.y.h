@@ -72,24 +72,26 @@
      EMPTYATTR = 288,
      EM_BEGIN = 289,
      EM_END = 290,
-     MINUS = 291,
-     PLUS = 292,
-     RIGHTPARENTHESES = 293,
-     LEFTPARENTHESES = 294,
-     UNDERSCORE = 295,
-     STAR = 296,
-     BLANKLINE = 297,
-     LINEBREAK = 298,
-     LARGERTHAN = 299,
-     DOUBLESTAR = 300,
-     DOUBLEUNDERSCORE = 301,
-     OLSTART = 302,
-     ULSTART = 303,
-     QUOTEBLANKLINE = 304,
-     QUOTEOLSTART = 305,
-     QUOTEULSTART = 306,
-     EXCLAMATION = 307,
-     STARX = 308
+     STRONG_BEGIN = 291,
+     STRONG_END = 292,
+     MINUS = 293,
+     PLUS = 294,
+     RIGHTPARENTHESES = 295,
+     LEFTPARENTHESES = 296,
+     UNDERSCORE = 297,
+     STAR = 298,
+     BLANKLINE = 299,
+     LINEBREAK = 300,
+     LARGERTHAN = 301,
+     DOUBLESTAR = 302,
+     DOUBLEUNDERSCORE = 303,
+     OLSTART = 304,
+     ULSTART = 305,
+     QUOTEBLANKLINE = 306,
+     QUOTEOLSTART = 307,
+     QUOTEULSTART = 308,
+     EXCLAMATION = 309,
+     STARX = 310
    };
 #endif
 /* Tokens.  */
@@ -126,24 +128,26 @@
 #define EMPTYATTR 288
 #define EM_BEGIN 289
 #define EM_END 290
-#define MINUS 291
-#define PLUS 292
-#define RIGHTPARENTHESES 293
-#define LEFTPARENTHESES 294
-#define UNDERSCORE 295
-#define STAR 296
-#define BLANKLINE 297
-#define LINEBREAK 298
-#define LARGERTHAN 299
-#define DOUBLESTAR 300
-#define DOUBLEUNDERSCORE 301
-#define OLSTART 302
-#define ULSTART 303
-#define QUOTEBLANKLINE 304
-#define QUOTEOLSTART 305
-#define QUOTEULSTART 306
-#define EXCLAMATION 307
-#define STARX 308
+#define STRONG_BEGIN 291
+#define STRONG_END 292
+#define MINUS 293
+#define PLUS 294
+#define RIGHTPARENTHESES 295
+#define LEFTPARENTHESES 296
+#define UNDERSCORE 297
+#define STAR 298
+#define BLANKLINE 299
+#define LINEBREAK 300
+#define LARGERTHAN 301
+#define DOUBLESTAR 302
+#define DOUBLEUNDERSCORE 303
+#define OLSTART 304
+#define ULSTART 305
+#define QUOTEBLANKLINE 306
+#define QUOTEOLSTART 307
+#define QUOTEULSTART 308
+#define EXCLAMATION 309
+#define STARX 310
 
 
 
@@ -156,7 +160,7 @@ typedef union YYSTYPE
     t_node *node;
 }
 /* Line 1529 of yacc.c.  */
-#line 160 "markdown.y.h"
+#line 164 "markdown.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
