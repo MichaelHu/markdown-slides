@@ -35,28 +35,28 @@ Grammar
     0 $accept: markdownfile $end
 
     1 markdownfile: blocks
-    2             | error
 
-    3 blocks: blocks block
-    4       | /* empty */
+    2 blocks: blocks block
+    3       | /* empty */
 
-    5 block: lines
-    6      | header
-    7      | tablerows
-    8      | block_p
-    9      | block_ul
-   10      | block_ol
-   11      | block_indent_ul
-   12      | block_indent_ol
-   13      | block_indent_text
-   14      | block_quote_ul
-   15      | block_quote_ol
-   16      | block_blank
-   17      | block_quote_p
-   18      | block_pre
-   19      | block_indented_pre
-   20      | pairedblock
-   21      | raw_text
+    4 block: lines
+    5      | header
+    6      | tablerows
+    7      | block_p
+    8      | block_ul
+    9      | block_ol
+   10      | block_indent_ul
+   11      | block_indent_ol
+   12      | block_indent_text
+   13      | block_quote_ul
+   14      | block_quote_ol
+   15      | block_blank
+   16      | block_quote_p
+   17      | block_pre
+   18      | block_indented_pre
+   19      | pairedblock
+   20      | raw_text
+   21      | error
 
    22 header: H inline_elements LINEBREAK
    23       | QUOTEH inline_elements LINEBREAK
@@ -207,7 +207,7 @@ Grammar
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256) 2 26 27 28 29 80 84 97 110 115 116
+error (256) 21 26 27 28 29 80 84 97 110 115 116
 TEXT (258) 24 111
 SPECIALCHAR (259) 112 120
 CODETEXT (260) 66 70 119
@@ -267,70 +267,70 @@ Nonterminals, with rules where they appear
 $accept (54)
     on left: 0
 markdownfile (55)
-    on left: 1 2, on right: 0
+    on left: 1, on right: 0
 blocks (56)
-    on left: 3 4, on right: 1 3
+    on left: 2 3, on right: 1 2
 block (57)
-    on left: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,
-    on right: 3
+    on left: 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,
+    on right: 2
 header (58)
-    on left: 22 23, on right: 6
+    on left: 22 23, on right: 5
 raw_text (59)
-    on left: 24 25 26 27 28 29, on right: 21
+    on left: 24 25 26 27 28 29, on right: 20
 lines (60)
-    on left: 30 31, on right: 5 30
+    on left: 30 31, on right: 4 30
 block_p (61)
-    on left: 32 33, on right: 8 32
+    on left: 32 33, on right: 7 32
 line_p (62)
     on left: 34, on right: 32 33
 block_blank (63)
-    on left: 35 36, on right: 16 35
+    on left: 35 36, on right: 15 35
 line_blank (64)
     on left: 37, on right: 35 36
 block_quote_p (65)
-    on left: 38 39, on right: 17 38
+    on left: 38 39, on right: 16 38
 line_quote_p (66)
     on left: 40, on right: 38 39
 block_ul (67)
-    on left: 41 42, on right: 9 41
+    on left: 41 42, on right: 8 41
 line_ul (68)
     on left: 43 44, on right: 41 42
 block_indent_ul (69)
-    on left: 45 46, on right: 11 45
+    on left: 45 46, on right: 10 45
 line_indent_ul (70)
     on left: 47, on right: 45 46
 block_quote_ul (71)
-    on left: 48 49, on right: 14 48
+    on left: 48 49, on right: 13 48
 line_quote_ul (72)
     on left: 50, on right: 48 49
 block_ol (73)
-    on left: 51 52, on right: 10 51
+    on left: 51 52, on right: 9 51
 line_ol (74)
     on left: 53 54, on right: 51 52
 block_indent_ol (75)
-    on left: 55 56, on right: 12 55
+    on left: 55 56, on right: 11 55
 line_indent_ol (76)
     on left: 57, on right: 55 56
 block_quote_ol (77)
-    on left: 58 59, on right: 15 58
+    on left: 58 59, on right: 14 58
 line_quote_ol (78)
     on left: 60, on right: 58 59
 block_indent_text (79)
-    on left: 61 62, on right: 13 61
+    on left: 61 62, on right: 12 61
 line_indent_text (80)
     on left: 63, on right: 61 62
 block_pre (81)
-    on left: 64 65, on right: 18 64
+    on left: 64 65, on right: 17 64
 line_pre (82)
     on left: 66 67, on right: 64 65
 block_indented_pre (83)
-    on left: 68 69, on right: 19 68
+    on left: 68 69, on right: 18 68
 line_indented_pre (84)
     on left: 70, on right: 68 69
 pairedblock (85)
-    on left: 71 72 73 74 75 76, on right: 20
+    on left: 71 72 73 74 75 76, on right: 19
 tablerows (86)
-    on left: 77 78, on right: 7 77
+    on left: 77 78, on right: 6 77
 tablerow (87)
     on left: 79 80, on right: 77 78
 tableceils (88)
@@ -372,64 +372,25 @@ state 0
 
     0 $accept: . markdownfile $end
 
-    error  shift, and go to state 1
+    $default  reduce using rule 3 (blocks)
 
-    $end                    reduce using rule 4 (blocks)
-    TEXT                    reduce using rule 4 (blocks)
-    SPECIALCHAR             reduce using rule 4 (blocks)
-    H                       reduce using rule 4 (blocks)
-    QUOTEH                  reduce using rule 4 (blocks)
-    HTMLBLOCK               reduce using rule 4 (blocks)
-    SECTION                 reduce using rule 4 (blocks)
-    VSECTION                reduce using rule 4 (blocks)
-    SCRIPTSTART             reduce using rule 4 (blocks)
-    STYLESTART              reduce using rule 4 (blocks)
-    SVGSTART                reduce using rule 4 (blocks)
-    LINK                    reduce using rule 4 (blocks)
-    BACKTICK                reduce using rule 4 (blocks)
-    TRIPLEBACKTICK          reduce using rule 4 (blocks)
-    TABLEROWSTART           reduce using rule 4 (blocks)
-    ULINDENT                reduce using rule 4 (blocks)
-    OLINDENT                reduce using rule 4 (blocks)
-    TEXTINDENT              reduce using rule 4 (blocks)
-    PRE_INDENT              reduce using rule 4 (blocks)
-    INDENTED_PRE_INDENT     reduce using rule 4 (blocks)
-    LEFTSQUARE              reduce using rule 4 (blocks)
-    EXCLAMATION_LEFTSQUARE  reduce using rule 4 (blocks)
-    ATTRLEFT                reduce using rule 4 (blocks)
-    EMPTYATTR               reduce using rule 4 (blocks)
-    EM_BEGIN                reduce using rule 4 (blocks)
-    BLANKLINE               reduce using rule 4 (blocks)
-    LARGERTHAN              reduce using rule 4 (blocks)
-    OLSTART                 reduce using rule 4 (blocks)
-    ULSTART                 reduce using rule 4 (blocks)
-    QUOTEBLANKLINE          reduce using rule 4 (blocks)
-    QUOTEOLSTART            reduce using rule 4 (blocks)
-    QUOTEULSTART            reduce using rule 4 (blocks)
-
-    markdownfile  go to state 2
-    blocks        go to state 3
+    markdownfile  go to state 1
+    blocks        go to state 2
 
 
 state 1
 
-    2 markdownfile: error .
+    0 $accept: markdownfile . $end
 
-    $default  reduce using rule 2 (markdownfile)
+    $end  shift, and go to state 3
 
 
 state 2
 
-    0 $accept: markdownfile . $end
-
-    $end  shift, and go to state 4
-
-
-state 3
-
     1 markdownfile: blocks .
-    3 blocks: blocks . block
+    2 blocks: blocks . block
 
+    error                   shift, and go to state 4
     TEXT                    shift, and go to state 5
     SPECIALCHAR             shift, and go to state 6
     H                       shift, and go to state 7
@@ -462,7 +423,7 @@ state 3
     QUOTEOLSTART            shift, and go to state 34
     QUOTEULSTART            shift, and go to state 35
 
-    $default  reduce using rule 1 (markdownfile)
+    $end  reduce using rule 1 (markdownfile)
 
     block               go to state 36
     header              go to state 37
@@ -507,11 +468,18 @@ state 3
     inline_code         go to state 76
 
 
-state 4
+state 3
 
     0 $accept: markdownfile $end .
 
     $default  accept
+
+
+state 4
+
+   21 block: error .
+
+    $default  reduce using rule 21 (block)
 
 
 state 5
@@ -1013,45 +981,45 @@ state 35
 
 state 36
 
-    3 blocks: blocks block .
+    2 blocks: blocks block .
 
-    $default  reduce using rule 3 (blocks)
+    $default  reduce using rule 2 (blocks)
 
 
 state 37
 
-    6 block: header .
+    5 block: header .
 
-    $default  reduce using rule 6 (block)
+    $default  reduce using rule 5 (block)
 
 
 state 38
 
-   21 block: raw_text .
+   20 block: raw_text .
 
-    $default  reduce using rule 21 (block)
+    $default  reduce using rule 20 (block)
 
 
 state 39
 
-    5 block: lines .
+    4 block: lines .
    30 lines: lines . line
 
     SECTION         shift, and go to state 10
     VSECTION        shift, and go to state 11
     QUOTEBLANKLINE  shift, and go to state 33
 
-    SECTION         [reduce using rule 5 (block)]
-    VSECTION        [reduce using rule 5 (block)]
-    QUOTEBLANKLINE  [reduce using rule 5 (block)]
-    $default        reduce using rule 5 (block)
+    SECTION         [reduce using rule 4 (block)]
+    VSECTION        [reduce using rule 4 (block)]
+    QUOTEBLANKLINE  [reduce using rule 4 (block)]
+    $default        reduce using rule 4 (block)
 
     line  go to state 119
 
 
 state 40
 
-    8 block: block_p .
+    7 block: block_p .
    32 block_p: block_p . line_p
 
     TEXT                    shift, and go to state 5
@@ -1064,16 +1032,16 @@ state 40
     EMPTYATTR               shift, and go to state 27
     EM_BEGIN                shift, and go to state 28
 
-    TEXT                    [reduce using rule 8 (block)]
-    SPECIALCHAR             [reduce using rule 8 (block)]
-    LINK                    [reduce using rule 8 (block)]
-    BACKTICK                [reduce using rule 8 (block)]
-    LEFTSQUARE              [reduce using rule 8 (block)]
-    EXCLAMATION_LEFTSQUARE  [reduce using rule 8 (block)]
-    ATTRLEFT                [reduce using rule 8 (block)]
-    EMPTYATTR               [reduce using rule 8 (block)]
-    EM_BEGIN                [reduce using rule 8 (block)]
-    $default                reduce using rule 8 (block)
+    TEXT                    [reduce using rule 7 (block)]
+    SPECIALCHAR             [reduce using rule 7 (block)]
+    LINK                    [reduce using rule 7 (block)]
+    BACKTICK                [reduce using rule 7 (block)]
+    LEFTSQUARE              [reduce using rule 7 (block)]
+    EXCLAMATION_LEFTSQUARE  [reduce using rule 7 (block)]
+    ATTRLEFT                [reduce using rule 7 (block)]
+    EMPTYATTR               [reduce using rule 7 (block)]
+    EM_BEGIN                [reduce using rule 7 (block)]
+    $default                reduce using rule 7 (block)
 
     line_p           go to state 120
     inline_elements  go to state 68
@@ -1096,13 +1064,13 @@ state 41
 
 state 42
 
-   16 block: block_blank .
+   15 block: block_blank .
    35 block_blank: block_blank . line_blank
 
     BLANKLINE  shift, and go to state 29
 
-    BLANKLINE  [reduce using rule 16 (block)]
-    $default   reduce using rule 16 (block)
+    BLANKLINE  [reduce using rule 15 (block)]
+    $default   reduce using rule 15 (block)
 
     line_blank  go to state 121
 
@@ -1116,13 +1084,13 @@ state 43
 
 state 44
 
-   17 block: block_quote_p .
+   16 block: block_quote_p .
    38 block_quote_p: block_quote_p . line_quote_p
 
     LARGERTHAN  shift, and go to state 30
 
-    LARGERTHAN  [reduce using rule 17 (block)]
-    $default    reduce using rule 17 (block)
+    LARGERTHAN  [reduce using rule 16 (block)]
+    $default    reduce using rule 16 (block)
 
     line_quote_p  go to state 122
 
@@ -1136,13 +1104,13 @@ state 45
 
 state 46
 
-    9 block: block_ul .
+    8 block: block_ul .
    41 block_ul: block_ul . line_ul
 
     ULSTART  shift, and go to state 32
 
-    ULSTART   [reduce using rule 9 (block)]
-    $default  reduce using rule 9 (block)
+    ULSTART   [reduce using rule 8 (block)]
+    $default  reduce using rule 8 (block)
 
     line_ul  go to state 123
 
@@ -1156,13 +1124,13 @@ state 47
 
 state 48
 
-   11 block: block_indent_ul .
+   10 block: block_indent_ul .
    45 block_indent_ul: block_indent_ul . line_indent_ul
 
     ULINDENT  shift, and go to state 19
 
-    ULINDENT  [reduce using rule 11 (block)]
-    $default  reduce using rule 11 (block)
+    ULINDENT  [reduce using rule 10 (block)]
+    $default  reduce using rule 10 (block)
 
     line_indent_ul  go to state 124
 
@@ -1176,13 +1144,13 @@ state 49
 
 state 50
 
-   14 block: block_quote_ul .
+   13 block: block_quote_ul .
    48 block_quote_ul: block_quote_ul . line_quote_ul
 
     QUOTEULSTART  shift, and go to state 35
 
-    QUOTEULSTART  [reduce using rule 14 (block)]
-    $default      reduce using rule 14 (block)
+    QUOTEULSTART  [reduce using rule 13 (block)]
+    $default      reduce using rule 13 (block)
 
     line_quote_ul  go to state 125
 
@@ -1196,13 +1164,13 @@ state 51
 
 state 52
 
-   10 block: block_ol .
+    9 block: block_ol .
    51 block_ol: block_ol . line_ol
 
     OLSTART  shift, and go to state 31
 
-    OLSTART   [reduce using rule 10 (block)]
-    $default  reduce using rule 10 (block)
+    OLSTART   [reduce using rule 9 (block)]
+    $default  reduce using rule 9 (block)
 
     line_ol  go to state 126
 
@@ -1216,13 +1184,13 @@ state 53
 
 state 54
 
-   12 block: block_indent_ol .
+   11 block: block_indent_ol .
    55 block_indent_ol: block_indent_ol . line_indent_ol
 
     OLINDENT  shift, and go to state 20
 
-    OLINDENT  [reduce using rule 12 (block)]
-    $default  reduce using rule 12 (block)
+    OLINDENT  [reduce using rule 11 (block)]
+    $default  reduce using rule 11 (block)
 
     line_indent_ol  go to state 127
 
@@ -1236,13 +1204,13 @@ state 55
 
 state 56
 
-   15 block: block_quote_ol .
+   14 block: block_quote_ol .
    58 block_quote_ol: block_quote_ol . line_quote_ol
 
     QUOTEOLSTART  shift, and go to state 34
 
-    QUOTEOLSTART  [reduce using rule 15 (block)]
-    $default      reduce using rule 15 (block)
+    QUOTEOLSTART  [reduce using rule 14 (block)]
+    $default      reduce using rule 14 (block)
 
     line_quote_ol  go to state 128
 
@@ -1256,13 +1224,13 @@ state 57
 
 state 58
 
-   13 block: block_indent_text .
+   12 block: block_indent_text .
    61 block_indent_text: block_indent_text . line_indent_text
 
     TEXTINDENT  shift, and go to state 21
 
-    TEXTINDENT  [reduce using rule 13 (block)]
-    $default    reduce using rule 13 (block)
+    TEXTINDENT  [reduce using rule 12 (block)]
+    $default    reduce using rule 12 (block)
 
     line_indent_text  go to state 129
 
@@ -1276,15 +1244,15 @@ state 59
 
 state 60
 
-   18 block: block_pre .
+   17 block: block_pre .
    64 block_pre: block_pre . line_pre
 
     TRIPLEBACKTICK  shift, and go to state 130
     PRE_INDENT      shift, and go to state 22
 
-    TRIPLEBACKTICK  [reduce using rule 18 (block)]
-    PRE_INDENT      [reduce using rule 18 (block)]
-    $default        reduce using rule 18 (block)
+    TRIPLEBACKTICK  [reduce using rule 17 (block)]
+    PRE_INDENT      [reduce using rule 17 (block)]
+    $default        reduce using rule 17 (block)
 
     line_pre  go to state 131
 
@@ -1298,13 +1266,13 @@ state 61
 
 state 62
 
-   19 block: block_indented_pre .
+   18 block: block_indented_pre .
    68 block_indented_pre: block_indented_pre . line_indented_pre
 
     INDENTED_PRE_INDENT  shift, and go to state 23
 
-    INDENTED_PRE_INDENT  [reduce using rule 19 (block)]
-    $default             reduce using rule 19 (block)
+    INDENTED_PRE_INDENT  [reduce using rule 18 (block)]
+    $default             reduce using rule 18 (block)
 
     line_indented_pre  go to state 132
 
@@ -1318,20 +1286,20 @@ state 63
 
 state 64
 
-   20 block: pairedblock .
+   19 block: pairedblock .
 
-    $default  reduce using rule 20 (block)
+    $default  reduce using rule 19 (block)
 
 
 state 65
 
-    7 block: tablerows .
+    6 block: tablerows .
    77 tablerows: tablerows . tablerow
 
     TABLEROWSTART  shift, and go to state 18
 
-    TABLEROWSTART  [reduce using rule 7 (block)]
-    $default       reduce using rule 7 (block)
+    TABLEROWSTART  [reduce using rule 6 (block)]
+    $default       reduce using rule 6 (block)
 
     tablerow  go to state 133
 

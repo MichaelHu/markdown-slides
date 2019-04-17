@@ -127,6 +127,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 <XEMSTART,YEMSTART>\r?\n                {
                                             P("LINEBREAK");
+                                            yylineno++;
                                             yylval.text = strdup(yytext);
                                             restoreState();
                                             return LINEBREAK;
@@ -169,13 +170,13 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <CODESPAN>\\`                           { P("SPECIALCHAR"); 
                                             yylval.text = strdup("`"); return SPECIALCHAR; }
 <CODESPAN>[^\r\n`]                      { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
-<CODESPAN>\r?\n                         { P("LINEBREAK"); restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
+<CODESPAN>\r?\n                         { P("LINEBREAK"); yylineno++; restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
 <CODESPAN>`                             { P("BACKTICK"); restoreState(); yylval.text = strdup(yytext); return BACKTICK; }
 
     /* double-backtick will be teated as plain text */
 <INITIAL,TABLEROW>"``"                  { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 
-^```.*\r?\n                             { P("TRIPLEBACKTICK"); enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
+^```.*\r?\n                             { P("TRIPLEBACKTICK"); yylineno++; enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 <XCODEBLOCK>.                           { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
 <XCODEBLOCK>\r?\n                       { P("CODETEXT"); yylval.text = strdup(yytext);
                                            yylineno++; return CODETEXT; }
@@ -186,7 +187,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^"|"                                    { P("TABLEROWSTART"); enterState(TABLEROW, "TABLEROW"); yylval.text = strdup(yytext); return TABLEROWSTART; }
 <TABLEROW>"|"                           { P("TABLECEILEND"); yylval.text = strdup(yytext); return TABLECEILEND; }
 <TABLEROW>.                             { P("TEXT"); yylval.text = strdup(yytext); return TEXT; }
-<TABLEROW>\r?\n                         { P("LINEBREAK"); restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
+<TABLEROW>\r?\n                         { P("LINEBREAK"); yylineno++; restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
 
 
 
@@ -341,9 +342,10 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return TEXT; 
                                         }
 <SCRIPTBLOCK>\<\/script>.*\r?\n         { 
+                                            P("SCRIPTEND"); 
+                                            yylineno++;
                                             restoreState(); 
                                             yylval.text = strdup("</script>"); 
-                                            P("SCRIPTEND"); 
                                             return SCRIPTEND;
                                         }
 
@@ -367,8 +369,9 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return TEXT; 
                                         }
 <STYLEBLOCK>\<\/style>.*\r?\n           { 
-                                            yylval.text = "</style>"; 
                                             P("STYLEEND"); 
+                                            yylineno++;
+                                            yylval.text = "</style>"; 
                                             restoreState(); 
                                             return STYLEEND;
                                         }
@@ -390,8 +393,9 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return TEXT; 
                                         }
 <SVGBLOCK>\<\/svg>.*\r?\n               { 
-                                            yylval.text = "</svg>"; 
                                             P("SVGEND"); 
+                                            yylineno++;
+                                            yylval.text = "</svg>"; 
                                             restoreState(); 
                                             return SVGEND;
                                         }

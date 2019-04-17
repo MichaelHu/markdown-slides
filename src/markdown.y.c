@@ -187,7 +187,8 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 0
+#define _ISDEBUGPARSER 1
+#define MAX_RULE_LEVEL 2
 #define YYERROR_VERBOSE
 
 /* prototypes */
@@ -201,9 +202,11 @@ t_node *_root_node;
 t_node *_node, *_tail_node, *_tmp_node;
 char *str;
 int is_doc_parsed = 0;
-static void show_rule(char *str) {
+static void show_rule(char *str, int level) {
     if (_ISDEBUGPARSER) {
-        fprintf(stderr, "[[ %s\n", str);
+        if (level <= MAX_RULE_LEVEL) {
+            fprintf(stderr, "%s[> %s\n", str_padding_left("", level * 4), str);
+        }
     }
 }
 
@@ -256,13 +259,13 @@ static void parse_doc(void) {
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 61 "markdown.y"
+#line 64 "markdown.y"
 {
     char *text;
     t_node *node;
 }
 /* Line 193 of yacc.c.  */
-#line 266 "markdown.y.c"
+#line 269 "markdown.y.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -287,7 +290,7 @@ typedef struct YYLTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 291 "markdown.y.c"
+#line 294 "markdown.y.c"
 
 #ifdef short
 # undef short
@@ -502,9 +505,9 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  4
+#define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   611
+#define YYLAST   562
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  54
@@ -563,7 +566,7 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint16 yyprhs[] =
 {
-       0,     0,     3,     5,     7,    10,    11,    13,    15,    17,
+       0,     0,     3,     5,     8,     9,    11,    13,    15,    17,
       19,    21,    23,    25,    27,    29,    31,    33,    35,    37,
       39,    41,    43,    45,    49,    53,    57,    60,    64,    68,
       72,    76,    79,    81,    84,    86,    89,    92,    94,    96,
@@ -581,11 +584,11 @@ static const yytype_uint16 yyprhs[] =
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      55,     0,    -1,    56,    -1,     1,    -1,    56,    57,    -1,
-      -1,    60,    -1,    58,    -1,    86,    -1,    61,    -1,    67,
-      -1,    73,    -1,    69,    -1,    75,    -1,    79,    -1,    71,
-      -1,    77,    -1,    63,    -1,    65,    -1,    81,    -1,    83,
-      -1,    85,    -1,    59,    -1,     6,    91,    43,    -1,     7,
+      55,     0,    -1,    56,    -1,    56,    57,    -1,    -1,    60,
+      -1,    58,    -1,    86,    -1,    61,    -1,    67,    -1,    73,
+      -1,    69,    -1,    75,    -1,    79,    -1,    71,    -1,    77,
+      -1,    63,    -1,    65,    -1,    81,    -1,    83,    -1,    85,
+      -1,    59,    -1,     1,    -1,     6,    91,    43,    -1,     7,
       91,    43,    -1,     8,     3,    43,    -1,     8,    43,    -1,
       11,    91,     1,    -1,    13,    91,     1,    -1,    15,    91,
        1,    -1,    19,   102,     1,    -1,    60,    90,    -1,    90,
@@ -621,19 +624,19 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   102,   102,   110,   122,   140,   154,   158,   162,   167,
-     171,   175,   179,   183,   187,   191,   195,   199,   203,   207,
-     211,   215,   219,   226,   244,   265,   279,   293,   308,   323,
-     338,   355,   359,   373,   381,   396,   415,   423,   437,   451,
-     460,   476,   496,   504,   518,   536,   551,   559,   573,   593,
-     601,   615,   638,   646,   660,   677,   693,   701,   715,   735,
-     743,   757,   778,   786,   802,   840,   848,   865,   882,   900,
-     908,   925,   949,   967,   982,  1000,  1015,  1033,  1052,  1060,
-    1073,  1077,  1086,  1094,  1109,  1122,  1142,  1147,  1152,  1161,
-    1169,  1206,  1214,  1215,  1216,  1217,  1218,  1223,  1238,  1247,
-    1272,  1280,  1321,  1329,  1330,  1343,  1363,  1380,  1398,  1403,
-    1415,  1427,  1439,  1440,  1441,  1445,  1460,  1475,  1495,  1496,
-    1500,  1501
+       0,   105,   105,   127,   145,   159,   163,   167,   172,   176,
+     180,   184,   188,   192,   196,   200,   204,   208,   212,   216,
+     220,   224,   228,   241,   259,   280,   294,   308,   323,   338,
+     353,   370,   374,   388,   396,   411,   430,   438,   452,   466,
+     475,   491,   511,   519,   533,   551,   566,   574,   588,   608,
+     616,   630,   653,   661,   675,   692,   708,   716,   730,   750,
+     758,   772,   793,   801,   817,   855,   863,   880,   897,   915,
+     923,   940,   964,   982,   997,  1015,  1030,  1048,  1067,  1075,
+    1088,  1092,  1101,  1109,  1124,  1137,  1157,  1162,  1167,  1176,
+    1184,  1221,  1229,  1230,  1231,  1232,  1233,  1238,  1253,  1262,
+    1287,  1295,  1336,  1344,  1345,  1358,  1378,  1395,  1413,  1418,
+    1430,  1442,  1454,  1455,  1456,  1460,  1475,  1490,  1510,  1511,
+    1515,  1516
 };
 #endif
 
@@ -685,7 +688,7 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    54,    55,    55,    56,    56,    57,    57,    57,    57,
+       0,    54,    55,    56,    56,    57,    57,    57,    57,    57,
       57,    57,    57,    57,    57,    57,    57,    57,    57,    57,
       57,    57,    57,    58,    58,    59,    59,    59,    59,    59,
       59,    60,    60,    61,    61,    62,    63,    63,    64,    65,
@@ -703,7 +706,7 @@ static const yytype_uint8 yyr1[] =
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     0,     1,     1,     1,     1,
+       0,     2,     1,     2,     0,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     3,     3,     3,     2,     3,     3,     3,
        3,     2,     1,     2,     1,     2,     2,     1,     1,     2,
@@ -723,13 +726,13 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     3,     0,     2,     1,   112,   113,     0,     0,     0,
+       4,     0,     0,     1,    22,   112,   113,     0,     0,     0,
        0,     0,     0,     0,     0,   105,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,   114,     0,    38,
-       0,     0,     0,    86,     0,     0,     4,     7,    22,     6,
-       9,    34,    17,    37,    18,    40,    10,    43,    12,    47,
-      15,    50,    11,    53,    13,    57,    16,    60,    14,    63,
-      19,    66,    20,    70,    21,     8,    79,    32,     0,    90,
+       0,     0,     0,    86,     0,     0,     3,     6,    21,     5,
+       8,    34,    16,    37,    17,    40,     9,    43,    11,    47,
+      14,    50,    10,    53,    12,    57,    15,    60,    13,    63,
+      18,    66,    19,    70,    20,     7,    79,    32,     0,    90,
       96,    92,    93,    94,    91,   109,    95,     0,     0,     0,
       26,    87,    88,    73,     0,    75,     0,    77,     0,   117,
      121,   120,     0,   119,     0,     0,    83,     0,     0,     0,
@@ -747,7 +750,7 @@ static const yytype_uint8 yydefact[] =
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,    36,    37,    38,    39,    40,    41,    42,
+      -1,     1,     2,    36,    37,    38,    39,    40,    41,    42,
       43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
       53,    54,    55,    56,    57,    58,    59,    60,    61,    62,
       63,    64,    65,    66,    95,    96,    67,    68,    69,    70,
@@ -759,24 +762,24 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -85
 static const yytype_int16 yypact[] =
 {
-     139,   -85,     7,   188,   -85,   -85,   -85,   577,   577,     6,
-     -15,    -6,   534,   539,   559,   -85,    70,    20,   577,    -2,
-     -21,   577,    48,    52,    47,    47,    47,   -85,    97,   -85,
-     577,    88,   241,   -85,   577,   577,   -85,   -85,   -85,     3,
-     577,   -85,    18,   -85,    22,   -85,    29,   -85,    54,   -85,
+     -85,     7,   139,   -85,   -85,   -85,   -85,   528,   528,     6,
+     -15,    -6,   485,   490,   510,   -85,    70,    20,   528,    -2,
+     -21,   528,    48,    52,    47,    47,    47,   -85,    97,   -85,
+     528,    88,   192,   -85,   528,   528,   -85,   -85,   -85,     3,
+     528,   -85,    18,   -85,    22,   -85,    29,   -85,    54,   -85,
       30,   -85,    32,   -85,    76,   -85,    53,   -85,    87,   -85,
-      -5,   -85,    86,   -85,   -85,    93,   -85,   -85,   259,   -85,
-     -85,   -85,   -85,   -85,    65,   -85,   -85,   277,   295,    74,
-     -85,   -85,   -85,   -85,   459,   -85,   477,   -85,   496,   -85,
-     -85,   -85,   175,   -85,    14,   223,   -85,   514,   577,   577,
-     313,    80,    90,    69,    92,    61,   -85,    28,   -85,   -85,
-     -85,    65,   331,   -85,   349,   -85,   367,   385,   403,   -85,
+      -5,   -85,    86,   -85,   -85,    93,   -85,   -85,   210,   -85,
+     -85,   -85,   -85,   -85,    65,   -85,   -85,   228,   246,    74,
+     -85,   -85,   -85,   -85,   410,   -85,   428,   -85,   447,   -85,
+     -85,   -85,   198,   -85,    14,   174,   -85,   465,   528,   528,
+     264,    80,    90,    69,    92,    61,   -85,    28,   -85,   -85,
+     -85,    65,   282,   -85,   300,   -85,   318,   336,   354,   -85,
      -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,
       20,   -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,
      -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,
-      91,    98,   -85,   -85,   -85,   -85,   421,   439,   -85,   -85,
+      91,    98,   -85,   -85,   -85,   -85,   372,   390,   -85,   -85,
      -85,    47,    47,   -85,   -85,   -85,   -85,   -85,   -85,   -85,
-     -85,   -85,   -85,   163,   -85,   -85,   -85,   -85,   171,   213,
+     -85,   -85,   -85,   175,   -85,   -85,   -85,   -85,   164,   397,
      -85,   -85
 };
 
@@ -785,19 +788,19 @@ static const yytype_int16 yypgoto[] =
 {
      -85,   -85,   -85,   -85,   -85,   -85,   -85,   -85,    89,   -85,
       94,   -85,   100,   -85,   105,   -85,   107,   -85,    85,   -85,
-     101,   -85,   106,   -85,   115,   -85,   119,   -85,   118,   -85,
-     122,   -85,   -85,   120,   -85,   114,   181,     9,   -30,   -85,
-     -85,    95,   -22,   -17,   -85,   -24,   -69,   -85,   -14,   -84
+     101,   -85,   106,   -85,   115,   -85,   116,   -85,   122,   -85,
+     114,   -85,   -85,   119,   -85,   103,   146,     9,   -30,   -85,
+     -85,    99,   -22,   -17,   -85,   -24,   -69,   -85,   -14,   -84
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -6
+#define YYTABLE_NINF -3
 static const yytype_int16 yytable[] =
 {
-     103,   104,   105,    94,   111,   136,   109,     4,   148,    79,
+     103,   104,   105,    94,   111,   136,   109,     3,   148,    79,
      148,   110,    10,    11,   130,   149,    77,    78,    90,    91,
       22,    84,    86,    88,    90,    91,    99,    97,    81,   165,
      100,     5,     6,   150,   136,   136,   136,    82,   135,   112,
@@ -810,55 +813,50 @@ static const yytype_int16 yytable[] =
        5,     6,    27,    34,    97,    15,    16,   156,   157,   136,
      136,    21,    23,    18,    15,    24,   173,   139,    25,    26,
      162,    27,    28,   159,    24,    27,   135,   135,    26,   120,
-      27,   113,   106,   160,   174,   125,   121,   178,   179,    -5,
-       1,   175,    -5,    -5,   122,    -5,    -5,    -5,    -5,    -5,
-      -5,   123,    -5,   126,    -5,   124,    -5,    -5,    -5,    -5,
-     127,    -5,    -5,    -5,    -5,    -5,    -5,    90,    91,    -5,
-      -5,   128,    -5,    -5,     5,     6,   146,   129,   131,    90,
-      91,    -5,   150,    -5,   132,   133,    -5,    -5,    -5,    -5,
-      -5,     5,     6,   147,     7,     8,     9,    10,    11,    12,
-     180,    13,   167,    14,    27,    15,    16,    17,    18,   153,
-      19,    20,    21,    22,    23,    24,     5,     6,    25,    26,
-     119,    27,    28,     0,   151,     0,     5,     6,     0,     0,
-      29,     0,    30,     0,     0,    31,    32,    33,    34,    35,
-      15,    16,   181,     0,     5,     6,    27,     0,     0,     0,
-      24,     0,     0,    25,    26,     0,    27,    28,    15,    16,
-       0,     0,     5,     6,     0,     0,   152,     0,    24,     0,
-       0,    25,    26,     0,    27,    28,    15,    16,     0,     0,
-       5,     6,     0,     0,   115,     0,    24,     0,     0,    25,
-      26,     0,    27,    28,    15,    16,     0,     0,     5,     6,
-       0,     0,   134,     0,    24,     0,     0,    25,    26,     0,
-      27,    28,    15,    16,     0,     0,     5,     6,     0,     0,
-     137,     0,    24,     0,     0,    25,    26,     0,    27,    28,
-      15,    16,     0,     0,     5,     6,     0,     0,   138,     0,
-      24,     0,     0,    25,    26,     0,    27,    28,    15,    16,
-       0,     0,     5,     6,     0,     0,   158,     0,    24,     0,
-       0,    25,    26,     0,    27,    28,    15,    16,     0,     0,
-       5,     6,     0,     0,   168,     0,    24,     0,     0,    25,
-      26,     0,    27,    28,    15,    16,     0,     0,     5,     6,
-       0,     0,   169,     0,    24,     0,     0,    25,    26,     0,
-      27,    28,    15,    16,     0,     0,     5,     6,     0,     0,
-     170,     0,    24,     0,     0,    25,    26,     0,    27,    28,
-      15,    16,     0,     0,     5,     6,     0,     0,   171,     0,
-      24,     0,     0,    25,    26,     0,    27,    28,    15,    16,
-       0,     0,     5,     6,     0,     0,   172,     0,    24,     0,
-       0,    25,    26,     0,    27,    28,    15,    16,     0,     0,
-     140,     0,     5,     6,   176,     0,    24,     0,     0,    25,
-      26,   141,    27,    28,     0,     0,    15,    16,   142,     0,
-       5,     6,   177,     0,     0,     0,    24,     0,     0,    25,
-      26,   143,    27,    28,    15,    16,     0,   144,     0,     5,
-       6,     0,     0,     0,    24,     0,     0,    25,    26,     0,
-      27,    28,   145,    15,    16,   154,     0,     5,     6,     0,
-       0,     0,     0,    24,     0,     0,    25,    26,     0,    27,
-      28,    15,    16,     0,     0,   155,     0,     5,     6,     0,
-       0,    24,     5,     6,    25,    26,    83,    27,    28,     0,
-       0,    15,    16,    85,     0,     0,    15,    16,     0,     0,
-       0,    24,     5,     6,    25,    26,    24,    27,    28,    25,
-      26,     0,    27,    28,     0,    87,    15,    16,     0,     0,
-       5,     6,     0,     0,     0,     0,    24,     0,     0,    25,
-      26,     0,    27,    28,    15,    16,     0,     0,     0,     0,
+      27,   113,   106,   160,   174,   125,   121,   178,   179,    -2,
+       4,   175,     5,     6,   122,     7,     8,     9,    10,    11,
+      12,   123,    13,   126,    14,   124,    15,    16,    17,    18,
+     127,    19,    20,    21,    22,    23,    24,     5,     6,    25,
+      26,   128,    27,    28,   129,   151,   132,     5,     6,    90,
+      91,    29,   131,    30,   133,   119,    31,    32,    33,    34,
+      35,    15,    16,   180,   150,     5,     6,    27,   153,   146,
+       0,    24,    90,    91,    25,    26,   167,    27,    28,    15,
+      16,     0,     0,     5,     6,     0,   147,   152,     0,    24,
+       0,     0,    25,    26,     0,    27,    28,    15,    16,     0,
+       0,     5,     6,     0,     0,   115,     0,    24,     0,     0,
+      25,    26,     0,    27,    28,    15,    16,     0,     0,     5,
+       6,     0,     0,   134,     0,    24,     0,     0,    25,    26,
+       0,    27,    28,    15,    16,     0,     0,     5,     6,     0,
+       0,   137,     0,    24,     0,     0,    25,    26,     0,    27,
+      28,    15,    16,     0,     0,     5,     6,     0,     0,   138,
+       0,    24,     0,     0,    25,    26,     0,    27,    28,    15,
+      16,     0,     0,     5,     6,     0,     0,   158,     0,    24,
+       0,     0,    25,    26,     0,    27,    28,    15,    16,     0,
+       0,     5,     6,     0,     0,   168,     0,    24,     0,     0,
+      25,    26,     0,    27,    28,    15,    16,     0,     0,     5,
+       6,     0,     0,   169,     0,    24,     0,     0,    25,    26,
+       0,    27,    28,    15,    16,     0,     0,     5,     6,     0,
+       0,   170,     0,    24,     0,     0,    25,    26,     0,    27,
+      28,    15,    16,     0,     0,     5,     6,     0,     0,   171,
+       0,    24,     0,     0,    25,    26,     0,    27,    28,    15,
+      16,     0,     0,     5,     6,     0,     0,   172,     0,    24,
+       5,     6,    25,    26,     0,    27,    28,    15,    16,     0,
+       0,   140,     0,     5,     6,   176,     0,    24,     0,     0,
+      25,    26,   141,    27,    28,     0,   181,    15,    16,   142,
+      27,     5,     6,   177,     0,     0,     0,    24,     0,     0,
+      25,    26,   143,    27,    28,    15,    16,     0,   144,     0,
+       5,     6,     0,     0,     0,    24,     0,     0,    25,    26,
+       0,    27,    28,   145,    15,    16,   154,     0,     5,     6,
        0,     0,     0,     0,    24,     0,     0,    25,    26,     0,
-      27,    28
+      27,    28,    15,    16,     0,     0,   155,     0,     5,     6,
+       0,     0,    24,     5,     6,    25,    26,    83,    27,    28,
+       0,     0,    15,    16,    85,     0,     0,    15,    16,     0,
+       0,     0,    24,     5,     6,    25,    26,    24,    27,    28,
+      25,    26,     0,    27,    28,     0,    87,    15,    16,     0,
+       0,     5,     6,     0,     0,     0,     0,    24,     0,     0,
+      25,    26,     0,    27,    28,    15,    16,     0,     0,     0,
+       0,     0,     0,     0,     0,    24,     0,     0,    25,    26,
+       0,    27,    28
 };
 
 static const yytype_int16 yycheck[] =
@@ -879,59 +877,54 @@ static const yytype_int16 yycheck[] =
       33,    43,    35,    43,    43,    50,    42,   161,   162,     0,
        1,    43,     3,     4,    44,     6,     7,     8,     9,    10,
       11,    46,    13,    52,    15,    48,    17,    18,    19,    20,
-      54,    22,    23,    24,    25,    26,    27,     4,     5,    30,
-      31,    56,    33,    34,     3,     4,     1,    58,    60,     4,
-       5,    42,    19,    44,    62,    65,    47,    48,    49,    50,
-      51,     3,     4,    18,     6,     7,     8,     9,    10,    11,
-      29,    13,   107,    15,    33,    17,    18,    19,    20,    95,
-      22,    23,    24,    25,    26,    27,     3,     4,    30,    31,
-      39,    33,    34,    -1,     1,    -1,     3,     4,    -1,    -1,
-      42,    -1,    44,    -1,    -1,    47,    48,    49,    50,    51,
-      17,    18,    29,    -1,     3,     4,    33,    -1,    -1,    -1,
-      27,    -1,    -1,    30,    31,    -1,    33,    34,    17,    18,
-      -1,    -1,     3,     4,    -1,    -1,    43,    -1,    27,    -1,
-      -1,    30,    31,    -1,    33,    34,    17,    18,    -1,    -1,
-       3,     4,    -1,    -1,    43,    -1,    27,    -1,    -1,    30,
-      31,    -1,    33,    34,    17,    18,    -1,    -1,     3,     4,
-      -1,    -1,    43,    -1,    27,    -1,    -1,    30,    31,    -1,
-      33,    34,    17,    18,    -1,    -1,     3,     4,    -1,    -1,
-      43,    -1,    27,    -1,    -1,    30,    31,    -1,    33,    34,
-      17,    18,    -1,    -1,     3,     4,    -1,    -1,    43,    -1,
-      27,    -1,    -1,    30,    31,    -1,    33,    34,    17,    18,
-      -1,    -1,     3,     4,    -1,    -1,    43,    -1,    27,    -1,
-      -1,    30,    31,    -1,    33,    34,    17,    18,    -1,    -1,
-       3,     4,    -1,    -1,    43,    -1,    27,    -1,    -1,    30,
-      31,    -1,    33,    34,    17,    18,    -1,    -1,     3,     4,
-      -1,    -1,    43,    -1,    27,    -1,    -1,    30,    31,    -1,
-      33,    34,    17,    18,    -1,    -1,     3,     4,    -1,    -1,
-      43,    -1,    27,    -1,    -1,    30,    31,    -1,    33,    34,
-      17,    18,    -1,    -1,     3,     4,    -1,    -1,    43,    -1,
-      27,    -1,    -1,    30,    31,    -1,    33,    34,    17,    18,
-      -1,    -1,     3,     4,    -1,    -1,    43,    -1,    27,    -1,
-      -1,    30,    31,    -1,    33,    34,    17,    18,    -1,    -1,
-       1,    -1,     3,     4,    43,    -1,    27,    -1,    -1,    30,
-      31,    12,    33,    34,    -1,    -1,    17,    18,     1,    -1,
-       3,     4,    43,    -1,    -1,    -1,    27,    -1,    -1,    30,
-      31,    14,    33,    34,    17,    18,    -1,     1,    -1,     3,
-       4,    -1,    -1,    -1,    27,    -1,    -1,    30,    31,    -1,
-      33,    34,    16,    17,    18,     1,    -1,     3,     4,    -1,
-      -1,    -1,    -1,    27,    -1,    -1,    30,    31,    -1,    33,
-      34,    17,    18,    -1,    -1,    21,    -1,     3,     4,    -1,
-      -1,    27,     3,     4,    30,    31,    12,    33,    34,    -1,
-      -1,    17,    18,    14,    -1,    -1,    17,    18,    -1,    -1,
-      -1,    27,     3,     4,    30,    31,    27,    33,    34,    30,
-      31,    -1,    33,    34,    -1,    16,    17,    18,    -1,    -1,
-       3,     4,    -1,    -1,    -1,    -1,    27,    -1,    -1,    30,
-      31,    -1,    33,    34,    17,    18,    -1,    -1,    -1,    -1,
+      54,    22,    23,    24,    25,    26,    27,     3,     4,    30,
+      31,    56,    33,    34,    58,     1,    62,     3,     4,     4,
+       5,    42,    60,    44,    65,    39,    47,    48,    49,    50,
+      51,    17,    18,    29,    19,     3,     4,    33,    95,     1,
+      -1,    27,     4,     5,    30,    31,   107,    33,    34,    17,
+      18,    -1,    -1,     3,     4,    -1,    18,    43,    -1,    27,
+      -1,    -1,    30,    31,    -1,    33,    34,    17,    18,    -1,
+      -1,     3,     4,    -1,    -1,    43,    -1,    27,    -1,    -1,
+      30,    31,    -1,    33,    34,    17,    18,    -1,    -1,     3,
+       4,    -1,    -1,    43,    -1,    27,    -1,    -1,    30,    31,
+      -1,    33,    34,    17,    18,    -1,    -1,     3,     4,    -1,
+      -1,    43,    -1,    27,    -1,    -1,    30,    31,    -1,    33,
+      34,    17,    18,    -1,    -1,     3,     4,    -1,    -1,    43,
+      -1,    27,    -1,    -1,    30,    31,    -1,    33,    34,    17,
+      18,    -1,    -1,     3,     4,    -1,    -1,    43,    -1,    27,
+      -1,    -1,    30,    31,    -1,    33,    34,    17,    18,    -1,
+      -1,     3,     4,    -1,    -1,    43,    -1,    27,    -1,    -1,
+      30,    31,    -1,    33,    34,    17,    18,    -1,    -1,     3,
+       4,    -1,    -1,    43,    -1,    27,    -1,    -1,    30,    31,
+      -1,    33,    34,    17,    18,    -1,    -1,     3,     4,    -1,
+      -1,    43,    -1,    27,    -1,    -1,    30,    31,    -1,    33,
+      34,    17,    18,    -1,    -1,     3,     4,    -1,    -1,    43,
+      -1,    27,    -1,    -1,    30,    31,    -1,    33,    34,    17,
+      18,    -1,    -1,     3,     4,    -1,    -1,    43,    -1,    27,
+       3,     4,    30,    31,    -1,    33,    34,    17,    18,    -1,
+      -1,     1,    -1,     3,     4,    43,    -1,    27,    -1,    -1,
+      30,    31,    12,    33,    34,    -1,    29,    17,    18,     1,
+      33,     3,     4,    43,    -1,    -1,    -1,    27,    -1,    -1,
+      30,    31,    14,    33,    34,    17,    18,    -1,     1,    -1,
+       3,     4,    -1,    -1,    -1,    27,    -1,    -1,    30,    31,
+      -1,    33,    34,    16,    17,    18,     1,    -1,     3,     4,
       -1,    -1,    -1,    -1,    27,    -1,    -1,    30,    31,    -1,
-      33,    34
+      33,    34,    17,    18,    -1,    -1,    21,    -1,     3,     4,
+      -1,    -1,    27,     3,     4,    30,    31,    12,    33,    34,
+      -1,    -1,    17,    18,    14,    -1,    -1,    17,    18,    -1,
+      -1,    -1,    27,     3,     4,    30,    31,    27,    33,    34,
+      30,    31,    -1,    33,    34,    -1,    16,    17,    18,    -1,
+      -1,     3,     4,    -1,    -1,    -1,    -1,    27,    -1,    -1,
+      30,    31,    -1,    33,    34,    17,    18,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    27,    -1,    -1,    30,    31,
+      -1,    33,    34
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     1,    55,    56,     0,     3,     4,     6,     7,     8,
+       0,    55,    56,     0,     1,     3,     4,     6,     7,     8,
        9,    10,    11,    13,    15,    17,    18,    19,    20,    22,
       23,    24,    25,    26,    27,    30,    31,    33,    34,    42,
       44,    47,    48,    49,    50,    51,    57,    58,    59,    60,
@@ -1786,34 +1779,21 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 102 "markdown.y"
+#line 105 "markdown.y"
     { 
             /**
              * 1. _root_node == $1
              */
-            show_rule("markdownfile: blocks");
+            show_rule("markdownfile: blocks", 0);
             parse_doc();
             is_doc_parsed = 1;
         ;}
     break;
 
   case 3:
-#line 110 "markdown.y"
-    { 
-            show_rule("markdownfile: error");
-            if (!is_doc_parsed) {
-                parse_doc();
-            }
-            is_doc_parsed = 1;
-
-            yyclearin;
-        ;}
-    break;
-
-  case 4:
-#line 122 "markdown.y"
+#line 127 "markdown.y"
     {
-            show_rule("blocks: blocks block");
+            show_rule("blocks: blocks block", 1);
             if (!(yyvsp[(1) - (2)].node)->children) {
                 (yyvsp[(1) - (2)].node)->children = (yyvsp[(2) - (2)].node);
                 (yyvsp[(2) - (2)].node)->parent = (yyvsp[(1) - (2)].node);
@@ -1832,10 +1812,10 @@ yyreduce:
         ;}
     break;
 
-  case 5:
-#line 140 "markdown.y"
+  case 4:
+#line 145 "markdown.y"
     {
-            show_rule("blocks: /* NULL */");
+            show_rule("blocks: /* NULL */", 1);
             _root_node = block_node_create(
                 TAG_ROOT
                 , -100
@@ -1845,147 +1825,161 @@ yyreduce:
         ;}
     break;
 
-  case 6:
-#line 154 "markdown.y"
+  case 5:
+#line 159 "markdown.y"
     { 
-            show_rule("block: lines");
+            show_rule("block: lines", 2);
+            (yyval.node) = (yyvsp[(1) - (1)].node);
+        ;}
+    break;
+
+  case 6:
+#line 163 "markdown.y"
+    {
+            show_rule("block: header", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 7:
-#line 158 "markdown.y"
+#line 167 "markdown.y"
     {
-            show_rule("block: header");
+            show_rule("block: tablerows", 2);
+
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 8:
-#line 162 "markdown.y"
+#line 172 "markdown.y"
     {
-            show_rule("block: tablerows");
-
+            show_rule("block: block_p", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 9:
-#line 167 "markdown.y"
+#line 176 "markdown.y"
     {
-            show_rule("block: block_p");
+            show_rule("block: block_ul", 2); 
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 10:
-#line 171 "markdown.y"
+#line 180 "markdown.y"
     {
-            show_rule("block: block_ul"); 
+            show_rule("block: block_ol", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 11:
-#line 175 "markdown.y"
+#line 184 "markdown.y"
     {
-            show_rule("block: block_ol");
+            show_rule("block: block_indent_ul", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 12:
-#line 179 "markdown.y"
+#line 188 "markdown.y"
     {
-            show_rule("block: block_indent_ul");
+            show_rule("block: block_indent_ol", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 13:
-#line 183 "markdown.y"
+#line 192 "markdown.y"
     {
-            show_rule("block: block_indent_ol");
+            show_rule("block: block_indent_text", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 14:
-#line 187 "markdown.y"
+#line 196 "markdown.y"
     {
-            show_rule("block: block_indent_text");
+            show_rule("block: block_quote_ul", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 15:
-#line 191 "markdown.y"
+#line 200 "markdown.y"
     {
-            show_rule("block: block_quote_ul");
+            show_rule("block: block_quote_ol", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 16:
-#line 195 "markdown.y"
+#line 204 "markdown.y"
     {
-            show_rule("block: block_quote_ol");
+            show_rule("block: block_blank", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 17:
-#line 199 "markdown.y"
+#line 208 "markdown.y"
     {
-            show_rule("block: block_blank");
+            show_rule("block: block_quote_p", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 18:
-#line 203 "markdown.y"
+#line 212 "markdown.y"
     {
-            show_rule("block: block_quote_p");
+            show_rule("block: block_pre", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 19:
-#line 207 "markdown.y"
+#line 216 "markdown.y"
     {
-            show_rule("block: block_pre");
+            show_rule("block: block_indented_pre", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 20:
-#line 211 "markdown.y"
+#line 220 "markdown.y"
     {
-            show_rule("block: block_indented_pre");
+            show_rule("block: pairedblock", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 21:
-#line 215 "markdown.y"
+#line 224 "markdown.y"
     {
-            show_rule("block: pairedblock");
+            show_rule("block: raw_text", 2);
             (yyval.node) = (yyvsp[(1) - (1)].node);
         ;}
     break;
 
   case 22:
-#line 219 "markdown.y"
+#line 228 "markdown.y"
     {
-            show_rule("block: raw_text");
-            (yyval.node) = (yyvsp[(1) - (1)].node);
+            show_rule("block: error", 2);
+            _node = block_node_create(
+                TAG_ERROR
+                , 0
+                , 0
+            );
+
+            (yyval.node) = _node;
         ;}
     break;
 
   case 23:
-#line 226 "markdown.y"
+#line 241 "markdown.y"
     {              
-            show_rule("header: H inline_elements LINEBREAK");
+            show_rule("header: H inline_elements LINEBREAK", 3);
             tag_check_stack(TAG_H, 0); 
 
             _node = block_node_create(
@@ -2004,9 +1998,9 @@ yyreduce:
     break;
 
   case 24:
-#line 244 "markdown.y"
+#line 259 "markdown.y"
     { 
-            show_rule("header: QUOTEH inline_elements LINEBREAK");
+            show_rule("header: QUOTEH inline_elements LINEBREAK", 3);
             tag_check_stack(TAG_QUOTE_H, 0); 
 
             _node = block_node_create(
@@ -2025,9 +2019,9 @@ yyreduce:
     break;
 
   case 25:
-#line 265 "markdown.y"
+#line 280 "markdown.y"
     {
-            show_rule("raw_text: HTMLBLOCK TEXT LINEBREAK");
+            show_rule("raw_text: HTMLBLOCK TEXT LINEBREAK", 3);
             tag_check_stack(TAG_RAW_TEXT, 0);
             _node = block_node_create(
                 TAG_RAW_TEXT
@@ -2042,9 +2036,9 @@ yyreduce:
     break;
 
   case 26:
-#line 279 "markdown.y"
+#line 294 "markdown.y"
     {
-            show_rule("raw_text: HTMLBLOCK LINEBREAK");
+            show_rule("raw_text: HTMLBLOCK LINEBREAK", 3);
             tag_check_stack(TAG_RAW_TEXT, 0);
             _node = block_node_create(
                 TAG_RAW_TEXT
@@ -2059,9 +2053,9 @@ yyreduce:
     break;
 
   case 27:
-#line 293 "markdown.y"
+#line 308 "markdown.y"
     {
-            show_rule("raw_text: SCRIPTSTART inline_elements error");
+            show_rule("raw_text: SCRIPTSTART inline_elements error", 3);
             tag_info = markdown_get_tag_info(str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -2077,9 +2071,9 @@ yyreduce:
     break;
 
   case 28:
-#line 308 "markdown.y"
+#line 323 "markdown.y"
     {
-            show_rule("raw_text: STYLESTART inline_elements error");
+            show_rule("raw_text: STYLESTART inline_elements error", 3);
             tag_info = markdown_get_tag_info(str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -2095,9 +2089,9 @@ yyreduce:
     break;
 
   case 29:
-#line 323 "markdown.y"
+#line 338 "markdown.y"
     {
-            show_rule("raw_text: SVGSTART inline_elements error");
+            show_rule("raw_text: SVGSTART inline_elements error", 3);
             tag_info = markdown_get_tag_info(str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -2113,9 +2107,9 @@ yyreduce:
     break;
 
   case 30:
-#line 338 "markdown.y"
+#line 353 "markdown.y"
     { 
-            show_rule("raw_text: TRIPLEBACKTICK codespan error");
+            show_rule("raw_text: TRIPLEBACKTICK codespan error", 3);
             tag_info = markdown_get_tag_info(str_concat((yyvsp[(1) - (3)].text), (yyvsp[(2) - (3)].text)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -2130,17 +2124,17 @@ yyreduce:
     break;
 
   case 31:
-#line 355 "markdown.y"
+#line 370 "markdown.y"
     {
-            show_rule("lines: lines line");
+            show_rule("lines: lines line", 3);
             (yyval.node) = (yyvsp[(1) - (2)].node);
         ;}
     break;
 
   case 32:
-#line 359 "markdown.y"
+#line 374 "markdown.y"
     {
-            show_rule("lines: line");
+            show_rule("lines: line", 3);
             _node = block_node_create(
                 TAG_LINES
                 , 0
@@ -2152,9 +2146,9 @@ yyreduce:
     break;
 
   case 33:
-#line 373 "markdown.y"
+#line 388 "markdown.y"
     {
-            show_rule("block_p: block_p line_p");
+            show_rule("block_p: block_p line_p", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2164,9 +2158,9 @@ yyreduce:
     break;
 
   case 34:
-#line 381 "markdown.y"
+#line 396 "markdown.y"
     { 
-            show_rule("block_p: line_p");
+            show_rule("block_p: line_p", 3);
             _node = block_node_create(
                 TAG_BLOCK_P
                 , 0
@@ -2180,9 +2174,9 @@ yyreduce:
     break;
 
   case 35:
-#line 396 "markdown.y"
+#line 411 "markdown.y"
     { 
-            show_rule("line_p: inline_elements LINEBREAK");
+            show_rule("line_p: inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_P, 0); 
 
             _node = line_node_create(
@@ -2200,9 +2194,9 @@ yyreduce:
     break;
 
   case 36:
-#line 415 "markdown.y"
+#line 430 "markdown.y"
     {
-            show_rule("block_blank: block_blank line_blank");
+            show_rule("block_blank: block_blank line_blank", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2212,9 +2206,9 @@ yyreduce:
     break;
 
   case 37:
-#line 423 "markdown.y"
+#line 438 "markdown.y"
     {
-            show_rule("block_blank: line_blank");
+            show_rule("block_blank: line_blank", 3);
             _node = block_node_create(
                 TAG_BLOCK_BLANK
                 , 0
@@ -2227,9 +2221,9 @@ yyreduce:
     break;
 
   case 38:
-#line 437 "markdown.y"
+#line 452 "markdown.y"
     { 
-            show_rule("line_blank: BLANKLINE");
+            show_rule("line_blank: BLANKLINE", 4);
             tag_check_stack(TAG_BLANK, 100); 
 
             _node = line_node_create(
@@ -2242,9 +2236,9 @@ yyreduce:
     break;
 
   case 39:
-#line 451 "markdown.y"
+#line 466 "markdown.y"
     {
-            show_rule("block_quote_p: block_quote_p line_quote_p");
+            show_rule("block_quote_p: block_quote_p line_quote_p", 3);
             tag_check_stack(TAG_BLANK, 100); 
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
@@ -2255,9 +2249,9 @@ yyreduce:
     break;
 
   case 40:
-#line 460 "markdown.y"
+#line 475 "markdown.y"
     {
-            show_rule("block_quote_p: line_quote_p");
+            show_rule("block_quote_p: line_quote_p", 3);
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_P
                 , (yyvsp[(1) - (1)].node)->level
@@ -2272,9 +2266,9 @@ yyreduce:
     break;
 
   case 41:
-#line 476 "markdown.y"
+#line 491 "markdown.y"
     { 
-            show_rule("line_quote_p: LARGERTHAN inline_elements LINEBREAK");
+            show_rule("line_quote_p: LARGERTHAN inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_P, 0); 
             tag_info = markdown_get_tag_info(*((yyvsp[(2) - (3)].node)->ops + 1));
 
@@ -2293,9 +2287,9 @@ yyreduce:
     break;
 
   case 42:
-#line 496 "markdown.y"
+#line 511 "markdown.y"
     {
-            show_rule("block_ul: block_ul line_ul");
+            show_rule("block_ul: block_ul line_ul", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2305,9 +2299,9 @@ yyreduce:
     break;
 
   case 43:
-#line 504 "markdown.y"
+#line 519 "markdown.y"
     {
-            show_rule("block_ul: line_ul");
+            show_rule("block_ul: line_ul", 3);
             _node = block_node_create(
                 TAG_BLOCK_UL
                 , 0
@@ -2320,9 +2314,9 @@ yyreduce:
     break;
 
   case 44:
-#line 518 "markdown.y"
+#line 533 "markdown.y"
     { 
-            show_rule("line_ul: ULSTART inline_elements LINEBREAK");
+            show_rule("line_ul: ULSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_UL, 0); 
             tag_info = markdown_get_tag_info(*((yyvsp[(2) - (3)].node)->ops + 1));
 
@@ -2341,9 +2335,9 @@ yyreduce:
     break;
 
   case 45:
-#line 536 "markdown.y"
+#line 551 "markdown.y"
     { 
-            show_rule("line_ul: ULSTART LINEBREAK");
+            show_rule("line_ul: ULSTART LINEBREAK", 4);
             tag_check_stack(TAG_UL, 0); 
             _node = line_node_create(
                 TAG_UL
@@ -2357,9 +2351,9 @@ yyreduce:
     break;
 
   case 46:
-#line 551 "markdown.y"
+#line 566 "markdown.y"
     {
-            show_rule("block_indent_ul: block_indent_ul line_indent_ul");
+            show_rule("block_indent_ul: block_indent_ul line_indent_ul", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2369,9 +2363,9 @@ yyreduce:
     break;
 
   case 47:
-#line 559 "markdown.y"
+#line 574 "markdown.y"
     {
-            show_rule("block_indent_ul: line_indent_ul");
+            show_rule("block_indent_ul: line_indent_ul", 4);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_UL
                 , (yyvsp[(1) - (1)].node)->level
@@ -2384,9 +2378,9 @@ yyreduce:
     break;
 
   case 48:
-#line 573 "markdown.y"
+#line 588 "markdown.y"
     { 
-            show_rule("line_indent_ul: ULINDENT ULSTART inline_elements LINEBREAK");
+            show_rule("line_indent_ul: ULINDENT ULSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_INDENT_UL, indent_level((yyvsp[(1) - (4)].text))); 
             tag_info = markdown_get_tag_info(*((yyvsp[(3) - (4)].node)->ops + 1));
 
@@ -2405,9 +2399,9 @@ yyreduce:
     break;
 
   case 49:
-#line 593 "markdown.y"
+#line 608 "markdown.y"
     {
-            show_rule("block_quote_ul: block_quote_ul line_quote_ul");
+            show_rule("block_quote_ul: block_quote_ul line_quote_ul", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2417,9 +2411,9 @@ yyreduce:
     break;
 
   case 50:
-#line 601 "markdown.y"
+#line 616 "markdown.y"
     {
-            show_rule("block_quote_ul: line_quote_ul");
+            show_rule("block_quote_ul: line_quote_ul", 3);
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_UL
                 , (yyvsp[(1) - (1)].node)->level
@@ -2432,9 +2426,9 @@ yyreduce:
     break;
 
   case 51:
-#line 615 "markdown.y"
+#line 630 "markdown.y"
     { 
-            show_rule("line_quote_ul: QUOTEULSTART inline_elements LINEBREAK");
+            show_rule("line_quote_ul: QUOTEULSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_UL, 0); 
             tag_info = markdown_get_tag_info(*((yyvsp[(2) - (3)].node)->ops + 1));
 
@@ -2453,9 +2447,9 @@ yyreduce:
     break;
 
   case 52:
-#line 638 "markdown.y"
+#line 653 "markdown.y"
     {
-            show_rule("block_ol: block_ol line_ol");
+            show_rule("block_ol: block_ol line_ol", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2465,9 +2459,9 @@ yyreduce:
     break;
 
   case 53:
-#line 646 "markdown.y"
+#line 661 "markdown.y"
     {
-            show_rule("block_ol: line_ol");
+            show_rule("block_ol: line_ol", 3);
             _node = block_node_create(
                 TAG_BLOCK_OL
                 , 0
@@ -2480,9 +2474,9 @@ yyreduce:
     break;
 
   case 54:
-#line 660 "markdown.y"
+#line 675 "markdown.y"
     { 
-            show_rule("line_ol: OLSTART inline_elements LINEBREAK");
+            show_rule("line_ol: OLSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_OL, 0); 
             tag_info = markdown_get_tag_info(*((yyvsp[(2) - (3)].node)->ops + 1));
 
@@ -2501,9 +2495,9 @@ yyreduce:
     break;
 
   case 55:
-#line 677 "markdown.y"
+#line 692 "markdown.y"
     { 
-            show_rule("line_ol: OLSTART LINEBREAK");
+            show_rule("line_ol: OLSTART LINEBREAK", 4);
             tag_check_stack(TAG_OL, 0); 
 
             _node = line_node_create(
@@ -2518,9 +2512,9 @@ yyreduce:
     break;
 
   case 56:
-#line 693 "markdown.y"
+#line 708 "markdown.y"
     {
-            show_rule("block_indent_ol: block_indent_ol line_indent_ol");
+            show_rule("block_indent_ol: block_indent_ol line_indent_ol", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2530,9 +2524,9 @@ yyreduce:
     break;
 
   case 57:
-#line 701 "markdown.y"
+#line 716 "markdown.y"
     {
-            show_rule("block_indent_ol: line_indent_ol");
+            show_rule("block_indent_ol: line_indent_ol", 3);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_OL
                 , (yyvsp[(1) - (1)].node)->level
@@ -2545,9 +2539,9 @@ yyreduce:
     break;
 
   case 58:
-#line 715 "markdown.y"
+#line 730 "markdown.y"
     { 
-            show_rule("line_indent_ol: OLINDENT OLSTART inline_elements LINEBREAK");
+            show_rule("line_indent_ol: OLINDENT OLSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_INDENT_OL, indent_level((yyvsp[(1) - (4)].text))); 
             tag_info = markdown_get_tag_info(*((yyvsp[(3) - (4)].node)->ops + 1));
 
@@ -2566,9 +2560,9 @@ yyreduce:
     break;
 
   case 59:
-#line 735 "markdown.y"
+#line 750 "markdown.y"
     {
-            show_rule("block_quote_ol: block_indent_ol line_quote_ol");
+            show_rule("block_quote_ol: block_indent_ol line_quote_ol", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2578,9 +2572,9 @@ yyreduce:
     break;
 
   case 60:
-#line 743 "markdown.y"
+#line 758 "markdown.y"
     {
-            show_rule("block_quote_ol: line_quote_ol");
+            show_rule("block_quote_ol: line_quote_ol", 3);
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_OL
                 , (yyvsp[(1) - (1)].node)->level
@@ -2593,9 +2587,9 @@ yyreduce:
     break;
 
   case 61:
-#line 757 "markdown.y"
+#line 772 "markdown.y"
     { 
-            show_rule("line_quote_ol: QUOTEOLSTART inline_elements LINEBREAK");
+            show_rule("line_quote_ol: QUOTEOLSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_OL, 0); 
             tag_info = markdown_get_tag_info(*((yyvsp[(2) - (3)].node)->ops + 1));
 
@@ -2614,9 +2608,9 @@ yyreduce:
     break;
 
   case 62:
-#line 778 "markdown.y"
+#line 793 "markdown.y"
     {
-            show_rule("block_indent_text: block_indent_text line_indent_text");
+            show_rule("block_indent_text: block_indent_text line_indent_text", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2626,9 +2620,9 @@ yyreduce:
     break;
 
   case 63:
-#line 786 "markdown.y"
+#line 801 "markdown.y"
     {
-            show_rule("block_indent_text: line_indent_text");
+            show_rule("block_indent_text: line_indent_text", 3);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_TEXT
                 , (yyvsp[(1) - (1)].node)->level
@@ -2643,9 +2637,9 @@ yyreduce:
     break;
 
   case 64:
-#line 802 "markdown.y"
+#line 817 "markdown.y"
     { 
-            show_rule("line_indent_text: TEXTINDENT inline_elements LINEBREAK");
+            show_rule("line_indent_text: TEXTINDENT inline_elements LINEBREAK", 4);
 
             /*
              *      * list
@@ -2681,9 +2675,9 @@ yyreduce:
     break;
 
   case 65:
-#line 840 "markdown.y"
+#line 855 "markdown.y"
     {
-            show_rule("block_pre: block_pre line_pre");
+            show_rule("block_pre: block_pre line_pre", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2693,9 +2687,9 @@ yyreduce:
     break;
 
   case 66:
-#line 848 "markdown.y"
+#line 863 "markdown.y"
     {
-            show_rule("block_pre: line_pre");
+            show_rule("block_pre: line_pre", 3);
             _node = block_node_create(
                 TAG_BLOCK_PRE 
                 , (yyvsp[(1) - (1)].node)->level
@@ -2711,9 +2705,9 @@ yyreduce:
     break;
 
   case 67:
-#line 865 "markdown.y"
+#line 880 "markdown.y"
     {
-            show_rule("line_pre: PRE_INDENT CODETEXT LINEBREAK");
+            show_rule("line_pre: PRE_INDENT CODETEXT LINEBREAK", 4);
             tag_check_stack(TAG_PRE, 0); 
             tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
 
@@ -2732,9 +2726,9 @@ yyreduce:
     break;
 
   case 68:
-#line 882 "markdown.y"
+#line 897 "markdown.y"
     {
-            show_rule("line_pre: TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK");
+            show_rule("line_pre: TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK", 4);
             tag_check_stack(TAG_PRE, 0); 
             tag_info = markdown_get_tag_info((yyvsp[(2) - (4)].text));
 
@@ -2750,9 +2744,9 @@ yyreduce:
     break;
 
   case 69:
-#line 900 "markdown.y"
+#line 915 "markdown.y"
     {
-            show_rule("block_indented_pre: block_indented_pre line_indented_pre");
+            show_rule("block_indented_pre: block_indented_pre line_indented_pre", 3);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2762,9 +2756,9 @@ yyreduce:
     break;
 
   case 70:
-#line 908 "markdown.y"
+#line 923 "markdown.y"
     {
-            show_rule("block_indented_pre: line_indented_pre");
+            show_rule("block_indented_pre: line_indented_pre", 3);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_PRE 
                 , (yyvsp[(1) - (1)].node)->level
@@ -2780,9 +2774,9 @@ yyreduce:
     break;
 
   case 71:
-#line 925 "markdown.y"
+#line 940 "markdown.y"
     {
-            show_rule("line_indented_pre: INDENTED_PRE_INDENT CODETEXT LINEBREAK");
+            show_rule("line_indented_pre: INDENTED_PRE_INDENT CODETEXT LINEBREAK", 4);
             _inner_pre_level = inner_pre_level(indent_level((yyvsp[(1) - (3)].text)));
 
             /* PRE indent level is 1 less than the literal indent */
@@ -2804,9 +2798,9 @@ yyreduce:
     break;
 
   case 72:
-#line 949 "markdown.y"
+#line 964 "markdown.y"
     {
-            show_rule("pairedblock: SCRIPTSTART inline_elements SCRIPTEND");
+            show_rule("pairedblock: SCRIPTSTART inline_elements SCRIPTEND", 3);
             tag_check_stack(TAG_SCRIPTBLOCK, 0);
 
             _node = block_node_create(
@@ -2825,9 +2819,9 @@ yyreduce:
     break;
 
   case 73:
-#line 967 "markdown.y"
+#line 982 "markdown.y"
     {
-            show_rule("pairedblock: SCRIPTSTART SCRIPTEND");
+            show_rule("pairedblock: SCRIPTSTART SCRIPTEND", 3);
             tag_check_stack(TAG_SCRIPTBLOCK, 0);
 
             _node = block_node_create(
@@ -2843,9 +2837,9 @@ yyreduce:
     break;
 
   case 74:
-#line 982 "markdown.y"
+#line 997 "markdown.y"
     {
-            show_rule("pairedblock: STYLESTART inline_elements STYLEEND");
+            show_rule("pairedblock: STYLESTART inline_elements STYLEEND", 3);
             tag_check_stack(TAG_STYLEBLOCK, 0);
 
             _node = block_node_create(
@@ -2864,9 +2858,9 @@ yyreduce:
     break;
 
   case 75:
-#line 1000 "markdown.y"
+#line 1015 "markdown.y"
     {
-            show_rule("pairedblock: STYLESTART STYLEEND");
+            show_rule("pairedblock: STYLESTART STYLEEND", 3);
             tag_check_stack(TAG_STYLEBLOCK, 0);
 
             _node = block_node_create(
@@ -2882,9 +2876,9 @@ yyreduce:
     break;
 
   case 76:
-#line 1015 "markdown.y"
+#line 1030 "markdown.y"
     {
-            show_rule("pairedblock: SVGSTART inline_elements SVGEND");
+            show_rule("pairedblock: SVGSTART inline_elements SVGEND", 3);
             tag_check_stack(TAG_SVGBLOCK, 0);
 
             _node = block_node_create(
@@ -2903,9 +2897,9 @@ yyreduce:
     break;
 
   case 77:
-#line 1033 "markdown.y"
+#line 1048 "markdown.y"
     {
-            show_rule("pairedblock: SVGSTART SVGEND");
+            show_rule("pairedblock: SVGSTART SVGEND", 3);
             tag_check_stack(TAG_SVGBLOCK, 0);
 
             _node = block_node_create(
@@ -2921,9 +2915,9 @@ yyreduce:
     break;
 
   case 78:
-#line 1052 "markdown.y"
+#line 1067 "markdown.y"
     {
-                                                            show_rule("tablerows: tablerows tablerow");
+                                                            show_rule("tablerows: tablerows tablerow", 3);
                                                             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
                                                             _tail_node->next = (yyvsp[(2) - (2)].node);
                                                             (yyvsp[(2) - (2)].node)->prev = _tail_node; 
@@ -2933,9 +2927,9 @@ yyreduce:
     break;
 
   case 79:
-#line 1060 "markdown.y"
+#line 1075 "markdown.y"
     {
-                                                            show_rule("tablerows: tablerow");
+                                                            show_rule("tablerows: tablerow", 3);
                                                             _node = block_node_create(
                                                                 TAG_TABLE
                                                                 , 0
@@ -2948,26 +2942,26 @@ yyreduce:
     break;
 
   case 80:
-#line 1073 "markdown.y"
+#line 1088 "markdown.y"
     {
-                                                            show_rule("tablerows: TABLEROWSTART tableceils LINEBREAK");
+                                                            show_rule("tablerows: TABLEROWSTART tableceils LINEBREAK", 4);
                                                             (yyval.node) = (yyvsp[(2) - (3)].node);
                                                         ;}
     break;
 
   case 81:
-#line 1077 "markdown.y"
+#line 1092 "markdown.y"
     {
-                                                            show_rule("tablerows: TABLEROWSTART tableceils error LINEBREAK");
+                                                            show_rule("tablerows: TABLEROWSTART tableceils error LINEBREAK", 4);
                                                             (yyval.node) = (yyvsp[(2) - (4)].node);
                                                             yyerrok;
                                                         ;}
     break;
 
   case 82:
-#line 1086 "markdown.y"
+#line 1101 "markdown.y"
     { 
-                                                            show_rule("tableceils: tableceils tableceil");
+                                                            show_rule("tableceils: tableceils tableceil",5);
                                                             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children); 
                                                             _tail_node->next = (yyvsp[(2) - (2)].node); 
                                                             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -2977,9 +2971,9 @@ yyreduce:
     break;
 
   case 83:
-#line 1094 "markdown.y"
+#line 1109 "markdown.y"
     {
-                                                            show_rule("tableceils: tableceil");
+                                                            show_rule("tableceils: tableceil", 5);
                                                             _node = line_node_create(
                                                                 TAG_TR
                                                                 , 1
@@ -2993,9 +2987,9 @@ yyreduce:
     break;
 
   case 84:
-#line 1109 "markdown.y"
+#line 1124 "markdown.y"
     {
-            show_rule("tableceil: inline_elements TABLECEILEND");
+            show_rule("tableceil: inline_elements TABLECEILEND", 6);
             _node = inline_node_create(
                 TAG_TD
                 , 2
@@ -3010,9 +3004,9 @@ yyreduce:
     break;
 
   case 85:
-#line 1122 "markdown.y"
+#line 1137 "markdown.y"
     {
-            show_rule("tableceil: inline_elements error");
+            show_rule("tableceil: inline_elements error", 6);
             _node = inline_node_create(
                 TAG_TD
                 , 2
@@ -3029,33 +3023,33 @@ yyreduce:
     break;
 
   case 86:
-#line 1142 "markdown.y"
+#line 1157 "markdown.y"
     { 
-            show_rule("line: QUOTEBLANKLINE");
+            show_rule("line: QUOTEBLANKLINE", 4);
             tag_check_stack(TAG_QUOTE_BLANK, 0); 
         ;}
     break;
 
   case 87:
-#line 1147 "markdown.y"
+#line 1162 "markdown.y"
     {
-            show_rule("line: SECTION LINEBREAK");
+            show_rule("line: SECTION LINEBREAK", 4);
             tag_check_stack(TAG_SECTION, -1); 
         ;}
     break;
 
   case 88:
-#line 1152 "markdown.y"
+#line 1167 "markdown.y"
     {
-            show_rule("line: VSECTION LINEBREAK");
+            show_rule("line: VSECTION LINEBREAK", 4);
             tag_check_stack(TAG_VSECTION, -1); 
         ;}
     break;
 
   case 89:
-#line 1161 "markdown.y"
+#line 1176 "markdown.y"
     {
-            show_rule("inline_elements: inline_elements inline_element");
+            show_rule("inline_elements: inline_elements inline_element", 5);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -3065,9 +3059,9 @@ yyreduce:
     break;
 
   case 90:
-#line 1169 "markdown.y"
+#line 1184 "markdown.y"
     {
-            show_rule("inline_elements: inline_element");
+            show_rule("inline_elements: inline_element", 5);
             if (
                 /**
                  * 1. if the first child is a link or image
@@ -3103,9 +3097,9 @@ yyreduce:
     break;
 
   case 91:
-#line 1206 "markdown.y"
+#line 1221 "markdown.y"
     { 
-            show_rule("inline_element: plaintext");
+            show_rule("inline_element: plaintext", 6);
             tag_info = markdown_get_tag_info(*((yyvsp[(1) - (1)].node)->ops + 1));     
             *((yyvsp[(1) - (1)].node)->ops) = tag_info->attr;
             *((yyvsp[(1) - (1)].node)->ops + 1) = tag_info->content;
@@ -3115,34 +3109,34 @@ yyreduce:
     break;
 
   case 92:
-#line 1214 "markdown.y"
-    { show_rule("inline_element: link"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1229 "markdown.y"
+    { show_rule("inline_element: link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 93:
-#line 1215 "markdown.y"
-    { show_rule("inline_element: standard_link"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1230 "markdown.y"
+    { show_rule("inline_element: standard_link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 94:
-#line 1216 "markdown.y"
-    { show_rule("inline_element: standard_image"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1231 "markdown.y"
+    { show_rule("inline_element: standard_image", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 95:
-#line 1217 "markdown.y"
-    { show_rule("inline_element: inline_code"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1232 "markdown.y"
+    { show_rule("inline_element: inline_code", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 96:
-#line 1218 "markdown.y"
-    { show_rule("inline_element: inline_emphasis"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1233 "markdown.y"
+    { show_rule("inline_element: inline_emphasis", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 97:
-#line 1223 "markdown.y"
+#line 1238 "markdown.y"
     {
-            show_rule("inline_emphasis: EM_BEGIN inline_text_collection EM_END");
+            show_rule("inline_emphasis: EM_BEGIN inline_text_collection EM_END", 7);
             _node = inline_node_create(
                 TAG_INLINE_EM
                 , NODE_LEVEL_SPECIAL
@@ -3158,9 +3152,9 @@ yyreduce:
     break;
 
   case 98:
-#line 1238 "markdown.y"
+#line 1253 "markdown.y"
     {
-            show_rule("inline_emphasis: EM_BEGIN inline_text_collection error");
+            show_rule("inline_emphasis: EM_BEGIN inline_text_collection error", 7);
             str = str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->children->ops + 1));
             *((yyvsp[(2) - (3)].node)->children->ops + 1) = str;
 
@@ -3170,9 +3164,9 @@ yyreduce:
     break;
 
   case 99:
-#line 1247 "markdown.y"
+#line 1262 "markdown.y"
     {
-            show_rule("inline_emphasis: EM_BEGIN EM_END");
+            show_rule("inline_emphasis: EM_BEGIN EM_END", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -3186,9 +3180,9 @@ yyreduce:
     break;
 
   case 100:
-#line 1272 "markdown.y"
+#line 1287 "markdown.y"
     {
-            show_rule("inline_text_collection: inline_text_collection inline_text");
+            show_rule("inline_text_collection: inline_text_collection inline_text", 5);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
             _tail_node->next = (yyvsp[(2) - (2)].node);
             (yyvsp[(2) - (2)].node)->prev = _tail_node;
@@ -3198,9 +3192,9 @@ yyreduce:
     break;
 
   case 101:
-#line 1280 "markdown.y"
+#line 1295 "markdown.y"
     {
-            show_rule("inline_text_collection: inline_text");
+            show_rule("inline_text_collection: inline_text", 5);
             if (
                 /**
                  * 1. if the first child is a link or image
@@ -3236,9 +3230,9 @@ yyreduce:
     break;
 
   case 102:
-#line 1321 "markdown.y"
+#line 1336 "markdown.y"
     {
-            show_rule("inline_text: plaintext");
+            show_rule("inline_text: plaintext", 6);
             tag_info = markdown_get_tag_info(*((yyvsp[(1) - (1)].node)->ops + 1));     
             *((yyvsp[(1) - (1)].node)->ops) = tag_info->attr;
             *((yyvsp[(1) - (1)].node)->ops + 1) = tag_info->content;
@@ -3248,19 +3242,19 @@ yyreduce:
     break;
 
   case 103:
-#line 1329 "markdown.y"
-    { show_rule("inline_text: link"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1344 "markdown.y"
+    { show_rule("inline_text: link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 104:
-#line 1330 "markdown.y"
-    { show_rule("inline_text: standard_link"); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+#line 1345 "markdown.y"
+    { show_rule("inline_text: standard_link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 105:
-#line 1343 "markdown.y"
+#line 1358 "markdown.y"
     {
-            show_rule("link: LINK");
+            show_rule("link: LINK", 7);
             // get content A between `<` and `>`
             tag_info = markdown_get_tag_info((yyvsp[(1) - (1)].text));
             // get tag info from A
@@ -3279,9 +3273,9 @@ yyreduce:
     break;
 
   case 106:
-#line 1363 "markdown.y"
+#line 1378 "markdown.y"
     {
-            show_rule("standard_link: LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET");
+            show_rule("standard_link: LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_link_tag_info(*((yyvsp[(2) - (5)].node)->ops + 1), *((yyvsp[(4) - (5)].node)->ops + 1));
 
             _node = inline_node_create(
@@ -3297,9 +3291,9 @@ yyreduce:
     break;
 
   case 107:
-#line 1380 "markdown.y"
+#line 1395 "markdown.y"
     {
-            show_rule("standard_image: EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET");
+            show_rule("standard_image: EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_image_tag_info(*((yyvsp[(2) - (5)].node)->ops + 1), *((yyvsp[(4) - (5)].node)->ops + 1));
 
             _node = inline_node_create(
@@ -3315,18 +3309,18 @@ yyreduce:
     break;
 
   case 108:
-#line 1398 "markdown.y"
+#line 1413 "markdown.y"
     {
-            show_rule("plaintext: plaintext text_list");
+            show_rule("plaintext: plaintext text_list", 7);
             *((yyvsp[(1) - (2)].node)->ops + 1) = str_concat(*((yyvsp[(1) - (2)].node)->ops + 1), (yyvsp[(2) - (2)].text));
             (yyval.node) = (yyvsp[(1) - (2)].node);
         ;}
     break;
 
   case 109:
-#line 1403 "markdown.y"
+#line 1418 "markdown.y"
     {
-            show_rule("plaintext: text_list");
+            show_rule("plaintext: text_list", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -3340,9 +3334,9 @@ yyreduce:
     break;
 
   case 110:
-#line 1415 "markdown.y"
+#line 1430 "markdown.y"
     {
-            show_rule("plaintext: ATTRLEFT plaintext ATTRRIGHT");
+            show_rule("plaintext: ATTRLEFT plaintext ATTRRIGHT", 7);
             *((yyvsp[(2) - (3)].node)->ops + 1) = str_concat(
                 (yyvsp[(1) - (3)].text)
                 /**
@@ -3356,9 +3350,9 @@ yyreduce:
     break;
 
   case 111:
-#line 1427 "markdown.y"
+#line 1442 "markdown.y"
     {
-            show_rule("plaintext: ATTRLEFT plaintext error");
+            show_rule("plaintext: ATTRLEFT plaintext error", 7);
             *((yyvsp[(2) - (3)].node)->ops + 1) = str_concat(
                 (yyvsp[(1) - (3)].text)
                 , str_replace(*((yyvsp[(2) - (3)].node)->ops + 1), "]", "&#93;")
@@ -3369,24 +3363,24 @@ yyreduce:
     break;
 
   case 112:
-#line 1439 "markdown.y"
-    { show_rule("text_list: TEXT"); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+#line 1454 "markdown.y"
+    { show_rule("text_list: TEXT", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 113:
-#line 1440 "markdown.y"
-    { show_rule("text_list: SPECIALCHAR"); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+#line 1455 "markdown.y"
+    { show_rule("text_list: SPECIALCHAR", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 114:
-#line 1441 "markdown.y"
-    { show_rule("text_list: EMPTYATTR"); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+#line 1456 "markdown.y"
+    { show_rule("text_list: EMPTYATTR", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 115:
-#line 1445 "markdown.y"
+#line 1460 "markdown.y"
     { 
-            show_rule("inline_code: BACKTICK codespan BACKTICK");
+            show_rule("inline_code: BACKTICK codespan BACKTICK", 7);
             tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
 
             _node = inline_node_create(
@@ -3402,9 +3396,9 @@ yyreduce:
     break;
 
   case 116:
-#line 1460 "markdown.y"
+#line 1475 "markdown.y"
     { 
-            show_rule("inline_code: BACKTICK codespan error");
+            show_rule("inline_code: BACKTICK codespan error", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -3420,9 +3414,9 @@ yyreduce:
     break;
 
   case 117:
-#line 1475 "markdown.y"
+#line 1490 "markdown.y"
     { 
-            show_rule("inline_code: BACKTICK error");
+            show_rule("inline_code: BACKTICK error", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -3438,28 +3432,28 @@ yyreduce:
     break;
 
   case 118:
-#line 1495 "markdown.y"
-    { show_rule("codespan: codespan code_list"); (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
+#line 1510 "markdown.y"
+    { show_rule("codespan: codespan code_list", 8); (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 119:
-#line 1496 "markdown.y"
-    { show_rule("codespan: code_list"); (yyval.text) = (yyvsp[(1) - (1)].text); ;}
+#line 1511 "markdown.y"
+    { show_rule("codespan: code_list", 8); (yyval.text) = (yyvsp[(1) - (1)].text); ;}
     break;
 
   case 120:
-#line 1500 "markdown.y"
-    { show_rule("code_list: CODETEXT"); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+#line 1515 "markdown.y"
+    { show_rule("code_list: CODETEXT", 9); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 121:
-#line 1501 "markdown.y"
-    { show_rule("code_list: SPECIALCHAR"); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
+#line 1516 "markdown.y"
+    { show_rule("code_list: SPECIALCHAR", 9); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 3463 "markdown.y.c"
+#line 3457 "markdown.y.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3679,7 +3673,7 @@ yyreturn:
 }
 
 
-#line 1504 "markdown.y"
+#line 1519 "markdown.y"
 
 
 

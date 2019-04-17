@@ -8,7 +8,8 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 0
+#define _ISDEBUGPARSER 1
+#define MAX_RULE_LEVEL 2
 #define YYERROR_VERBOSE
 
 /* prototypes */
@@ -22,9 +23,11 @@ t_node *_root_node;
 t_node *_node, *_tail_node, *_tmp_node;
 char *str;
 int is_doc_parsed = 0;
-static void show_rule(char *str) {
+static void show_rule(char *str, int level) {
     if (_ISDEBUGPARSER) {
-        fprintf(stderr, "[[ %s\n", str);
+        if (level <= MAX_RULE_LEVEL) {
+            fprintf(stderr, "%s[> %s\n", str_padding_left("", level * 4), str);
+        }
     }
 }
 
@@ -103,12 +106,13 @@ markdownfile:
             /**
              * 1. _root_node == $1
              */
-            show_rule("markdownfile: blocks");
+            show_rule("markdownfile: blocks", 0);
             parse_doc();
             is_doc_parsed = 1;
         }
+    /*
     | error { 
-            show_rule("markdownfile: error");
+            show_rule("markdownfile: error", 0);
             if (!is_doc_parsed) {
                 parse_doc();
             }
@@ -116,11 +120,12 @@ markdownfile:
 
             yyclearin;
         }
+    */
     ;
 
 blocks:
     blocks block {
-            show_rule("blocks: blocks block");
+            show_rule("blocks: blocks block", 1);
             if (!$1->children) {
                 $1->children = $2;
                 $2->parent = $1;
@@ -138,7 +143,7 @@ blocks:
             $$ = $1;
         }
     | /* NULL */{
-            show_rule("blocks: /* NULL */");
+            show_rule("blocks: /* NULL */", 1);
             _root_node = block_node_create(
                 TAG_ROOT
                 , -100
@@ -152,79 +157,89 @@ blocks:
 
 block:
     lines { 
-            show_rule("block: lines");
+            show_rule("block: lines", 2);
             $$ = $1;
         }
     | header {
-            show_rule("block: header");
+            show_rule("block: header", 2);
             $$ = $1;
         }
     | tablerows {
-            show_rule("block: tablerows");
+            show_rule("block: tablerows", 2);
 
             $$ = $1;
         }
     | block_p {
-            show_rule("block: block_p");
+            show_rule("block: block_p", 2);
             $$ = $1;
         }
     | block_ul {
-            show_rule("block: block_ul"); 
+            show_rule("block: block_ul", 2); 
             $$ = $1;
         }
     | block_ol {
-            show_rule("block: block_ol");
+            show_rule("block: block_ol", 2);
             $$ = $1;
         }
     | block_indent_ul {
-            show_rule("block: block_indent_ul");
+            show_rule("block: block_indent_ul", 2);
             $$ = $1;
         }
     | block_indent_ol {
-            show_rule("block: block_indent_ol");
+            show_rule("block: block_indent_ol", 2);
             $$ = $1;
         }
     | block_indent_text {
-            show_rule("block: block_indent_text");
+            show_rule("block: block_indent_text", 2);
             $$ = $1;
         }
     | block_quote_ul {
-            show_rule("block: block_quote_ul");
+            show_rule("block: block_quote_ul", 2);
             $$ = $1;
         }
     | block_quote_ol {
-            show_rule("block: block_quote_ol");
+            show_rule("block: block_quote_ol", 2);
             $$ = $1;
         }
     | block_blank {
-            show_rule("block: block_blank");
+            show_rule("block: block_blank", 2);
             $$ = $1;
         }
     | block_quote_p {
-            show_rule("block: block_quote_p");
+            show_rule("block: block_quote_p", 2);
             $$ = $1;
         }
     | block_pre {
-            show_rule("block: block_pre");
+            show_rule("block: block_pre", 2);
             $$ = $1;
         }
     | block_indented_pre {
-            show_rule("block: block_indented_pre");
+            show_rule("block: block_indented_pre", 2);
             $$ = $1;
         }
     | pairedblock {
-            show_rule("block: pairedblock");
+            show_rule("block: pairedblock", 2);
             $$ = $1;
         }
     | raw_text {
-            show_rule("block: raw_text");
+            show_rule("block: raw_text", 2);
             $$ = $1;
+        }
+    | error {
+            show_rule("block: error", 2);
+            _node = block_node_create(
+                TAG_ERROR
+                , 0
+                , 0
+            );
+
+            $$ = _node;
         }
     ;
 
 header:
     H inline_elements LINEBREAK {              
-            show_rule("header: H inline_elements LINEBREAK");
+            show_rule("header: H inline_elements LINEBREAK", 3);
             tag_check_stack(TAG_H, 0); 
 
             _node = block_node_create(
@@ -242,7 +257,7 @@ header:
         }   
 
     | QUOTEH inline_elements LINEBREAK { 
-            show_rule("header: QUOTEH inline_elements LINEBREAK");
+            show_rule("header: QUOTEH inline_elements LINEBREAK", 3);
             tag_check_stack(TAG_QUOTE_H, 0); 
 
             _node = block_node_create(
@@ -263,7 +278,7 @@ header:
 
 raw_text: 
     HTMLBLOCK TEXT LINEBREAK {
-            show_rule("raw_text: HTMLBLOCK TEXT LINEBREAK");
+            show_rule("raw_text: HTMLBLOCK TEXT LINEBREAK", 3);
             tag_check_stack(TAG_RAW_TEXT, 0);
             _node = block_node_create(
                 TAG_RAW_TEXT
@@ -277,7 +292,7 @@ raw_text:
         }
 
     | HTMLBLOCK LINEBREAK {
-            show_rule("raw_text: HTMLBLOCK LINEBREAK");
+            show_rule("raw_text: HTMLBLOCK LINEBREAK", 3);
             tag_check_stack(TAG_RAW_TEXT, 0);
             _node = block_node_create(
                 TAG_RAW_TEXT
@@ -291,7 +306,7 @@ raw_text:
         }
 
     | SCRIPTSTART inline_elements error {
-            show_rule("raw_text: SCRIPTSTART inline_elements error");
+            show_rule("raw_text: SCRIPTSTART inline_elements error", 3);
             tag_info = markdown_get_tag_info(str_concat($1, *($2->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -306,7 +321,7 @@ raw_text:
         } 
 
     | STYLESTART inline_elements error {
-            show_rule("raw_text: STYLESTART inline_elements error");
+            show_rule("raw_text: STYLESTART inline_elements error", 3);
             tag_info = markdown_get_tag_info(str_concat($1, *($2->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -321,7 +336,7 @@ raw_text:
         } 
 
     | SVGSTART inline_elements error {
-            show_rule("raw_text: SVGSTART inline_elements error");
+            show_rule("raw_text: SVGSTART inline_elements error", 3);
             tag_info = markdown_get_tag_info(str_concat($1, *($2->ops + 1)));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -336,7 +351,7 @@ raw_text:
         } 
 
     | TRIPLEBACKTICK codespan error { 
-            show_rule("raw_text: TRIPLEBACKTICK codespan error");
+            show_rule("raw_text: TRIPLEBACKTICK codespan error", 3);
             tag_info = markdown_get_tag_info(str_concat($1, $2));
             _node = line_node_create(
                 TAG_RAW_TEXT
@@ -353,11 +368,11 @@ raw_text:
 
 lines:
     lines line {
-            show_rule("lines: lines line");
+            show_rule("lines: lines line", 3);
             $$ = $1;
         }
     | line {
-            show_rule("lines: line");
+            show_rule("lines: line", 3);
             _node = block_node_create(
                 TAG_LINES
                 , 0
@@ -371,7 +386,7 @@ lines:
 
 block_p:
     block_p line_p {
-            show_rule("block_p: block_p line_p");
+            show_rule("block_p: block_p line_p", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -379,7 +394,7 @@ block_p:
             $$ = $1;
         }
     | line_p { 
-            show_rule("block_p: line_p");
+            show_rule("block_p: line_p", 3);
             _node = block_node_create(
                 TAG_BLOCK_P
                 , 0
@@ -394,7 +409,7 @@ block_p:
 
 line_p:
     inline_elements LINEBREAK { 
-            show_rule("line_p: inline_elements LINEBREAK");
+            show_rule("line_p: inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_P, 0); 
 
             _node = line_node_create(
@@ -413,7 +428,7 @@ line_p:
 
 block_blank: 
     block_blank line_blank {
-            show_rule("block_blank: block_blank line_blank");
+            show_rule("block_blank: block_blank line_blank", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -421,7 +436,7 @@ block_blank:
             $$ = $1;
         }
     | line_blank {
-            show_rule("block_blank: line_blank");
+            show_rule("block_blank: line_blank", 3);
             _node = block_node_create(
                 TAG_BLOCK_BLANK
                 , 0
@@ -435,7 +450,7 @@ block_blank:
 
 line_blank:
     BLANKLINE { 
-            show_rule("line_blank: BLANKLINE");
+            show_rule("line_blank: BLANKLINE", 4);
             tag_check_stack(TAG_BLANK, 100); 
 
             _node = line_node_create(
@@ -449,7 +464,7 @@ line_blank:
 
 block_quote_p:
     block_quote_p line_quote_p {
-            show_rule("block_quote_p: block_quote_p line_quote_p");
+            show_rule("block_quote_p: block_quote_p line_quote_p", 3);
             tag_check_stack(TAG_BLANK, 100); 
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
@@ -458,7 +473,7 @@ block_quote_p:
             $$ = $1;
         }
     | line_quote_p {
-            show_rule("block_quote_p: line_quote_p");
+            show_rule("block_quote_p: line_quote_p", 3);
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_P
                 , $1->level
@@ -474,7 +489,7 @@ block_quote_p:
 
 line_quote_p:
     LARGERTHAN inline_elements LINEBREAK { 
-            show_rule("line_quote_p: LARGERTHAN inline_elements LINEBREAK");
+            show_rule("line_quote_p: LARGERTHAN inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_P, 0); 
             tag_info = markdown_get_tag_info(*($2->ops + 1));
 
@@ -494,7 +509,7 @@ line_quote_p:
 
 block_ul:
     block_ul line_ul {
-            show_rule("block_ul: block_ul line_ul");
+            show_rule("block_ul: block_ul line_ul", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -502,7 +517,7 @@ block_ul:
             $$ = $1;
         }
     | line_ul {
-            show_rule("block_ul: line_ul");
+            show_rule("block_ul: line_ul", 3);
             _node = block_node_create(
                 TAG_BLOCK_UL
                 , 0
@@ -516,7 +531,7 @@ block_ul:
 
 line_ul:
     ULSTART inline_elements LINEBREAK { 
-            show_rule("line_ul: ULSTART inline_elements LINEBREAK");
+            show_rule("line_ul: ULSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_UL, 0); 
             tag_info = markdown_get_tag_info(*($2->ops + 1));
 
@@ -534,7 +549,7 @@ line_ul:
         } 
 
     | ULSTART LINEBREAK { 
-            show_rule("line_ul: ULSTART LINEBREAK");
+            show_rule("line_ul: ULSTART LINEBREAK", 4);
             tag_check_stack(TAG_UL, 0); 
             _node = line_node_create(
                 TAG_UL
@@ -549,7 +564,7 @@ line_ul:
 
 block_indent_ul:
     block_indent_ul line_indent_ul {
-            show_rule("block_indent_ul: block_indent_ul line_indent_ul");
+            show_rule("block_indent_ul: block_indent_ul line_indent_ul", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -557,7 +572,7 @@ block_indent_ul:
             $$ = $1;
         }
     | line_indent_ul {
-            show_rule("block_indent_ul: line_indent_ul");
+            show_rule("block_indent_ul: line_indent_ul", 4);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_UL
                 , $1->level
@@ -571,7 +586,7 @@ block_indent_ul:
 
 line_indent_ul:
     ULINDENT ULSTART inline_elements LINEBREAK { 
-            show_rule("line_indent_ul: ULINDENT ULSTART inline_elements LINEBREAK");
+            show_rule("line_indent_ul: ULINDENT ULSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_INDENT_UL, indent_level($1)); 
             tag_info = markdown_get_tag_info(*($3->ops + 1));
 
@@ -591,7 +606,7 @@ line_indent_ul:
 
 block_quote_ul:
     block_quote_ul line_quote_ul {
-            show_rule("block_quote_ul: block_quote_ul line_quote_ul");
+            show_rule("block_quote_ul: block_quote_ul line_quote_ul", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -599,7 +614,7 @@ block_quote_ul:
             $$ = $1;
         }
     | line_quote_ul {
-            show_rule("block_quote_ul: line_quote_ul");
+            show_rule("block_quote_ul: line_quote_ul", 3);
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_UL
                 , $1->level
@@ -613,7 +628,7 @@ block_quote_ul:
 
 line_quote_ul:
     QUOTEULSTART inline_elements LINEBREAK { 
-            show_rule("line_quote_ul: QUOTEULSTART inline_elements LINEBREAK");
+            show_rule("line_quote_ul: QUOTEULSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_UL, 0); 
             tag_info = markdown_get_tag_info(*($2->ops + 1));
 
@@ -636,7 +651,7 @@ line_quote_ul:
 
 block_ol:
     block_ol line_ol {
-            show_rule("block_ol: block_ol line_ol");
+            show_rule("block_ol: block_ol line_ol", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -644,7 +659,7 @@ block_ol:
             $$ = $1;
         }
     | line_ol {
-            show_rule("block_ol: line_ol");
+            show_rule("block_ol: line_ol", 3);
             _node = block_node_create(
                 TAG_BLOCK_OL
                 , 0
@@ -658,7 +673,7 @@ block_ol:
 
 line_ol:
     OLSTART inline_elements LINEBREAK { 
-            show_rule("line_ol: OLSTART inline_elements LINEBREAK");
+            show_rule("line_ol: OLSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_OL, 0); 
             tag_info = markdown_get_tag_info(*($2->ops + 1));
 
@@ -675,7 +690,7 @@ line_ol:
             $$ = _node;
         } 
     | OLSTART LINEBREAK { 
-            show_rule("line_ol: OLSTART LINEBREAK");
+            show_rule("line_ol: OLSTART LINEBREAK", 4);
             tag_check_stack(TAG_OL, 0); 
 
             _node = line_node_create(
@@ -691,7 +706,7 @@ line_ol:
 
 block_indent_ol:
     block_indent_ol line_indent_ol {
-            show_rule("block_indent_ol: block_indent_ol line_indent_ol");
+            show_rule("block_indent_ol: block_indent_ol line_indent_ol", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -699,7 +714,7 @@ block_indent_ol:
             $$ = $1;
         }
     | line_indent_ol {
-            show_rule("block_indent_ol: line_indent_ol");
+            show_rule("block_indent_ol: line_indent_ol", 3);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_OL
                 , $1->level
@@ -713,7 +728,7 @@ block_indent_ol:
 
 line_indent_ol:
     OLINDENT OLSTART inline_elements LINEBREAK { 
-            show_rule("line_indent_ol: OLINDENT OLSTART inline_elements LINEBREAK");
+            show_rule("line_indent_ol: OLINDENT OLSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_INDENT_OL, indent_level($1)); 
             tag_info = markdown_get_tag_info(*($3->ops + 1));
 
@@ -733,7 +748,7 @@ line_indent_ol:
 
 block_quote_ol:
     block_quote_ol line_quote_ol {
-            show_rule("block_quote_ol: block_indent_ol line_quote_ol");
+            show_rule("block_quote_ol: block_indent_ol line_quote_ol", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -741,7 +756,7 @@ block_quote_ol:
             $$ = $1;
         }
     | line_quote_ol {
-            show_rule("block_quote_ol: line_quote_ol");
+            show_rule("block_quote_ol: line_quote_ol", 3);
             _node = block_node_create(
                 TAG_BLOCK_QUOTE_OL
                 , $1->level
@@ -755,7 +770,7 @@ block_quote_ol:
 
 line_quote_ol:
     QUOTEOLSTART inline_elements LINEBREAK { 
-            show_rule("line_quote_ol: QUOTEOLSTART inline_elements LINEBREAK");
+            show_rule("line_quote_ol: QUOTEOLSTART inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_OL, 0); 
             tag_info = markdown_get_tag_info(*($2->ops + 1));
 
@@ -776,7 +791,7 @@ line_quote_ol:
 
 block_indent_text:
     block_indent_text line_indent_text {
-            show_rule("block_indent_text: block_indent_text line_indent_text");
+            show_rule("block_indent_text: block_indent_text line_indent_text", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -784,7 +799,7 @@ block_indent_text:
             $$ = $1;
         }
     | line_indent_text {
-            show_rule("block_indent_text: line_indent_text");
+            show_rule("block_indent_text: line_indent_text", 3);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_TEXT
                 , $1->level
@@ -800,7 +815,7 @@ block_indent_text:
 
 line_indent_text:
     TEXTINDENT inline_elements LINEBREAK { 
-            show_rule("line_indent_text: TEXTINDENT inline_elements LINEBREAK");
+            show_rule("line_indent_text: TEXTINDENT inline_elements LINEBREAK", 4);
 
             /*
              *      * list
@@ -838,7 +853,7 @@ line_indent_text:
 
 block_pre:
     block_pre line_pre {
-            show_rule("block_pre: block_pre line_pre");
+            show_rule("block_pre: block_pre line_pre", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -846,7 +861,7 @@ block_pre:
             $$ = $1;
         }
     | line_pre {
-            show_rule("block_pre: line_pre");
+            show_rule("block_pre: line_pre", 3);
             _node = block_node_create(
                 TAG_BLOCK_PRE 
                 , $1->level
@@ -863,7 +878,7 @@ block_pre:
 
 line_pre:
     PRE_INDENT CODETEXT LINEBREAK {
-            show_rule("line_pre: PRE_INDENT CODETEXT LINEBREAK");
+            show_rule("line_pre: PRE_INDENT CODETEXT LINEBREAK", 4);
             tag_check_stack(TAG_PRE, 0); 
             tag_info = markdown_get_tag_info($2);
 
@@ -880,7 +895,7 @@ line_pre:
             $$ = _node;
         }
     | TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK  {
-            show_rule("line_pre: TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK");
+            show_rule("line_pre: TRIPLEBACKTICK codespan TRIPLEBACKTICK LINEBREAK", 4);
             tag_check_stack(TAG_PRE, 0); 
             tag_info = markdown_get_tag_info($2);
 
@@ -898,7 +913,7 @@ line_pre:
 
 block_indented_pre:
     block_indented_pre line_indented_pre {
-            show_rule("block_indented_pre: block_indented_pre line_indented_pre");
+            show_rule("block_indented_pre: block_indented_pre line_indented_pre", 3);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -906,7 +921,7 @@ block_indented_pre:
             $$ = $1;
         }
     | line_indented_pre {
-            show_rule("block_indented_pre: line_indented_pre");
+            show_rule("block_indented_pre: line_indented_pre", 3);
             _node = block_node_create(
                 TAG_BLOCK_INDENT_PRE 
                 , $1->level
@@ -923,7 +938,7 @@ block_indented_pre:
 
 line_indented_pre:
     INDENTED_PRE_INDENT CODETEXT LINEBREAK {
-            show_rule("line_indented_pre: INDENTED_PRE_INDENT CODETEXT LINEBREAK");
+            show_rule("line_indented_pre: INDENTED_PRE_INDENT CODETEXT LINEBREAK", 4);
             _inner_pre_level = inner_pre_level(indent_level($1));
 
             /* PRE indent level is 1 less than the literal indent */
@@ -947,7 +962,7 @@ line_indented_pre:
 
 pairedblock:
     SCRIPTSTART inline_elements SCRIPTEND {
-            show_rule("pairedblock: SCRIPTSTART inline_elements SCRIPTEND");
+            show_rule("pairedblock: SCRIPTSTART inline_elements SCRIPTEND", 3);
             tag_check_stack(TAG_SCRIPTBLOCK, 0);
 
             _node = block_node_create(
@@ -965,7 +980,7 @@ pairedblock:
         } 
 
     | SCRIPTSTART SCRIPTEND {
-            show_rule("pairedblock: SCRIPTSTART SCRIPTEND");
+            show_rule("pairedblock: SCRIPTSTART SCRIPTEND", 3);
             tag_check_stack(TAG_SCRIPTBLOCK, 0);
 
             _node = block_node_create(
@@ -980,7 +995,7 @@ pairedblock:
         } 
 
     | STYLESTART inline_elements STYLEEND {
-            show_rule("pairedblock: STYLESTART inline_elements STYLEEND");
+            show_rule("pairedblock: STYLESTART inline_elements STYLEEND", 3);
             tag_check_stack(TAG_STYLEBLOCK, 0);
 
             _node = block_node_create(
@@ -998,7 +1013,7 @@ pairedblock:
         } 
 
     | STYLESTART STYLEEND {
-            show_rule("pairedblock: STYLESTART STYLEEND");
+            show_rule("pairedblock: STYLESTART STYLEEND", 3);
             tag_check_stack(TAG_STYLEBLOCK, 0);
 
             _node = block_node_create(
@@ -1013,7 +1028,7 @@ pairedblock:
         } 
 
     | SVGSTART inline_elements SVGEND {
-            show_rule("pairedblock: SVGSTART inline_elements SVGEND");
+            show_rule("pairedblock: SVGSTART inline_elements SVGEND", 3);
             tag_check_stack(TAG_SVGBLOCK, 0);
 
             _node = block_node_create(
@@ -1031,7 +1046,7 @@ pairedblock:
         } 
 
     | SVGSTART SVGEND {
-            show_rule("pairedblock: SVGSTART SVGEND");
+            show_rule("pairedblock: SVGSTART SVGEND", 3);
             tag_check_stack(TAG_SVGBLOCK, 0);
 
             _node = block_node_create(
@@ -1050,7 +1065,7 @@ pairedblock:
 
 tablerows:
     tablerows tablerow                                  {
-                                                            show_rule("tablerows: tablerows tablerow");
+                                                            show_rule("tablerows: tablerows tablerow", 3);
                                                             _tail_node = tail_node_in_list($1->children);
                                                             _tail_node->next = $2;
                                                             $2->prev = _tail_node; 
@@ -1058,7 +1073,7 @@ tablerows:
                                                             $$ = $1; 
                                                         }
     | tablerow                                          {
-                                                            show_rule("tablerows: tablerow");
+                                                            show_rule("tablerows: tablerow", 3);
                                                             _node = block_node_create(
                                                                 TAG_TABLE
                                                                 , 0
@@ -1071,11 +1086,11 @@ tablerows:
 
 tablerow:
     TABLEROWSTART tableceils LINEBREAK                  {
-                                                            show_rule("tablerows: TABLEROWSTART tableceils LINEBREAK");
+                                                            show_rule("tablerows: TABLEROWSTART tableceils LINEBREAK", 4);
                                                             $$ = $2;
                                                         }
     | TABLEROWSTART tableceils error LINEBREAK          {
-                                                            show_rule("tablerows: TABLEROWSTART tableceils error LINEBREAK");
+                                                            show_rule("tablerows: TABLEROWSTART tableceils error LINEBREAK", 4);
                                                             $$ = $2;
                                                             yyerrok;
                                                         }
@@ -1084,7 +1099,7 @@ tablerow:
 
 tableceils:
     tableceils tableceil                                { 
-                                                            show_rule("tableceils: tableceils tableceil");
+                                                            show_rule("tableceils: tableceils tableceil",5);
                                                             _tail_node = tail_node_in_list($1->children); 
                                                             _tail_node->next = $2; 
                                                             $2->prev = _tail_node;
@@ -1092,7 +1107,7 @@ tableceils:
                                                             $$ = $1;
                                                         }
     | tableceil                                         {
-                                                            show_rule("tableceils: tableceil");
+                                                            show_rule("tableceils: tableceil", 5);
                                                             _node = line_node_create(
                                                                 TAG_TR
                                                                 , 1
@@ -1107,7 +1122,7 @@ tableceils:
 
 tableceil:
     inline_elements TABLECEILEND {
-            show_rule("tableceil: inline_elements TABLECEILEND");
+            show_rule("tableceil: inline_elements TABLECEILEND", 6);
             _node = inline_node_create(
                 TAG_TD
                 , 2
@@ -1120,7 +1135,7 @@ tableceil:
             $$ = _node;
         }
     | inline_elements error {
-            show_rule("tableceil: inline_elements error");
+            show_rule("tableceil: inline_elements error", 6);
             _node = inline_node_create(
                 TAG_TD
                 , 2
@@ -1140,17 +1155,17 @@ tableceil:
 
 line:
     QUOTEBLANKLINE { 
-            show_rule("line: QUOTEBLANKLINE");
+            show_rule("line: QUOTEBLANKLINE", 4);
             tag_check_stack(TAG_QUOTE_BLANK, 0); 
         }
 
     | SECTION LINEBREAK {
-            show_rule("line: SECTION LINEBREAK");
+            show_rule("line: SECTION LINEBREAK", 4);
             tag_check_stack(TAG_SECTION, -1); 
         }
 
     | VSECTION LINEBREAK {
-            show_rule("line: VSECTION LINEBREAK");
+            show_rule("line: VSECTION LINEBREAK", 4);
             tag_check_stack(TAG_VSECTION, -1); 
         }
     ;
@@ -1159,7 +1174,7 @@ line:
 
 inline_elements:
     inline_elements inline_element {
-            show_rule("inline_elements: inline_elements inline_element");
+            show_rule("inline_elements: inline_elements inline_element", 5);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -1167,7 +1182,7 @@ inline_elements:
             $$ = $1;
         }
     | inline_element {
-            show_rule("inline_elements: inline_element");
+            show_rule("inline_elements: inline_element", 5);
             if (
                 /**
                  * 1. if the first child is a link or image
@@ -1204,24 +1219,24 @@ inline_elements:
 
 inline_element:
     plaintext { 
-            show_rule("inline_element: plaintext");
+            show_rule("inline_element: plaintext", 6);
             tag_info = markdown_get_tag_info(*($1->ops + 1));     
             *($1->ops) = tag_info->attr;
             *($1->ops + 1) = tag_info->content;
 
             $$ = $1; 
         }
-    | link { show_rule("inline_element: link"); $$ = $1; }
-    | standard_link { show_rule("inline_element: standard_link"); $$ = $1; }
-    | standard_image { show_rule("inline_element: standard_image"); $$ = $1; }
-    | inline_code { show_rule("inline_element: inline_code"); $$ = $1; }
-    | inline_emphasis { show_rule("inline_element: inline_emphasis"); $$ = $1; }
+    | link { show_rule("inline_element: link", 6); $$ = $1; }
+    | standard_link { show_rule("inline_element: standard_link", 6); $$ = $1; }
+    | standard_image { show_rule("inline_element: standard_image", 6); $$ = $1; }
+    | inline_code { show_rule("inline_element: inline_code", 6); $$ = $1; }
+    | inline_emphasis { show_rule("inline_element: inline_emphasis", 6); $$ = $1; }
     ;
 
 
 inline_emphasis:
     EM_BEGIN inline_text_collection EM_END {
-            show_rule("inline_emphasis: EM_BEGIN inline_text_collection EM_END");
+            show_rule("inline_emphasis: EM_BEGIN inline_text_collection EM_END", 7);
             _node = inline_node_create(
                 TAG_INLINE_EM
                 , NODE_LEVEL_SPECIAL
@@ -1236,7 +1251,7 @@ inline_emphasis:
         }
 
     | EM_BEGIN inline_text_collection error {
-            show_rule("inline_emphasis: EM_BEGIN inline_text_collection error");
+            show_rule("inline_emphasis: EM_BEGIN inline_text_collection error", 7);
             str = str_concat($1, *($2->children->ops + 1));
             *($2->children->ops + 1) = str;
 
@@ -1245,7 +1260,7 @@ inline_emphasis:
         }
 
     | EM_BEGIN EM_END {
-            show_rule("inline_emphasis: EM_BEGIN EM_END");
+            show_rule("inline_emphasis: EM_BEGIN EM_END", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -1270,7 +1285,7 @@ inline_emphasis:
 
 inline_text_collection:
     inline_text_collection inline_text {
-            show_rule("inline_text_collection: inline_text_collection inline_text");
+            show_rule("inline_text_collection: inline_text_collection inline_text", 5);
             _tail_node = tail_node_in_list($1->children);
             _tail_node->next = $2;
             $2->prev = _tail_node;
@@ -1278,7 +1293,7 @@ inline_text_collection:
             $$ = $1;
         }
     | inline_text {
-            show_rule("inline_text_collection: inline_text");
+            show_rule("inline_text_collection: inline_text", 5);
             if (
                 /**
                  * 1. if the first child is a link or image
@@ -1319,15 +1334,15 @@ inline_text_collection:
      */
 inline_text:
     plaintext {
-            show_rule("inline_text: plaintext");
+            show_rule("inline_text: plaintext", 6);
             tag_info = markdown_get_tag_info(*($1->ops + 1));     
             *($1->ops) = tag_info->attr;
             *($1->ops + 1) = tag_info->content;
 
             $$ = $1; 
         }
-    | link { show_rule("inline_text: link"); $$ = $1; }
-    | standard_link { show_rule("inline_text: standard_link"); $$ = $1; }
+    | link { show_rule("inline_text: link", 6); $$ = $1; }
+    | standard_link { show_rule("inline_text: standard_link", 6); $$ = $1; }
     ;
 
 
@@ -1341,7 +1356,7 @@ inline_text:
 
 link:                        
     LINK {
-            show_rule("link: LINK");
+            show_rule("link: LINK", 7);
             // get content A between `<` and `>`
             tag_info = markdown_get_tag_info($1);
             // get tag info from A
@@ -1361,7 +1376,7 @@ link:
 
 standard_link:
     LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET {
-            show_rule("standard_link: LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET");
+            show_rule("standard_link: LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_link_tag_info(*($2->ops + 1), *($4->ops + 1));
 
             _node = inline_node_create(
@@ -1378,7 +1393,7 @@ standard_link:
 
 standard_image:
     EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET {
-            show_rule("standard_image: EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET");
+            show_rule("standard_image: EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_image_tag_info(*($2->ops + 1), *($4->ops + 1));
 
             _node = inline_node_create(
@@ -1396,12 +1411,12 @@ standard_image:
 
 plaintext:
     plaintext text_list {
-            show_rule("plaintext: plaintext text_list");
+            show_rule("plaintext: plaintext text_list", 7);
             *($1->ops + 1) = str_concat(*($1->ops + 1), $2);
             $$ = $1;
         } 
     | text_list {
-            show_rule("plaintext: text_list");
+            show_rule("plaintext: text_list", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -1413,7 +1428,7 @@ plaintext:
             $$ = _node;
         }
     | ATTRLEFT plaintext ATTRRIGHT {
-            show_rule("plaintext: ATTRLEFT plaintext ATTRRIGHT");
+            show_rule("plaintext: ATTRLEFT plaintext ATTRRIGHT", 7);
             *($2->ops + 1) = str_concat(
                 $1
                 /**
@@ -1425,7 +1440,7 @@ plaintext:
             $$ = $2;
         }
     | ATTRLEFT plaintext error {
-            show_rule("plaintext: ATTRLEFT plaintext error");
+            show_rule("plaintext: ATTRLEFT plaintext error", 7);
             *($2->ops + 1) = str_concat(
                 $1
                 , str_replace(*($2->ops + 1), "]", "&#93;")
@@ -1436,14 +1451,14 @@ plaintext:
     ;
 
 text_list:
-    TEXT                            { show_rule("text_list: TEXT"); $$ = str_format("%s", $1); }
-    | SPECIALCHAR                   { show_rule("text_list: SPECIALCHAR"); $$ = str_format("%s", $1); }
-    | EMPTYATTR                     { show_rule("text_list: EMPTYATTR"); $$ = str_format("%s", $1); }
+    TEXT                            { show_rule("text_list: TEXT", 8); $$ = str_format("%s", $1); }
+    | SPECIALCHAR                   { show_rule("text_list: SPECIALCHAR", 8); $$ = str_format("%s", $1); }
+    | EMPTYATTR                     { show_rule("text_list: EMPTYATTR", 8); $$ = str_format("%s", $1); }
     ;
 
 inline_code:
     BACKTICK codespan BACKTICK { 
-            show_rule("inline_code: BACKTICK codespan BACKTICK");
+            show_rule("inline_code: BACKTICK codespan BACKTICK", 7);
             tag_info = markdown_get_tag_info($2);
 
             _node = inline_node_create(
@@ -1458,7 +1473,7 @@ inline_code:
         }
 
     | BACKTICK codespan error { 
-            show_rule("inline_code: BACKTICK codespan error");
+            show_rule("inline_code: BACKTICK codespan error", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -1473,7 +1488,7 @@ inline_code:
         }
 
     | BACKTICK error { 
-            show_rule("inline_code: BACKTICK error");
+            show_rule("inline_code: BACKTICK error", 7);
             _node = inline_node_create(
                 TAG_INLINE_TEXT
                 , NODE_LEVEL_SPECIAL
@@ -1492,13 +1507,13 @@ inline_code:
 
 
 codespan:
-    codespan code_list              { show_rule("codespan: codespan code_list"); $$ = str_concat($1, $2); }
-    | code_list                     { show_rule("codespan: code_list"); $$ = $1; }
+    codespan code_list              { show_rule("codespan: codespan code_list", 8); $$ = str_concat($1, $2); }
+    | code_list                     { show_rule("codespan: code_list", 8); $$ = $1; }
     ;
 
 code_list:
-    CODETEXT                        { show_rule("code_list: CODETEXT"); $$ = str_format("%s", $1); }
-    | SPECIALCHAR                   { show_rule("code_list: SPECIALCHAR"); $$ = str_format("%s", $1); }
+    CODETEXT                        { show_rule("code_list: CODETEXT", 9); $$ = str_format("%s", $1); }
+    | SPECIALCHAR                   { show_rule("code_list: SPECIALCHAR", 9); $$ = str_format("%s", $1); }
     ;
 
 %%
