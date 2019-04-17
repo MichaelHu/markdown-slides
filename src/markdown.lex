@@ -52,7 +52,7 @@ static void restoreState() {
     /* lexer states */
 %x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
-%x TABLEROW LINKSTART LINKATTR ATTRSTART
+%x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -80,45 +80,65 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return VSECTION; }
 
     /* escape */
-<INITIAL,TABLEROW,LINKSTART,LINKATTR,ATTRSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
+<INITIAL,TABLEROW,LINKSTART,LINKATTR,ATTRSTART,XEMSTART,YEMSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
 <ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 
 
     /* emphasis */
-    /*
-<INITIAL,TABLEROW,EMSTART>[ ]\*[ ]     {
+<INITIAL,TABLEROW>\*\*|__               {
                                             P("TEXT");
                                             yylval.text = strdup(yytext);
                                             return TEXT;
                                         }
-<INITIAL,TABLEROW>[\*_]/[^ ]            {
+<INITIAL,TABLEROW>\*/[^ ].*\*           {
                                             P("EM_BEGIN");
                                             yylval.text = strdup(yytext);
-                                            enterState(EMSTART, "EMSTART");
+                                            enterState(XEMSTART, "XEMSTART");
                                             return EM_BEGIN;
                                         }
-<EMSTART>.                              {
+<INITIAL,TABLEROW>_/[^ ].*_             {
+                                            P("EM_BEGIN");
+                                            yylval.text = strdup(yytext);
+                                            enterState(YEMSTART, "YEMSTART");
+                                            return EM_BEGIN;
+                                        }
+<INITIAL,TABLEROW,XEMSTART,YEMSTART>[ ][\*_][ ]   {
                                             P("TEXT");
                                             yylval.text = strdup(yytext);
                                             return TEXT;
                                         }
-<EMSTART>[^ ][\*_]                      {
+<XEMSTART>\*                            {
                                             P("EMEND");
                                             yylval.text = strdup(yytext);
                                             restoreState();
                                             return EM_END;
                                         }
-    */
-
+<YEMSTART>_                             {
+                                            P("EMEND");
+                                            yylval.text = strdup(yytext);
+                                            restoreState();
+                                            return EM_END;
+                                        }
+<XEMSTART,YEMSTART>.                    {
+                                            P("TEXT");
+                                            yylval.text = strdup(yytext);
+                                            return TEXT;
+                                        }
+<XEMSTART,YEMSTART>\r?\n                {
+                                            P("LINEBREAK");
+                                            yylval.text = strdup(yytext);
+                                            restoreState();
+                                            return LINEBREAK;
+                                        }
 
     /* attribute list */
-@\[\]                                   { 
+<INITIAL,TABLEROW>@\[\]                 { 
                                             P("EMPTYATTR");
                                             yylval.text = strdup(yytext);
                                             return EMPTYATTR;
                                         }
-@\[                                     { 
+<INITIAL,TABLEROW>@\[                   { 
                                             P("ATTRLEFT");
                                             yylval.text = strdup(yytext);
                                             enterState(ATTRSTART, "ATTRSTART");
@@ -231,7 +251,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             }
                                         }
 <CODEBLOCK>.+                           { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }
-<CODEBLOCK>\r?\n                        { P(""); restoreState(); yylineno++; }
+<CODEBLOCK>\r?\n                        { P("LINEBREAK"); restoreState(); yylineno++; return LINEBREAK; }
 
 <INDENTLIST>[ ]{0,3}[*+][ ]+            { restoreState(); P("ULSTART"); return ULSTART; }
 <INDENTLIST>[ ]{0,3}[1-9][0-9]*\.[ ]+   { restoreState(); P("OLSTART"); return OLSTART; }
@@ -251,12 +271,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); restoreState();  return LINEBREAK; }
 
     /* linkable text */
-<INITIAL,TABLEROW>\<(https?|ftp|ref):\/\/[^\r\n\>]+\> {
+<INITIAL,TABLEROW,XEMSTART,YEMSTART>\<(https?|ftp|ref):\/\/[^\r\n\>]+\> {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
                                         }
-<INITIAL,TABLEROW>\<mailto:[^\r\n\>]+\> {
+<INITIAL,TABLEROW,XEMSTART,YEMSTART>\<mailto:[^\r\n\>]+\> {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
@@ -271,7 +291,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 
     /* link: [an example](http://example.com/ "Title") */
-<INITIAL,TABLEROW>\[/[^\r\n]+\]\([^\r\n]+\) {
+<INITIAL,TABLEROW,XEMSTART,YEMSTART>\[/[^\r\n]+\]\([^\r\n]+\) {
                                             yylval.text = strdup(yytext);
                                             P("LEFTSQUARE");
                                             enterState(LINKSTART, "LINKSTART"); 
@@ -290,12 +310,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             restoreState();
                                             return RIGHTBRACKET;
                                         }
-<LINKSTART>[^\r\n]                    {
+<LINKSTART>[^\r\n]                      {
                                             yylval.text = strdup(yytext);
                                             P("TEXT");
                                             return TEXT;
                                         }
-<LINKATTR>[^\r\n]                     {
+<LINKATTR>[^\r\n]                       {
                                             yylval.text = strdup(yytext);
                                             P("TEXT");
                                             return TEXT;

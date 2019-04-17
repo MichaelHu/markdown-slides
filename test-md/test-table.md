@@ -19,7 +19,7 @@
 ## test 3
 
 |\|link\||
-|@[class="c-1"]`1`|2|3|
+|@[class="c-1\]"]`1`|2|3|
 |<mailto:hdm258i@gmail.com>|#dda|
 |http://fe.pub|#dda|
 

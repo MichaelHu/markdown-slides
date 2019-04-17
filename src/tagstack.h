@@ -15,6 +15,7 @@ typedef enum {
     , TAG_INLINE_CODE
     , TAG_INLINE_LINK
     , TAG_INLINE_IMAGE
+    , TAG_INLINE_EM
 
 
     /**

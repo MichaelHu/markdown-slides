@@ -41,7 +41,7 @@
 <li>BSTR -- The Visual Basic string type
 </li>
 
-<li>_bstr_t -- A C++ class wrapper for the Visual Basic string type
+<li><em>bstr</em>t -- A C++ class wrapper for the Visual Basic string type
 </li>
 
 <li>CComBSTR -- Yet another C++ class wrapper for the Visual Basic string type used predominately in ATL code
@@ -93,7 +93,7 @@ void CVbsDlg::ShowBSTR(BSTR bstr)
 <p>So let's get to it.  Here are the conversion techniques:
 </p>
 
-<h3> Converting BSTR to _bstr_t</h3>
+<h3> Converting BSTR to <em>bstr</em>t</h3>
 
 <pre><code>:::cpp
 // BSTR to _bst_t
@@ -111,9 +111,9 @@ bstrFinal = bstrStart;
 ShowBSTR(bstrFinal);
 </code></pre>
 
-<h3> Converting a _bstr_t to BSTR</h3>
+<h3> Converting a <em>bstr</em>t to BSTR</h3>
 
-<p>You may want to get a BSTR from a _bstr_t class.
+<p>You may want to get a BSTR from a <em>bstr</em>t class.
 </p>
 
 <pre><code>:::cpp
@@ -156,7 +156,7 @@ bstrFinish = bstrStart.Copy();
 ShowBSTR(bstrFinish);
 </code></pre>
 
-<h3> Converting _bstr_t to CComBSTR</h3>
+<h3> Converting <em>bstr</em>t to CComBSTR</h3>
 
 <pre><code>:::cpp
 // _bstr_t to CComBSTR
@@ -171,7 +171,7 @@ ShowBSTR(bstrFinish);
 
 <h3> Converting BSTR to C String</h3>
 
-<p>*(Note :-  conversion that only works in Unicode)*
+<p><em>(Note :-  conversion that only works in Unicode)</em>
 </p>
 
 <pre><code>:::cpp
@@ -201,9 +201,9 @@ strFinal.Format(_T("%s"), (LPCTSTR)bstrIntermediate);
 AfxMessageBox(strFinal);
 </code></pre>
 
-<h3> Converting _bstr_t to C String</h3>
+<h3> Converting <em>bstr</em>t to C String</h3>
 
-<p>*(this works in both ANSI and Unicode)*
+<p><em>(this works in both ANSI and Unicode)</em>
 </p>
 
 <pre><code>:::cpp
@@ -217,7 +217,7 @@ AfxMessageBox(szFinal);
 
 <h3> Converting CComBSTR to LPCTSTR</h3>
 
-<p>*(not possible, must go through _bstr_t )*
+<p><em>(not possible, must go through _bstr_t )</em>
 </p>
 
 <pre><code>:::cpp
@@ -233,9 +233,9 @@ _stprintf(szFinal, _T("%s"), (LPCTSTR)bstrIntermediate);
 AfxMessageBox(szFinal);
 </code></pre>
 
-<h3> Converting LPCTSTR to _bstr_t</h3>
+<h3> Converting LPCTSTR to <em>bstr</em>t</h3>
 
-<p>*(Use a constructor or = operator)*
+<p><em>(Use a constructor or = operator)</em>
 </p>
 
 <pre><code>:::cpp
@@ -256,7 +256,7 @@ ShowBSTR(bstrFinal);
 
 <h3> Converting LPCTSTR to CComBSTR</h3>
 
-<p>*Use a constructor or CComBSTR::Append function*
+<p><em>Use a constructor or CComBSTR::Append function</em>
 </p>
 
 <pre><code>:::cpp
