@@ -13,7 +13,7 @@ dolex:
 markdown.out: main.o input.o markdown.y.o markdown.lex.o tagstack.o \
 	tagstackcheck.o strbuf.o strutils.o \
 	lex-state-stack.o node.o nodetree.o \
-	markdown-utils.o
+	markdown-utils.o logutils.o
 	gcc $^ -o $@ -g
 
 .c.o:

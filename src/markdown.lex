@@ -1,6 +1,7 @@
 %{
 
 #include <string.h>
+#include "logutils.h"
 #include "lex-state-stack.h"
 #include "node.h"
 #include "markdown.y.h"
@@ -46,13 +47,19 @@ static void restoreState() {
         BEGIN 0;
     }
 }
+static void popWhenTopStateIs(int state) {
+    t_lex_state_item *item = lex_state_top_stack();
+    if (item && item->state == state) {
+        restoreState();
+    }
+}
 
 %}
 
     /* lexer states */
 %x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
-%x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART XSTRONGSTART YSTRONGSTART
+%x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART XSTRONGSTART YSTRONGSTART INDENTTABLEROW
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -223,13 +230,25 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* table rows */
+<INDENTTABLEROW>\|                      { P("TABLEROWSTART"); enterState(TABLEROW, "TABLEROW"); yylval.text = strdup(yytext); return TABLEROWSTART; }
 ^"|"                                    { P("TABLEROWSTART"); enterState(TABLEROW, "TABLEROW"); yylval.text = strdup(yytext); return TABLEROWSTART; }
 <TABLEROW>"|"                           { P("TABLECEILEND"); yylval.text = strdup(yytext); return TABLECEILEND; }
 <TABLEROW>.                             { P("TEXT"); yylval.text = strdup(yytext); return TEXT; }
-<TABLEROW>\r?\n                         { P("LINEBREAK"); yylineno++; restoreState(); yylval.text = strdup(yytext); return LINEBREAK; }
+<TABLEROW>\r?\n                         { 
+                                            P("LINEBREAK"); 
+                                            yylineno++; 
+                                            log_str("A1");
+                                            restoreState(); 
+                                            log_str("A2");
+                                            popWhenTopStateIs(INDENTTABLEROW); 
+                                            log_str("A3");
+                                            yylval.text = strdup(yytext); 
+                                            return LINEBREAK; 
+                                        }
 
 
 
+    /* ul & ol row */
 ^" "{0,3}[*+-][ ]+                      { P("ULSTART"); return ULSTART; }
 ^>" "{0,3}[*+-][ ]+                         { P("QUOTEULSTART"); return QUOTEULSTART; }
 ^" "{0,3}[1-9][0-9]*\.[ ]+              { P("OLSTART"); return OLSTART; }
@@ -273,6 +292,30 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                                 }
                                             }
                                         }   
+
+
+    /* indented table */
+^(\t|[ ]{4})+/\|                        { 
+                                            /* indent table */
+                                            if(is_in_list(indent_level(yytext))){
+                                                P("TABLE_INDENT"); 
+                                                enterState(INDENTTABLEROW, "INDENTTABLEROW"); 
+                                                yylval.text = strdup(yytext); 
+                                                return TABLE_INDENT;     
+                                            }
+                                            else{
+                                                enterState(CODEBLOCK, "CODEBLOCK"); 
+                                                yylval.text = strdup(yytext);
+                                                if (inner_pre_level(indent_level(yytext)) > -1) {
+                                                    P("INDENTED_PRE_INDENT"); return INDENTED_PRE_INDENT;
+                                                }
+                                                else {
+                                                    P("PRE_INDENT"); return PRE_INDENT;
+                                                }
+                                            }
+                                        }
+
+    /* indented paragraph */
 ^(\t|[ ]{4})+/.                         { 
                                             /* indent p */
                                             if(is_in_list(indent_level(yytext))){

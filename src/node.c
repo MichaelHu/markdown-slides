@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "strutils.h"
+#include "logutils.h"
 #include "node.h"
 
 static t_tag tags_of_block_node[] = {
@@ -85,10 +86,23 @@ static t_tag get_parent_block_node_tag(t_tag tag) {
             return TAG_BLOCK_PRE;
         case TAG_INDENT_PRE:
             return TAG_BLOCK_INDENT_PRE;
+        case TAG_TR:
+            return TAG_TABLE;
         default:
             return TAG_ROOT;
     }
 }
+
+static t_tag get_parent_block_node_level(t_node *node) {
+    switch (node->tag) {
+        case TAG_TR:
+            return node->level - 1;
+
+        default:
+            return node->level;
+    }
+}
+
 static int is_blank_node(t_node *node) {
     return (
         node->tag == TAG_BLANK
@@ -133,6 +147,8 @@ static int is_node_need_merged_when_adjacent_and_not_blank_seperated(t_node *nod
         , node->tag
     ) > -1;
 }
+
+static t_node *prev_node;
 
 t_node *tail_node_in_list(t_node *node) {
     t_node *p = node, *pre = node;
@@ -388,7 +404,46 @@ static void check_parent_links(t_node *root) {
  * ===================================================================================
  */
 
-static t_link *visit_nonblock_node(t_node *node) {
+static void move_node_and_siblings_as_children_of_new_node(t_node *node, t_node *new_parent) {
+    t_node *parent = node->parent, *tmp;
+
+    // 1. insert new_uncle after parent node
+    new_parent->next = parent->next;
+    // 1.1 bugfix@1904110125: Segmentation fault: 11, we should check if new_parent->next is valid
+    if (new_parent->next) {
+        new_parent->next->prev = new_parent;
+    }
+    parent->next = new_parent;
+    new_parent->prev = parent;
+    new_parent->parent = parent->parent;
+
+    // 2. set current node the first child of new_unclue
+    new_parent->children = node;
+    if (node->parent->children == node) {
+        /**
+         * Note: 
+         * all the nodes following current node are also moved 
+         * so parent's children link is set to NULL
+         */
+        node->parent->children = NULL;
+    }
+    node->parent = new_parent;
+
+    // 3. remove connection with the previous sibling node
+    if (node->prev) {
+        node->prev->next = NULL;
+        node->prev = NULL;
+    }
+
+    // 4. update parent links of the remained sibling nodes
+    tmp = node;
+    while (tmp) {
+        tmp->parent = node->parent;
+        tmp = tmp->next;
+    }
+}
+
+static t_link *visit_nonblock_node_to_complement_parent(t_node *node) {
     t_node *parent, *new_uncle, *tmp;
 
     // show_node(node);
@@ -409,46 +464,49 @@ static t_link *visit_nonblock_node(t_node *node) {
             if (parent && node->level != parent->level) {
                 new_uncle = block_node_create(
                     get_parent_block_node_tag(node->tag)
-                    , node->level
+                    , get_parent_block_node_level(node)
                     , 0
                 );
 
                 // show_node(new_uncle);
+                move_node_and_siblings_as_children_of_new_node(node, new_uncle);
+            }
+            break;
+        default:
+            break;
+    }
 
-                // 1. insert new_uncle after parent node
-                new_uncle->next = parent->next;
-                // 1.1 bugfix@1904110125: Segmentation fault: 11, we should check if new_uncle->next is valid
-                if (new_uncle->next) {
-                    new_uncle->next->prev = new_uncle;
-                }
-                parent->next = new_uncle;
-                new_uncle->prev = parent;
-                new_uncle->parent = parent->parent;
+    return NULL;
+}
 
-                // 2. set current node the first child of new_unclue
-                new_uncle->children = node;
-                if (node->parent->children == node) {
-                    /**
-                     * Note: 
-                     * all the nodes following current node are also moved 
-                     * so parent's children link is set to NULL
-                     */
-                    node->parent->children = NULL;
-                }
-                node->parent = new_uncle;
+static t_link *visit_tr_node_to_complement_parent(t_node *node) {
+    t_node *parent, *new_uncle, *tmp;
+    t_node *p;
 
-                // 3. remove connection with the previous sibling node
-                if (node->prev) {
-                    node->prev->next = NULL;
-                    node->prev = NULL;
-                }
+    if (is_block_node(node)) {
+        return NULL;
+    }
 
-                // 4. update parent links of the remained sibling nodes
-                tmp = node;
-                while (tmp) {
-                    tmp->parent = node->parent;
-                    tmp = tmp->next;
-                }
+    parent = node->parent;
+
+    if (!parent) {
+        fprintf(stderr, "==NULL parent link==\n");
+    }
+
+    switch (node->tag) {
+        case TAG_TR:
+            if (
+                    parent 
+                    && node->level <= parent->level
+                    && node->level >= 1
+                ) {
+                new_uncle = block_node_create(
+                    get_parent_block_node_tag(node->tag)
+                    , get_parent_block_node_level(node)
+                    , 0
+                );
+
+                move_node_and_siblings_as_children_of_new_node(node, new_uncle);
             }
             break;
         default:
@@ -459,11 +517,12 @@ static t_link *visit_nonblock_node(t_node *node) {
 }
 
 void complement_block_nodes(t_node *root) {
-    // fprintf(stderr, "===========fix_parent_links===========\n");
+    // log_str("===========fix_parent_links===========");
     check_parent_links(root);
 
-    // fprintf(stderr, "===========complement_block_nodes===========\n");
-    traverse_nodes_with_visitor(root, visit_nonblock_node, 0);
+    // log_str("===========complement_block_nodes===========");
+    traverse_nodes_with_visitor(root, visit_nonblock_node_to_complement_parent, 0);
+    traverse_nodes_with_visitor(root, visit_tr_node_to_complement_parent, 0);
 }
 
 
@@ -474,7 +533,6 @@ void complement_block_nodes(t_node *root) {
  * ===================================================================================
  */
 
-static t_node *prev_node;
 static t_link *move_as_the_tail(t_node *target, t_node *node) {
     t_link *new_link = NULL;
     t_node *tail = target;
@@ -514,7 +572,7 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
     t_node *p, *tail, *tmp;
 
     if (node->parent == node) {
-        fprintf(stderr, "visit_to_rearrange_block_node() 1: parent self-looping\n");
+        log_str("visit_to_rearrange_block_node() 1: parent self-looping");
         show_node(node);
     }
 
@@ -523,29 +581,42 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
         /* indented block node */
         if (node->level > 0) {
             if (!prev_node) {
-                fprintf(stderr, "prev_node NULL\n");
+                log_str("prev_node NULL");
             }
+
+            show_node(node);
 
             p = prev_node;
 
             // search the closest parent list node
             while (p) {
 
+                log_str("M1");
                 if (p->parent == p) {
-                    fprintf(stderr, "visit_to_rearrange_block_node() 2: parent self-looping\n");
+                    log_str("visit_to_rearrange_block_node() 2: parent self-looping");
                     show_node(node);
                 }
 
+                log_str("M2");
                 if (p->level == node->level - 1 && is_line_list_node(p)) {
                     break;
                 } 
 
+                log_str("M3");
                 p = p->parent;
+                log_str("M4");
             }
 
+                log_str("M5");
+            show_node(prev_node);
+                log_str("M6");
+            show_node(p);
+                log_str("M7");
             if (!is_line_list_node(p)) {
                 fprintf(stderr, "visit_to_rearrange_block_nod(): error containing list node\n");
             }
+
+                log_str("M8");
 
             new_link = (t_link *)malloc(sizeof(t_node));
             

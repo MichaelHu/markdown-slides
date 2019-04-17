@@ -5,14 +5,6 @@
 
 t_lex_state_stack lex_state_stack;
 
-void lex_state_init_stack(void) {
-    int i = 0;
-    lex_state_stack.size = 0;
-    for ( ; i < LEX_STATE_STACK_SIZE; i++ ) {
-        lex_state_stack.arr[i] = NULL;
-    }
-}
-
 int lex_state_empty_stack(void) {
     return lex_state_stack.size == 0;
 }

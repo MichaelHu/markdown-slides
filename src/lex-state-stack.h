@@ -10,7 +10,7 @@ typedef struct {
     t_lex_state_item *arr[LEX_STATE_STACK_SIZE];
 } t_lex_state_stack;
 
-void lex_state_init_stack(void);
+
 t_lex_state_item *lex_state_top_stack(void);
 int lex_state_empty_stack(void);
 int lex_state_full_stack(void);

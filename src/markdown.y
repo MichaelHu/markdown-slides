@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "strutils.h"
+#include "logutils.h"
 #include "markdown-utils.h" 
 #include "node.h"
 #include "nodetree.h"
@@ -23,6 +24,7 @@ t_node *_root_node;
 t_node *_node, *_tail_node, *_tmp_node;
 char *str;
 int is_doc_parsed = 0;
+
 static void show_rule(char *str, int level) {
     if (_ISDEBUGPARSER) {
         if (level <= MAX_RULE_LEVEL) {
@@ -37,23 +39,25 @@ static void show_rule(char *str, int level) {
 
 static void parse_doc(void) {
     fix_node_level(_root_node);
-    // fprintf( stderr, "==== traverse ====\n" ); 
+    // log_str("==== traverse ===="); 
     // traverse_nodes(_root_node); 
 
+    // log_str("==== complement block nodes ===="); 
     complement_block_nodes(_root_node); 
 
-    // fprintf( stderr, "==== traverse ====\n" ); 
-    // traverse_nodes(_root_node); 
+    //log_str("==== traverse ===="); 
+    //traverse_nodes(_root_node); 
 
+    // log_str("==== rearrange block nodes ===="); 
     rearrange_block_nodes(_root_node);
 
-    // fprintf( stderr, "==== merge block nodes ====\n" ); 
+    // log_str("==== merge block nodes ===="); 
     merge_block_nodes(_root_node);
 
-    // fprintf( stderr, "==== traverse ====\n" ); 
+    // log_str("==== traverse ===="); 
     // traverse_nodes(_root_node); 
 
-    // fprintf( stderr, "==== parse doc tree ====\n" ); 
+    // log_str("==== parse doc tree ===="); 
     parse_node_tree(_root_node);
 }
 
@@ -70,7 +74,7 @@ static void parse_doc(void) {
 %token <text> TEXT SPECIALCHAR CODETEXT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token <text> TABLEROWSTART TABLECEILEND
-%token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT
+%token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT TABLE_INDENT
 %token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
 %token <text> ATTRLEFT ATTRRIGHT EMPTYATTR
 %token <text> EM_BEGIN EM_END STRONG_BEGIN STRONG_END
@@ -1076,7 +1080,7 @@ tablerows:
                                                             show_rule("tablerows: tablerow", 3);
                                                             _node = block_node_create(
                                                                 TAG_TABLE
-                                                                , 0
+                                                                , $1->level - 1
                                                                 , 0
                                                             );
                                                             _node->children = $1;
@@ -1087,11 +1091,25 @@ tablerows:
 tablerow:
     TABLEROWSTART tableceils LINEBREAK                  {
                                                             show_rule("tablerow: TABLEROWSTART tableceils LINEBREAK", 4);
+                                                            log_str("U1");
                                                             $$ = $2;
                                                         }
     | TABLEROWSTART tableceils error LINEBREAK          {
                                                             show_rule("tablerow: TABLEROWSTART tableceils error LINEBREAK", 4);
                                                             $$ = $2;
+                                                            yyerrok;
+                                                        }
+    | TABLE_INDENT TABLEROWSTART tableceils LINEBREAK                  {
+                                                            log_str($1);
+                                                            log_int(indent_level($1));
+                                                            show_rule("tablerow: TABLE_INDENT TABLEROWSTART tableceils LINEBREAK", 4);
+                                                            $3->level = indent_level($1) + 1;
+                                                            $$ = $3;
+                                                        }
+    | TABLE_INDENT TABLEROWSTART tableceils error LINEBREAK          {
+                                                            show_rule("tablerow: TABLE_INDENT TABLEROWSTART tableceils error LINEBREAK", 4);
+                                                            $3->level = indent_level($1) + 1;
+                                                            $$ = $3;
                                                             yyerrok;
                                                         }
     ;
@@ -1125,7 +1143,7 @@ tableceil:
             show_rule("tableceil: inline_elements TABLECEILEND", 6);
             _node = inline_node_create(
                 TAG_TD
-                , 2
+                , NODE_LEVEL_SPECIAL
                 , 1
                 , *($1->ops)
             );
@@ -1138,7 +1156,7 @@ tableceil:
             show_rule("tableceil: inline_elements error", 6);
             _node = inline_node_create(
                 TAG_TD
-                , 2
+                , NODE_LEVEL_SPECIAL
                 , 1
                 , *($1->ops)
             );
