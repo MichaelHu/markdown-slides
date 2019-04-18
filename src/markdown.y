@@ -1167,6 +1167,17 @@ tableceil:
             
             yyerrok;
         }
+    | TABLECEILEND {
+            show_rule("tableceil: TABLECEILEND", 6);
+            _node = inline_node_create(
+                TAG_TD
+                , NODE_LEVEL_SPECIAL
+                , 1
+                , ""
+            );
+
+            $$ = _node;
+        }
     ;
 
 

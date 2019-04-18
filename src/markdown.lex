@@ -237,11 +237,8 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <TABLEROW>\r?\n                         { 
                                             P("LINEBREAK"); 
                                             yylineno++; 
-                                            log_str("A1");
                                             restoreState(); 
-                                            log_str("A2");
                                             popWhenTopStateIs(INDENTTABLEROW); 
-                                            log_str("A3");
                                             yylval.text = strdup(yytext); 
                                             return LINEBREAK; 
                                         }
