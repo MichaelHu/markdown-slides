@@ -90,6 +90,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <INITIAL,TABLEROW,LINKSTART,LINKATTR,ATTRSTART,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
 <ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
+<ESCAPE>\r?\n                           { restoreState(); yylineno++; yylval.text = strdup("<br>"); P("SPECIALCHAR"); return SPECIALCHAR; }
 
 
     /* strong */
