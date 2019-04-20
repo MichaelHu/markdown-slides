@@ -25,6 +25,7 @@ static t_tag tags_of_block_node[] = {
     , TAG_BLOCK_INDENT_PRE
 
     , TAG_BLOCK_BLANK
+    , TAG_ERROR
 };
 static int tags_of_block_node_size = sizeof(tags_of_block_node) / sizeof(t_tag);
 
@@ -107,6 +108,12 @@ static int is_blank_node(t_node *node) {
     return (
         node->tag == TAG_BLANK
         || node->tag == TAG_BLOCK_BLANK
+    );
+}
+
+static int is_tableceil_node(t_node *node) {
+    return (
+        node->tag == TAG_TD
     );
 }
 
@@ -584,39 +591,27 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
                 log_str("prev_node NULL");
             }
 
-            show_node(node);
-
             p = prev_node;
 
             // search the closest parent list node
             while (p) {
 
-                log_str("M1");
                 if (p->parent == p) {
                     log_str("visit_to_rearrange_block_node() 2: parent self-looping");
                     show_node(node);
                 }
 
-                log_str("M2");
                 if (p->level == node->level - 1 && is_line_list_node(p)) {
                     break;
                 } 
 
-                log_str("M3");
                 p = p->parent;
-                log_str("M4");
             }
 
-                log_str("M5");
-            show_node(prev_node);
-                log_str("M6");
-            show_node(p);
-                log_str("M7");
             if (!is_line_list_node(p)) {
                 fprintf(stderr, "visit_to_rearrange_block_nod(): error containing list node\n");
             }
 
-                log_str("M8");
 
             new_link = (t_link *)malloc(sizeof(t_node));
             
@@ -651,20 +646,34 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
             }
 
         }
-        else if (TAG_BLOCK_BLANK == node->tag) {
+        else if (
+                TAG_BLOCK_BLANK == node->tag
+                || TAG_ERROR == node->tag
+            ) {
             p = prev_node;
 
-            // search the closest parent block node or line-level list node
+            // search the closest parent block node or line-level list node or table-ceil node
             while (p) {
-                if (is_block_node(p) || is_line_list_node(p)) {
+                if (
+                        ( 
+                            is_block_node(p) 
+                            /**
+                             * 1. TAG_ERROR, like TAG_H, has no children
+                             * 2. so, the closest parent block node must not be TAG_ERROR
+                             */
+                            && TAG_ERROR != p->tag 
+                        )
+                        || is_line_list_node(p)
+                        || is_tableceil_node(p)
+                    ) {
                     break;
                 } 
 
                 p = p->parent;
             }
 
-            if (!is_block_node(p) && !is_line_list_node(p)) {
-                fprintf(stderr, "visit_to_rearrange_block_node(): p is neither a block node, nor a line-level list node\n");
+            if (!is_block_node(p) && !is_line_list_node(p) && !is_tableceil_node(p)) {
+                log_str("visit_to_rearrange_block_node(): p is neither a block node, nor a line-level list node");
                 // show_node(p);
             }
 

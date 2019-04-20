@@ -646,11 +646,11 @@ static const yytype_uint16 yyrline[] =
      620,   634,   657,   665,   679,   696,   712,   720,   734,   754,
      762,   776,   797,   805,   821,   859,   867,   884,   901,   919,
      927,   944,   968,   986,  1001,  1019,  1034,  1052,  1071,  1079,
-    1092,  1097,  1102,  1109,  1119,  1127,  1142,  1155,  1170,  1186,
-    1191,  1196,  1205,  1213,  1250,  1258,  1259,  1260,  1261,  1262,
-    1263,  1268,  1283,  1292,  1308,  1323,  1332,  1357,  1365,  1406,
-    1414,  1415,  1428,  1448,  1465,  1483,  1488,  1500,  1512,  1524,
-    1525,  1526,  1530,  1545,  1560,  1580,  1581,  1585,  1586
+    1092,  1096,  1101,  1106,  1116,  1124,  1139,  1152,  1167,  1183,
+    1188,  1193,  1202,  1210,  1247,  1255,  1256,  1257,  1258,  1259,
+    1260,  1265,  1280,  1289,  1305,  1320,  1329,  1354,  1362,  1403,
+    1411,  1412,  1425,  1445,  1462,  1480,  1485,  1497,  1509,  1521,
+    1522,  1523,  1527,  1542,  1557,  1577,  1578,  1582,  1583
 };
 #endif
 
@@ -2998,13 +2998,12 @@ yyreduce:
 #line 1092 "markdown.y"
     {
                                                             show_rule("tablerow: TABLEROWSTART tableceils LINEBREAK", 4);
-                                                            log_str("U1");
                                                             (yyval.node) = (yyvsp[(2) - (3)].node);
                                                         ;}
     break;
 
   case 81:
-#line 1097 "markdown.y"
+#line 1096 "markdown.y"
     {
                                                             show_rule("tablerow: TABLEROWSTART tableceils error LINEBREAK", 4);
                                                             (yyval.node) = (yyvsp[(2) - (4)].node);
@@ -3013,10 +3012,8 @@ yyreduce:
     break;
 
   case 82:
-#line 1102 "markdown.y"
+#line 1101 "markdown.y"
     {
-                                                            log_str((yyvsp[(1) - (4)].text));
-                                                            log_int(indent_level((yyvsp[(1) - (4)].text)));
                                                             show_rule("tablerow: TABLE_INDENT TABLEROWSTART tableceils LINEBREAK", 4);
                                                             (yyvsp[(3) - (4)].node)->level = indent_level((yyvsp[(1) - (4)].text)) + 1;
                                                             (yyval.node) = (yyvsp[(3) - (4)].node);
@@ -3024,7 +3021,7 @@ yyreduce:
     break;
 
   case 83:
-#line 1109 "markdown.y"
+#line 1106 "markdown.y"
     {
                                                             show_rule("tablerow: TABLE_INDENT TABLEROWSTART tableceils error LINEBREAK", 4);
                                                             (yyvsp[(3) - (5)].node)->level = indent_level((yyvsp[(1) - (5)].text)) + 1;
@@ -3034,7 +3031,7 @@ yyreduce:
     break;
 
   case 84:
-#line 1119 "markdown.y"
+#line 1116 "markdown.y"
     { 
                                                             show_rule("tableceils: tableceils tableceil",5);
                                                             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children); 
@@ -3046,7 +3043,7 @@ yyreduce:
     break;
 
   case 85:
-#line 1127 "markdown.y"
+#line 1124 "markdown.y"
     {
                                                             show_rule("tableceils: tableceil", 5);
                                                             _node = line_node_create(
@@ -3062,7 +3059,7 @@ yyreduce:
     break;
 
   case 86:
-#line 1142 "markdown.y"
+#line 1139 "markdown.y"
     {
             show_rule("tableceil: inline_elements TABLECEILEND", 6);
             _node = inline_node_create(
@@ -3079,7 +3076,7 @@ yyreduce:
     break;
 
   case 87:
-#line 1155 "markdown.y"
+#line 1152 "markdown.y"
     {
             show_rule("tableceil: inline_elements error", 6);
             _node = inline_node_create(
@@ -3098,7 +3095,7 @@ yyreduce:
     break;
 
   case 88:
-#line 1170 "markdown.y"
+#line 1167 "markdown.y"
     {
             show_rule("tableceil: TABLECEILEND", 6);
             _node = inline_node_create(
@@ -3113,7 +3110,7 @@ yyreduce:
     break;
 
   case 89:
-#line 1186 "markdown.y"
+#line 1183 "markdown.y"
     { 
             show_rule("line: QUOTEBLANKLINE", 4);
             tag_check_stack(TAG_QUOTE_BLANK, 0); 
@@ -3121,7 +3118,7 @@ yyreduce:
     break;
 
   case 90:
-#line 1191 "markdown.y"
+#line 1188 "markdown.y"
     {
             show_rule("line: SECTION LINEBREAK", 4);
             tag_check_stack(TAG_SECTION, -1); 
@@ -3129,7 +3126,7 @@ yyreduce:
     break;
 
   case 91:
-#line 1196 "markdown.y"
+#line 1193 "markdown.y"
     {
             show_rule("line: VSECTION LINEBREAK", 4);
             tag_check_stack(TAG_VSECTION, -1); 
@@ -3137,7 +3134,7 @@ yyreduce:
     break;
 
   case 92:
-#line 1205 "markdown.y"
+#line 1202 "markdown.y"
     {
             show_rule("inline_elements: inline_elements inline_element", 5);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
@@ -3149,7 +3146,7 @@ yyreduce:
     break;
 
   case 93:
-#line 1213 "markdown.y"
+#line 1210 "markdown.y"
     {
             show_rule("inline_elements: inline_element", 5);
             if (
@@ -3187,7 +3184,7 @@ yyreduce:
     break;
 
   case 94:
-#line 1250 "markdown.y"
+#line 1247 "markdown.y"
     { 
             show_rule("inline_element: plaintext", 6);
             tag_info = markdown_get_tag_info(*((yyvsp[(1) - (1)].node)->ops + 1));     
@@ -3199,37 +3196,37 @@ yyreduce:
     break;
 
   case 95:
-#line 1258 "markdown.y"
+#line 1255 "markdown.y"
     { show_rule("inline_element: link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 96:
-#line 1259 "markdown.y"
+#line 1256 "markdown.y"
     { show_rule("inline_element: standard_link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 97:
-#line 1260 "markdown.y"
+#line 1257 "markdown.y"
     { show_rule("inline_element: standard_image", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 98:
-#line 1261 "markdown.y"
+#line 1258 "markdown.y"
     { show_rule("inline_element: inline_code", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 99:
-#line 1262 "markdown.y"
+#line 1259 "markdown.y"
     { show_rule("inline_element: inline_emphasis", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 100:
-#line 1263 "markdown.y"
+#line 1260 "markdown.y"
     { show_rule("inline_element: inline_strong", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 101:
-#line 1268 "markdown.y"
+#line 1265 "markdown.y"
     {
             show_rule("inline_emphasis: EM_BEGIN inline_text_collection EM_END", 7);
             _node = inline_node_create(
@@ -3247,7 +3244,7 @@ yyreduce:
     break;
 
   case 102:
-#line 1283 "markdown.y"
+#line 1280 "markdown.y"
     {
             show_rule("inline_emphasis: EM_BEGIN inline_text_collection error", 7);
             str = str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->children->ops + 1));
@@ -3259,7 +3256,7 @@ yyreduce:
     break;
 
   case 103:
-#line 1292 "markdown.y"
+#line 1289 "markdown.y"
     {
             show_rule("inline_emphasis: EM_BEGIN EM_END", 7);
             _node = inline_node_create(
@@ -3275,7 +3272,7 @@ yyreduce:
     break;
 
   case 104:
-#line 1308 "markdown.y"
+#line 1305 "markdown.y"
     {
             show_rule("inline_strong: STRONG_BEGIN inline_text_collection STRONG_END", 7);
             _node = inline_node_create(
@@ -3293,7 +3290,7 @@ yyreduce:
     break;
 
   case 105:
-#line 1323 "markdown.y"
+#line 1320 "markdown.y"
     {
             show_rule("inline_strong: STRONG_BEGIN inline_text_collection error", 7);
             str = str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->children->ops + 1));
@@ -3305,7 +3302,7 @@ yyreduce:
     break;
 
   case 106:
-#line 1332 "markdown.y"
+#line 1329 "markdown.y"
     {
             show_rule("inline_strong: STRONG_BEGIN STRONG_END", 7);
             _node = inline_node_create(
@@ -3321,7 +3318,7 @@ yyreduce:
     break;
 
   case 107:
-#line 1357 "markdown.y"
+#line 1354 "markdown.y"
     {
             show_rule("inline_text_collection: inline_text_collection inline_text", 5);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
@@ -3333,7 +3330,7 @@ yyreduce:
     break;
 
   case 108:
-#line 1365 "markdown.y"
+#line 1362 "markdown.y"
     {
             show_rule("inline_text_collection: inline_text", 5);
             if (
@@ -3371,7 +3368,7 @@ yyreduce:
     break;
 
   case 109:
-#line 1406 "markdown.y"
+#line 1403 "markdown.y"
     {
             show_rule("inline_text: plaintext", 6);
             tag_info = markdown_get_tag_info(*((yyvsp[(1) - (1)].node)->ops + 1));     
@@ -3383,17 +3380,17 @@ yyreduce:
     break;
 
   case 110:
-#line 1414 "markdown.y"
+#line 1411 "markdown.y"
     { show_rule("inline_text: link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 111:
-#line 1415 "markdown.y"
+#line 1412 "markdown.y"
     { show_rule("inline_text: standard_link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 112:
-#line 1428 "markdown.y"
+#line 1425 "markdown.y"
     {
             show_rule("link: LINK", 7);
             // get content A between `<` and `>`
@@ -3414,7 +3411,7 @@ yyreduce:
     break;
 
   case 113:
-#line 1448 "markdown.y"
+#line 1445 "markdown.y"
     {
             show_rule("standard_link: LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_link_tag_info(*((yyvsp[(2) - (5)].node)->ops + 1), *((yyvsp[(4) - (5)].node)->ops + 1));
@@ -3432,7 +3429,7 @@ yyreduce:
     break;
 
   case 114:
-#line 1465 "markdown.y"
+#line 1462 "markdown.y"
     {
             show_rule("standard_image: EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_image_tag_info(*((yyvsp[(2) - (5)].node)->ops + 1), *((yyvsp[(4) - (5)].node)->ops + 1));
@@ -3450,7 +3447,7 @@ yyreduce:
     break;
 
   case 115:
-#line 1483 "markdown.y"
+#line 1480 "markdown.y"
     {
             show_rule("plaintext: plaintext text_list", 7);
             *((yyvsp[(1) - (2)].node)->ops + 1) = str_concat(*((yyvsp[(1) - (2)].node)->ops + 1), (yyvsp[(2) - (2)].text));
@@ -3459,7 +3456,7 @@ yyreduce:
     break;
 
   case 116:
-#line 1488 "markdown.y"
+#line 1485 "markdown.y"
     {
             show_rule("plaintext: text_list", 7);
             _node = inline_node_create(
@@ -3475,7 +3472,7 @@ yyreduce:
     break;
 
   case 117:
-#line 1500 "markdown.y"
+#line 1497 "markdown.y"
     {
             show_rule("plaintext: ATTRLEFT plaintext ATTRRIGHT", 7);
             *((yyvsp[(2) - (3)].node)->ops + 1) = str_concat(
@@ -3491,7 +3488,7 @@ yyreduce:
     break;
 
   case 118:
-#line 1512 "markdown.y"
+#line 1509 "markdown.y"
     {
             show_rule("plaintext: ATTRLEFT plaintext error", 7);
             *((yyvsp[(2) - (3)].node)->ops + 1) = str_concat(
@@ -3504,22 +3501,22 @@ yyreduce:
     break;
 
   case 119:
-#line 1524 "markdown.y"
+#line 1521 "markdown.y"
     { show_rule("text_list: TEXT", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 120:
-#line 1525 "markdown.y"
+#line 1522 "markdown.y"
     { show_rule("text_list: SPECIALCHAR", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 121:
-#line 1526 "markdown.y"
+#line 1523 "markdown.y"
     { show_rule("text_list: EMPTYATTR", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 122:
-#line 1530 "markdown.y"
+#line 1527 "markdown.y"
     { 
             show_rule("inline_code: BACKTICK codespan BACKTICK", 7);
             tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
@@ -3537,7 +3534,7 @@ yyreduce:
     break;
 
   case 123:
-#line 1545 "markdown.y"
+#line 1542 "markdown.y"
     { 
             show_rule("inline_code: BACKTICK codespan error", 7);
             _node = inline_node_create(
@@ -3555,7 +3552,7 @@ yyreduce:
     break;
 
   case 124:
-#line 1560 "markdown.y"
+#line 1557 "markdown.y"
     { 
             show_rule("inline_code: BACKTICK error", 7);
             _node = inline_node_create(
@@ -3573,28 +3570,28 @@ yyreduce:
     break;
 
   case 125:
-#line 1580 "markdown.y"
+#line 1577 "markdown.y"
     { show_rule("codespan: codespan code_list", 8); (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 126:
-#line 1581 "markdown.y"
+#line 1578 "markdown.y"
     { show_rule("codespan: code_list", 8); (yyval.text) = (yyvsp[(1) - (1)].text); ;}
     break;
 
   case 127:
-#line 1585 "markdown.y"
+#line 1582 "markdown.y"
     { show_rule("code_list: CODETEXT", 9); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 128:
-#line 1586 "markdown.y"
+#line 1583 "markdown.y"
     { show_rule("code_list: SPECIALCHAR", 9); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 3598 "markdown.y.c"
+#line 3595 "markdown.y.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3814,7 +3811,7 @@ yyreturn:
 }
 
 
-#line 1589 "markdown.y"
+#line 1586 "markdown.y"
 
 
 

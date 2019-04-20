@@ -1091,7 +1091,6 @@ tablerows:
 tablerow:
     TABLEROWSTART tableceils LINEBREAK                  {
                                                             show_rule("tablerow: TABLEROWSTART tableceils LINEBREAK", 4);
-                                                            log_str("U1");
                                                             $$ = $2;
                                                         }
     | TABLEROWSTART tableceils error LINEBREAK          {
@@ -1100,8 +1099,6 @@ tablerow:
                                                             yyerrok;
                                                         }
     | TABLE_INDENT TABLEROWSTART tableceils LINEBREAK                  {
-                                                            log_str($1);
-                                                            log_int(indent_level($1));
                                                             show_rule("tablerow: TABLE_INDENT TABLEROWSTART tableceils LINEBREAK", 4);
                                                             $3->level = indent_level($1) + 1;
                                                             $$ = $3;

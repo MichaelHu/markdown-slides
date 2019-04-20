@@ -21,7 +21,7 @@
 
 * text 
     * text 
-        |`n`|*a*|
+        |`n`|*a|
         |e|1|
 
     |n|[258i](http://258i.com)|
