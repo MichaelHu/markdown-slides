@@ -183,6 +183,12 @@ static void test_markdown_get_tag_info(void) {
         , "@[data-title=\"def\\]\"]abc"
     );
 
+    test_util_str_equal(
+        "test 7"
+        , markdown_get_tag_info(" a")->content
+        , " a"
+    );
+
 }
 
 void test_markdown_utils(void) {

@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "strutils.h"
+#include "logutils.h"
 #include "nodetree.h"
 #include "strbuf.h"
 
@@ -49,8 +50,8 @@ static char *td_post_parse(t_node *);
 
 static char *p_pre_parse(t_node *);
 static char *p_post_parse(t_node *);
-static char *blockquote_p_pre_parse(t_node *);
-static char *blockquote_p_post_parse(t_node *);
+static char *quote_p_pre_parse(t_node *);
+static char *quote_p_post_parse(t_node *);
 static char *text_pre_parse(t_node *);
 static char *text_post_parse(t_node *);
 
@@ -82,6 +83,9 @@ static char *inline_em_post_parse(t_node *);
 
 static char *inline_strong_pre_parse(t_node *);
 static char *inline_strong_post_parse(t_node *);
+
+static char *default_pre_parse(t_node *);
+static char *default_post_parse(t_node *);
 
 /**
  * Visitor prototypes
@@ -183,18 +187,8 @@ static t_parser *get_parser(t_node *node) {
             }
             break;
         case TAG_BLOCK_QUOTE_P:
-            p->pre_parse = blockquote_p_pre_parse;
-            p->post_parse = blockquote_p_post_parse;
-            break;
-
-        case TAG_P:
-        case TAG_INDENT_P:
-        case TAG_INDENT_TEXT:
-        case TAG_QUOTE_P:
-            /**
-             * 1. these line-level tags contain tag TAG_INLINE_TEXT
-             * 2. so, they don't need to output
-             */
+            p->pre_parse = quote_p_pre_parse;
+            p->post_parse = quote_p_post_parse;
             break;
 
         case TAG_INLINE_TEXT:
@@ -275,7 +269,21 @@ static t_parser *get_parser(t_node *node) {
             break;
 
 
+        /**
+         * 1. these line-level tags contain tag TAG_INLINE_TEXT
+         * 2. so, they don't need to output
+         */
+        case TAG_P:
+        case TAG_INDENT_P:
+        case TAG_INDENT_TEXT:
+        case TAG_QUOTE_P:
+
+        /**
+         * other tags use default parser 
+         */
         default:
+            p->pre_parse = default_pre_parse;
+            p->post_parse = default_post_parse;
             break;
     }
 
@@ -537,7 +545,7 @@ static char *p_post_parse(t_node *node) {
     );
 }
 
-static char *blockquote_p_pre_parse(t_node *node) {
+static char *quote_p_pre_parse(t_node *node) {
     return str_format(
         "\n%s<blockquote><p%s>"
         , str_padding_left("", node->level * 4)
@@ -545,7 +553,7 @@ static char *blockquote_p_pre_parse(t_node *node) {
     );
 }
 
-static char *blockquote_p_post_parse(t_node *node) {
+static char *quote_p_post_parse(t_node *node) {
     return str_format(
         "\n%s</p></blockquote>"
         , str_padding_left("", node->level * 4)
@@ -671,7 +679,7 @@ static char *link_pre_parse(t_node *node) {
         is_simple_link
             ? "<a href=\"%s\">%s</a>"
             : "<a%s>%s</a>"
-        , html_escape(is_simple_link ? content : attr)
+        , is_simple_link ? html_escape(content) : attr
         , html_escape(content)
     );
 }
@@ -737,6 +745,16 @@ static char *inline_strong_post_parse(t_node *node) {
     return "</strong>";
 }
 
+/**
+ * default parsers
+ */
+static char *default_pre_parse(t_node *node) {
+    return "";
+}
+
+static char *default_post_parse(t_node *node) {
+    return "";
+}
 
 
 /**

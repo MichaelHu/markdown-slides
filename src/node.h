@@ -49,6 +49,7 @@ void traverse_nodes_with_visitor(
     , ...
 );
 void traverse_nodes(t_node *root);
+void check_null_string_pointer(t_node *root);
 void fix_node_level(t_node *root);
 void complement_block_nodes(t_node *root);
 void rearrange_block_nodes(t_node *root);

@@ -17,7 +17,7 @@
 <p>this is H2----------
 </p>
 
-<p>The only restrictions are that block-level HTML elements — e.g. <div>, <table>, <pre>, <p>, etc. — must be separated from surrounding content by blank lines, and the start and end tags of the block should not be indented with tabs or spaces. Markdown is smart enough not to add extra (unwanted) <p> tags around HTML block-level tags.
+<p>The only restrictions are that block-level HTML elements — e.g. <code>&lt;div>, &lt;table>, &lt;pre>, &lt;p></code>, etc. — must be separated from surrounding content by blank lines, and the start and end tags of the block should not be indented with tabs or spaces. Markdown is smart enough not to add extra (unwanted) <code>&lt;p></code> tags around HTML block-level tags.
 </p>
 
 <p>*literal asterisks*
@@ -60,7 +60,19 @@ _   underscore
 
 </ul>
 
-<p>&lt;&amp;
+<p>&lt;
+</p>
+
+<p>&lt;
+</p>
+
+<p>&amp;
+</p>
+
+<p>&amp;
+</p>
+
+<p><code>\&amp;amp;</code>
 </p>
 
 <p>http://images.google.com/images?num=30&amp;q=larry+bird
@@ -227,9 +239,8 @@ _   underscore
 <ul>
 
 <li>A list item with a blockquote:
-    <p>> This is a blockquote> inside a list item.
-    </p>
-
+    <blockquote><p> This is a blockquote inside a list item.
+    </p></blockquote>
 </li>
 
 </ul>

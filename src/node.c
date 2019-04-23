@@ -237,7 +237,7 @@ t_link *show_node(t_node *node) {
     if (node->nops >= 2) {
         fprintf(
             stderr
-            , "%s@tag: %s; level: %d; nops: %d; attr: %s; content: %s\n"
+            , "%s@tag: |%s|; level: |%d|; nops: |%d|; attr: |%s|; content: |%s|\n"
             , str_padding_left("", node->level * 4)
             , get_tag_type(node->tag)
             , node->level
@@ -246,10 +246,21 @@ t_link *show_node(t_node *node) {
             , node->ops[1]
         );
     }
+    else if (node->nops >= 1) {
+        fprintf(
+            stderr
+            , "%s@tag: |%s|; level: |%d|; nops: |%d|; attr: |%s|\n"
+            , str_padding_left("", node->level * 4)
+            , get_tag_type(node->tag)
+            , node->level
+            , node->nops
+            , node->ops[0]
+        );
+    }
     else {
         fprintf(
             stderr
-            , "%s@tag: %s; level: %d\n"
+            , "%s@tag: |%s|; level: |%d|\n"
             , str_padding_left("", node->level * 4)
             , get_tag_type(node->tag)
             , node->level
@@ -384,6 +395,25 @@ void fix_node_level(t_node *root) {
     traverse_nodes_with_visitor(root, visit_node_to_fix_level, 0);
 }
 
+/**
+ * Check NULL string pointers
+ * ===================================================================================
+ */
+static t_link *visit_node_to_check_null_string_pointer(t_node *node) {
+    int i = 0;
+    while (i < node->nops) {
+        if (!*(node->ops + i)) {
+            fprintf(stderr, "@error: NULL string pointer: *(node->ops + %d)", i);
+        }
+        i++;
+    }
+    return NULL;
+}
+
+void check_null_string_pointer(t_node *root) {
+    traverse_nodes_with_visitor(root, visit_node_to_check_null_string_pointer, 0);
+}
+
 
 /**
  * Check parent links
@@ -450,7 +480,7 @@ static void move_node_and_siblings_as_children_of_new_node(t_node *node, t_node 
     }
 }
 
-static t_link *visit_nonblock_node_to_complement_parent(t_node *node) {
+static t_link *visit_indented_node_to_complement_parent(t_node *node) {
     t_node *parent, *new_uncle, *tmp;
 
     // show_node(node);
@@ -476,6 +506,41 @@ static t_link *visit_nonblock_node_to_complement_parent(t_node *node) {
                 );
 
                 // show_node(new_uncle);
+                move_node_and_siblings_as_children_of_new_node(node, new_uncle);
+            }
+            break;
+        default:
+            break;
+    }
+
+    return NULL;
+}
+
+static t_link *visit_indented_node_to_complement_parent_with_attr(t_node *node) {
+    t_node *parent, *new_uncle, *tmp;
+
+    // show_node(node);
+    if (is_block_node(node)) {
+        return NULL;
+    }
+
+    parent = node->parent;
+
+    if (!parent) {
+        fprintf(stderr, "==NULL parent link==\n");
+    }
+
+    switch (node->tag) {
+        case TAG_QUOTE_P:
+            if (parent && node->level != parent->level) {
+                new_uncle = block_node_create(
+                    get_parent_block_node_tag(node->tag)
+                    , get_parent_block_node_level(node)
+                    , 1
+                    // use the first child's attribute
+                    , *node->ops
+                );
+
                 move_node_and_siblings_as_children_of_new_node(node, new_uncle);
             }
             break;
@@ -528,7 +593,12 @@ void complement_block_nodes(t_node *root) {
     check_parent_links(root);
 
     // log_str("===========complement_block_nodes===========");
-    traverse_nodes_with_visitor(root, visit_nonblock_node_to_complement_parent, 0);
+    traverse_nodes_with_visitor(root, visit_indented_node_to_complement_parent, 0);
+    traverse_nodes_with_visitor(
+        root
+        , visit_indented_node_to_complement_parent_with_attr
+        , 0
+    );
     traverse_nodes_with_visitor(root, visit_tr_node_to_complement_parent, 0);
 }
 

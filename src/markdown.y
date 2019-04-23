@@ -38,15 +38,17 @@ static void show_rule(char *str, int level) {
  */
 
 static void parse_doc(void) {
+    check_null_string_pointer(_root_node);
     fix_node_level(_root_node);
+
     // log_str("==== traverse ===="); 
     // traverse_nodes(_root_node); 
 
     // log_str("==== complement block nodes ===="); 
     complement_block_nodes(_root_node); 
 
-    //log_str("==== traverse ===="); 
-    //traverse_nodes(_root_node); 
+    // log_str("==== traverse ===="); 
+    // traverse_nodes(_root_node); 
 
     // log_str("==== rearrange block nodes ===="); 
     rearrange_block_nodes(_root_node);
@@ -74,7 +76,7 @@ static void parse_doc(void) {
 %token <text> TEXT SPECIALCHAR CODETEXT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
 %token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
 %token <text> TABLEROWSTART TABLECEILEND
-%token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT TABLE_INDENT
+%token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT TABLE_INDENT QUOTE_INDENT
 %token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
 %token <text> ATTRLEFT ATTRRIGHT EMPTYATTR
 %token <text> EM_BEGIN EM_END STRONG_BEGIN STRONG_END
@@ -495,20 +497,34 @@ line_quote_p:
     LARGERTHAN inline_elements LINEBREAK { 
             show_rule("line_quote_p: LARGERTHAN inline_elements LINEBREAK", 4);
             tag_check_stack(TAG_QUOTE_P, 0); 
-            tag_info = markdown_get_tag_info(*($2->ops + 1));
 
             _node = line_node_create(
                 TAG_QUOTE_P
                 , 0
-                , 2
+                , 1
                 , *($2->ops)
-                , *($2->ops + 1)
             );
 
             _node->children = $2;
             $2->parent = _node;
             $$ = _node;
         } 
+
+    | QUOTE_INDENT LARGERTHAN inline_elements LINEBREAK {
+            show_rule("line_quote_p: QUOTE_INDENT LARGERTHAN inline_elements LINEBREAK", 4);
+            tag_check_stack(TAG_QUOTE_P, indent_level($1)); 
+
+            _node = line_node_create(
+                TAG_QUOTE_P
+                , indent_level($1)
+                , 1
+                , *($3->ops)
+            );
+
+            _node->children = $3;
+            $3->parent = _node;
+            $$ = _node;
+        }
     ;
 
 block_ul:

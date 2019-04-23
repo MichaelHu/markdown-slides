@@ -1,6 +1,7 @@
 %{
 
 #include <string.h>
+#include "strutils.h"
 #include "logutils.h"
 #include "lex-state-stack.h"
 #include "node.h"
@@ -60,6 +61,7 @@ static void popWhenTopStateIs(int state) {
 %x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
 %x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART XSTRONGSTART YSTRONGSTART INDENTTABLEROW
+%x INDENTQUOTE
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -78,6 +80,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^>"    "\r?\n                              { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
 
 ^>                                      { P("LARGERTHAN"); return LARGERTHAN; }
+<INDENTQUOTE>">"                        { P("LARGERTHAN"); restoreState(); return LARGERTHAN; }
 
 ^@s.*                                   { P("SECTION"); 
                                             yylval.text = strdup(yytext);
@@ -248,9 +251,9 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
     /* ul & ol row */
 ^" "{0,3}[*+-][ ]+                      { P("ULSTART"); return ULSTART; }
-^>" "{0,3}[*+-][ ]+                         { P("QUOTEULSTART"); return QUOTEULSTART; }
+^>" "{0,3}[*+-][ ]+                     { P("QUOTEULSTART"); return QUOTEULSTART; }
 ^" "{0,3}[1-9][0-9]*\.[ ]+              { P("OLSTART"); return OLSTART; }
-^>" "{0,3}[1-9][0-9]*\.[ ]+                 { P("QUOTEOLSTART"); return QUOTEOLSTART; }
+^>" "{0,3}[1-9][0-9]*\.[ ]+             { P("QUOTEOLSTART"); return QUOTEOLSTART; }
 
 
 
@@ -313,6 +316,27 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             }
                                         }
 
+    /* indented quoted paragraph */
+^(\t|[ ]{4})+/>                         { 
+                                            /* quoted paragraph */
+                                            if(is_in_list(indent_level(yytext))){
+                                                P("QUOTE_INDENT"); 
+                                                enterState(INDENTQUOTE, "INDENTQUOTE");
+                                                yylval.text = strdup(yytext);
+                                                return QUOTE_INDENT; 
+                                            }
+                                            else{
+                                                enterState(CODEBLOCK, "CODEBLOCK"); 
+                                                yylval.text = strdup(yytext);
+                                                if (inner_pre_level(indent_level(yytext)) > -1) {
+                                                    P("INDENTED_PRE_INDENT"); return INDENTED_PRE_INDENT;
+                                                }
+                                                else {
+                                                    P("PRE_INDENT"); return PRE_INDENT;
+                                                }
+                                            }
+                                        }
+
     /* indented paragraph */
 ^(\t|[ ]{4})+/.                         { 
                                             /* indent p */
@@ -331,6 +355,10 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                                 }
                                             }
                                         }
+
+
+
+
 <CODEBLOCK>.+                           { yylval.text = strdup(yytext); P("CODETEXT"); return CODETEXT; }
 <CODEBLOCK>\r?\n                        { P("LINEBREAK"); restoreState(); yylineno++; return LINEBREAK; }
 
