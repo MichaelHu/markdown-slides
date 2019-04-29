@@ -262,6 +262,12 @@ static void test_str_replace(void) {
 
 }
 
+static void test_str_memory_stat(void) {
+    test_util_log_str("\n# test_str_memory_stat");
+
+    str_memory_stat();
+}
+
 
 void test_strutils(void) {
     test_str_trim_right();
@@ -274,4 +280,6 @@ void test_strutils(void) {
     test_str_from_arr();
 
     test_str_replace();
+
+    test_str_memory_stat();
 }

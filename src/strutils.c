@@ -4,30 +4,59 @@
 #include <stdarg.h>
 #include "strutils.h"
 
-char *str_concat(char *s1, char *s2){
+static long long total_alloc_size = 0;
+static char *str_alloc(int size) {
+    char *_str;
+    if (!(_str = (char *)malloc(size))) {
+        fprintf(stderr, "str_alloc(size): out of memory!");
+        exit(0);
+    }
+    total_alloc_size += size;
+    return _str;
+}
+static void str_free(char *str, int size) {
+    if (str) {
+        free(str);
+        total_alloc_size -= size;
+    }
+}
+static char *str_buf = NULL;
+
+
+
+
+
+void str_memory_stat() {
+    fprintf(stderr, "str_memory_size: %lld bytes\n", total_alloc_size);
+}
+
+char *str_concat(char *s1, char *s2) {
     char *_str;
 
-    _str = (char *)malloc(strlen(s1) + strlen(s2) + 1);     
+    _str = str_alloc(strlen(s1) + strlen(s2) + 1);     
     sprintf(_str, "%s%s", s1, s2); 
     return _str;
 }
 
-char *str_format(char *format, ...){
+char *str_format(char *format, ...) {
     char *_str = NULL;
     va_list args; 
 
     /**
-     * support string size up to 1MB
+     * support string size up to 5MB
      */
-    _str = (char *)malloc(1000000);     
+    if (!str_buf) {
+        str_buf = str_alloc(5000000);
+    }
 
     va_start(args, format);
-    vsprintf(_str, format, args); 
+    vsprintf(str_buf, format, args); 
+    _str = str_concat(str_buf, "");
     va_end(args);
     return _str;
 }
 
-char *str_padding_left(char *s, int count){
+char *str_padding_left(char *s, int count) {
     char *_str, *ret;
 
     /**
@@ -38,7 +67,7 @@ char *str_padding_left(char *s, int count){
         return s;
     }
 
-    _str = (char *)malloc(count + 1);     
+    _str = str_alloc(count + 1);     
     if(!_str){
         fprintf(stderr, "str_padding_left(): out of memory!\n");
         exit(1);
@@ -67,7 +96,7 @@ char *str_trim_left(char *s) {
         trim_count++;
     }
 
-    str = (char *)malloc(len + 1 - trim_count);
+    str = str_alloc(len + 1 - trim_count);
     strncpy(str, p, len - trim_count);
     *(str + len - trim_count) = '\0';
 
@@ -91,7 +120,7 @@ char *str_trim_right(char *s) {
     }
 
     if (k >= 0) {
-        str = (char *)malloc(k + 2);
+        str = str_alloc(k + 2);
         if(!str){
             fprintf(stderr, "str_trim_right(): out of memory!\n");
             exit(1);
@@ -113,7 +142,7 @@ char *str_trim(char *s) {
 
 char *str_new_copy(char *start, char *end) {
     int len = end - start;
-    char *str = (char *)malloc((len + 1) * sizeof(char));
+    char *str = str_alloc((len + 1) * sizeof(char));
     strncpy(str, start, len);
     *(str + len ) = '\0';
     return str;
@@ -210,7 +239,7 @@ char *html_escape(char *s){
     }
 
 
-    ret = s2 = (char *)malloc(len + extra_size + 1);
+    ret = s2 = str_alloc(len + extra_size + 1);
     s1 = s;
 
     /* 

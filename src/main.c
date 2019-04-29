@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <time.h>
+#include "strutils.h"
 #include "node.h" 
 #include "markdown.y.h"
 
-#define VERSION "0.1.9"
-#define BUILDTIME "17/07/27 20:11"
+#define VERSION "2.0.0"
+#define BUILDTIME "19/04/29 21:25"
 
 /* declare external variables and function prototypes */
 extern int yylineno;
@@ -66,8 +67,9 @@ int main(int argc, char **argv){
         return 0;
     }
     
-    yyset_debug( 1 );
+    // yyset_debug( 1 );
 
+    // fprintf(stderr, "start time: %ld\n", time(NULL));
     input = fopen(argv[1], "r");
     if(setInputFile(input)){
         if(getNextLine() == 0){
@@ -75,5 +77,8 @@ int main(int argc, char **argv){
         }
     }
     fclose(input);
+    // fprintf(stderr, "end time: %ld\n", time(NULL));
+
+    // str_memory_stat();
 }
 

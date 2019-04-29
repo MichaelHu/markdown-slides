@@ -17,5 +17,6 @@ int count_of_char(char *s, char c);
 char *str_from_arr(char **arr, int size);
 char *str_from_arr_with_glue(char **arr, int size, char *glue);
 char *str_replace(char *s, char *pattern, char *replacement);
+void str_memory_stat();
 
 char *html_escape(char *s);
