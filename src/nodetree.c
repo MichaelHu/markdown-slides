@@ -512,16 +512,18 @@ static char *tr_post_parse(t_node *node) {
 
 static char *td_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<td%s>"
+        "\n%s<%s%s>"
         , str_padding_left("", node->level * 4)
+        , node->parent->prev ? "td" : "th"
         , *node->ops
     );
 }
 
 static char *td_post_parse(t_node *node) {
     return str_format(
-        "\n%s</td>\n"
+        "\n%s</%s>\n"
         , str_padding_left("", node->level * 4)
+        , node->parent->prev ? "td" : "th"
     );
 }
 
