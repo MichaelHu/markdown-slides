@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #ifndef HEADER_TAGSTACK
 #include "tagstack.h"
 #endif

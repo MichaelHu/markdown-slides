@@ -498,11 +498,19 @@ static t_link *visit_indented_node_to_complement_parent(t_node *node) {
         case TAG_INDENT_UL:
         case TAG_INDENT_OL:
         case TAG_INDENT_TEXT:
+        case TAG_QUOTE_P:
             if (parent && node->level != parent->level) {
                 new_uncle = block_node_create(
                     get_parent_block_node_tag(node->tag)
                     , get_parent_block_node_level(node)
-                    , 0
+
+                    /**
+                     * 1. notes: parent block node should have attributes
+                     * 2. otherwise, you may get message "Segmentation Fault"
+                     * 3. the error message occurs more frequently especially under Windows
+                     */
+                    , 1
+                    , *node->ops
                 );
 
                 // show_node(new_uncle);
@@ -594,11 +602,6 @@ void complement_block_nodes(t_node *root) {
 
     // log_str("===========complement_block_nodes===========");
     traverse_nodes_with_visitor(root, visit_indented_node_to_complement_parent, 0);
-    traverse_nodes_with_visitor(
-        root
-        , visit_indented_node_to_complement_parent_with_attr
-        , 0
-    );
     traverse_nodes_with_visitor(root, visit_tr_node_to_complement_parent, 0);
 }
 

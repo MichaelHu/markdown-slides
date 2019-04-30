@@ -80,5 +80,6 @@ int main(int argc, char **argv){
     // fprintf(stderr, "end time: %ld\n", time(NULL));
 
     // str_memory_stat();
+    return 0;
 }
 

@@ -7,5 +7,7 @@ extern void test_markdown_utils(void);
 int main(int argc, char **argv){
     test_strutils();
     test_markdown_utils();
+
+    return 0;
 }
 

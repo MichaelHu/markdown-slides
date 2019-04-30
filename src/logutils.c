@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-static void log(int type, char *str, int d) {
+static void log_common(int type, char *str, int d) {
     if (1 == type) {
         fprintf(stderr, "# %s\n", str);
     }
@@ -10,11 +10,11 @@ static void log(int type, char *str, int d) {
 }
 
 void log_str(char *str) {
-    log(1, str, 0);
+    log_common(1, str, 0);
 }
 
 void log_int(int d) {
-    log(2, "", d);
+    log_common(2, "", d);
 }
 
 
