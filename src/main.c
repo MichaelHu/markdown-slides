@@ -5,7 +5,7 @@
 #include "markdown.y.h"
 
 #define VERSION "2.0.0"
-#define BUILDTIME "19/04/29 21:25"
+#define BUILDTIME "19/05/01 02:00"
 
 /* declare external variables and function prototypes */
 extern int yylineno;
