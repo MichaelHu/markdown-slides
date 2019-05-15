@@ -76,24 +76,25 @@
      EM_END = 292,
      STRONG_BEGIN = 293,
      STRONG_END = 294,
-     MINUS = 295,
-     PLUS = 296,
-     RIGHTPARENTHESES = 297,
-     LEFTPARENTHESES = 298,
-     UNDERSCORE = 299,
-     STAR = 300,
-     BLANKLINE = 301,
-     LINEBREAK = 302,
-     LARGERTHAN = 303,
-     DOUBLESTAR = 304,
-     DOUBLEUNDERSCORE = 305,
-     OLSTART = 306,
-     ULSTART = 307,
-     QUOTEBLANKLINE = 308,
-     QUOTEOLSTART = 309,
-     QUOTEULSTART = 310,
-     EXCLAMATION = 311,
-     STARX = 312
+     INDENT_QUOTEBLANKLINE = 295,
+     MINUS = 296,
+     PLUS = 297,
+     RIGHTPARENTHESES = 298,
+     LEFTPARENTHESES = 299,
+     UNDERSCORE = 300,
+     STAR = 301,
+     BLANKLINE = 302,
+     LINEBREAK = 303,
+     LARGERTHAN = 304,
+     DOUBLESTAR = 305,
+     DOUBLEUNDERSCORE = 306,
+     OLSTART = 307,
+     ULSTART = 308,
+     QUOTEBLANKLINE = 309,
+     QUOTEOLSTART = 310,
+     QUOTEULSTART = 311,
+     EXCLAMATION = 312,
+     STARX = 313
    };
 #endif
 /* Tokens.  */
@@ -134,37 +135,38 @@
 #define EM_END 292
 #define STRONG_BEGIN 293
 #define STRONG_END 294
-#define MINUS 295
-#define PLUS 296
-#define RIGHTPARENTHESES 297
-#define LEFTPARENTHESES 298
-#define UNDERSCORE 299
-#define STAR 300
-#define BLANKLINE 301
-#define LINEBREAK 302
-#define LARGERTHAN 303
-#define DOUBLESTAR 304
-#define DOUBLEUNDERSCORE 305
-#define OLSTART 306
-#define ULSTART 307
-#define QUOTEBLANKLINE 308
-#define QUOTEOLSTART 309
-#define QUOTEULSTART 310
-#define EXCLAMATION 311
-#define STARX 312
+#define INDENT_QUOTEBLANKLINE 295
+#define MINUS 296
+#define PLUS 297
+#define RIGHTPARENTHESES 298
+#define LEFTPARENTHESES 299
+#define UNDERSCORE 300
+#define STAR 301
+#define BLANKLINE 302
+#define LINEBREAK 303
+#define LARGERTHAN 304
+#define DOUBLESTAR 305
+#define DOUBLEUNDERSCORE 306
+#define OLSTART 307
+#define ULSTART 308
+#define QUOTEBLANKLINE 309
+#define QUOTEOLSTART 310
+#define QUOTEULSTART 311
+#define EXCLAMATION 312
+#define STARX 313
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 70 "markdown.y"
+#line 88 "markdown.y"
 {
     char *text;
     t_node *node;
 }
 /* Line 1529 of yacc.c.  */
-#line 168 "markdown.y.h"
+#line 170 "markdown.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

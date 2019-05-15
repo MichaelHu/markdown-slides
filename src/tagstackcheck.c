@@ -78,7 +78,7 @@ int indent_level(char *s){
 
 char* tag_check_stack(t_tag tag, int level){
 
-    if(tag != TAG_BLANK && tag != TAG_QUOTE_BLANK){
+    if(tag != TAG_BLANK){
 #ifdef _IS_DEBUG_TAGSTACK
         printf("current tag: %s, level: %d\n", get_tag_type(tag), level);
 #endif
@@ -120,7 +120,6 @@ char *get_tag_type(t_tag tag){
         case TAG_QUOTE_OL: return "TAG_QUOTE_OL";
         case TAG_QUOTE_PRE: return "TAG_QUOTE_PRE";
         case TAG_QUOTE_BLANK: return "TAG_QUOTE_BLANK";
-        case TAG_QUOTE_H: return "TAG_QUOTE_H";
 
         case TAG_INDENT_P: return "TAG_INDENT_P";
         case TAG_INDENT_UL: return "TAG_INDENT_UL";
@@ -140,9 +139,14 @@ char *get_tag_type(t_tag tag){
         case TAG_BLOCK_INDENT_UL: return "TAG_BLOCK_INDENT_UL";
         case TAG_BLOCK_INDENT_OL: return "TAG_BLOCK_INDENT_OL";
         case TAG_BLOCK_INDENT_TEXT: return "TAG_BLOCK_INDENT_TEXT";
+
+        case TAG_BLOCK_QUOTE: return "TAG_BLOCK_QUOTE";
+        case TAG_QUOTE_H: return "TAG_QUOTE_H";
         case TAG_BLOCK_QUOTE_UL: return "TAG_BLOCK_QUOTE_UL";
         case TAG_BLOCK_QUOTE_OL: return "TAG_BLOCK_QUOTE_OL";
         case TAG_BLOCK_QUOTE_P: return "TAG_BLOCK_QUOTE_P";
+        case TAG_BLOCK_QUOTE_BLANK: return "TAG_BLOCK_QUOTE_BLANK";
+
         case TAG_BLOCK_BLANK: return "TAG_BLOCK_BLANK";
         case TAG_BLOCK_PRE: return "TAG_BLOCK_PRE";
         case TAG_BLOCK_INDENT_PRE: return "TAG_BLOCK_INDENT_PRE";

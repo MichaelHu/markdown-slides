@@ -72,14 +72,21 @@ quoteblankline ^>[ ]{0,4}\r?\n
     /* special chars: "\[]^-?.*+|()$/{}%<> */
 
 {blankline}                             { yylineno++; P("BLANKLINE"); return BLANKLINE; }
-    /* !!! note: quoteblankline has no effect */
-^>\r?\n                                    { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
-^>" "\r?\n                                 { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
-^>"  "\r?\n                                { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
-^>"   "\r?\n                               { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
-^>"    "\r?\n                              { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
+
+^>\r?\n                                 { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
+^>" "\r?\n                              { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
+^>"  "\r?\n                             { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
+^>"   "\r?\n                            { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
+^>"    "\r?\n                           { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
 
 ^>                                      { P("LARGERTHAN"); return LARGERTHAN; }
+    /* indented quote blankline: eat only, no token returned */
+<INDENTQUOTE>">"\r?\n                   { yylineno++; restoreState(); }
+<INDENTQUOTE>"> "\r?\n                  { yylineno++; restoreState(); }
+<INDENTQUOTE>">  "\r?\n                 { yylineno++; restoreState(); }
+<INDENTQUOTE>">   "\r?\n                { yylineno++; restoreState(); }
+<INDENTQUOTE>">    "\r?\n               { yylineno++; restoreState(); }
+    /* indented quote */
 <INDENTQUOTE>">"                        { P("LARGERTHAN"); restoreState(); return LARGERTHAN; }
 
 ^@s.*                                   { P("SECTION"); 
@@ -303,6 +310,27 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                                 enterState(INDENTTABLEROW, "INDENTTABLEROW"); 
                                                 yylval.text = strdup(yytext); 
                                                 return TABLE_INDENT;     
+                                            }
+                                            else{
+                                                enterState(CODEBLOCK, "CODEBLOCK"); 
+                                                yylval.text = strdup(yytext);
+                                                if (inner_pre_level(indent_level(yytext)) > -1) {
+                                                    P("INDENTED_PRE_INDENT"); return INDENTED_PRE_INDENT;
+                                                }
+                                                else {
+                                                    P("PRE_INDENT"); return PRE_INDENT;
+                                                }
+                                            }
+                                        }
+
+    /* indented quoted blankline */
+^(\t|[ ]{4})+/>[ ]{0,4}\r?\n            { 
+                                            /* quoted blankline */
+                                            if(is_in_list(indent_level(yytext))){
+                                                P("INDENT_QUOTEBLANKLINE"); 
+                                                enterState(INDENTQUOTE, "INDENTQUOTE");
+                                                yylval.text = strdup(yytext);
+                                                return INDENT_QUOTEBLANKLINE;
                                             }
                                             else{
                                                 enterState(CODEBLOCK, "CODEBLOCK"); 

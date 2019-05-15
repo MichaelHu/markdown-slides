@@ -17,9 +17,14 @@ static t_tag tags_of_block_node[] = {
     , TAG_BLOCK_INDENT_UL
     , TAG_BLOCK_INDENT_OL
     , TAG_BLOCK_INDENT_TEXT
+
+    , TAG_BLOCK_QUOTE
+    , TAG_QUOTE_H
     , TAG_BLOCK_QUOTE_UL
     , TAG_BLOCK_QUOTE_OL
     , TAG_BLOCK_QUOTE_P
+    , TAG_BLOCK_QUOTE_BLANK
+
     , TAG_BLOCK_BLANK
     , TAG_BLOCK_PRE
     , TAG_BLOCK_INDENT_PRE
@@ -81,6 +86,8 @@ static t_tag get_parent_block_node_tag(t_tag tag) {
             return TAG_BLOCK_QUOTE_OL;
         case TAG_QUOTE_P:
             return TAG_BLOCK_QUOTE_P;
+        case TAG_QUOTE_BLANK:
+            return TAG_BLOCK_QUOTE_BLANK;
         case TAG_BLANK:
             return TAG_BLOCK_BLANK;
         case TAG_PRE:
@@ -517,38 +524,16 @@ static t_link *visit_indented_node_to_complement_parent(t_node *node) {
                 move_node_and_siblings_as_children_of_new_node(node, new_uncle);
             }
             break;
-        default:
-            break;
-    }
 
-    return NULL;
-}
-
-static t_link *visit_indented_node_to_complement_parent_with_attr(t_node *node) {
-    t_node *parent, *new_uncle, *tmp;
-
-    // show_node(node);
-    if (is_block_node(node)) {
-        return NULL;
-    }
-
-    parent = node->parent;
-
-    if (!parent) {
-        fprintf(stderr, "==NULL parent link==\n");
-    }
-
-    switch (node->tag) {
-        case TAG_QUOTE_P:
+        case TAG_QUOTE_BLANK:
             if (parent && node->level != parent->level) {
                 new_uncle = block_node_create(
                     get_parent_block_node_tag(node->tag)
                     , get_parent_block_node_level(node)
-                    , 1
-                    // use the first child's attribute
-                    , *node->ops
+                    , 0
                 );
 
+                // show_node(new_uncle);
                 move_node_and_siblings_as_children_of_new_node(node, new_uncle);
             }
             break;

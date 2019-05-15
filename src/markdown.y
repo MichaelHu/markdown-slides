@@ -10,6 +10,11 @@
 #include "nodetree.h"
 
 #define _ISDEBUGPARSER 0
+#define _SHOW_TREE_AFTER_LEVEL_FIX 0
+#define _SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES 0
+#define _SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES 0
+#define _SHOW_TREE_AFTER_MERGE_BLOCK_NODES 0
+
 #define MAX_RULE_LEVEL 10
 #define YYERROR_VERBOSE
 
@@ -39,25 +44,38 @@ static void show_rule(char *str, int level) {
 
 static void parse_doc(void) {
     check_null_string_pointer(_root_node);
+
+    // log_str("==== fix node level ===="); 
     fix_node_level(_root_node);
 
-    // log_str("==== traverse ===="); 
-    // traverse_nodes(_root_node); 
+    if (_SHOW_TREE_AFTER_LEVEL_FIX) {
+        log_str("==== tree after level-fix ===="); 
+        traverse_nodes(_root_node); 
+    }
 
     // log_str("==== complement block nodes ===="); 
     complement_block_nodes(_root_node); 
 
-    // log_str("==== traverse ===="); 
-    // traverse_nodes(_root_node); 
+    if (_SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES) {
+        log_str("==== tree after complement block nodes ===="); 
+        traverse_nodes(_root_node); 
+    }
 
     // log_str("==== rearrange block nodes ===="); 
     rearrange_block_nodes(_root_node);
 
+    if (_SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES) {
+        log_str("==== tree after rearrange block nodes ===="); 
+        traverse_nodes(_root_node); 
+    }
+
     // log_str("==== merge block nodes ===="); 
     merge_block_nodes(_root_node);
 
-    // log_str("==== traverse ===="); 
-    // traverse_nodes(_root_node); 
+    if (_SHOW_TREE_AFTER_MERGE_BLOCK_NODES) {
+        log_str("==== tree after merge block nodes ===="); 
+        traverse_nodes(_root_node); 
+    }
 
     // log_str("==== parse doc tree ===="); 
     parse_node_tree(_root_node);
@@ -80,6 +98,7 @@ static void parse_doc(void) {
 %token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
 %token <text> ATTRLEFT ATTRRIGHT EMPTYATTR
 %token <text> EM_BEGIN EM_END STRONG_BEGIN STRONG_END
+%token <text> INDENT_QUOTEBLANKLINE
 
 %token MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES 
 %token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
@@ -94,13 +113,16 @@ static void parse_doc(void) {
 %type <node> tablerows tablerow tableceils tableceil
 %type <node> block_p line_p
 %type <node> block_blank line_blank
-%type <node> block_quote_p line_quote_p
 %type <node> block_ul line_ul block_ol line_ol
 %type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
-%type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 %type <node> block_pre line_pre block_indented_pre line_indented_pre
 %type <node> inline_elements inline_element inline_text_collection inline_text
 %type <node> plaintext link inline_code standard_link standard_image inline_emphasis inline_strong
+
+%type <node> block_quote_h
+%type <node> block_quote_blank line_quote_blank
+%type <node> block_quote_p line_quote_p
+%type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
 
 %nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK error
 %nonassoc STARX
@@ -199,20 +221,8 @@ block:
             show_rule("block: block_indent_text", 2);
             $$ = $1;
         }
-    | block_quote_ul {
-            show_rule("block: block_quote_ul", 2);
-            $$ = $1;
-        }
-    | block_quote_ol {
-            show_rule("block: block_quote_ol", 2);
-            $$ = $1;
-        }
     | block_blank {
             show_rule("block: block_blank", 2);
-            $$ = $1;
-        }
-    | block_quote_p {
-            show_rule("block: block_quote_p", 2);
             $$ = $1;
         }
     | block_pre {
@@ -223,6 +233,30 @@ block:
             show_rule("block: block_indented_pre", 2);
             $$ = $1;
         }
+
+    /* blockquote */
+    | block_quote_h {
+            show_rule("block: block_quote_h", 2);
+            $$ = $1;
+        }
+    | block_quote_ul {
+            show_rule("block: block_quote_ul", 2);
+            $$ = $1;
+        }
+    | block_quote_ol {
+            show_rule("block: block_quote_ol", 2);
+            $$ = $1;
+        }
+    | block_quote_p {
+            show_rule("block: block_quote_p", 2);
+            $$ = $1;
+        }
+    | block_quote_blank {
+            show_rule("block: block_quote_blank", 2);
+            $$ = $1;
+        }
+
+    /* other grammar */
     | pairedblock {
             show_rule("block: pairedblock", 2);
             $$ = $1;
@@ -231,6 +265,8 @@ block:
             show_rule("block: raw_text", 2);
             $$ = $1;
         }
+
+    /* error recovery */
     | error {
             show_rule("block: error", 2);
             _node = block_node_create(
@@ -254,24 +290,6 @@ header:
                 , 3
                 , *($2->ops) 
                 , "" 
-                , $1
-            );
-
-            _node->children = $2;
-            $2->parent = _node;
-            $$ = _node;
-        }   
-
-    | QUOTEH inline_elements LINEBREAK { 
-            show_rule("header: QUOTEH inline_elements LINEBREAK", 3);
-            tag_check_stack(TAG_QUOTE_H, 0); 
-
-            _node = block_node_create(
-                TAG_QUOTE_H
-                , 0
-                , 3
-                , *($2->ops)
-                , ""
                 , $1
             );
 
@@ -466,6 +484,74 @@ line_blank:
             );
             $$ = _node;
         }
+    ;
+
+block_quote_blank: 
+    block_quote_blank line_quote_blank {
+            show_rule("block_quote_blank: block_quote_blank line_quote_blank", 3);
+            _tail_node = tail_node_in_list($1->children);
+            _tail_node->next = $2;
+            $2->prev = _tail_node;
+            $2->parent = _tail_node->parent;
+            $$ = $1;
+        }
+    | line_quote_blank {
+            show_rule("block_quote_blank: line_quote_blank", 3);
+            _node = block_node_create(
+                TAG_BLOCK_QUOTE_BLANK
+                , $1->level
+                , 0
+            );
+            _node->children = $1;
+            $1->parent = _node;
+            $$ = _node;
+        }
+    ;
+
+line_quote_blank:
+    QUOTEBLANKLINE { 
+            show_rule("line_quote_blank: QUOTEBLANKLINE", 4);
+            tag_check_stack(TAG_QUOTE_BLANK, 100); 
+
+            _node = line_node_create(
+                TAG_QUOTE_BLANK
+                , 0
+                , 0
+            );
+            $$ = _node;
+        }
+
+    | INDENT_QUOTEBLANKLINE {
+            show_rule("line_quote_blank: INDENT_QUOTEBLANKLINE", 4);
+            tag_check_stack(TAG_QUOTE_BLANK, indent_level($1)); 
+
+            _node = line_node_create(
+                TAG_QUOTE_BLANK
+                , indent_level($1)
+                , 0
+            );
+            $$ = _node;
+        }
+    ;
+
+block_quote_h:
+    QUOTEH inline_elements LINEBREAK { 
+            show_rule("block_quote_h: QUOTEH inline_elements LINEBREAK", 3);
+            tag_check_stack(TAG_QUOTE_H, 0); 
+
+            _node = block_node_create(
+                TAG_QUOTE_H
+                , 0
+                , 3
+                , *($2->ops)
+                , ""
+                , $1
+            );
+
+            _node->children = $2;
+            $2->parent = _node;
+            $$ = _node;
+        }   
     ;
 
 block_quote_p:
@@ -1196,12 +1282,7 @@ tableceil:
 
 
 line:
-    QUOTEBLANKLINE { 
-            show_rule("line: QUOTEBLANKLINE", 4);
-            tag_check_stack(TAG_QUOTE_BLANK, 0); 
-        }
-
-    | SECTION LINEBREAK {
+    SECTION LINEBREAK {
             show_rule("line: SECTION LINEBREAK", 4);
             tag_check_stack(TAG_SECTION, -1); 
         }
