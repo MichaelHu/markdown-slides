@@ -41,6 +41,9 @@ static char *block_quote_ol_post_parse(t_node *);
 static char *li_pre_parse(t_node *);
 static char *li_post_parse(t_node *);
 
+static char *block_quote_pre_parse(t_node *);
+static char *block_quote_post_parse(t_node *);
+
 static char *table_pre_parse(t_node *);
 static char *table_post_parse(t_node *);
 static char *tr_pre_parse(t_node *);
@@ -270,6 +273,15 @@ static t_parser *get_parser(t_node *node) {
 
 
         /**
+         * blockquote parsers
+         */
+        case TAG_BLOCK_QUOTE:
+            p->pre_parse = block_quote_pre_parse;
+            p->post_parse = block_quote_post_parse;
+            break;
+
+
+        /**
          * 1. these line-level tags contain tag TAG_INLINE_TEXT
          * 2. so, they don't need to output
          */
@@ -385,7 +397,7 @@ static char *h_post_parse(t_node *node) {
 
 static char *quote_h_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<blockquote><h%d%s>%s"
+        "\n%s<h%d%s>%s"
         , str_padding_left("", node->level * 4)
         , count_of_char(*(node->ops + 2), '#') 
         , *node->ops 
@@ -394,7 +406,7 @@ static char *quote_h_pre_parse(t_node *node) {
 };
 static char *quote_h_post_parse(t_node *node) {
     return str_format(
-        "</h%d></blockquote>\n"
+        "</h%d>\n"
         , count_of_char(*(node->ops + 2), '#') 
     );
 }
@@ -433,28 +445,28 @@ static char *block_ol_post_parse(t_node *node) {
 
 static char *block_quote_ul_pre_parse(t_node *node) {
     return str_format(
-        "\n<blockquote>\n%s<ul>\n"
+        "\n%s<ul>\n"
         , str_padding_left("", node->level * 4)
     );
 }
 
 static char *block_quote_ul_post_parse(t_node *node) {
     return str_format(
-        "\n%s</ul>\n</blockquote>\n"
+        "\n%s</ul>\n"
         , str_padding_left("", node->level * 4)
     );
 }
 
 static char *block_quote_ol_pre_parse(t_node *node) {
     return str_format(
-        "\n<blockquote>\n%s<ol>\n"
+        "\n%s<ol>\n"
         , str_padding_left("", node->level * 4)
     );
 }
 
 static char *block_quote_ol_post_parse(t_node *node) {
     return str_format(
-        "\n%s</ol>\n</blockquote>\n"
+        "\n%s</ol>\n"
         , str_padding_left("", node->level * 4)
     );
 }
@@ -549,7 +561,7 @@ static char *p_post_parse(t_node *node) {
 
 static char *quote_p_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<blockquote><p%s>"
+        "\n%s<p%s>"
         , str_padding_left("", node->level * 4)
         , *node->ops
     );
@@ -557,7 +569,7 @@ static char *quote_p_pre_parse(t_node *node) {
 
 static char *quote_p_post_parse(t_node *node) {
     return str_format(
-        "\n%s</p></blockquote>"
+        "\n%s</p>\n"
         , str_padding_left("", node->level * 4)
     );
 }
@@ -665,6 +677,24 @@ static char *blank_pre_parse(t_node *node) {
 static char *blank_post_parse(t_node *node) {
     return str_format(
         ""
+    );
+}
+
+
+/**
+ * block quote parsers
+ */
+static char *block_quote_pre_parse(t_node *node) {
+    return str_format(
+        "\n%s<blockquote>\n"
+        , str_padding_left("", node->level * 4)
+    );
+}
+
+static char *block_quote_post_parse(t_node *node) {
+    return str_format(
+        "\n%s</blockquote>\n"
+        , str_padding_left("", node->level * 4)
     );
 }
 

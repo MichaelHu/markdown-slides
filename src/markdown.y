@@ -14,6 +14,7 @@
 #define _SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES 0
 #define _SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES 0
 #define _SHOW_TREE_AFTER_MERGE_BLOCK_NODES 0
+#define _SHOW_TREE_AFTER_MERGE_QUOTED_BLOCK_NODES 0
 
 #define MAX_RULE_LEVEL 10
 #define YYERROR_VERBOSE
@@ -74,6 +75,14 @@ static void parse_doc(void) {
 
     if (_SHOW_TREE_AFTER_MERGE_BLOCK_NODES) {
         log_str("==== tree after merge block nodes ===="); 
+        traverse_nodes(_root_node); 
+    }
+
+    // log_str("==== merge quoted block nodes ===="); 
+    merge_quoted_block_nodes(_root_node);
+
+    if (_SHOW_TREE_AFTER_MERGE_QUOTED_BLOCK_NODES) {
+        log_str("==== tree after merge quoted block nodes ===="); 
         traverse_nodes(_root_node); 
     }
 

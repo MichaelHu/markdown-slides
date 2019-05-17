@@ -64,6 +64,15 @@ static t_tag tags_of_list_node[] = {
 static int tags_of_list_node_size
     = sizeof(tags_of_list_node) / sizeof(t_tag);
 
+static t_tag tags_of_quoted_block_node[] = {
+    TAG_QUOTE_H
+    , TAG_BLOCK_QUOTE_UL
+    , TAG_BLOCK_QUOTE_OL
+    , TAG_BLOCK_QUOTE_P
+    , TAG_BLOCK_QUOTE_BLANK
+};
+static int tags_of_quoted_block_node_size
+    = sizeof(tags_of_quoted_block_node) / sizeof(t_tag);
 
 
 static t_tag get_parent_block_node_tag(t_tag tag) {
@@ -146,6 +155,14 @@ static int is_line_list_node(t_node *node) {
     ) > -1;
 }
 
+static int is_quoted_block_node(t_node *node) {
+    return index_of(
+        tags_of_quoted_block_node
+        , tags_of_quoted_block_node_size
+        , node->tag
+    ) > -1;
+}
+
 static int is_node_need_merged_when_adjacent(t_node *node) {
     return index_of(
         tags_of_node_need_merged_when_adjacent
@@ -163,6 +180,20 @@ static int is_node_need_merged_when_adjacent_and_not_blank_seperated(t_node *nod
 }
 
 static t_node *prev_node;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 t_node *tail_node_in_list(t_node *node) {
     t_node *p = node, *pre = node;
@@ -852,6 +883,84 @@ void merge_block_nodes(t_node *root) {
     prev_node = NULL;
     traverse_nodes_with_visitor(root, visit_to_merge_block_nodes, 0);
 }
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Merge quoted block nodes
+ * ===================================================================================
+ */
+static t_link *visit_to_merge_quoted_block_nodes(t_node *node) {
+    t_link *new_link = NULL;
+    t_node *list_start, *list_end;
+    t_node *new_parent, *tmp;
+
+    if (!is_quoted_block_node(node)) {
+        return new_link;
+    }
+
+    list_start = list_end = node;
+    while (list_end->next && is_quoted_block_node(list_end->next)) {
+        list_end = list_end->next;
+    }
+
+    new_parent = block_node_create(
+        TAG_BLOCK_QUOTE
+        , list_start->level
+        , 0
+    );
+    new_link = (t_link *)malloc(sizeof(t_node));
+
+    // 1. modify new_parent itself
+    new_parent->parent = list_start->parent;
+    new_parent->children = list_start;
+    new_parent->prev = list_start->prev;
+    new_parent->next = list_end->next;
+
+    // 2. modify external nodes of new_parent if necessary
+    if (!new_parent->prev) {
+        // when node is the first children
+        new_parent->parent->children = new_parent;
+    }
+    else {
+        new_parent->prev->next = new_parent;
+    }
+
+    if (new_parent->next) {
+        new_parent->next->prev = new_parent;
+    }
+
+    tmp = list_start;
+    while (tmp != list_end) {
+        tmp->parent = new_parent;
+        tmp = tmp->next;
+    }
+    tmp->parent = new_parent;
+
+    // 3. modify list_start and list_end to remove them from original context
+    // 3.1 for list_start
+    list_start->prev = NULL;
+    // 3.2 for list_end
+    list_end->next = NULL;
+
+    new_link->children = NULL;
+    new_link->next = new_parent->next;
+
+    return new_link;
+}
+
+void merge_quoted_block_nodes(t_node *root) {
+    traverse_nodes_with_visitor(root, visit_to_merge_quoted_block_nodes, 0);
+}
+
 
 
 

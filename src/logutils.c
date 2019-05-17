@@ -3,9 +3,11 @@
 static void log_common(int type, char *str, int d) {
     if (1 == type) {
         fprintf(stderr, "# %s\n", str);
+        fflush(stderr);
     }
     else {
         fprintf(stderr, "# %d\n", d);
+        fflush(stderr);
     }
 }
 
