@@ -43,10 +43,10 @@ char *str_format(char *format, ...) {
     va_list args; 
 
     /**
-     * support string size up to 5MB
+     * support string size up to 20MB
      */
     if (!str_buf) {
-        str_buf = str_alloc(5000000);
+        str_buf = str_alloc(20000000);
     }
 
     va_start(args, format);

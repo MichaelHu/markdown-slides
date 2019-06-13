@@ -58,8 +58,12 @@ static t_tag tags_of_list_node[] = {
     , TAG_OL
     , TAG_INDENT_UL
     , TAG_INDENT_OL
-    , TAG_QUOTE_UL
-    , TAG_QUOTE_OL
+
+    /**
+     * note: do not include quoted list nodes temporarily
+     */
+    // , TAG_QUOTE_UL
+    // , TAG_QUOTE_OL
 };
 static int tags_of_list_node_size
     = sizeof(tags_of_list_node) / sizeof(t_tag);
@@ -697,8 +701,9 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
                 p = p->parent;
             }
 
-            if (!is_line_list_node(p)) {
+            if (!p || !is_line_list_node(p)) {
                 fprintf(stderr, "visit_to_rearrange_block_nod(): error containing list node\n");
+                return new_link;
             }
 
 
@@ -747,7 +752,7 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
                         ( 
                             is_block_node(p) 
                             /**
-                             * 1. TAG_ERROR, like TAG_H, has no children
+                             * 1. TAG_ERROR has no children
                              * 2. so, the closest parent block node must not be TAG_ERROR
                              */
                             && TAG_ERROR != p->tag 
@@ -762,11 +767,25 @@ static t_link *visit_to_rearrange_block_node(t_node *node) {
             }
 
             if (!is_block_node(p) && !is_line_list_node(p) && !is_tableceil_node(p)) {
-                log_str("visit_to_rearrange_block_node(): p is neither a block node, nor a line-level list node");
+                log_str("visit_to_rearrange_block_node(): p is not a block, line-level list or tableceil node");
                 // show_node(p);
             }
 
-            if (p->children) {
+            if (p->children 
+                /**
+                 * 1. p must not be quoted block node
+                 * 2. because if so, two quoted block nodes separated by blanks will be merged. The input text: 
+                 *
+                 *          > a
+                 *
+                 *
+                 *          > b
+                 *
+                 *     will output:
+                 *          <blockquote><p>a</p><p>b</p></blockquote>
+                 *     but it's not desired.
+                 */
+                && !is_quoted_block_node(p)) {
                 tail = tail_node_in_list(p->children);
                 new_link = move_as_the_tail(tail, node);
 
