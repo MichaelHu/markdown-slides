@@ -496,14 +496,14 @@ static char *li_post_parse(t_node *node) {
  */
 static char *table_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<table>\n"
+        "\n%s<table data-toggle=\"table\"><thead>\n"
         , str_padding_left("", node->level * 4)
     );
 }
 
 static char *table_post_parse(t_node *node) {
     return str_format(
-        "\n%s</table>\n"
+        "\n%s</tbody></table>\n"
         , str_padding_left("", node->level * 4)
     );
 }
@@ -517,17 +517,19 @@ static char *tr_pre_parse(t_node *node) {
 
 static char *tr_post_parse(t_node *node) {
     return str_format(
-        "\n%s</tr>\n"
+        "\n%s</tr>%s\n"
         , str_padding_left("", node->level * 4)
+        , !node->prev ? "</thead><tbody>" : ""
     );
 }
 
 static char *td_pre_parse(t_node *node) {
     return str_format(
-        "\n%s<%s%s>"
+        "\n%s<%s%s%s>"
         , str_padding_left("", node->level * 4)
         , node->parent->prev ? "td" : "th"
         , *node->ops
+        , node->parent->prev ? "" : " data-sortable=\"true\""
     );
 }
 

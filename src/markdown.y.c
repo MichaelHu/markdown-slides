@@ -683,10 +683,10 @@ static const yytype_uint16 yyrline[] =
      916,   932,   970,   978,   995,  1012,  1030,  1038,  1055,  1079,
     1097,  1112,  1130,  1145,  1163,  1182,  1190,  1203,  1207,  1212,
     1217,  1227,  1235,  1250,  1263,  1278,  1294,  1299,  1308,  1316,
-    1353,  1361,  1362,  1363,  1364,  1365,  1366,  1371,  1386,  1395,
-    1411,  1426,  1435,  1460,  1468,  1509,  1517,  1518,  1531,  1551,
-    1568,  1586,  1591,  1603,  1615,  1627,  1628,  1629,  1633,  1648,
-    1663,  1683,  1684,  1688,  1689
+    1353,  1361,  1362,  1363,  1364,  1365,  1366,  1399,  1414,  1423,
+    1439,  1454,  1463,  1488,  1496,  1537,  1545,  1546,  1559,  1579,
+    1596,  1614,  1619,  1631,  1643,  1655,  1656,  1657,  1661,  1676,
+    1691,  1711,  1712,  1716,  1717
 };
 #endif
 
@@ -3357,7 +3357,7 @@ yyreduce:
     break;
 
   case 107:
-#line 1371 "markdown.y"
+#line 1399 "markdown.y"
     {
             show_rule("inline_emphasis: EM_BEGIN inline_text_collection EM_END", 7);
             _node = inline_node_create(
@@ -3375,7 +3375,7 @@ yyreduce:
     break;
 
   case 108:
-#line 1386 "markdown.y"
+#line 1414 "markdown.y"
     {
             show_rule("inline_emphasis: EM_BEGIN inline_text_collection error", 7);
             str = str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->children->ops + 1));
@@ -3387,7 +3387,7 @@ yyreduce:
     break;
 
   case 109:
-#line 1395 "markdown.y"
+#line 1423 "markdown.y"
     {
             show_rule("inline_emphasis: EM_BEGIN EM_END", 7);
             _node = inline_node_create(
@@ -3403,7 +3403,7 @@ yyreduce:
     break;
 
   case 110:
-#line 1411 "markdown.y"
+#line 1439 "markdown.y"
     {
             show_rule("inline_strong: STRONG_BEGIN inline_text_collection STRONG_END", 7);
             _node = inline_node_create(
@@ -3421,7 +3421,7 @@ yyreduce:
     break;
 
   case 111:
-#line 1426 "markdown.y"
+#line 1454 "markdown.y"
     {
             show_rule("inline_strong: STRONG_BEGIN inline_text_collection error", 7);
             str = str_concat((yyvsp[(1) - (3)].text), *((yyvsp[(2) - (3)].node)->children->ops + 1));
@@ -3433,7 +3433,7 @@ yyreduce:
     break;
 
   case 112:
-#line 1435 "markdown.y"
+#line 1463 "markdown.y"
     {
             show_rule("inline_strong: STRONG_BEGIN STRONG_END", 7);
             _node = inline_node_create(
@@ -3449,7 +3449,7 @@ yyreduce:
     break;
 
   case 113:
-#line 1460 "markdown.y"
+#line 1488 "markdown.y"
     {
             show_rule("inline_text_collection: inline_text_collection inline_text", 5);
             _tail_node = tail_node_in_list((yyvsp[(1) - (2)].node)->children);
@@ -3461,7 +3461,7 @@ yyreduce:
     break;
 
   case 114:
-#line 1468 "markdown.y"
+#line 1496 "markdown.y"
     {
             show_rule("inline_text_collection: inline_text", 5);
             if (
@@ -3499,7 +3499,7 @@ yyreduce:
     break;
 
   case 115:
-#line 1509 "markdown.y"
+#line 1537 "markdown.y"
     {
             show_rule("inline_text: plaintext", 6);
             tag_info = markdown_get_tag_info(*((yyvsp[(1) - (1)].node)->ops + 1));     
@@ -3511,17 +3511,17 @@ yyreduce:
     break;
 
   case 116:
-#line 1517 "markdown.y"
+#line 1545 "markdown.y"
     { show_rule("inline_text: link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 117:
-#line 1518 "markdown.y"
+#line 1546 "markdown.y"
     { show_rule("inline_text: standard_link", 6); (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 118:
-#line 1531 "markdown.y"
+#line 1559 "markdown.y"
     {
             show_rule("link: LINK", 7);
             // get content A between `<` and `>`
@@ -3542,7 +3542,7 @@ yyreduce:
     break;
 
   case 119:
-#line 1551 "markdown.y"
+#line 1579 "markdown.y"
     {
             show_rule("standard_link: LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_link_tag_info(*((yyvsp[(2) - (5)].node)->ops + 1), *((yyvsp[(4) - (5)].node)->ops + 1));
@@ -3560,7 +3560,7 @@ yyreduce:
     break;
 
   case 120:
-#line 1568 "markdown.y"
+#line 1596 "markdown.y"
     {
             show_rule("standard_image: EXCLAMATION_LEFTSQUARE plaintext RIGHTSQUARE_LEFTBRACKET plaintext RIGHTBRACKET", 7);
             tag_info = markdown_get_standard_image_tag_info(*((yyvsp[(2) - (5)].node)->ops + 1), *((yyvsp[(4) - (5)].node)->ops + 1));
@@ -3578,7 +3578,7 @@ yyreduce:
     break;
 
   case 121:
-#line 1586 "markdown.y"
+#line 1614 "markdown.y"
     {
             show_rule("plaintext: plaintext text_list", 7);
             *((yyvsp[(1) - (2)].node)->ops + 1) = str_concat(*((yyvsp[(1) - (2)].node)->ops + 1), (yyvsp[(2) - (2)].text));
@@ -3587,7 +3587,7 @@ yyreduce:
     break;
 
   case 122:
-#line 1591 "markdown.y"
+#line 1619 "markdown.y"
     {
             show_rule("plaintext: text_list", 7);
             _node = inline_node_create(
@@ -3603,7 +3603,7 @@ yyreduce:
     break;
 
   case 123:
-#line 1603 "markdown.y"
+#line 1631 "markdown.y"
     {
             show_rule("plaintext: ATTRLEFT plaintext ATTRRIGHT", 7);
             *((yyvsp[(2) - (3)].node)->ops + 1) = str_concat(
@@ -3619,7 +3619,7 @@ yyreduce:
     break;
 
   case 124:
-#line 1615 "markdown.y"
+#line 1643 "markdown.y"
     {
             show_rule("plaintext: ATTRLEFT plaintext error", 7);
             *((yyvsp[(2) - (3)].node)->ops + 1) = str_concat(
@@ -3632,22 +3632,22 @@ yyreduce:
     break;
 
   case 125:
-#line 1627 "markdown.y"
+#line 1655 "markdown.y"
     { show_rule("text_list: TEXT", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 126:
-#line 1628 "markdown.y"
+#line 1656 "markdown.y"
     { show_rule("text_list: SPECIALCHAR", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 127:
-#line 1629 "markdown.y"
+#line 1657 "markdown.y"
     { show_rule("text_list: EMPTYATTR", 8); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 128:
-#line 1633 "markdown.y"
+#line 1661 "markdown.y"
     { 
             show_rule("inline_code: BACKTICK codespan BACKTICK", 7);
             tag_info = markdown_get_tag_info((yyvsp[(2) - (3)].text));
@@ -3665,7 +3665,7 @@ yyreduce:
     break;
 
   case 129:
-#line 1648 "markdown.y"
+#line 1676 "markdown.y"
     { 
             show_rule("inline_code: BACKTICK codespan error", 7);
             _node = inline_node_create(
@@ -3683,7 +3683,7 @@ yyreduce:
     break;
 
   case 130:
-#line 1663 "markdown.y"
+#line 1691 "markdown.y"
     { 
             show_rule("inline_code: BACKTICK error", 7);
             _node = inline_node_create(
@@ -3701,22 +3701,22 @@ yyreduce:
     break;
 
   case 131:
-#line 1683 "markdown.y"
+#line 1711 "markdown.y"
     { show_rule("codespan: codespan code_list", 8); (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text)); ;}
     break;
 
   case 132:
-#line 1684 "markdown.y"
+#line 1712 "markdown.y"
     { show_rule("codespan: code_list", 8); (yyval.text) = (yyvsp[(1) - (1)].text); ;}
     break;
 
   case 133:
-#line 1688 "markdown.y"
+#line 1716 "markdown.y"
     { show_rule("code_list: CODETEXT", 9); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
   case 134:
-#line 1689 "markdown.y"
+#line 1717 "markdown.y"
     { show_rule("code_list: SPECIALCHAR", 9); (yyval.text) = str_format("%s", (yyvsp[(1) - (1)].text)); ;}
     break;
 
@@ -3942,7 +3942,7 @@ yyreturn:
 }
 
 
-#line 1692 "markdown.y"
+#line 1720 "markdown.y"
 
 
 

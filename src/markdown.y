@@ -1364,6 +1364,34 @@ inline_element:
     | inline_code { show_rule("inline_element: inline_code", 6); $$ = $1; }
     | inline_emphasis { show_rule("inline_element: inline_emphasis", 6); $$ = $1; }
     | inline_strong { show_rule("inline_element: inline_strong", 6); $$ = $1; }
+
+
+    /**
+     * 1. if use this rule, `test-dos-nolinebreak.md` will get in an infinite error loop
+     * 2. we'll get more information if use this rule, but it is error-prone in some cases
+     * 3. so, we drop this rule to get a more stable parser
+     */
+    /*
+    | error {
+            show_rule("inline_element: error", 6);
+            log_str($1);
+            _node = inline_node_create(
+                TAG_INLINE_TEXT
+                , NODE_LEVEL_SPECIAL
+                , 2
+                , ""
+                , $1 
+            );
+
+            $$ = _node;
+
+            yyerrok;
+            
+            // 1. the current token is a non-linebreak token
+            // 2. we should eat it immediately, otherwise we will get an infinite error loop
+            yyclearin;
+        }
+     */
     ;
 
 
