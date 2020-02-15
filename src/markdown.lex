@@ -54,6 +54,11 @@ static void popWhenTopStateIs(int state) {
         restoreState();
     }
 }
+static void clearAllState() {
+    while( lex_state_pop_stack() ) {
+    }
+    restoreState();
+}
 
 %}
 
@@ -61,7 +66,7 @@ static void popWhenTopStateIs(int state) {
 %x ESCAPE CODEBLOCK XCODEBLOCK CODESPAN XCODESPAN
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
 %x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART XSTRONGSTART YSTRONGSTART INDENTTABLEROW
-%x INDENTQUOTE
+%x INDENTQUOTE QUOTESTART
 
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
@@ -79,7 +84,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 ^>"   "\r?\n                            { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
 ^>"    "\r?\n                           { yylineno++; P("QUOTEBLANKLINE"); return QUOTEBLANKLINE; }
 
-^>                                      { P("LARGERTHAN"); return LARGERTHAN; }
+^>                                      { P("LARGERTHAN"); enterState(QUOTESTART, "QUOTESTART"); return LARGERTHAN; }
     /* indented quote blankline: eat only, no token returned */
 <INDENTQUOTE>">"\r?\n                   { yylineno++; restoreState(); }
 <INDENTQUOTE>"> "\r?\n                  { yylineno++; restoreState(); }
@@ -87,7 +92,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <INDENTQUOTE>">   "\r?\n                { yylineno++; restoreState(); }
 <INDENTQUOTE>">    "\r?\n               { yylineno++; restoreState(); }
     /* indented quote */
-<INDENTQUOTE>">"                        { P("LARGERTHAN"); restoreState(); return LARGERTHAN; }
+<INDENTQUOTE>">"                        { P("LARGERTHAN"); restoreState(); enterState(QUOTESTART, "QUOTESTART"); return LARGERTHAN; }
 
 ^@s.*                                   { P("SECTION"); 
                                             yylval.text = strdup(yytext);
@@ -97,26 +102,26 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                             return VSECTION; }
 
     /* escape */
-<INITIAL,TABLEROW,LINKSTART,LINKATTR,ATTRSTART,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
+<INITIAL,QUOTESTART,TABLEROW,LINKSTART,LINKATTR,ATTRSTART,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\\ { P("ESCAPE"); enterState(ESCAPE, "ESCAPE"); }
 <ESCAPE>[\\`*_{}()#+\-.!]               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>.                               { restoreState(); yylval.text = strdup(yytext); P("SPECIALCHAR"); return SPECIALCHAR; }
 <ESCAPE>\r?\n                           { restoreState(); yylineno++; yylval.text = strdup("<br>"); P("SPECIALCHAR"); return SPECIALCHAR; }
 
 
     /* strong */
-<INITIAL,TABLEROW>\*\*/[^ \r\n]         {
+<INITIAL,TABLEROW,QUOTESTART>\*\*/[^ \r\n]         {
                                             P("STRONG_BEGIN");
                                             yylval.text = strdup(yytext);
                                             enterState(XSTRONGSTART, "XSTRONGSTART");
                                             return STRONG_BEGIN;
                                         }
-<INITIAL,TABLEROW>__/[^ \r\n]               {
+<INITIAL,TABLEROW,QUOTESTART>__/[^ \r\n]               {
                                             P("STRONG_BEGIN");
                                             yylval.text = strdup(yytext);
                                             enterState(YSTRONGSTART, "YSTRONGSTART");
                                             return STRONG_BEGIN;
                                         }
-<INITIAL,TABLEROW,XSTRONGSTART,YSTRONGSTART>[ ]\*\*[ ]|[ ]__[ ] {
+<INITIAL,TABLEROW,QUOTESTART,XSTRONGSTART,YSTRONGSTART>[ ]\*\*[ ]|[ ]__[ ] {
                                             P("TEXT");
                                             yylval.text = strdup(yytext);
                                             return TEXT;
@@ -148,19 +153,19 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* emphasis */
-<INITIAL,TABLEROW>\*/[^ \*\r\n]         {
+<INITIAL,TABLEROW,QUOTESTART>\*/[^ \*\r\n]         {
                                             P("EM_BEGIN");
                                             yylval.text = strdup(yytext);
                                             enterState(XEMSTART, "XEMSTART");
                                             return EM_BEGIN;
                                         }
-<INITIAL,TABLEROW>_/[^ _\r\n]           {
+<INITIAL,TABLEROW,QUOTESTART>_/[^ _\r\n]           {
                                             P("EM_BEGIN");
                                             yylval.text = strdup(yytext);
                                             enterState(YEMSTART, "YEMSTART");
                                             return EM_BEGIN;
                                         }
-<INITIAL,TABLEROW,XEMSTART,YEMSTART>[ ][\*_][ ]   {
+<INITIAL,TABLEROW,QUOTESTART,XEMSTART,YEMSTART>[ ][\*_][ ]   {
                                             P("TEXT");
                                             yylval.text = strdup(yytext);
                                             return TEXT;
@@ -191,12 +196,12 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 
     /* attribute list */
-<INITIAL,TABLEROW>@\[\]                 { 
+<INITIAL,TABLEROW,QUOTESTART>@\[\]                 { 
                                             P("EMPTYATTR");
                                             yylval.text = strdup(yytext);
                                             return EMPTYATTR;
                                         }
-<INITIAL,TABLEROW>@\[                   { 
+<INITIAL,TABLEROW,QUOTESTART>@\[                   { 
                                             P("ATTRLEFT");
                                             yylval.text = strdup(yytext);
                                             enterState(ATTRSTART, "ATTRSTART");
@@ -223,7 +228,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 
 
     /* backtick only support single line mode */
-<INITIAL,TABLEROW>"`"                   { P("BACKTICK"); enterState(CODESPAN, "CODESPAN"); yylval.text = strdup(yytext); return BACKTICK; }
+<INITIAL,TABLEROW,QUOTESTART>"`"                   { P("BACKTICK"); enterState(CODESPAN, "CODESPAN"); yylval.text = strdup(yytext); return BACKTICK; }
 <CODESPAN>\\`                           { P("SPECIALCHAR"); 
                                             yylval.text = strdup("`"); return SPECIALCHAR; }
 <CODESPAN>[^\r\n`]                      { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
@@ -231,7 +236,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <CODESPAN>`                             { P("BACKTICK"); restoreState(); yylval.text = strdup(yytext); return BACKTICK; }
 
     /* double-backtick will be teated as plain text */
-<INITIAL,TABLEROW>"``"                  { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
+<INITIAL,TABLEROW,QUOTESTART>"``"                  { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
 
 ^```.*\r?\n                             { P("TRIPLEBACKTICK"); yylineno++; enterState(XCODEBLOCK, "XCODEBLOCK"); yylval.text = strdup(yytext); return TRIPLEBACKTICK; }
 <XCODEBLOCK>.                           { P("CODETEXT"); yylval.text = strdup(yytext); return CODETEXT; }
@@ -408,19 +413,19 @@ quoteblankline ^>[ ]{0,4}\r?\n
 <SHTMLBLOCK>\r?\n       { yylineno++; P("LINEBREAK"); restoreState();  return LINEBREAK; }
 
     /* linkable text */
-<INITIAL,TABLEROW,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\<(https?|ftp|ref):\/\/[^\r\n\>]+\> {
+<INITIAL,TABLEROW,QUOTESTART,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\<(https?|ftp|ref):\/\/[^\r\n\>]+\> {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
                                         }
-<INITIAL,TABLEROW,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\<mailto:[^\r\n\>]+\> {
+<INITIAL,TABLEROW,QUOTESTART,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\<mailto:[^\r\n\>]+\> {
                                             yylval.text = strdup(yytext);
                                             P("LINK");
                                             return LINK;
                                         }
 
     /* image: ![Alt text](/path/to/img.jpg "optional title") */
-<INITIAL,TABLEROW>!\[/[^\r\n]+\]\([^\r\n]+\) {
+<INITIAL,TABLEROW,QUOTESTART>!\[/[^\r\n]+\]\([^\r\n]+\) {
                                             yylval.text = strdup(yytext);
                                             P("EXCLAMATION_LEFTSQUARE");
                                             enterState(LINKSTART, "LINKSTART"); 
@@ -428,7 +433,7 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 
     /* link: [an example](http://example.com/ "Title") */
-<INITIAL,TABLEROW,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\[/[^\r\n]+\]\([^\r\n]+\) {
+<INITIAL,TABLEROW,QUOTESTART,XEMSTART,YEMSTART,XSTRONGSTART,YSTRONGSTART>\[/[^\r\n]+\]\([^\r\n]+\) {
                                             yylval.text = strdup(yytext);
                                             P("LEFTSQUARE");
                                             enterState(LINKSTART, "LINKSTART"); 
@@ -537,11 +542,22 @@ quoteblankline ^>[ ]{0,4}\r?\n
                                         }
 
 
-
-
+    /* simple quote */
+<QUOTESTART>.                           {
+                                            P("TEXT");
+                                            yylval.text = strdup(yytext);
+                                            return TEXT;
+                                        }
+<QUOTESTART>\r?\n                       {
+                                            P("LINEBREAK");
+                                            yylineno++;
+                                            yylval.text = strdup(yytext);
+                                            restoreState();
+                                            return LINEBREAK;
+                                        }
 
 .                             { yylval.text = strdup(yytext); P("TEXT"); return TEXT; }
-\r?\n                         { yylineno++; P("LINEBREAK"); return LINEBREAK; }
+\r?\n                         { yylineno++; P("LINEBREAK"); restoreState(); return LINEBREAK; }
 
 
 %%
