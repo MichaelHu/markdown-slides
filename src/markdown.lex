@@ -10,7 +10,7 @@
 #undef _ONLYLEX
 #undef _ISDEBUGLEX
 
-
+/*#define _ONLYLEX*/
 
 
 #ifdef _ONLYLEX
