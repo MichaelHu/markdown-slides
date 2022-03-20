@@ -115,6 +115,7 @@ static char* grammar_rules[] = {
                         "inline_element: italic", "6",
                         "inline_element: strong", "6",
                         "inline_element: linethrough", "6",
+                        "inline_element: inlinecode", "6",
 
                             "inline_text: inline_text inline_text_item", "7",
                             "inline_text: inline_text_item", "7",
@@ -122,7 +123,6 @@ static char* grammar_rules[] = {
                                 "inline_text_item: LESSTHAN", "8",
                                 "inline_text_item: LARGERTHAN", "8",
                                 "inline_text_item: TRIPLEBACKTICK", "8",
-                                "inline_text_item: BACKTICK", "8",
                                 "inline_text_item: VERTICAL", "8",
                                 "inline_text_item: PLUS", "8",
                                 "inline_text_item: MINUS", "8",
@@ -139,6 +139,15 @@ static char* grammar_rules[] = {
                                 "inline_text_item: LEFTPARENTHESIS", "8",
                                 "inline_text_item: RIGHTPARENTHESIS", "8",
                                 "inline_text_item: TEXT", "8",
+
+                            "inline_code_text: inline_code_text inline_code_text_item", "7",
+                            "inline_code_text: inline_code_text_item", "7",
+
+                                "inline_code_text_item: inline_text_item", "7",
+                                "inline_code_text_item: H", "7",
+                                "inline_code_text_item: ASTERISK", "7",
+                                "inline_code_text_item: DOUBLEASTERISK", "7",
+                                "inline_code_text_item: DOUBLETILDE", "7",
 
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
@@ -163,7 +172,17 @@ static char* grammar_rules[] = {
                             "italic: ASTERISK inline_text error", "7",
                             "italic: ASTERISK error", "7",
 
-                            "strong: DOUBLEASTERISK inline_text DOUBLEASTERISK", "7"
+                            "strong: DOUBLEASTERISK inline_text DOUBLEASTERISK", "7",
+                            "strong: DOUBLEASTERISK inline_text error", "7",
+                            "strong: DOUBLEASTERISK error", "7",
+
+                            "linethrough: DOUBLETILDE inline_text DOUBLETILDE", "7",
+                            "linethrough: DOUBLETILDE inline_text error", "7",
+                            "linethrough: DOUBLETILDE error", "7",
+
+                            "inlinecode: BACKTICK inline_code_text BACKTICK", "7",
+                            "inlinecode: BACKTICK inline_code_text error", "7",
+                            "inlinecode: BACKTICK error", "7"
 };
 static int rule_count = sizeof(grammar_rules) / sizeof(char**);
 
@@ -191,7 +210,7 @@ static void show_rule( char *str ){
             }
         }
         else{
-            fprintf(stderr, "rule info not found: %s\n", str);
+            fprintf(stderr, "\033[25;31;40m rule info not found: %s \033[0m\n", str);
         }
     }
 }
@@ -257,6 +276,7 @@ static void show_rule( char *str ){
 %token BACKTICK            
 %token VERTICAL            
 %token DOUBLEASTERISK      
+%token DOUBLETILDE      
 %token ASTERISK            
 %token PLUS                
 %token MINUS               
@@ -383,6 +403,15 @@ inline_element:
     | italic {
             show_rule("inline_element: italic");
         }
+    | strong {
+            show_rule("inline_element: strong");
+        }
+    | linethrough {
+            show_rule("inline_element: linethrough");
+        }
+    | inlinecode {
+            show_rule("inline_element: inlinecode");
+        }
     ;
 
 inline_text:
@@ -404,14 +433,8 @@ inline_text_item:
     | TRIPLEBACKTICK {
             show_rule("inline_text_item: TRIPLEBACKTICK");
         }           
-    | BACKTICK {
-            show_rule("inline_text_item: BACKTICK");
-        }           
     | VERTICAL {
             show_rule("inline_text_item: VERTICAL");
-        }           
-    | DOUBLEASTERISK {
-            show_rule("inline_text_item: DOUBLEASTERISK");
         }           
     | PLUS {
             show_rule("inline_text_item: PLUS");
@@ -462,6 +485,34 @@ inline_text_item:
             show_rule("inline_text_item: TEXT");
         }           
     ;          
+
+inline_code_text:
+    inline_code_text inline_code_text_item {
+            show_rule("inline_code_text: inline_code_text inline_code_text_item");
+        }
+    | inline_code_text_item {
+            show_rule("inline_code_text: inline_code_text_item");
+        }
+    ;
+
+inline_code_text_item:
+    inline_text_item {
+            show_rule("inline_code_text_item: inline_text_item");
+        }
+    | H {
+            show_rule("inline_code_text_item: H");
+        }
+    | ASTERISK {
+            show_rule("inline_code_text_item: ASTERISK");
+        }
+    | DOUBLEASTERISK {
+            show_rule("inline_code_text_item: DOUBLEASTERISK");
+        }
+    | DOUBLETILDE {
+            show_rule("inline_code_text_item: DOUBLETILDE");
+        }
+    ;
+
 
 link: 
     LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
@@ -523,6 +574,42 @@ italic:
         }
     | ASTERISK error {
             show_rule("italic: ASTERISK error");
+        }
+    ;
+
+strong:
+    DOUBLEASTERISK inline_text DOUBLEASTERISK {
+            show_rule("strong: DOUBLEASTERISK inline_text DOUBLEASTERISK");
+        }
+    | DOUBLEASTERISK inline_text error {
+            show_rule("strong: DOUBLEASTERISK inline_text error");
+        }
+    | DOUBLEASTERISK error {
+            show_rule("strong: DOUBLEASTERISK error");
+        }
+    ;
+
+linethrough:
+    DOUBLETILDE inline_text DOUBLETILDE {
+            show_rule("linethrough: DOUBLETILDE inline_text DOUBLETILDE");
+        }
+    | DOUBLETILDE inline_text error {
+            show_rule("linethrough: DOUBLETILDE inline_text error");
+        }
+    | DOUBLETILDE error {
+            show_rule("linethrough: DOUBLETILDE error");
+        }
+    ;
+
+inlinecode:
+    BACKTICK inline_code_text BACKTICK {
+            show_rule("inlinecode: BACKTICK inline_code_text BACKTICK");
+        }
+    | BACKTICK inline_code_text error {
+            show_rule("inlinecode: BACKTICK inline_code_text error");
+        }
+    | BACKTICK error {
+            show_rule("inlinecode: BACKTICK error");
         }
     ;
 

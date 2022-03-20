@@ -129,6 +129,7 @@ normaltext [^#@>\<*_\\`{}()\[\]+\-! \t0-9.\r\n|]+|.
 \(                                      { SETYYLVAL(yytext); P("LEFTBRACKET"); RETURN(LEFTBRACKET); }
 \)                                      { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
 !                                       { SETYYLVAL(yytext); P("EXCLAMATION"); RETURN(EXCLAMATION); }
+~~                                      { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
 __                                      { SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
 _                                       { SETYYLVAL(yytext); P("UNDERSCORE"); RETURN(UNDERSCORE); }
 \{                                      { SETYYLVAL(yytext); P("LEFTPARENTHESIS"); RETURN(LEFTPARENTHESIS); }

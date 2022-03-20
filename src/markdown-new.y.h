@@ -50,23 +50,24 @@
      BACKTICK = 266,
      VERTICAL = 267,
      DOUBLEASTERISK = 268,
-     ASTERISK = 269,
-     PLUS = 270,
-     MINUS = 271,
-     DIGIT = 272,
-     DOT = 273,
-     INDENT = 274,
-     SPACE = 275,
-     LEFTSQUARE = 276,
-     RIGHTSQUARE = 277,
-     LEFTBRACKET = 278,
-     RIGHTBRACKET = 279,
-     EXCLAMATION = 280,
-     DOUBLEUNDERSCORE = 281,
-     UNDERSCORE = 282,
-     LEFTPARENTHESIS = 283,
-     RIGHTPARENTHESIS = 284,
-     TEXT = 285
+     DOUBLETILDE = 269,
+     ASTERISK = 270,
+     PLUS = 271,
+     MINUS = 272,
+     DIGIT = 273,
+     DOT = 274,
+     INDENT = 275,
+     SPACE = 276,
+     LEFTSQUARE = 277,
+     RIGHTSQUARE = 278,
+     LEFTBRACKET = 279,
+     RIGHTBRACKET = 280,
+     EXCLAMATION = 281,
+     DOUBLEUNDERSCORE = 282,
+     UNDERSCORE = 283,
+     LEFTPARENTHESIS = 284,
+     RIGHTPARENTHESIS = 285,
+     TEXT = 286
    };
 #endif
 /* Tokens.  */
@@ -81,36 +82,37 @@
 #define BACKTICK 266
 #define VERTICAL 267
 #define DOUBLEASTERISK 268
-#define ASTERISK 269
-#define PLUS 270
-#define MINUS 271
-#define DIGIT 272
-#define DOT 273
-#define INDENT 274
-#define SPACE 275
-#define LEFTSQUARE 276
-#define RIGHTSQUARE 277
-#define LEFTBRACKET 278
-#define RIGHTBRACKET 279
-#define EXCLAMATION 280
-#define DOUBLEUNDERSCORE 281
-#define UNDERSCORE 282
-#define LEFTPARENTHESIS 283
-#define RIGHTPARENTHESIS 284
-#define TEXT 285
+#define DOUBLETILDE 269
+#define ASTERISK 270
+#define PLUS 271
+#define MINUS 272
+#define DIGIT 273
+#define DOT 274
+#define INDENT 275
+#define SPACE 276
+#define LEFTSQUARE 277
+#define RIGHTSQUARE 278
+#define LEFTBRACKET 279
+#define RIGHTBRACKET 280
+#define EXCLAMATION 281
+#define DOUBLEUNDERSCORE 282
+#define UNDERSCORE 283
+#define LEFTPARENTHESIS 284
+#define RIGHTPARENTHESIS 285
+#define TEXT 286
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 203 "markdown-new.y"
+#line 222 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 114 "markdown-new.y.h"
+#line 116 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
