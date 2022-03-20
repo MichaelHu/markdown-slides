@@ -2,7 +2,7 @@
 #include <time.h>
 #include "strutils.h"
 #include "node.h" 
-#include "markdown.y.h"
+#include "markdown-new.y.h"
 
 #define VERSION "2.2.5"
 #define BUILDTIME "20/02/15 15:27"

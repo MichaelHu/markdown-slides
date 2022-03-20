@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 #include "node.h"
-#include "markdown.y.h"
+#include "markdown-new.y.h"
 
 /* make sure bison switch `-t --locations` is on*/
 extern YYLTYPE yylloc;
