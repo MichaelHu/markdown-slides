@@ -104,7 +104,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 170 "markdown-new.y"
+#line 174 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */

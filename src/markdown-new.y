@@ -111,6 +111,7 @@ static char* grammar_rules[] = {
 
                         "inline_element: inline_text", "6",
                         "inline_element: link", "6",
+                        "inline_element: image", "6",
 
                             "inline_text: inline_text inline_text_item", "7",
                             "inline_text: inline_text_item", "7",
@@ -128,14 +129,17 @@ static char* grammar_rules[] = {
                                 "inline_text_item: DOT", "8",
                                 "inline_text_item: INDENT", "8",
                                 "inline_text_item: SPACE", "8",
-                                "inline_text_item: EXCLAMATION", "8",
                                 "inline_text_item: DOUBLEUNDERSCORE", "8",
                                 "inline_text_item: UNDERSCORE", "8",
                                 "inline_text_item: LEFTPARENTHESIS", "8",
                                 "inline_text_item: RIGHTPARENTHESIS", "8",
                                 "inline_text_item: TEXT", "8",
 
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7"
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
+
+                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
+                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7"
 };
 static int rule_count = sizeof(grammar_rules) / sizeof(char**);
 
@@ -344,6 +348,9 @@ inline_element:
     | link {
             show_rule("inline_element: link");
         }
+    | image {
+            show_rule("inline_element: image");
+        }
     ;
 
 inline_text:
@@ -418,6 +425,18 @@ inline_text_item:
 link: 
     LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+        }
+    | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+        }
+    ;
+
+image: 
+    EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
+            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+        }
+    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
+            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
         }
     ;
 
