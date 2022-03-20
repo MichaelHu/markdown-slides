@@ -112,6 +112,9 @@ static char* grammar_rules[] = {
                         "inline_element: inline_text", "6",
                         "inline_element: link", "6",
                         "inline_element: image", "6",
+                        "inline_element: italic", "6",
+                        "inline_element: strong", "6",
+                        "inline_element: linethrough", "6",
 
                             "inline_text: inline_text inline_text_item", "7",
                             "inline_text: inline_text_item", "7",
@@ -121,14 +124,16 @@ static char* grammar_rules[] = {
                                 "inline_text_item: TRIPLEBACKTICK", "8",
                                 "inline_text_item: BACKTICK", "8",
                                 "inline_text_item: VERTICAL", "8",
-                                "inline_text_item: DOUBLEASTERISK", "8",
-                                "inline_text_item: ASTERISK", "8",
                                 "inline_text_item: PLUS", "8",
                                 "inline_text_item: MINUS", "8",
                                 "inline_text_item: DIGIT", "8",
                                 "inline_text_item: DOT", "8",
                                 "inline_text_item: INDENT", "8",
                                 "inline_text_item: SPACE", "8",
+                                "inline_text_item: LEFTSQUARE", "8",
+                                "inline_text_item: RIGHTSQUARE", "8",
+                                "inline_text_item: LEFTBRACKET", "8",
+                                "inline_text_item: RIGHTBRACKET", "8",
                                 "inline_text_item: DOUBLEUNDERSCORE", "8",
                                 "inline_text_item: UNDERSCORE", "8",
                                 "inline_text_item: LEFTPARENTHESIS", "8",
@@ -137,9 +142,28 @@ static char* grammar_rules[] = {
 
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE error", "7",
+                            "link: LEFTSQUARE inline_text error", "7",
+                            "link: LEFTSQUARE error", "7",
+                            "link: error", "7",
 
                             "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7"
+                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
+                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error", "7",
+                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error", "7",
+                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error", "7",
+                            "image: EXCLAMATION LEFTSQUARE inline_text error", "7",
+                            "image: EXCLAMATION LEFTSQUARE error", "7",
+                            "image: EXCLAMATION error", "7",
+                            "image: error", "7",
+
+                            "italic: ASTERISK inline_text ASTERISK", "7",
+                            "italic: ASTERISK inline_text error", "7",
+                            "italic: ASTERISK error", "7",
+
+                            "strong: DOUBLEASTERISK inline_text DOUBLEASTERISK", "7"
 };
 static int rule_count = sizeof(grammar_rules) / sizeof(char**);
 
@@ -158,7 +182,12 @@ static void show_rule( char *str ){
         if( level ){
             indent = atoi( level );
             if( indent <= MAX_RULE_LEVEL ){
-                fprintf(stderr, "%s[> %s\n", str_padding_left("", indent * 4), str);
+                if( strstr( str, "error" ) ) {
+                    fprintf(stderr, "\033[4;31;42m %s[> %s \033[0m\n", str_padding_left("", indent * 4), str);
+                }
+                else{
+                    fprintf(stderr, "%s[> %s\n", str_padding_left("", indent * 4), str);
+                }
             }
         }
         else{
@@ -351,6 +380,9 @@ inline_element:
     | image {
             show_rule("inline_element: image");
         }
+    | italic {
+            show_rule("inline_element: italic");
+        }
     ;
 
 inline_text:
@@ -381,9 +413,6 @@ inline_text_item:
     | DOUBLEASTERISK {
             show_rule("inline_text_item: DOUBLEASTERISK");
         }           
-    | ASTERISK {
-            show_rule("inline_text_item: ASTERISK");
-        }           
     | PLUS {
             show_rule("inline_text_item: PLUS");
         }           
@@ -404,6 +433,18 @@ inline_text_item:
         }           
     | EXCLAMATION {
             show_rule("inline_text_item: EXCLAMATION");
+        }           
+    | LEFTSQUARE {
+            show_rule("inline_text_item: LEFTSQUARE");
+        }           
+    | RIGHTSQUARE {
+            show_rule("inline_text_item: RIGHTSQUARE");
+        }           
+    | LEFTBRACKET {
+            show_rule("inline_text_item: LEFTBRACKET");
+        }           
+    | RIGHTBRACKET {
+            show_rule("inline_text_item: RIGHTBRACKET");
         }           
     | DOUBLEUNDERSCORE {
             show_rule("inline_text_item: DOUBLEUNDERSCORE");
@@ -429,6 +470,21 @@ link:
     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
         }
+    | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
+        }
+    | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
+        }
+    | LEFTSQUARE inline_text RIGHTSQUARE error {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE error");
+        }
+    | LEFTSQUARE inline_text error {
+            show_rule("link: LEFTSQUARE inline_text error");
+        }
+    | LEFTSQUARE error {
+            show_rule("link: LEFTSQUARE error");
+        }
     ;
 
 image: 
@@ -437,6 +493,36 @@ image:
         }
     | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
+        }
+    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error {
+            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
+        }
+    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error {
+            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
+        }
+    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error {
+            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error");
+        }
+    | EXCLAMATION LEFTSQUARE inline_text error {
+            show_rule("image: EXCLAMATION LEFTSQUARE inline_text error");
+        }
+    | EXCLAMATION LEFTSQUARE error {
+            show_rule("image: EXCLAMATION LEFTSQUARE error");
+        }
+    | EXCLAMATION error {
+            show_rule("image: EXCLAMATION error");
+        }
+    ;
+
+italic: 
+    ASTERISK inline_text ASTERISK {
+            show_rule("italic: ASTERISK inline_text ASTERISK");
+        }
+    | ASTERISK inline_text error {
+            show_rule("italic: ASTERISK inline_text error");
+        }
+    | ASTERISK error {
+            show_rule("italic: ASTERISK error");
         }
     ;
 
