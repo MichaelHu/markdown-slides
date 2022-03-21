@@ -122,6 +122,7 @@ normaltext [^#@>\<*_\\`{}()\[\]+\-! \t0-9.\r\n|]+|.
 \-                                      { SETYYLVAL(yytext); P("MINUS"); RETURN(MINUS); }
 [0-9]+                                  { SETYYLVAL(yytext); P("DIGIT"); RETURN(DIGIT); }
 \.                                      { SETYYLVAL(yytext); P("DOT"); RETURN(DOT); }
+^[ ]{4}|\t                              { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
 [ ]{4}|\t                               { SETYYLVAL(yytext); P("INDENT"); RETURN(INDENT); }
 [ ]                                     { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 \[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }

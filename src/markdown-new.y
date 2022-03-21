@@ -92,11 +92,15 @@ static char* grammar_rules[] = {
 
     "block: header",    "1",
     "block: paragraph", "1",
+    "block: unorderlist", "1",
     "block: error",     "1",
 
         "header: LF_H inline_elements LINEBREAK", "2",
 
         "paragraph: lines", "2",
+
+        "unorderlist: ASTERISK SPACE line %prec LISTSTART", "2",
+        "unorderlist: indents ASTERISK SPACE line %prec LISTSTART", "2",
 
             "lines: lines line", "3",
             "lines: line", "3",
@@ -108,6 +112,11 @@ static char* grammar_rules[] = {
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",
+
+                    "indents: LF_INDENT indent", "5",
+
+                        "indent: indent INDENT", "6",
+                        "indent: NULL", "6",
 
                         "inline_element: inline_text", "6",
                         "inline_element: link", "6",
@@ -168,9 +177,9 @@ static char* grammar_rules[] = {
                             "image: EXCLAMATION error", "7",
                             "image: error", "7",
 
-                            "italic: ASTERISK inline_text ASTERISK", "7",
-                            "italic: ASTERISK inline_text error", "7",
-                            "italic: ASTERISK error", "7",
+                            "italic: ASTERISK inline_text ASTERISK %prec ITALICSTART", "7",
+                            "italic: ASTERISK inline_text error %prec ITALICSTART", "7",
+                            "italic: ASTERISK error %prec ITALICSTART", "7",
 
                             "strong: DOUBLEASTERISK inline_text DOUBLEASTERISK", "7",
                             "strong: DOUBLEASTERISK inline_text error", "7",
@@ -282,6 +291,7 @@ static void show_rule( char *str ){
 %token MINUS               
 %token DIGIT               
 %token DOT                 
+%token LF_INDENT              
 %token INDENT              
 %token SPACE               
 %token LEFTSQUARE          
@@ -294,6 +304,9 @@ static void show_rule( char *str ){
 %token LEFTPARENTHESIS     
 %token RIGHTPARENTHESIS    
 %token TEXT                
+
+%nonassoc ITALICSTART
+%nonassoc LISTSTART
 
 %%
 
@@ -342,6 +355,9 @@ block:
     | paragraph {
             show_rule("block: paragraph");
         }
+    | unorderlist {
+            show_rule("block: unorderlist");
+        }
     /* error recovery */
     | error {
             show_rule("block: error");
@@ -359,6 +375,16 @@ paragraph:
             show_rule("paragraph: lines");
         }
     ;
+
+unorderlist: 
+    ASTERISK SPACE line %prec LISTSTART {
+            show_rule("unorderlist: ASTERISK SPACE line %prec LISTSTART");
+        }
+    | indents ASTERISK SPACE line %prec LISTSTART {
+            show_rule("unorderlist: indents ASTERISK SPACE line %prec LISTSTART");
+        }
+    ;
+
 
 lines:
     lines line {
@@ -390,6 +416,21 @@ inline_elements:
         }
     | inline_element {
             show_rule("inline_elements: inline_element");
+        }
+    ;
+
+indents: 
+    LF_INDENT indent {
+            show_rule("indents: LF_INDENT indent");
+        }
+    ;
+
+indent: 
+    indent INDENT {
+            show_rule("indent: indent INDENT");
+        }
+    | /* NULL */ {
+            show_rule("indent: NULL");
         }
     ;
 
@@ -569,14 +610,14 @@ image:
     ;
 
 italic: 
-    ASTERISK inline_text ASTERISK {
-            show_rule("italic: ASTERISK inline_text ASTERISK");
+    ASTERISK inline_text ASTERISK %prec ITALICSTART {
+            show_rule("italic: ASTERISK inline_text ASTERISK %prec ITALICSTART");
         }
-    | ASTERISK inline_text error {
-            show_rule("italic: ASTERISK inline_text error");
+    | ASTERISK inline_text error %prec ITALICSTART {
+            show_rule("italic: ASTERISK inline_text error %prec ITALICSTART");
         }
-    | ASTERISK error {
-            show_rule("italic: ASTERISK error");
+    | ASTERISK error %prec ITALICSTART {
+            show_rule("italic: ASTERISK error %prec ITALICSTART");
         }
     ;
 

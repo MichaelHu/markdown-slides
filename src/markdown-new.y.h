@@ -56,18 +56,21 @@
      MINUS = 272,
      DIGIT = 273,
      DOT = 274,
-     INDENT = 275,
-     SPACE = 276,
-     LEFTSQUARE = 277,
-     RIGHTSQUARE = 278,
-     LEFTBRACKET = 279,
-     RIGHTBRACKET = 280,
-     EXCLAMATION = 281,
-     DOUBLEUNDERSCORE = 282,
-     UNDERSCORE = 283,
-     LEFTPARENTHESIS = 284,
-     RIGHTPARENTHESIS = 285,
-     TEXT = 286
+     LF_INDENT = 275,
+     INDENT = 276,
+     SPACE = 277,
+     LEFTSQUARE = 278,
+     RIGHTSQUARE = 279,
+     LEFTBRACKET = 280,
+     RIGHTBRACKET = 281,
+     EXCLAMATION = 282,
+     DOUBLEUNDERSCORE = 283,
+     UNDERSCORE = 284,
+     LEFTPARENTHESIS = 285,
+     RIGHTPARENTHESIS = 286,
+     TEXT = 287,
+     ITALICSTART = 288,
+     LISTSTART = 289
    };
 #endif
 /* Tokens.  */
@@ -88,31 +91,34 @@
 #define MINUS 272
 #define DIGIT 273
 #define DOT 274
-#define INDENT 275
-#define SPACE 276
-#define LEFTSQUARE 277
-#define RIGHTSQUARE 278
-#define LEFTBRACKET 279
-#define RIGHTBRACKET 280
-#define EXCLAMATION 281
-#define DOUBLEUNDERSCORE 282
-#define UNDERSCORE 283
-#define LEFTPARENTHESIS 284
-#define RIGHTPARENTHESIS 285
-#define TEXT 286
+#define LF_INDENT 275
+#define INDENT 276
+#define SPACE 277
+#define LEFTSQUARE 278
+#define RIGHTSQUARE 279
+#define LEFTBRACKET 280
+#define RIGHTBRACKET 281
+#define EXCLAMATION 282
+#define DOUBLEUNDERSCORE 283
+#define UNDERSCORE 284
+#define LEFTPARENTHESIS 285
+#define RIGHTPARENTHESIS 286
+#define TEXT 287
+#define ITALICSTART 288
+#define LISTSTART 289
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 223 "markdown-new.y"
+#line 231 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 116 "markdown-new.y.h"
+#line 122 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
