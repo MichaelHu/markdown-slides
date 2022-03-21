@@ -3,6 +3,12 @@ Terminals which are not used
    SPECIALCHAR
 
 
+Rules never reduced
+
+   11 lines: /* empty */
+
+
+State 2 conflicts: 27 shift/reduce, 1 reduce/reduce
 State 21 conflicts: 21 shift/reduce
 State 25 conflicts: 2 shift/reduce
 State 34 conflicts: 25 shift/reduce
@@ -37,123 +43,124 @@ Grammar
 
     9 lines: lines line
    10      | line
+   11      | /* empty */
 
-   11 line: inline_elements LINEBREAK
-   12     | inline_elements
-   13     | BLANKLINE
+   12 line: inline_elements LINEBREAK
+   13     | inline_elements
+   14     | BLANKLINE
 
-   14 inline_elements: inline_elements inline_element
-   15                | inline_element
+   15 inline_elements: inline_elements inline_element
+   16                | inline_element
 
-   16 inline_element: inline_text
-   17               | link
-   18               | image
-   19               | italic
-   20               | strong
-   21               | linethrough
-   22               | inlinecode
+   17 inline_element: inline_text
+   18               | link
+   19               | image
+   20               | italic
+   21               | strong
+   22               | linethrough
+   23               | inlinecode
 
-   23 inline_text: inline_text inline_text_item
-   24            | inline_text_item
+   24 inline_text: inline_text inline_text_item
+   25            | inline_text_item
 
-   25 inline_text_item: LESSTHAN
-   26                 | LARGERTHAN
-   27                 | TRIPLEBACKTICK
-   28                 | VERTICAL
-   29                 | PLUS
-   30                 | MINUS
-   31                 | DIGIT
-   32                 | DOT
-   33                 | INDENT
-   34                 | SPACE
-   35                 | EXCLAMATION
-   36                 | LEFTSQUARE
-   37                 | RIGHTSQUARE
-   38                 | LEFTBRACKET
-   39                 | RIGHTBRACKET
-   40                 | DOUBLEUNDERSCORE
-   41                 | UNDERSCORE
-   42                 | LEFTPARENTHESIS
-   43                 | RIGHTPARENTHESIS
-   44                 | TEXT
+   26 inline_text_item: LESSTHAN
+   27                 | LARGERTHAN
+   28                 | TRIPLEBACKTICK
+   29                 | VERTICAL
+   30                 | PLUS
+   31                 | MINUS
+   32                 | DIGIT
+   33                 | DOT
+   34                 | INDENT
+   35                 | SPACE
+   36                 | EXCLAMATION
+   37                 | LEFTSQUARE
+   38                 | RIGHTSQUARE
+   39                 | LEFTBRACKET
+   40                 | RIGHTBRACKET
+   41                 | DOUBLEUNDERSCORE
+   42                 | UNDERSCORE
+   43                 | LEFTPARENTHESIS
+   44                 | RIGHTPARENTHESIS
+   45                 | TEXT
 
-   45 inline_code_text: inline_code_text inline_code_text_item
-   46                 | inline_code_text_item
+   46 inline_code_text: inline_code_text inline_code_text_item
+   47                 | inline_code_text_item
 
-   47 inline_code_text_item: inline_text_item
-   48                      | H
-   49                      | ASTERISK
-   50                      | DOUBLEASTERISK
-   51                      | DOUBLETILDE
+   48 inline_code_text_item: inline_text_item
+   49                      | H
+   50                      | ASTERISK
+   51                      | DOUBLEASTERISK
+   52                      | DOUBLETILDE
 
-   52 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   53     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   54     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error
-   55     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error
-   56     | LEFTSQUARE inline_text RIGHTSQUARE error
-   57     | LEFTSQUARE inline_text error
-   58     | LEFTSQUARE error
+   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   54     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   55     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error
+   56     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error
+   57     | LEFTSQUARE inline_text RIGHTSQUARE error
+   58     | LEFTSQUARE inline_text error
+   59     | LEFTSQUARE error
 
-   59 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   60      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error
-   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error
-   63      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error
-   64      | EXCLAMATION LEFTSQUARE inline_text error
-   65      | EXCLAMATION LEFTSQUARE error
-   66      | EXCLAMATION error
+   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error
+   63      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error
+   64      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error
+   65      | EXCLAMATION LEFTSQUARE inline_text error
+   66      | EXCLAMATION LEFTSQUARE error
+   67      | EXCLAMATION error
 
-   67 italic: ASTERISK inline_text ASTERISK
-   68       | ASTERISK inline_text error
-   69       | ASTERISK error
+   68 italic: ASTERISK inline_text ASTERISK
+   69       | ASTERISK inline_text error
+   70       | ASTERISK error
 
-   70 strong: DOUBLEASTERISK inline_text DOUBLEASTERISK
-   71       | DOUBLEASTERISK inline_text error
-   72       | DOUBLEASTERISK error
+   71 strong: DOUBLEASTERISK inline_text DOUBLEASTERISK
+   72       | DOUBLEASTERISK inline_text error
+   73       | DOUBLEASTERISK error
 
-   73 linethrough: DOUBLETILDE inline_text DOUBLETILDE
-   74            | DOUBLETILDE inline_text error
-   75            | DOUBLETILDE error
+   74 linethrough: DOUBLETILDE inline_text DOUBLETILDE
+   75            | DOUBLETILDE inline_text error
+   76            | DOUBLETILDE error
 
-   76 inlinecode: BACKTICK inline_code_text BACKTICK
-   77           | BACKTICK inline_code_text error
-   78           | BACKTICK error
+   77 inlinecode: BACKTICK inline_code_text BACKTICK
+   78           | BACKTICK inline_code_text error
+   79           | BACKTICK error
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256) 6 54 55 56 57 58 61 62 63 64 65 66 68 69 71 72 74 75 77
-    78
-BLANKLINE (258) 13
-LINEBREAK (259) 7 11
-H (260) 48
+error (256) 6 55 56 57 58 59 62 63 64 65 66 67 69 70 72 73 75 76 78
+    79
+BLANKLINE (258) 14
+LINEBREAK (259) 7 12
+H (260) 49
 LF_H (261) 7
 SPECIALCHAR (262)
-LESSTHAN (263) 25
-LARGERTHAN (264) 26
-TRIPLEBACKTICK (265) 27
-BACKTICK (266) 76 77 78
-VERTICAL (267) 28
-DOUBLEASTERISK (268) 50 70 71 72
-DOUBLETILDE (269) 51 73 74 75
-ASTERISK (270) 49 67 68 69
-PLUS (271) 29
-MINUS (272) 30
-DIGIT (273) 31
-DOT (274) 32
-INDENT (275) 33
-SPACE (276) 34 53 60
-LEFTSQUARE (277) 36 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-RIGHTSQUARE (278) 37 52 53 54 55 56 59 60 61 62 63
-LEFTBRACKET (279) 38 52 53 54 55 59 60 61 62
-RIGHTBRACKET (280) 39 52 53 59 60
-EXCLAMATION (281) 35 59 60 61 62 63 64 65 66
-DOUBLEUNDERSCORE (282) 40
-UNDERSCORE (283) 41
-LEFTPARENTHESIS (284) 42
-RIGHTPARENTHESIS (285) 43
-TEXT (286) 44
+LESSTHAN (263) 26
+LARGERTHAN (264) 27
+TRIPLEBACKTICK (265) 28
+BACKTICK (266) 77 78 79
+VERTICAL (267) 29
+DOUBLEASTERISK (268) 51 71 72 73
+DOUBLETILDE (269) 52 74 75 76
+ASTERISK (270) 50 68 69 70
+PLUS (271) 30
+MINUS (272) 31
+DIGIT (273) 32
+DOT (274) 33
+INDENT (275) 34
+SPACE (276) 35 54 61
+LEFTSQUARE (277) 37 53 54 55 56 57 58 59 60 61 62 63 64 65 66
+RIGHTSQUARE (278) 38 53 54 55 56 57 60 61 62 63 64
+LEFTBRACKET (279) 39 53 54 55 56 60 61 62 63
+RIGHTBRACKET (280) 40 53 54 60 61
+EXCLAMATION (281) 36 60 61 62 63 64 65 66 67
+DOUBLEUNDERSCORE (282) 41
+UNDERSCORE (283) 42
+LEFTPARENTHESIS (284) 43
+RIGHTPARENTHESIS (285) 44
+TEXT (286) 45
 
 
 Nonterminals, with rules where they appear
@@ -171,35 +178,35 @@ header (36)
 paragraph (37)
     on left: 8, on right: 5
 lines (38)
-    on left: 9 10, on right: 8 9
+    on left: 9 10 11, on right: 8 9
 line (39)
-    on left: 11 12 13, on right: 9 10
+    on left: 12 13 14, on right: 9 10
 inline_elements (40)
-    on left: 14 15, on right: 7 11 12 14
+    on left: 15 16, on right: 7 12 13 15
 inline_element (41)
-    on left: 16 17 18 19 20 21 22, on right: 14 15
+    on left: 17 18 19 20 21 22 23, on right: 15 16
 inline_text (42)
-    on left: 23 24, on right: 16 23 52 53 54 55 56 57 59 60 61 62 63
-    64 67 68 70 71 73 74
+    on left: 24 25, on right: 17 24 53 54 55 56 57 58 60 61 62 63 64
+    65 68 69 71 72 74 75
 inline_text_item (43)
-    on left: 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
-    43 44, on right: 23 24 47
+    on left: 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43
+    44 45, on right: 24 25 48
 inline_code_text (44)
-    on left: 45 46, on right: 45 76 77
+    on left: 46 47, on right: 46 77 78
 inline_code_text_item (45)
-    on left: 47 48 49 50 51, on right: 45 46
+    on left: 48 49 50 51 52, on right: 46 47
 link (46)
-    on left: 52 53 54 55 56 57 58, on right: 17
+    on left: 53 54 55 56 57 58 59, on right: 18
 image (47)
-    on left: 59 60 61 62 63 64 65 66, on right: 18
+    on left: 60 61 62 63 64 65 66 67, on right: 19
 italic (48)
-    on left: 67 68 69, on right: 19
+    on left: 68 69 70, on right: 20
 strong (49)
-    on left: 70 71 72, on right: 20
+    on left: 71 72 73, on right: 21
 linethrough (50)
-    on left: 73 74 75, on right: 21
+    on left: 74 75 76, on right: 22
 inlinecode (51)
-    on left: 76 77 78, on right: 22
+    on left: 77 78 79, on right: 23
 
 
 state 0
@@ -252,7 +259,35 @@ state 2
     RIGHTPARENTHESIS  shift, and go to state 29
     TEXT              shift, and go to state 30
 
-    $end  reduce using rule 1 (markdownfile)
+    $end              reduce using rule 1 (markdownfile)
+    $end              [reduce using rule 11 (lines)]
+    error             [reduce using rule 11 (lines)]
+    BLANKLINE         [reduce using rule 11 (lines)]
+    LF_H              [reduce using rule 11 (lines)]
+    LESSTHAN          [reduce using rule 11 (lines)]
+    LARGERTHAN        [reduce using rule 11 (lines)]
+    TRIPLEBACKTICK    [reduce using rule 11 (lines)]
+    BACKTICK          [reduce using rule 11 (lines)]
+    VERTICAL          [reduce using rule 11 (lines)]
+    DOUBLEASTERISK    [reduce using rule 11 (lines)]
+    DOUBLETILDE       [reduce using rule 11 (lines)]
+    ASTERISK          [reduce using rule 11 (lines)]
+    PLUS              [reduce using rule 11 (lines)]
+    MINUS             [reduce using rule 11 (lines)]
+    DIGIT             [reduce using rule 11 (lines)]
+    DOT               [reduce using rule 11 (lines)]
+    INDENT            [reduce using rule 11 (lines)]
+    SPACE             [reduce using rule 11 (lines)]
+    LEFTSQUARE        [reduce using rule 11 (lines)]
+    RIGHTSQUARE       [reduce using rule 11 (lines)]
+    LEFTBRACKET       [reduce using rule 11 (lines)]
+    RIGHTBRACKET      [reduce using rule 11 (lines)]
+    EXCLAMATION       [reduce using rule 11 (lines)]
+    DOUBLEUNDERSCORE  [reduce using rule 11 (lines)]
+    UNDERSCORE        [reduce using rule 11 (lines)]
+    LEFTPARENTHESIS   [reduce using rule 11 (lines)]
+    RIGHTPARENTHESIS  [reduce using rule 11 (lines)]
+    TEXT              [reduce using rule 11 (lines)]
 
     block             go to state 31
     header            go to state 32
@@ -287,9 +322,9 @@ state 4
 
 state 5
 
-   13 line: BLANKLINE .
+   14 line: BLANKLINE .
 
-    $default  reduce using rule 13 (line)
+    $default  reduce using rule 14 (line)
 
 
 state 6
@@ -335,30 +370,30 @@ state 6
 
 state 7
 
-   25 inline_text_item: LESSTHAN .
-
-    $default  reduce using rule 25 (inline_text_item)
-
-
-state 8
-
-   26 inline_text_item: LARGERTHAN .
+   26 inline_text_item: LESSTHAN .
 
     $default  reduce using rule 26 (inline_text_item)
 
 
-state 9
+state 8
 
-   27 inline_text_item: TRIPLEBACKTICK .
+   27 inline_text_item: LARGERTHAN .
 
     $default  reduce using rule 27 (inline_text_item)
 
 
+state 9
+
+   28 inline_text_item: TRIPLEBACKTICK .
+
+    $default  reduce using rule 28 (inline_text_item)
+
+
 state 10
 
-   76 inlinecode: BACKTICK . inline_code_text BACKTICK
-   77           | BACKTICK . inline_code_text error
-   78           | BACKTICK . error
+   77 inlinecode: BACKTICK . inline_code_text BACKTICK
+   78           | BACKTICK . inline_code_text error
+   79           | BACKTICK . error
 
     error             shift, and go to state 47
     H                 shift, and go to state 48
@@ -393,16 +428,16 @@ state 10
 
 state 11
 
-   28 inline_text_item: VERTICAL .
+   29 inline_text_item: VERTICAL .
 
-    $default  reduce using rule 28 (inline_text_item)
+    $default  reduce using rule 29 (inline_text_item)
 
 
 state 12
 
-   70 strong: DOUBLEASTERISK . inline_text DOUBLEASTERISK
-   71       | DOUBLEASTERISK . inline_text error
-   72       | DOUBLEASTERISK . error
+   71 strong: DOUBLEASTERISK . inline_text DOUBLEASTERISK
+   72       | DOUBLEASTERISK . inline_text error
+   73       | DOUBLEASTERISK . error
 
     error             shift, and go to state 57
     LESSTHAN          shift, and go to state 7
@@ -432,9 +467,9 @@ state 12
 
 state 13
 
-   73 linethrough: DOUBLETILDE . inline_text DOUBLETILDE
-   74            | DOUBLETILDE . inline_text error
-   75            | DOUBLETILDE . error
+   74 linethrough: DOUBLETILDE . inline_text DOUBLETILDE
+   75            | DOUBLETILDE . inline_text error
+   76            | DOUBLETILDE . error
 
     error             shift, and go to state 59
     LESSTHAN          shift, and go to state 7
@@ -464,9 +499,9 @@ state 13
 
 state 14
 
-   67 italic: ASTERISK . inline_text ASTERISK
-   68       | ASTERISK . inline_text error
-   69       | ASTERISK . error
+   68 italic: ASTERISK . inline_text ASTERISK
+   69       | ASTERISK . inline_text error
+   70       | ASTERISK . error
 
     error             shift, and go to state 61
     LESSTHAN          shift, and go to state 7
@@ -496,56 +531,56 @@ state 14
 
 state 15
 
-   29 inline_text_item: PLUS .
-
-    $default  reduce using rule 29 (inline_text_item)
-
-
-state 16
-
-   30 inline_text_item: MINUS .
+   30 inline_text_item: PLUS .
 
     $default  reduce using rule 30 (inline_text_item)
 
 
-state 17
+state 16
 
-   31 inline_text_item: DIGIT .
+   31 inline_text_item: MINUS .
 
     $default  reduce using rule 31 (inline_text_item)
 
 
-state 18
+state 17
 
-   32 inline_text_item: DOT .
+   32 inline_text_item: DIGIT .
 
     $default  reduce using rule 32 (inline_text_item)
 
 
-state 19
+state 18
 
-   33 inline_text_item: INDENT .
+   33 inline_text_item: DOT .
 
     $default  reduce using rule 33 (inline_text_item)
 
 
-state 20
+state 19
 
-   34 inline_text_item: SPACE .
+   34 inline_text_item: INDENT .
 
     $default  reduce using rule 34 (inline_text_item)
 
 
+state 20
+
+   35 inline_text_item: SPACE .
+
+    $default  reduce using rule 35 (inline_text_item)
+
+
 state 21
 
-   36 inline_text_item: LEFTSQUARE .
-   52 link: LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   53     | LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   54     | LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text error
-   55     | LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET error
-   56     | LEFTSQUARE . inline_text RIGHTSQUARE error
-   57     | LEFTSQUARE . inline_text error
-   58     | LEFTSQUARE . error
+   37 inline_text_item: LEFTSQUARE .
+   53 link: LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   54     | LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   55     | LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text error
+   56     | LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET error
+   57     | LEFTSQUARE . inline_text RIGHTSQUARE error
+   58     | LEFTSQUARE . inline_text error
+   59     | LEFTSQUARE . error
 
     error             shift, and go to state 63
     LESSTHAN          shift, and go to state 7
@@ -569,35 +604,35 @@ state 21
     RIGHTPARENTHESIS  shift, and go to state 29
     TEXT              shift, and go to state 30
 
-    $end              reduce using rule 36 (inline_text_item)
-    error             [reduce using rule 36 (inline_text_item)]
-    BLANKLINE         reduce using rule 36 (inline_text_item)
-    LINEBREAK         reduce using rule 36 (inline_text_item)
-    LF_H              reduce using rule 36 (inline_text_item)
-    LESSTHAN          [reduce using rule 36 (inline_text_item)]
-    LARGERTHAN        [reduce using rule 36 (inline_text_item)]
-    TRIPLEBACKTICK    [reduce using rule 36 (inline_text_item)]
-    BACKTICK          reduce using rule 36 (inline_text_item)
-    VERTICAL          [reduce using rule 36 (inline_text_item)]
-    DOUBLEASTERISK    reduce using rule 36 (inline_text_item)
-    DOUBLETILDE       reduce using rule 36 (inline_text_item)
-    ASTERISK          reduce using rule 36 (inline_text_item)
-    PLUS              [reduce using rule 36 (inline_text_item)]
-    MINUS             [reduce using rule 36 (inline_text_item)]
-    DIGIT             [reduce using rule 36 (inline_text_item)]
-    DOT               [reduce using rule 36 (inline_text_item)]
-    INDENT            [reduce using rule 36 (inline_text_item)]
-    SPACE             [reduce using rule 36 (inline_text_item)]
-    LEFTSQUARE        [reduce using rule 36 (inline_text_item)]
-    RIGHTSQUARE       [reduce using rule 36 (inline_text_item)]
-    LEFTBRACKET       [reduce using rule 36 (inline_text_item)]
-    RIGHTBRACKET      [reduce using rule 36 (inline_text_item)]
-    EXCLAMATION       [reduce using rule 36 (inline_text_item)]
-    DOUBLEUNDERSCORE  [reduce using rule 36 (inline_text_item)]
-    UNDERSCORE        [reduce using rule 36 (inline_text_item)]
-    LEFTPARENTHESIS   [reduce using rule 36 (inline_text_item)]
-    RIGHTPARENTHESIS  [reduce using rule 36 (inline_text_item)]
-    TEXT              [reduce using rule 36 (inline_text_item)]
+    $end              reduce using rule 37 (inline_text_item)
+    error             [reduce using rule 37 (inline_text_item)]
+    BLANKLINE         reduce using rule 37 (inline_text_item)
+    LINEBREAK         reduce using rule 37 (inline_text_item)
+    LF_H              reduce using rule 37 (inline_text_item)
+    LESSTHAN          [reduce using rule 37 (inline_text_item)]
+    LARGERTHAN        [reduce using rule 37 (inline_text_item)]
+    TRIPLEBACKTICK    [reduce using rule 37 (inline_text_item)]
+    BACKTICK          reduce using rule 37 (inline_text_item)
+    VERTICAL          [reduce using rule 37 (inline_text_item)]
+    DOUBLEASTERISK    reduce using rule 37 (inline_text_item)
+    DOUBLETILDE       reduce using rule 37 (inline_text_item)
+    ASTERISK          reduce using rule 37 (inline_text_item)
+    PLUS              [reduce using rule 37 (inline_text_item)]
+    MINUS             [reduce using rule 37 (inline_text_item)]
+    DIGIT             [reduce using rule 37 (inline_text_item)]
+    DOT               [reduce using rule 37 (inline_text_item)]
+    INDENT            [reduce using rule 37 (inline_text_item)]
+    SPACE             [reduce using rule 37 (inline_text_item)]
+    LEFTSQUARE        [reduce using rule 37 (inline_text_item)]
+    RIGHTSQUARE       [reduce using rule 37 (inline_text_item)]
+    LEFTBRACKET       [reduce using rule 37 (inline_text_item)]
+    RIGHTBRACKET      [reduce using rule 37 (inline_text_item)]
+    EXCLAMATION       [reduce using rule 37 (inline_text_item)]
+    DOUBLEUNDERSCORE  [reduce using rule 37 (inline_text_item)]
+    UNDERSCORE        [reduce using rule 37 (inline_text_item)]
+    LEFTPARENTHESIS   [reduce using rule 37 (inline_text_item)]
+    RIGHTPARENTHESIS  [reduce using rule 37 (inline_text_item)]
+    TEXT              [reduce using rule 37 (inline_text_item)]
 
     inline_text       go to state 64
     inline_text_item  go to state 39
@@ -605,104 +640,104 @@ state 21
 
 state 22
 
-   37 inline_text_item: RIGHTSQUARE .
-
-    $default  reduce using rule 37 (inline_text_item)
-
-
-state 23
-
-   38 inline_text_item: LEFTBRACKET .
+   38 inline_text_item: RIGHTSQUARE .
 
     $default  reduce using rule 38 (inline_text_item)
 
 
-state 24
+state 23
 
-   39 inline_text_item: RIGHTBRACKET .
+   39 inline_text_item: LEFTBRACKET .
 
     $default  reduce using rule 39 (inline_text_item)
 
 
-state 25
+state 24
 
-   35 inline_text_item: EXCLAMATION .
-   59 image: EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   60      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error
-   62      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error
-   63      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE error
-   64      | EXCLAMATION . LEFTSQUARE inline_text error
-   65      | EXCLAMATION . LEFTSQUARE error
-   66      | EXCLAMATION . error
-
-    error       shift, and go to state 65
-    LEFTSQUARE  shift, and go to state 66
-
-    $end              reduce using rule 35 (inline_text_item)
-    error             [reduce using rule 35 (inline_text_item)]
-    BLANKLINE         reduce using rule 35 (inline_text_item)
-    LINEBREAK         reduce using rule 35 (inline_text_item)
-    LF_H              reduce using rule 35 (inline_text_item)
-    LESSTHAN          reduce using rule 35 (inline_text_item)
-    LARGERTHAN        reduce using rule 35 (inline_text_item)
-    TRIPLEBACKTICK    reduce using rule 35 (inline_text_item)
-    BACKTICK          reduce using rule 35 (inline_text_item)
-    VERTICAL          reduce using rule 35 (inline_text_item)
-    DOUBLEASTERISK    reduce using rule 35 (inline_text_item)
-    DOUBLETILDE       reduce using rule 35 (inline_text_item)
-    ASTERISK          reduce using rule 35 (inline_text_item)
-    PLUS              reduce using rule 35 (inline_text_item)
-    MINUS             reduce using rule 35 (inline_text_item)
-    DIGIT             reduce using rule 35 (inline_text_item)
-    DOT               reduce using rule 35 (inline_text_item)
-    INDENT            reduce using rule 35 (inline_text_item)
-    SPACE             reduce using rule 35 (inline_text_item)
-    LEFTSQUARE        [reduce using rule 35 (inline_text_item)]
-    RIGHTSQUARE       reduce using rule 35 (inline_text_item)
-    LEFTBRACKET       reduce using rule 35 (inline_text_item)
-    RIGHTBRACKET      reduce using rule 35 (inline_text_item)
-    EXCLAMATION       reduce using rule 35 (inline_text_item)
-    DOUBLEUNDERSCORE  reduce using rule 35 (inline_text_item)
-    UNDERSCORE        reduce using rule 35 (inline_text_item)
-    LEFTPARENTHESIS   reduce using rule 35 (inline_text_item)
-    RIGHTPARENTHESIS  reduce using rule 35 (inline_text_item)
-    TEXT              reduce using rule 35 (inline_text_item)
-
-
-state 26
-
-   40 inline_text_item: DOUBLEUNDERSCORE .
+   40 inline_text_item: RIGHTBRACKET .
 
     $default  reduce using rule 40 (inline_text_item)
 
 
-state 27
+state 25
 
-   41 inline_text_item: UNDERSCORE .
+   36 inline_text_item: EXCLAMATION .
+   60 image: EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   61      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error
+   63      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error
+   64      | EXCLAMATION . LEFTSQUARE inline_text RIGHTSQUARE error
+   65      | EXCLAMATION . LEFTSQUARE inline_text error
+   66      | EXCLAMATION . LEFTSQUARE error
+   67      | EXCLAMATION . error
+
+    error       shift, and go to state 65
+    LEFTSQUARE  shift, and go to state 66
+
+    $end              reduce using rule 36 (inline_text_item)
+    error             [reduce using rule 36 (inline_text_item)]
+    BLANKLINE         reduce using rule 36 (inline_text_item)
+    LINEBREAK         reduce using rule 36 (inline_text_item)
+    LF_H              reduce using rule 36 (inline_text_item)
+    LESSTHAN          reduce using rule 36 (inline_text_item)
+    LARGERTHAN        reduce using rule 36 (inline_text_item)
+    TRIPLEBACKTICK    reduce using rule 36 (inline_text_item)
+    BACKTICK          reduce using rule 36 (inline_text_item)
+    VERTICAL          reduce using rule 36 (inline_text_item)
+    DOUBLEASTERISK    reduce using rule 36 (inline_text_item)
+    DOUBLETILDE       reduce using rule 36 (inline_text_item)
+    ASTERISK          reduce using rule 36 (inline_text_item)
+    PLUS              reduce using rule 36 (inline_text_item)
+    MINUS             reduce using rule 36 (inline_text_item)
+    DIGIT             reduce using rule 36 (inline_text_item)
+    DOT               reduce using rule 36 (inline_text_item)
+    INDENT            reduce using rule 36 (inline_text_item)
+    SPACE             reduce using rule 36 (inline_text_item)
+    LEFTSQUARE        [reduce using rule 36 (inline_text_item)]
+    RIGHTSQUARE       reduce using rule 36 (inline_text_item)
+    LEFTBRACKET       reduce using rule 36 (inline_text_item)
+    RIGHTBRACKET      reduce using rule 36 (inline_text_item)
+    EXCLAMATION       reduce using rule 36 (inline_text_item)
+    DOUBLEUNDERSCORE  reduce using rule 36 (inline_text_item)
+    UNDERSCORE        reduce using rule 36 (inline_text_item)
+    LEFTPARENTHESIS   reduce using rule 36 (inline_text_item)
+    RIGHTPARENTHESIS  reduce using rule 36 (inline_text_item)
+    TEXT              reduce using rule 36 (inline_text_item)
+
+
+state 26
+
+   41 inline_text_item: DOUBLEUNDERSCORE .
 
     $default  reduce using rule 41 (inline_text_item)
 
 
-state 28
+state 27
 
-   42 inline_text_item: LEFTPARENTHESIS .
+   42 inline_text_item: UNDERSCORE .
 
     $default  reduce using rule 42 (inline_text_item)
 
 
-state 29
+state 28
 
-   43 inline_text_item: RIGHTPARENTHESIS .
+   43 inline_text_item: LEFTPARENTHESIS .
 
     $default  reduce using rule 43 (inline_text_item)
 
 
-state 30
+state 29
 
-   44 inline_text_item: TEXT .
+   44 inline_text_item: RIGHTPARENTHESIS .
 
     $default  reduce using rule 44 (inline_text_item)
+
+
+state 30
+
+   45 inline_text_item: TEXT .
+
+    $default  reduce using rule 45 (inline_text_item)
 
 
 state 31
@@ -806,9 +841,9 @@ state 35
 
 state 36
 
-   11 line: inline_elements . LINEBREAK
-   12     | inline_elements .
-   14 inline_elements: inline_elements . inline_element
+   12 line: inline_elements . LINEBREAK
+   13     | inline_elements .
+   15 inline_elements: inline_elements . inline_element
 
     LINEBREAK         shift, and go to state 68
     LESSTHAN          shift, and go to state 7
@@ -836,31 +871,31 @@ state 36
     RIGHTPARENTHESIS  shift, and go to state 29
     TEXT              shift, and go to state 30
 
-    LESSTHAN          [reduce using rule 12 (line)]
-    LARGERTHAN        [reduce using rule 12 (line)]
-    TRIPLEBACKTICK    [reduce using rule 12 (line)]
-    BACKTICK          [reduce using rule 12 (line)]
-    VERTICAL          [reduce using rule 12 (line)]
-    DOUBLEASTERISK    [reduce using rule 12 (line)]
-    DOUBLETILDE       [reduce using rule 12 (line)]
-    ASTERISK          [reduce using rule 12 (line)]
-    PLUS              [reduce using rule 12 (line)]
-    MINUS             [reduce using rule 12 (line)]
-    DIGIT             [reduce using rule 12 (line)]
-    DOT               [reduce using rule 12 (line)]
-    INDENT            [reduce using rule 12 (line)]
-    SPACE             [reduce using rule 12 (line)]
-    LEFTSQUARE        [reduce using rule 12 (line)]
-    RIGHTSQUARE       [reduce using rule 12 (line)]
-    LEFTBRACKET       [reduce using rule 12 (line)]
-    RIGHTBRACKET      [reduce using rule 12 (line)]
-    EXCLAMATION       [reduce using rule 12 (line)]
-    DOUBLEUNDERSCORE  [reduce using rule 12 (line)]
-    UNDERSCORE        [reduce using rule 12 (line)]
-    LEFTPARENTHESIS   [reduce using rule 12 (line)]
-    RIGHTPARENTHESIS  [reduce using rule 12 (line)]
-    TEXT              [reduce using rule 12 (line)]
-    $default          reduce using rule 12 (line)
+    LESSTHAN          [reduce using rule 13 (line)]
+    LARGERTHAN        [reduce using rule 13 (line)]
+    TRIPLEBACKTICK    [reduce using rule 13 (line)]
+    BACKTICK          [reduce using rule 13 (line)]
+    VERTICAL          [reduce using rule 13 (line)]
+    DOUBLEASTERISK    [reduce using rule 13 (line)]
+    DOUBLETILDE       [reduce using rule 13 (line)]
+    ASTERISK          [reduce using rule 13 (line)]
+    PLUS              [reduce using rule 13 (line)]
+    MINUS             [reduce using rule 13 (line)]
+    DIGIT             [reduce using rule 13 (line)]
+    DOT               [reduce using rule 13 (line)]
+    INDENT            [reduce using rule 13 (line)]
+    SPACE             [reduce using rule 13 (line)]
+    LEFTSQUARE        [reduce using rule 13 (line)]
+    RIGHTSQUARE       [reduce using rule 13 (line)]
+    LEFTBRACKET       [reduce using rule 13 (line)]
+    RIGHTBRACKET      [reduce using rule 13 (line)]
+    EXCLAMATION       [reduce using rule 13 (line)]
+    DOUBLEUNDERSCORE  [reduce using rule 13 (line)]
+    UNDERSCORE        [reduce using rule 13 (line)]
+    LEFTPARENTHESIS   [reduce using rule 13 (line)]
+    RIGHTPARENTHESIS  [reduce using rule 13 (line)]
+    TEXT              [reduce using rule 13 (line)]
+    $default          reduce using rule 13 (line)
 
     inline_element    go to state 69
     inline_text       go to state 38
@@ -875,15 +910,15 @@ state 36
 
 state 37
 
-   15 inline_elements: inline_element .
+   16 inline_elements: inline_element .
 
-    $default  reduce using rule 15 (inline_elements)
+    $default  reduce using rule 16 (inline_elements)
 
 
 state 38
 
-   16 inline_element: inline_text .
-   23 inline_text: inline_text . inline_text_item
+   17 inline_element: inline_text .
+   24 inline_text: inline_text . inline_text_item
 
     LESSTHAN          shift, and go to state 7
     LARGERTHAN        shift, and go to state 8
@@ -906,84 +941,84 @@ state 38
     RIGHTPARENTHESIS  shift, and go to state 29
     TEXT              shift, and go to state 30
 
-    LESSTHAN          [reduce using rule 16 (inline_element)]
-    LARGERTHAN        [reduce using rule 16 (inline_element)]
-    TRIPLEBACKTICK    [reduce using rule 16 (inline_element)]
-    VERTICAL          [reduce using rule 16 (inline_element)]
-    PLUS              [reduce using rule 16 (inline_element)]
-    MINUS             [reduce using rule 16 (inline_element)]
-    DIGIT             [reduce using rule 16 (inline_element)]
-    DOT               [reduce using rule 16 (inline_element)]
-    INDENT            [reduce using rule 16 (inline_element)]
-    SPACE             [reduce using rule 16 (inline_element)]
-    LEFTSQUARE        [reduce using rule 16 (inline_element)]
-    RIGHTSQUARE       [reduce using rule 16 (inline_element)]
-    LEFTBRACKET       [reduce using rule 16 (inline_element)]
-    RIGHTBRACKET      [reduce using rule 16 (inline_element)]
-    EXCLAMATION       [reduce using rule 16 (inline_element)]
-    DOUBLEUNDERSCORE  [reduce using rule 16 (inline_element)]
-    UNDERSCORE        [reduce using rule 16 (inline_element)]
-    LEFTPARENTHESIS   [reduce using rule 16 (inline_element)]
-    RIGHTPARENTHESIS  [reduce using rule 16 (inline_element)]
-    TEXT              [reduce using rule 16 (inline_element)]
-    $default          reduce using rule 16 (inline_element)
+    LESSTHAN          [reduce using rule 17 (inline_element)]
+    LARGERTHAN        [reduce using rule 17 (inline_element)]
+    TRIPLEBACKTICK    [reduce using rule 17 (inline_element)]
+    VERTICAL          [reduce using rule 17 (inline_element)]
+    PLUS              [reduce using rule 17 (inline_element)]
+    MINUS             [reduce using rule 17 (inline_element)]
+    DIGIT             [reduce using rule 17 (inline_element)]
+    DOT               [reduce using rule 17 (inline_element)]
+    INDENT            [reduce using rule 17 (inline_element)]
+    SPACE             [reduce using rule 17 (inline_element)]
+    LEFTSQUARE        [reduce using rule 17 (inline_element)]
+    RIGHTSQUARE       [reduce using rule 17 (inline_element)]
+    LEFTBRACKET       [reduce using rule 17 (inline_element)]
+    RIGHTBRACKET      [reduce using rule 17 (inline_element)]
+    EXCLAMATION       [reduce using rule 17 (inline_element)]
+    DOUBLEUNDERSCORE  [reduce using rule 17 (inline_element)]
+    UNDERSCORE        [reduce using rule 17 (inline_element)]
+    LEFTPARENTHESIS   [reduce using rule 17 (inline_element)]
+    RIGHTPARENTHESIS  [reduce using rule 17 (inline_element)]
+    TEXT              [reduce using rule 17 (inline_element)]
+    $default          reduce using rule 17 (inline_element)
 
     inline_text_item  go to state 70
 
 
 state 39
 
-   24 inline_text: inline_text_item .
+   25 inline_text: inline_text_item .
 
-    $default  reduce using rule 24 (inline_text)
+    $default  reduce using rule 25 (inline_text)
 
 
 state 40
 
-   17 inline_element: link .
-
-    $default  reduce using rule 17 (inline_element)
-
-
-state 41
-
-   18 inline_element: image .
+   18 inline_element: link .
 
     $default  reduce using rule 18 (inline_element)
 
 
-state 42
+state 41
 
-   19 inline_element: italic .
+   19 inline_element: image .
 
     $default  reduce using rule 19 (inline_element)
 
 
-state 43
+state 42
 
-   20 inline_element: strong .
+   20 inline_element: italic .
 
     $default  reduce using rule 20 (inline_element)
 
 
-state 44
+state 43
 
-   21 inline_element: linethrough .
+   21 inline_element: strong .
 
     $default  reduce using rule 21 (inline_element)
 
 
-state 45
+state 44
 
-   22 inline_element: inlinecode .
+   22 inline_element: linethrough .
 
     $default  reduce using rule 22 (inline_element)
+
+
+state 45
+
+   23 inline_element: inlinecode .
+
+    $default  reduce using rule 23 (inline_element)
 
 
 state 46
 
     7 header: LF_H inline_elements . LINEBREAK
-   14 inline_elements: inline_elements . inline_element
+   15 inline_elements: inline_elements . inline_element
 
     LINEBREAK         shift, and go to state 71
     LESSTHAN          shift, and go to state 7
@@ -1024,65 +1059,65 @@ state 46
 
 state 47
 
-   78 inlinecode: BACKTICK error .
+   79 inlinecode: BACKTICK error .
 
-    $default  reduce using rule 78 (inlinecode)
+    $default  reduce using rule 79 (inlinecode)
 
 
 state 48
 
-   48 inline_code_text_item: H .
-
-    $default  reduce using rule 48 (inline_code_text_item)
-
-
-state 49
-
-   50 inline_code_text_item: DOUBLEASTERISK .
-
-    $default  reduce using rule 50 (inline_code_text_item)
-
-
-state 50
-
-   51 inline_code_text_item: DOUBLETILDE .
-
-    $default  reduce using rule 51 (inline_code_text_item)
-
-
-state 51
-
-   49 inline_code_text_item: ASTERISK .
+   49 inline_code_text_item: H .
 
     $default  reduce using rule 49 (inline_code_text_item)
 
 
+state 49
+
+   51 inline_code_text_item: DOUBLEASTERISK .
+
+    $default  reduce using rule 51 (inline_code_text_item)
+
+
+state 50
+
+   52 inline_code_text_item: DOUBLETILDE .
+
+    $default  reduce using rule 52 (inline_code_text_item)
+
+
+state 51
+
+   50 inline_code_text_item: ASTERISK .
+
+    $default  reduce using rule 50 (inline_code_text_item)
+
+
 state 52
 
-   36 inline_text_item: LEFTSQUARE .
+   37 inline_text_item: LEFTSQUARE .
 
-    $default  reduce using rule 36 (inline_text_item)
+    $default  reduce using rule 37 (inline_text_item)
 
 
 state 53
 
-   35 inline_text_item: EXCLAMATION .
+   36 inline_text_item: EXCLAMATION .
 
-    $default  reduce using rule 35 (inline_text_item)
+    $default  reduce using rule 36 (inline_text_item)
 
 
 state 54
 
-   47 inline_code_text_item: inline_text_item .
+   48 inline_code_text_item: inline_text_item .
 
-    $default  reduce using rule 47 (inline_code_text_item)
+    $default  reduce using rule 48 (inline_code_text_item)
 
 
 state 55
 
-   45 inline_code_text: inline_code_text . inline_code_text_item
-   76 inlinecode: BACKTICK inline_code_text . BACKTICK
-   77           | BACKTICK inline_code_text . error
+   46 inline_code_text: inline_code_text . inline_code_text_item
+   77 inlinecode: BACKTICK inline_code_text . BACKTICK
+   78           | BACKTICK inline_code_text . error
 
     error             shift, and go to state 72
     H                 shift, and go to state 48
@@ -1117,23 +1152,23 @@ state 55
 
 state 56
 
-   46 inline_code_text: inline_code_text_item .
+   47 inline_code_text: inline_code_text_item .
 
-    $default  reduce using rule 46 (inline_code_text)
+    $default  reduce using rule 47 (inline_code_text)
 
 
 state 57
 
-   72 strong: DOUBLEASTERISK error .
+   73 strong: DOUBLEASTERISK error .
 
-    $default  reduce using rule 72 (strong)
+    $default  reduce using rule 73 (strong)
 
 
 state 58
 
-   23 inline_text: inline_text . inline_text_item
-   70 strong: DOUBLEASTERISK inline_text . DOUBLEASTERISK
-   71       | DOUBLEASTERISK inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   71 strong: DOUBLEASTERISK inline_text . DOUBLEASTERISK
+   72       | DOUBLEASTERISK inline_text . error
 
     error             shift, and go to state 75
     LESSTHAN          shift, and go to state 7
@@ -1163,16 +1198,16 @@ state 58
 
 state 59
 
-   75 linethrough: DOUBLETILDE error .
+   76 linethrough: DOUBLETILDE error .
 
-    $default  reduce using rule 75 (linethrough)
+    $default  reduce using rule 76 (linethrough)
 
 
 state 60
 
-   23 inline_text: inline_text . inline_text_item
-   73 linethrough: DOUBLETILDE inline_text . DOUBLETILDE
-   74            | DOUBLETILDE inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   74 linethrough: DOUBLETILDE inline_text . DOUBLETILDE
+   75            | DOUBLETILDE inline_text . error
 
     error             shift, and go to state 77
     LESSTHAN          shift, and go to state 7
@@ -1202,16 +1237,16 @@ state 60
 
 state 61
 
-   69 italic: ASTERISK error .
+   70 italic: ASTERISK error .
 
-    $default  reduce using rule 69 (italic)
+    $default  reduce using rule 70 (italic)
 
 
 state 62
 
-   23 inline_text: inline_text . inline_text_item
-   67 italic: ASTERISK inline_text . ASTERISK
-   68       | ASTERISK inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   68 italic: ASTERISK inline_text . ASTERISK
+   69       | ASTERISK inline_text . error
 
     error             shift, and go to state 79
     LESSTHAN          shift, and go to state 7
@@ -1241,20 +1276,20 @@ state 62
 
 state 63
 
-   58 link: LEFTSQUARE error .
+   59 link: LEFTSQUARE error .
 
-    $default  reduce using rule 58 (link)
+    $default  reduce using rule 59 (link)
 
 
 state 64
 
-   23 inline_text: inline_text . inline_text_item
-   52 link: LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   53     | LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   54     | LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text error
-   55     | LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET error
-   56     | LEFTSQUARE inline_text . RIGHTSQUARE error
-   57     | LEFTSQUARE inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   53 link: LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   54     | LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   55     | LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text error
+   56     | LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET error
+   57     | LEFTSQUARE inline_text . RIGHTSQUARE error
+   58     | LEFTSQUARE inline_text . error
 
     error             shift, and go to state 81
     LESSTHAN          shift, and go to state 7
@@ -1283,20 +1318,20 @@ state 64
 
 state 65
 
-   66 image: EXCLAMATION error .
+   67 image: EXCLAMATION error .
 
-    $default  reduce using rule 66 (image)
+    $default  reduce using rule 67 (image)
 
 
 state 66
 
-   59 image: EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   60      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text error
-   62      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET error
-   63      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE error
-   64      | EXCLAMATION LEFTSQUARE . inline_text error
-   65      | EXCLAMATION LEFTSQUARE . error
+   60 image: EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   61      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET inline_text error
+   63      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE LEFTBRACKET error
+   64      | EXCLAMATION LEFTSQUARE . inline_text RIGHTSQUARE error
+   65      | EXCLAMATION LEFTSQUARE . inline_text error
+   66      | EXCLAMATION LEFTSQUARE . error
 
     error             shift, and go to state 83
     LESSTHAN          shift, and go to state 7
@@ -1333,23 +1368,23 @@ state 67
 
 state 68
 
-   11 line: inline_elements LINEBREAK .
+   12 line: inline_elements LINEBREAK .
 
-    $default  reduce using rule 11 (line)
+    $default  reduce using rule 12 (line)
 
 
 state 69
 
-   14 inline_elements: inline_elements inline_element .
+   15 inline_elements: inline_elements inline_element .
 
-    $default  reduce using rule 14 (inline_elements)
+    $default  reduce using rule 15 (inline_elements)
 
 
 state 70
 
-   23 inline_text: inline_text inline_text_item .
+   24 inline_text: inline_text inline_text_item .
 
-    $default  reduce using rule 23 (inline_text)
+    $default  reduce using rule 24 (inline_text)
 
 
 state 71
@@ -1361,125 +1396,125 @@ state 71
 
 state 72
 
-   77 inlinecode: BACKTICK inline_code_text error .
+   78 inlinecode: BACKTICK inline_code_text error .
 
-    $default  reduce using rule 77 (inlinecode)
+    $default  reduce using rule 78 (inlinecode)
 
 
 state 73
 
-   76 inlinecode: BACKTICK inline_code_text BACKTICK .
+   77 inlinecode: BACKTICK inline_code_text BACKTICK .
 
-    $default  reduce using rule 76 (inlinecode)
+    $default  reduce using rule 77 (inlinecode)
 
 
 state 74
 
-   45 inline_code_text: inline_code_text inline_code_text_item .
+   46 inline_code_text: inline_code_text inline_code_text_item .
 
-    $default  reduce using rule 45 (inline_code_text)
+    $default  reduce using rule 46 (inline_code_text)
 
 
 state 75
 
-   71 strong: DOUBLEASTERISK inline_text error .
+   72 strong: DOUBLEASTERISK inline_text error .
 
-    $default  reduce using rule 71 (strong)
+    $default  reduce using rule 72 (strong)
 
 
 state 76
 
-   70 strong: DOUBLEASTERISK inline_text DOUBLEASTERISK .
+   71 strong: DOUBLEASTERISK inline_text DOUBLEASTERISK .
 
-    $default  reduce using rule 70 (strong)
+    $default  reduce using rule 71 (strong)
 
 
 state 77
 
-   74 linethrough: DOUBLETILDE inline_text error .
+   75 linethrough: DOUBLETILDE inline_text error .
 
-    $default  reduce using rule 74 (linethrough)
+    $default  reduce using rule 75 (linethrough)
 
 
 state 78
 
-   73 linethrough: DOUBLETILDE inline_text DOUBLETILDE .
+   74 linethrough: DOUBLETILDE inline_text DOUBLETILDE .
 
-    $default  reduce using rule 73 (linethrough)
+    $default  reduce using rule 74 (linethrough)
 
 
 state 79
 
-   68 italic: ASTERISK inline_text error .
+   69 italic: ASTERISK inline_text error .
 
-    $default  reduce using rule 68 (italic)
+    $default  reduce using rule 69 (italic)
 
 
 state 80
 
-   67 italic: ASTERISK inline_text ASTERISK .
+   68 italic: ASTERISK inline_text ASTERISK .
 
-    $default  reduce using rule 67 (italic)
+    $default  reduce using rule 68 (italic)
 
 
 state 81
 
-   57 link: LEFTSQUARE inline_text error .
+   58 link: LEFTSQUARE inline_text error .
 
-    $default  reduce using rule 57 (link)
+    $default  reduce using rule 58 (link)
 
 
 state 82
 
-   37 inline_text_item: RIGHTSQUARE .
-   52 link: LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text RIGHTBRACKET
-   53     | LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   54     | LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text error
-   55     | LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET error
-   56     | LEFTSQUARE inline_text RIGHTSQUARE . error
+   38 inline_text_item: RIGHTSQUARE .
+   53 link: LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text RIGHTBRACKET
+   54     | LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   55     | LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text error
+   56     | LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET error
+   57     | LEFTSQUARE inline_text RIGHTSQUARE . error
 
     error        shift, and go to state 85
     LEFTBRACKET  shift, and go to state 86
 
-    error             [reduce using rule 37 (inline_text_item)]
-    LESSTHAN          reduce using rule 37 (inline_text_item)
-    LARGERTHAN        reduce using rule 37 (inline_text_item)
-    TRIPLEBACKTICK    reduce using rule 37 (inline_text_item)
-    VERTICAL          reduce using rule 37 (inline_text_item)
-    PLUS              reduce using rule 37 (inline_text_item)
-    MINUS             reduce using rule 37 (inline_text_item)
-    DIGIT             reduce using rule 37 (inline_text_item)
-    DOT               reduce using rule 37 (inline_text_item)
-    INDENT            reduce using rule 37 (inline_text_item)
-    SPACE             reduce using rule 37 (inline_text_item)
-    LEFTSQUARE        reduce using rule 37 (inline_text_item)
-    RIGHTSQUARE       reduce using rule 37 (inline_text_item)
-    LEFTBRACKET       [reduce using rule 37 (inline_text_item)]
-    RIGHTBRACKET      reduce using rule 37 (inline_text_item)
-    EXCLAMATION       reduce using rule 37 (inline_text_item)
-    DOUBLEUNDERSCORE  reduce using rule 37 (inline_text_item)
-    UNDERSCORE        reduce using rule 37 (inline_text_item)
-    LEFTPARENTHESIS   reduce using rule 37 (inline_text_item)
-    RIGHTPARENTHESIS  reduce using rule 37 (inline_text_item)
-    TEXT              reduce using rule 37 (inline_text_item)
+    error             [reduce using rule 38 (inline_text_item)]
+    LESSTHAN          reduce using rule 38 (inline_text_item)
+    LARGERTHAN        reduce using rule 38 (inline_text_item)
+    TRIPLEBACKTICK    reduce using rule 38 (inline_text_item)
+    VERTICAL          reduce using rule 38 (inline_text_item)
+    PLUS              reduce using rule 38 (inline_text_item)
+    MINUS             reduce using rule 38 (inline_text_item)
+    DIGIT             reduce using rule 38 (inline_text_item)
+    DOT               reduce using rule 38 (inline_text_item)
+    INDENT            reduce using rule 38 (inline_text_item)
+    SPACE             reduce using rule 38 (inline_text_item)
+    LEFTSQUARE        reduce using rule 38 (inline_text_item)
+    RIGHTSQUARE       reduce using rule 38 (inline_text_item)
+    LEFTBRACKET       [reduce using rule 38 (inline_text_item)]
+    RIGHTBRACKET      reduce using rule 38 (inline_text_item)
+    EXCLAMATION       reduce using rule 38 (inline_text_item)
+    DOUBLEUNDERSCORE  reduce using rule 38 (inline_text_item)
+    UNDERSCORE        reduce using rule 38 (inline_text_item)
+    LEFTPARENTHESIS   reduce using rule 38 (inline_text_item)
+    RIGHTPARENTHESIS  reduce using rule 38 (inline_text_item)
+    TEXT              reduce using rule 38 (inline_text_item)
 
 
 state 83
 
-   65 image: EXCLAMATION LEFTSQUARE error .
+   66 image: EXCLAMATION LEFTSQUARE error .
 
-    $default  reduce using rule 65 (image)
+    $default  reduce using rule 66 (image)
 
 
 state 84
 
-   23 inline_text: inline_text . inline_text_item
-   59 image: EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
-   60      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text error
-   62      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET error
-   63      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE error
-   64      | EXCLAMATION LEFTSQUARE inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   60 image: EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+   61      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET inline_text error
+   63      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE LEFTBRACKET error
+   64      | EXCLAMATION LEFTSQUARE inline_text . RIGHTSQUARE error
+   65      | EXCLAMATION LEFTSQUARE inline_text . error
 
     error             shift, and go to state 87
     LESSTHAN          shift, and go to state 7
@@ -1508,17 +1543,17 @@ state 84
 
 state 85
 
-   56 link: LEFTSQUARE inline_text RIGHTSQUARE error .
+   57 link: LEFTSQUARE inline_text RIGHTSQUARE error .
 
-    $default  reduce using rule 56 (link)
+    $default  reduce using rule 57 (link)
 
 
 state 86
 
-   52 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text RIGHTBRACKET
-   53     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text SPACE inline_text RIGHTBRACKET
-   54     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text error
-   55     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . error
+   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text RIGHTBRACKET
+   54     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text SPACE inline_text RIGHTBRACKET
+   55     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text error
+   56     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . error
 
     error             shift, and go to state 89
     LESSTHAN          shift, and go to state 7
@@ -1548,59 +1583,59 @@ state 86
 
 state 87
 
-   64 image: EXCLAMATION LEFTSQUARE inline_text error .
+   65 image: EXCLAMATION LEFTSQUARE inline_text error .
 
-    $default  reduce using rule 64 (image)
+    $default  reduce using rule 65 (image)
 
 
 state 88
 
-   37 inline_text_item: RIGHTSQUARE .
-   59 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text RIGHTBRACKET
-   60      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text error
-   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET error
-   63      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . error
+   38 inline_text_item: RIGHTSQUARE .
+   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text RIGHTBRACKET
+   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET inline_text error
+   63      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . LEFTBRACKET error
+   64      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE . error
 
     error        shift, and go to state 91
     LEFTBRACKET  shift, and go to state 92
 
-    error             [reduce using rule 37 (inline_text_item)]
-    LESSTHAN          reduce using rule 37 (inline_text_item)
-    LARGERTHAN        reduce using rule 37 (inline_text_item)
-    TRIPLEBACKTICK    reduce using rule 37 (inline_text_item)
-    VERTICAL          reduce using rule 37 (inline_text_item)
-    PLUS              reduce using rule 37 (inline_text_item)
-    MINUS             reduce using rule 37 (inline_text_item)
-    DIGIT             reduce using rule 37 (inline_text_item)
-    DOT               reduce using rule 37 (inline_text_item)
-    INDENT            reduce using rule 37 (inline_text_item)
-    SPACE             reduce using rule 37 (inline_text_item)
-    LEFTSQUARE        reduce using rule 37 (inline_text_item)
-    RIGHTSQUARE       reduce using rule 37 (inline_text_item)
-    LEFTBRACKET       [reduce using rule 37 (inline_text_item)]
-    RIGHTBRACKET      reduce using rule 37 (inline_text_item)
-    EXCLAMATION       reduce using rule 37 (inline_text_item)
-    DOUBLEUNDERSCORE  reduce using rule 37 (inline_text_item)
-    UNDERSCORE        reduce using rule 37 (inline_text_item)
-    LEFTPARENTHESIS   reduce using rule 37 (inline_text_item)
-    RIGHTPARENTHESIS  reduce using rule 37 (inline_text_item)
-    TEXT              reduce using rule 37 (inline_text_item)
+    error             [reduce using rule 38 (inline_text_item)]
+    LESSTHAN          reduce using rule 38 (inline_text_item)
+    LARGERTHAN        reduce using rule 38 (inline_text_item)
+    TRIPLEBACKTICK    reduce using rule 38 (inline_text_item)
+    VERTICAL          reduce using rule 38 (inline_text_item)
+    PLUS              reduce using rule 38 (inline_text_item)
+    MINUS             reduce using rule 38 (inline_text_item)
+    DIGIT             reduce using rule 38 (inline_text_item)
+    DOT               reduce using rule 38 (inline_text_item)
+    INDENT            reduce using rule 38 (inline_text_item)
+    SPACE             reduce using rule 38 (inline_text_item)
+    LEFTSQUARE        reduce using rule 38 (inline_text_item)
+    RIGHTSQUARE       reduce using rule 38 (inline_text_item)
+    LEFTBRACKET       [reduce using rule 38 (inline_text_item)]
+    RIGHTBRACKET      reduce using rule 38 (inline_text_item)
+    EXCLAMATION       reduce using rule 38 (inline_text_item)
+    DOUBLEUNDERSCORE  reduce using rule 38 (inline_text_item)
+    UNDERSCORE        reduce using rule 38 (inline_text_item)
+    LEFTPARENTHESIS   reduce using rule 38 (inline_text_item)
+    RIGHTPARENTHESIS  reduce using rule 38 (inline_text_item)
+    TEXT              reduce using rule 38 (inline_text_item)
 
 
 state 89
 
-   55 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error .
+   56 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error .
 
-    $default  reduce using rule 55 (link)
+    $default  reduce using rule 56 (link)
 
 
 state 90
 
-   23 inline_text: inline_text . inline_text_item
-   52 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . RIGHTBRACKET
-   53     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . SPACE inline_text RIGHTBRACKET
-   54     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . RIGHTBRACKET
+   54     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . SPACE inline_text RIGHTBRACKET
+   55     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . error
 
     error             shift, and go to state 93
     LESSTHAN          shift, and go to state 7
@@ -1629,17 +1664,17 @@ state 90
 
 state 91
 
-   63 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error .
+   64 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error .
 
-    $default  reduce using rule 63 (image)
+    $default  reduce using rule 64 (image)
 
 
 state 92
 
-   59 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text RIGHTBRACKET
-   60      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text error
-   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . error
+   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text RIGHTBRACKET
+   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . inline_text error
+   63      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET . error
 
     error             shift, and go to state 96
     LESSTHAN          shift, and go to state 7
@@ -1669,15 +1704,15 @@ state 92
 
 state 93
 
-   54 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error .
+   55 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error .
 
-    $default  reduce using rule 54 (link)
+    $default  reduce using rule 55 (link)
 
 
 state 94
 
-   34 inline_text_item: SPACE .
-   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE . inline_text RIGHTBRACKET
+   35 inline_text_item: SPACE .
+   54 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE . inline_text RIGHTBRACKET
 
     LESSTHAN          shift, and go to state 7
     LARGERTHAN        shift, and go to state 8
@@ -1700,27 +1735,27 @@ state 94
     RIGHTPARENTHESIS  shift, and go to state 29
     TEXT              shift, and go to state 30
 
-    LESSTHAN          [reduce using rule 34 (inline_text_item)]
-    LARGERTHAN        [reduce using rule 34 (inline_text_item)]
-    TRIPLEBACKTICK    [reduce using rule 34 (inline_text_item)]
-    VERTICAL          [reduce using rule 34 (inline_text_item)]
-    PLUS              [reduce using rule 34 (inline_text_item)]
-    MINUS             [reduce using rule 34 (inline_text_item)]
-    DIGIT             [reduce using rule 34 (inline_text_item)]
-    DOT               [reduce using rule 34 (inline_text_item)]
-    INDENT            [reduce using rule 34 (inline_text_item)]
-    SPACE             [reduce using rule 34 (inline_text_item)]
-    LEFTSQUARE        [reduce using rule 34 (inline_text_item)]
-    RIGHTSQUARE       [reduce using rule 34 (inline_text_item)]
-    LEFTBRACKET       [reduce using rule 34 (inline_text_item)]
-    RIGHTBRACKET      [reduce using rule 34 (inline_text_item)]
-    EXCLAMATION       [reduce using rule 34 (inline_text_item)]
-    DOUBLEUNDERSCORE  [reduce using rule 34 (inline_text_item)]
-    UNDERSCORE        [reduce using rule 34 (inline_text_item)]
-    LEFTPARENTHESIS   [reduce using rule 34 (inline_text_item)]
-    RIGHTPARENTHESIS  [reduce using rule 34 (inline_text_item)]
-    TEXT              [reduce using rule 34 (inline_text_item)]
-    $default          reduce using rule 34 (inline_text_item)
+    LESSTHAN          [reduce using rule 35 (inline_text_item)]
+    LARGERTHAN        [reduce using rule 35 (inline_text_item)]
+    TRIPLEBACKTICK    [reduce using rule 35 (inline_text_item)]
+    VERTICAL          [reduce using rule 35 (inline_text_item)]
+    PLUS              [reduce using rule 35 (inline_text_item)]
+    MINUS             [reduce using rule 35 (inline_text_item)]
+    DIGIT             [reduce using rule 35 (inline_text_item)]
+    DOT               [reduce using rule 35 (inline_text_item)]
+    INDENT            [reduce using rule 35 (inline_text_item)]
+    SPACE             [reduce using rule 35 (inline_text_item)]
+    LEFTSQUARE        [reduce using rule 35 (inline_text_item)]
+    RIGHTSQUARE       [reduce using rule 35 (inline_text_item)]
+    LEFTBRACKET       [reduce using rule 35 (inline_text_item)]
+    RIGHTBRACKET      [reduce using rule 35 (inline_text_item)]
+    EXCLAMATION       [reduce using rule 35 (inline_text_item)]
+    DOUBLEUNDERSCORE  [reduce using rule 35 (inline_text_item)]
+    UNDERSCORE        [reduce using rule 35 (inline_text_item)]
+    LEFTPARENTHESIS   [reduce using rule 35 (inline_text_item)]
+    RIGHTPARENTHESIS  [reduce using rule 35 (inline_text_item)]
+    TEXT              [reduce using rule 35 (inline_text_item)]
+    $default          reduce using rule 35 (inline_text_item)
 
     inline_text       go to state 98
     inline_text_item  go to state 39
@@ -1728,75 +1763,75 @@ state 94
 
 state 95
 
-   39 inline_text_item: RIGHTBRACKET .
-   52 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET .
+   40 inline_text_item: RIGHTBRACKET .
+   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET .
 
-    $end              reduce using rule 52 (link)
-    error             reduce using rule 39 (inline_text_item)
-    error             [reduce using rule 52 (link)]
-    BLANKLINE         reduce using rule 52 (link)
-    LINEBREAK         reduce using rule 52 (link)
-    LF_H              reduce using rule 52 (link)
-    LESSTHAN          reduce using rule 39 (inline_text_item)
-    LESSTHAN          [reduce using rule 52 (link)]
-    LARGERTHAN        reduce using rule 39 (inline_text_item)
-    LARGERTHAN        [reduce using rule 52 (link)]
-    TRIPLEBACKTICK    reduce using rule 39 (inline_text_item)
-    TRIPLEBACKTICK    [reduce using rule 52 (link)]
-    BACKTICK          reduce using rule 52 (link)
-    VERTICAL          reduce using rule 39 (inline_text_item)
-    VERTICAL          [reduce using rule 52 (link)]
-    DOUBLEASTERISK    reduce using rule 52 (link)
-    DOUBLETILDE       reduce using rule 52 (link)
-    ASTERISK          reduce using rule 52 (link)
-    PLUS              reduce using rule 39 (inline_text_item)
-    PLUS              [reduce using rule 52 (link)]
-    MINUS             reduce using rule 39 (inline_text_item)
-    MINUS             [reduce using rule 52 (link)]
-    DIGIT             reduce using rule 39 (inline_text_item)
-    DIGIT             [reduce using rule 52 (link)]
-    DOT               reduce using rule 39 (inline_text_item)
-    DOT               [reduce using rule 52 (link)]
-    INDENT            reduce using rule 39 (inline_text_item)
-    INDENT            [reduce using rule 52 (link)]
-    SPACE             reduce using rule 39 (inline_text_item)
-    SPACE             [reduce using rule 52 (link)]
-    LEFTSQUARE        reduce using rule 39 (inline_text_item)
-    LEFTSQUARE        [reduce using rule 52 (link)]
-    RIGHTSQUARE       reduce using rule 39 (inline_text_item)
-    RIGHTSQUARE       [reduce using rule 52 (link)]
-    LEFTBRACKET       reduce using rule 39 (inline_text_item)
-    LEFTBRACKET       [reduce using rule 52 (link)]
-    RIGHTBRACKET      reduce using rule 39 (inline_text_item)
-    RIGHTBRACKET      [reduce using rule 52 (link)]
-    EXCLAMATION       reduce using rule 39 (inline_text_item)
-    EXCLAMATION       [reduce using rule 52 (link)]
-    DOUBLEUNDERSCORE  reduce using rule 39 (inline_text_item)
-    DOUBLEUNDERSCORE  [reduce using rule 52 (link)]
-    UNDERSCORE        reduce using rule 39 (inline_text_item)
-    UNDERSCORE        [reduce using rule 52 (link)]
-    LEFTPARENTHESIS   reduce using rule 39 (inline_text_item)
-    LEFTPARENTHESIS   [reduce using rule 52 (link)]
-    RIGHTPARENTHESIS  reduce using rule 39 (inline_text_item)
-    RIGHTPARENTHESIS  [reduce using rule 52 (link)]
-    TEXT              reduce using rule 39 (inline_text_item)
-    TEXT              [reduce using rule 52 (link)]
-    $default          reduce using rule 39 (inline_text_item)
+    $end              reduce using rule 53 (link)
+    error             reduce using rule 40 (inline_text_item)
+    error             [reduce using rule 53 (link)]
+    BLANKLINE         reduce using rule 53 (link)
+    LINEBREAK         reduce using rule 53 (link)
+    LF_H              reduce using rule 53 (link)
+    LESSTHAN          reduce using rule 40 (inline_text_item)
+    LESSTHAN          [reduce using rule 53 (link)]
+    LARGERTHAN        reduce using rule 40 (inline_text_item)
+    LARGERTHAN        [reduce using rule 53 (link)]
+    TRIPLEBACKTICK    reduce using rule 40 (inline_text_item)
+    TRIPLEBACKTICK    [reduce using rule 53 (link)]
+    BACKTICK          reduce using rule 53 (link)
+    VERTICAL          reduce using rule 40 (inline_text_item)
+    VERTICAL          [reduce using rule 53 (link)]
+    DOUBLEASTERISK    reduce using rule 53 (link)
+    DOUBLETILDE       reduce using rule 53 (link)
+    ASTERISK          reduce using rule 53 (link)
+    PLUS              reduce using rule 40 (inline_text_item)
+    PLUS              [reduce using rule 53 (link)]
+    MINUS             reduce using rule 40 (inline_text_item)
+    MINUS             [reduce using rule 53 (link)]
+    DIGIT             reduce using rule 40 (inline_text_item)
+    DIGIT             [reduce using rule 53 (link)]
+    DOT               reduce using rule 40 (inline_text_item)
+    DOT               [reduce using rule 53 (link)]
+    INDENT            reduce using rule 40 (inline_text_item)
+    INDENT            [reduce using rule 53 (link)]
+    SPACE             reduce using rule 40 (inline_text_item)
+    SPACE             [reduce using rule 53 (link)]
+    LEFTSQUARE        reduce using rule 40 (inline_text_item)
+    LEFTSQUARE        [reduce using rule 53 (link)]
+    RIGHTSQUARE       reduce using rule 40 (inline_text_item)
+    RIGHTSQUARE       [reduce using rule 53 (link)]
+    LEFTBRACKET       reduce using rule 40 (inline_text_item)
+    LEFTBRACKET       [reduce using rule 53 (link)]
+    RIGHTBRACKET      reduce using rule 40 (inline_text_item)
+    RIGHTBRACKET      [reduce using rule 53 (link)]
+    EXCLAMATION       reduce using rule 40 (inline_text_item)
+    EXCLAMATION       [reduce using rule 53 (link)]
+    DOUBLEUNDERSCORE  reduce using rule 40 (inline_text_item)
+    DOUBLEUNDERSCORE  [reduce using rule 53 (link)]
+    UNDERSCORE        reduce using rule 40 (inline_text_item)
+    UNDERSCORE        [reduce using rule 53 (link)]
+    LEFTPARENTHESIS   reduce using rule 40 (inline_text_item)
+    LEFTPARENTHESIS   [reduce using rule 53 (link)]
+    RIGHTPARENTHESIS  reduce using rule 40 (inline_text_item)
+    RIGHTPARENTHESIS  [reduce using rule 53 (link)]
+    TEXT              reduce using rule 40 (inline_text_item)
+    TEXT              [reduce using rule 53 (link)]
+    $default          reduce using rule 40 (inline_text_item)
 
 
 state 96
 
-   62 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error .
+   63 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error .
 
-    $default  reduce using rule 62 (image)
+    $default  reduce using rule 63 (image)
 
 
 state 97
 
-   23 inline_text: inline_text . inline_text_item
-   59 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . RIGHTBRACKET
-   60      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . SPACE inline_text RIGHTBRACKET
-   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . error
+   24 inline_text: inline_text . inline_text_item
+   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . RIGHTBRACKET
+   61      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . SPACE inline_text RIGHTBRACKET
+   62      | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text . error
 
     error             shift, and go to state 99
     LESSTHAN          shift, and go to state 7
@@ -1825,8 +1860,8 @@ state 97
 
 state 98
 
-   23 inline_text: inline_text . inline_text_item
-   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text . RIGHTBRACKET
+   24 inline_text: inline_text . inline_text_item
+   54 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text . RIGHTBRACKET
 
     LESSTHAN          shift, and go to state 7
     LARGERTHAN        shift, and go to state 8
@@ -1854,15 +1889,15 @@ state 98
 
 state 99
 
-   61 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error .
+   62 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error .
 
-    $default  reduce using rule 61 (image)
+    $default  reduce using rule 62 (image)
 
 
 state 100
 
-   34 inline_text_item: SPACE .
-   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE . inline_text RIGHTBRACKET
+   35 inline_text_item: SPACE .
+   61 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE . inline_text RIGHTBRACKET
 
     LESSTHAN          shift, and go to state 7
     LARGERTHAN        shift, and go to state 8
@@ -1885,27 +1920,27 @@ state 100
     RIGHTPARENTHESIS  shift, and go to state 29
     TEXT              shift, and go to state 30
 
-    LESSTHAN          [reduce using rule 34 (inline_text_item)]
-    LARGERTHAN        [reduce using rule 34 (inline_text_item)]
-    TRIPLEBACKTICK    [reduce using rule 34 (inline_text_item)]
-    VERTICAL          [reduce using rule 34 (inline_text_item)]
-    PLUS              [reduce using rule 34 (inline_text_item)]
-    MINUS             [reduce using rule 34 (inline_text_item)]
-    DIGIT             [reduce using rule 34 (inline_text_item)]
-    DOT               [reduce using rule 34 (inline_text_item)]
-    INDENT            [reduce using rule 34 (inline_text_item)]
-    SPACE             [reduce using rule 34 (inline_text_item)]
-    LEFTSQUARE        [reduce using rule 34 (inline_text_item)]
-    RIGHTSQUARE       [reduce using rule 34 (inline_text_item)]
-    LEFTBRACKET       [reduce using rule 34 (inline_text_item)]
-    RIGHTBRACKET      [reduce using rule 34 (inline_text_item)]
-    EXCLAMATION       [reduce using rule 34 (inline_text_item)]
-    DOUBLEUNDERSCORE  [reduce using rule 34 (inline_text_item)]
-    UNDERSCORE        [reduce using rule 34 (inline_text_item)]
-    LEFTPARENTHESIS   [reduce using rule 34 (inline_text_item)]
-    RIGHTPARENTHESIS  [reduce using rule 34 (inline_text_item)]
-    TEXT              [reduce using rule 34 (inline_text_item)]
-    $default          reduce using rule 34 (inline_text_item)
+    LESSTHAN          [reduce using rule 35 (inline_text_item)]
+    LARGERTHAN        [reduce using rule 35 (inline_text_item)]
+    TRIPLEBACKTICK    [reduce using rule 35 (inline_text_item)]
+    VERTICAL          [reduce using rule 35 (inline_text_item)]
+    PLUS              [reduce using rule 35 (inline_text_item)]
+    MINUS             [reduce using rule 35 (inline_text_item)]
+    DIGIT             [reduce using rule 35 (inline_text_item)]
+    DOT               [reduce using rule 35 (inline_text_item)]
+    INDENT            [reduce using rule 35 (inline_text_item)]
+    SPACE             [reduce using rule 35 (inline_text_item)]
+    LEFTSQUARE        [reduce using rule 35 (inline_text_item)]
+    RIGHTSQUARE       [reduce using rule 35 (inline_text_item)]
+    LEFTBRACKET       [reduce using rule 35 (inline_text_item)]
+    RIGHTBRACKET      [reduce using rule 35 (inline_text_item)]
+    EXCLAMATION       [reduce using rule 35 (inline_text_item)]
+    DOUBLEUNDERSCORE  [reduce using rule 35 (inline_text_item)]
+    UNDERSCORE        [reduce using rule 35 (inline_text_item)]
+    LEFTPARENTHESIS   [reduce using rule 35 (inline_text_item)]
+    RIGHTPARENTHESIS  [reduce using rule 35 (inline_text_item)]
+    TEXT              [reduce using rule 35 (inline_text_item)]
+    $default          reduce using rule 35 (inline_text_item)
 
     inline_text       go to state 103
     inline_text_item  go to state 39
@@ -1913,123 +1948,123 @@ state 100
 
 state 101
 
-   39 inline_text_item: RIGHTBRACKET .
-   59 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET .
+   40 inline_text_item: RIGHTBRACKET .
+   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET .
 
-    $end              reduce using rule 59 (image)
-    error             reduce using rule 39 (inline_text_item)
-    error             [reduce using rule 59 (image)]
-    BLANKLINE         reduce using rule 59 (image)
-    LINEBREAK         reduce using rule 59 (image)
-    LF_H              reduce using rule 59 (image)
-    LESSTHAN          reduce using rule 39 (inline_text_item)
-    LESSTHAN          [reduce using rule 59 (image)]
-    LARGERTHAN        reduce using rule 39 (inline_text_item)
-    LARGERTHAN        [reduce using rule 59 (image)]
-    TRIPLEBACKTICK    reduce using rule 39 (inline_text_item)
-    TRIPLEBACKTICK    [reduce using rule 59 (image)]
-    BACKTICK          reduce using rule 59 (image)
-    VERTICAL          reduce using rule 39 (inline_text_item)
-    VERTICAL          [reduce using rule 59 (image)]
-    DOUBLEASTERISK    reduce using rule 59 (image)
-    DOUBLETILDE       reduce using rule 59 (image)
-    ASTERISK          reduce using rule 59 (image)
-    PLUS              reduce using rule 39 (inline_text_item)
-    PLUS              [reduce using rule 59 (image)]
-    MINUS             reduce using rule 39 (inline_text_item)
-    MINUS             [reduce using rule 59 (image)]
-    DIGIT             reduce using rule 39 (inline_text_item)
-    DIGIT             [reduce using rule 59 (image)]
-    DOT               reduce using rule 39 (inline_text_item)
-    DOT               [reduce using rule 59 (image)]
-    INDENT            reduce using rule 39 (inline_text_item)
-    INDENT            [reduce using rule 59 (image)]
-    SPACE             reduce using rule 39 (inline_text_item)
-    SPACE             [reduce using rule 59 (image)]
-    LEFTSQUARE        reduce using rule 39 (inline_text_item)
-    LEFTSQUARE        [reduce using rule 59 (image)]
-    RIGHTSQUARE       reduce using rule 39 (inline_text_item)
-    RIGHTSQUARE       [reduce using rule 59 (image)]
-    LEFTBRACKET       reduce using rule 39 (inline_text_item)
-    LEFTBRACKET       [reduce using rule 59 (image)]
-    RIGHTBRACKET      reduce using rule 39 (inline_text_item)
-    RIGHTBRACKET      [reduce using rule 59 (image)]
-    EXCLAMATION       reduce using rule 39 (inline_text_item)
-    EXCLAMATION       [reduce using rule 59 (image)]
-    DOUBLEUNDERSCORE  reduce using rule 39 (inline_text_item)
-    DOUBLEUNDERSCORE  [reduce using rule 59 (image)]
-    UNDERSCORE        reduce using rule 39 (inline_text_item)
-    UNDERSCORE        [reduce using rule 59 (image)]
-    LEFTPARENTHESIS   reduce using rule 39 (inline_text_item)
-    LEFTPARENTHESIS   [reduce using rule 59 (image)]
-    RIGHTPARENTHESIS  reduce using rule 39 (inline_text_item)
-    RIGHTPARENTHESIS  [reduce using rule 59 (image)]
-    TEXT              reduce using rule 39 (inline_text_item)
-    TEXT              [reduce using rule 59 (image)]
-    $default          reduce using rule 39 (inline_text_item)
+    $end              reduce using rule 60 (image)
+    error             reduce using rule 40 (inline_text_item)
+    error             [reduce using rule 60 (image)]
+    BLANKLINE         reduce using rule 60 (image)
+    LINEBREAK         reduce using rule 60 (image)
+    LF_H              reduce using rule 60 (image)
+    LESSTHAN          reduce using rule 40 (inline_text_item)
+    LESSTHAN          [reduce using rule 60 (image)]
+    LARGERTHAN        reduce using rule 40 (inline_text_item)
+    LARGERTHAN        [reduce using rule 60 (image)]
+    TRIPLEBACKTICK    reduce using rule 40 (inline_text_item)
+    TRIPLEBACKTICK    [reduce using rule 60 (image)]
+    BACKTICK          reduce using rule 60 (image)
+    VERTICAL          reduce using rule 40 (inline_text_item)
+    VERTICAL          [reduce using rule 60 (image)]
+    DOUBLEASTERISK    reduce using rule 60 (image)
+    DOUBLETILDE       reduce using rule 60 (image)
+    ASTERISK          reduce using rule 60 (image)
+    PLUS              reduce using rule 40 (inline_text_item)
+    PLUS              [reduce using rule 60 (image)]
+    MINUS             reduce using rule 40 (inline_text_item)
+    MINUS             [reduce using rule 60 (image)]
+    DIGIT             reduce using rule 40 (inline_text_item)
+    DIGIT             [reduce using rule 60 (image)]
+    DOT               reduce using rule 40 (inline_text_item)
+    DOT               [reduce using rule 60 (image)]
+    INDENT            reduce using rule 40 (inline_text_item)
+    INDENT            [reduce using rule 60 (image)]
+    SPACE             reduce using rule 40 (inline_text_item)
+    SPACE             [reduce using rule 60 (image)]
+    LEFTSQUARE        reduce using rule 40 (inline_text_item)
+    LEFTSQUARE        [reduce using rule 60 (image)]
+    RIGHTSQUARE       reduce using rule 40 (inline_text_item)
+    RIGHTSQUARE       [reduce using rule 60 (image)]
+    LEFTBRACKET       reduce using rule 40 (inline_text_item)
+    LEFTBRACKET       [reduce using rule 60 (image)]
+    RIGHTBRACKET      reduce using rule 40 (inline_text_item)
+    RIGHTBRACKET      [reduce using rule 60 (image)]
+    EXCLAMATION       reduce using rule 40 (inline_text_item)
+    EXCLAMATION       [reduce using rule 60 (image)]
+    DOUBLEUNDERSCORE  reduce using rule 40 (inline_text_item)
+    DOUBLEUNDERSCORE  [reduce using rule 60 (image)]
+    UNDERSCORE        reduce using rule 40 (inline_text_item)
+    UNDERSCORE        [reduce using rule 60 (image)]
+    LEFTPARENTHESIS   reduce using rule 40 (inline_text_item)
+    LEFTPARENTHESIS   [reduce using rule 60 (image)]
+    RIGHTPARENTHESIS  reduce using rule 40 (inline_text_item)
+    RIGHTPARENTHESIS  [reduce using rule 60 (image)]
+    TEXT              reduce using rule 40 (inline_text_item)
+    TEXT              [reduce using rule 60 (image)]
+    $default          reduce using rule 40 (inline_text_item)
 
 
 state 102
 
-   39 inline_text_item: RIGHTBRACKET .
-   53 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET .
+   40 inline_text_item: RIGHTBRACKET .
+   54 link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET .
 
-    $end              reduce using rule 53 (link)
-    error             reduce using rule 53 (link)
-    BLANKLINE         reduce using rule 53 (link)
-    LINEBREAK         reduce using rule 53 (link)
-    LF_H              reduce using rule 53 (link)
-    LESSTHAN          reduce using rule 39 (inline_text_item)
-    LESSTHAN          [reduce using rule 53 (link)]
-    LARGERTHAN        reduce using rule 39 (inline_text_item)
-    LARGERTHAN        [reduce using rule 53 (link)]
-    TRIPLEBACKTICK    reduce using rule 39 (inline_text_item)
-    TRIPLEBACKTICK    [reduce using rule 53 (link)]
-    BACKTICK          reduce using rule 53 (link)
-    VERTICAL          reduce using rule 39 (inline_text_item)
-    VERTICAL          [reduce using rule 53 (link)]
-    DOUBLEASTERISK    reduce using rule 53 (link)
-    DOUBLETILDE       reduce using rule 53 (link)
-    ASTERISK          reduce using rule 53 (link)
-    PLUS              reduce using rule 39 (inline_text_item)
-    PLUS              [reduce using rule 53 (link)]
-    MINUS             reduce using rule 39 (inline_text_item)
-    MINUS             [reduce using rule 53 (link)]
-    DIGIT             reduce using rule 39 (inline_text_item)
-    DIGIT             [reduce using rule 53 (link)]
-    DOT               reduce using rule 39 (inline_text_item)
-    DOT               [reduce using rule 53 (link)]
-    INDENT            reduce using rule 39 (inline_text_item)
-    INDENT            [reduce using rule 53 (link)]
-    SPACE             reduce using rule 39 (inline_text_item)
-    SPACE             [reduce using rule 53 (link)]
-    LEFTSQUARE        reduce using rule 39 (inline_text_item)
-    LEFTSQUARE        [reduce using rule 53 (link)]
-    RIGHTSQUARE       reduce using rule 39 (inline_text_item)
-    RIGHTSQUARE       [reduce using rule 53 (link)]
-    LEFTBRACKET       reduce using rule 39 (inline_text_item)
-    LEFTBRACKET       [reduce using rule 53 (link)]
-    RIGHTBRACKET      reduce using rule 39 (inline_text_item)
-    RIGHTBRACKET      [reduce using rule 53 (link)]
-    EXCLAMATION       reduce using rule 39 (inline_text_item)
-    EXCLAMATION       [reduce using rule 53 (link)]
-    DOUBLEUNDERSCORE  reduce using rule 39 (inline_text_item)
-    DOUBLEUNDERSCORE  [reduce using rule 53 (link)]
-    UNDERSCORE        reduce using rule 39 (inline_text_item)
-    UNDERSCORE        [reduce using rule 53 (link)]
-    LEFTPARENTHESIS   reduce using rule 39 (inline_text_item)
-    LEFTPARENTHESIS   [reduce using rule 53 (link)]
-    RIGHTPARENTHESIS  reduce using rule 39 (inline_text_item)
-    RIGHTPARENTHESIS  [reduce using rule 53 (link)]
-    TEXT              reduce using rule 39 (inline_text_item)
-    TEXT              [reduce using rule 53 (link)]
-    $default          reduce using rule 39 (inline_text_item)
+    $end              reduce using rule 54 (link)
+    error             reduce using rule 54 (link)
+    BLANKLINE         reduce using rule 54 (link)
+    LINEBREAK         reduce using rule 54 (link)
+    LF_H              reduce using rule 54 (link)
+    LESSTHAN          reduce using rule 40 (inline_text_item)
+    LESSTHAN          [reduce using rule 54 (link)]
+    LARGERTHAN        reduce using rule 40 (inline_text_item)
+    LARGERTHAN        [reduce using rule 54 (link)]
+    TRIPLEBACKTICK    reduce using rule 40 (inline_text_item)
+    TRIPLEBACKTICK    [reduce using rule 54 (link)]
+    BACKTICK          reduce using rule 54 (link)
+    VERTICAL          reduce using rule 40 (inline_text_item)
+    VERTICAL          [reduce using rule 54 (link)]
+    DOUBLEASTERISK    reduce using rule 54 (link)
+    DOUBLETILDE       reduce using rule 54 (link)
+    ASTERISK          reduce using rule 54 (link)
+    PLUS              reduce using rule 40 (inline_text_item)
+    PLUS              [reduce using rule 54 (link)]
+    MINUS             reduce using rule 40 (inline_text_item)
+    MINUS             [reduce using rule 54 (link)]
+    DIGIT             reduce using rule 40 (inline_text_item)
+    DIGIT             [reduce using rule 54 (link)]
+    DOT               reduce using rule 40 (inline_text_item)
+    DOT               [reduce using rule 54 (link)]
+    INDENT            reduce using rule 40 (inline_text_item)
+    INDENT            [reduce using rule 54 (link)]
+    SPACE             reduce using rule 40 (inline_text_item)
+    SPACE             [reduce using rule 54 (link)]
+    LEFTSQUARE        reduce using rule 40 (inline_text_item)
+    LEFTSQUARE        [reduce using rule 54 (link)]
+    RIGHTSQUARE       reduce using rule 40 (inline_text_item)
+    RIGHTSQUARE       [reduce using rule 54 (link)]
+    LEFTBRACKET       reduce using rule 40 (inline_text_item)
+    LEFTBRACKET       [reduce using rule 54 (link)]
+    RIGHTBRACKET      reduce using rule 40 (inline_text_item)
+    RIGHTBRACKET      [reduce using rule 54 (link)]
+    EXCLAMATION       reduce using rule 40 (inline_text_item)
+    EXCLAMATION       [reduce using rule 54 (link)]
+    DOUBLEUNDERSCORE  reduce using rule 40 (inline_text_item)
+    DOUBLEUNDERSCORE  [reduce using rule 54 (link)]
+    UNDERSCORE        reduce using rule 40 (inline_text_item)
+    UNDERSCORE        [reduce using rule 54 (link)]
+    LEFTPARENTHESIS   reduce using rule 40 (inline_text_item)
+    LEFTPARENTHESIS   [reduce using rule 54 (link)]
+    RIGHTPARENTHESIS  reduce using rule 40 (inline_text_item)
+    RIGHTPARENTHESIS  [reduce using rule 54 (link)]
+    TEXT              reduce using rule 40 (inline_text_item)
+    TEXT              [reduce using rule 54 (link)]
+    $default          reduce using rule 40 (inline_text_item)
 
 
 state 103
 
-   23 inline_text: inline_text . inline_text_item
-   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text . RIGHTBRACKET
+   24 inline_text: inline_text . inline_text_item
+   61 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text . RIGHTBRACKET
 
     LESSTHAN          shift, and go to state 7
     LARGERTHAN        shift, and go to state 8
@@ -2057,56 +2092,56 @@ state 103
 
 state 104
 
-   39 inline_text_item: RIGHTBRACKET .
-   60 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET .
+   40 inline_text_item: RIGHTBRACKET .
+   61 image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET .
 
-    $end              reduce using rule 60 (image)
-    error             reduce using rule 60 (image)
-    BLANKLINE         reduce using rule 60 (image)
-    LINEBREAK         reduce using rule 60 (image)
-    LF_H              reduce using rule 60 (image)
-    LESSTHAN          reduce using rule 39 (inline_text_item)
-    LESSTHAN          [reduce using rule 60 (image)]
-    LARGERTHAN        reduce using rule 39 (inline_text_item)
-    LARGERTHAN        [reduce using rule 60 (image)]
-    TRIPLEBACKTICK    reduce using rule 39 (inline_text_item)
-    TRIPLEBACKTICK    [reduce using rule 60 (image)]
-    BACKTICK          reduce using rule 60 (image)
-    VERTICAL          reduce using rule 39 (inline_text_item)
-    VERTICAL          [reduce using rule 60 (image)]
-    DOUBLEASTERISK    reduce using rule 60 (image)
-    DOUBLETILDE       reduce using rule 60 (image)
-    ASTERISK          reduce using rule 60 (image)
-    PLUS              reduce using rule 39 (inline_text_item)
-    PLUS              [reduce using rule 60 (image)]
-    MINUS             reduce using rule 39 (inline_text_item)
-    MINUS             [reduce using rule 60 (image)]
-    DIGIT             reduce using rule 39 (inline_text_item)
-    DIGIT             [reduce using rule 60 (image)]
-    DOT               reduce using rule 39 (inline_text_item)
-    DOT               [reduce using rule 60 (image)]
-    INDENT            reduce using rule 39 (inline_text_item)
-    INDENT            [reduce using rule 60 (image)]
-    SPACE             reduce using rule 39 (inline_text_item)
-    SPACE             [reduce using rule 60 (image)]
-    LEFTSQUARE        reduce using rule 39 (inline_text_item)
-    LEFTSQUARE        [reduce using rule 60 (image)]
-    RIGHTSQUARE       reduce using rule 39 (inline_text_item)
-    RIGHTSQUARE       [reduce using rule 60 (image)]
-    LEFTBRACKET       reduce using rule 39 (inline_text_item)
-    LEFTBRACKET       [reduce using rule 60 (image)]
-    RIGHTBRACKET      reduce using rule 39 (inline_text_item)
-    RIGHTBRACKET      [reduce using rule 60 (image)]
-    EXCLAMATION       reduce using rule 39 (inline_text_item)
-    EXCLAMATION       [reduce using rule 60 (image)]
-    DOUBLEUNDERSCORE  reduce using rule 39 (inline_text_item)
-    DOUBLEUNDERSCORE  [reduce using rule 60 (image)]
-    UNDERSCORE        reduce using rule 39 (inline_text_item)
-    UNDERSCORE        [reduce using rule 60 (image)]
-    LEFTPARENTHESIS   reduce using rule 39 (inline_text_item)
-    LEFTPARENTHESIS   [reduce using rule 60 (image)]
-    RIGHTPARENTHESIS  reduce using rule 39 (inline_text_item)
-    RIGHTPARENTHESIS  [reduce using rule 60 (image)]
-    TEXT              reduce using rule 39 (inline_text_item)
-    TEXT              [reduce using rule 60 (image)]
-    $default          reduce using rule 39 (inline_text_item)
+    $end              reduce using rule 61 (image)
+    error             reduce using rule 61 (image)
+    BLANKLINE         reduce using rule 61 (image)
+    LINEBREAK         reduce using rule 61 (image)
+    LF_H              reduce using rule 61 (image)
+    LESSTHAN          reduce using rule 40 (inline_text_item)
+    LESSTHAN          [reduce using rule 61 (image)]
+    LARGERTHAN        reduce using rule 40 (inline_text_item)
+    LARGERTHAN        [reduce using rule 61 (image)]
+    TRIPLEBACKTICK    reduce using rule 40 (inline_text_item)
+    TRIPLEBACKTICK    [reduce using rule 61 (image)]
+    BACKTICK          reduce using rule 61 (image)
+    VERTICAL          reduce using rule 40 (inline_text_item)
+    VERTICAL          [reduce using rule 61 (image)]
+    DOUBLEASTERISK    reduce using rule 61 (image)
+    DOUBLETILDE       reduce using rule 61 (image)
+    ASTERISK          reduce using rule 61 (image)
+    PLUS              reduce using rule 40 (inline_text_item)
+    PLUS              [reduce using rule 61 (image)]
+    MINUS             reduce using rule 40 (inline_text_item)
+    MINUS             [reduce using rule 61 (image)]
+    DIGIT             reduce using rule 40 (inline_text_item)
+    DIGIT             [reduce using rule 61 (image)]
+    DOT               reduce using rule 40 (inline_text_item)
+    DOT               [reduce using rule 61 (image)]
+    INDENT            reduce using rule 40 (inline_text_item)
+    INDENT            [reduce using rule 61 (image)]
+    SPACE             reduce using rule 40 (inline_text_item)
+    SPACE             [reduce using rule 61 (image)]
+    LEFTSQUARE        reduce using rule 40 (inline_text_item)
+    LEFTSQUARE        [reduce using rule 61 (image)]
+    RIGHTSQUARE       reduce using rule 40 (inline_text_item)
+    RIGHTSQUARE       [reduce using rule 61 (image)]
+    LEFTBRACKET       reduce using rule 40 (inline_text_item)
+    LEFTBRACKET       [reduce using rule 61 (image)]
+    RIGHTBRACKET      reduce using rule 40 (inline_text_item)
+    RIGHTBRACKET      [reduce using rule 61 (image)]
+    EXCLAMATION       reduce using rule 40 (inline_text_item)
+    EXCLAMATION       [reduce using rule 61 (image)]
+    DOUBLEUNDERSCORE  reduce using rule 40 (inline_text_item)
+    DOUBLEUNDERSCORE  [reduce using rule 61 (image)]
+    UNDERSCORE        reduce using rule 40 (inline_text_item)
+    UNDERSCORE        [reduce using rule 61 (image)]
+    LEFTPARENTHESIS   reduce using rule 40 (inline_text_item)
+    LEFTPARENTHESIS   [reduce using rule 61 (image)]
+    RIGHTPARENTHESIS  reduce using rule 40 (inline_text_item)
+    RIGHTPARENTHESIS  [reduce using rule 61 (image)]
+    TEXT              reduce using rule 40 (inline_text_item)
+    TEXT              [reduce using rule 61 (image)]
+    $default          reduce using rule 40 (inline_text_item)

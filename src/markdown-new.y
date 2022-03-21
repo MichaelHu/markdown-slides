@@ -96,11 +96,11 @@ static char* grammar_rules[] = {
 
         "header: LF_H inline_elements LINEBREAK", "2",
 
-        "paragraph: lines",                       "2",
-        "paragraph: NULL",                        "2",
+        "paragraph: lines", "2",
 
             "lines: lines line", "3",
             "lines: line", "3",
+            "lines: NULL", "3",
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
@@ -361,11 +361,14 @@ paragraph:
     ;
 
 lines:
-     lines line {
+    lines line {
             show_rule("lines: lines line");
         }
     | line {
             show_rule("lines: line");
+        }
+    | {
+            show_rule("lines: NULL");
         }
     ;
 
