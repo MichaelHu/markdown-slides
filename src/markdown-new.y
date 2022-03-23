@@ -93,6 +93,7 @@ static char* grammar_rules[] = {
     "block: header",    "1",
     "block: paragraph", "1",
     "block: unorderlist_0", "1",
+    "block: codeblock", "1",
     "block: error",     "1",
 
         "header: LF_H inline_elements LINEBREAK", "2",
@@ -101,8 +102,12 @@ static char* grammar_rules[] = {
 
         "unorderlist_0: LF_UL line", "2",
         "unorderlist_0: unorderlist_0 LF_UL line", "2",
-        "unorderlist_0: unorderlist_0 unorderlist_1", "2",
         "unorderlist_0: unorderlist_0 LF_INDENT line", "2",
+        "unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK", "2",
+        "unorderlist_0: unorderlist_0 unorderlist_1", "2",
+
+        "codeblock: LF_INDENT code_text LINEBREAK", "2",
+        "codeblock: codeblock LF_INDENT code_text LINEBREAK", "2",
 
             "lines: line", "3",
             "lines: lines line", "3",
@@ -110,6 +115,7 @@ static char* grammar_rules[] = {
             "unorderlist_1: LF_INDENT_UL line", "3",
             "unorderlist_1: unorderlist_1 LF_INDENT_UL line", "3",
             "unorderlist_1: unorderlist_1 LF_INDENT2 line", "3",
+            "unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK", "3",
             "unorderlist_1: unorderlist_1 unorderlist_2", "3",
 
                 "line: inline_elements LINEBREAK", "4",
@@ -119,14 +125,10 @@ static char* grammar_rules[] = {
                 "unorderlist_2: LF_INDENT2_UL line", "4",
                 "unorderlist_2: unorderlist_2 LF_INDENT2_UL line", "4",
                 "unorderlist_2: unorderlist_2 LF_INDENT3 line", "4",
+                "unorderlist_2: unorderlist_2 LF_INDENT4 code_text LINEBREAK", "4",
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",
-
-                    "indents: LF_INDENT indent", "5",
-
-                        "indent: indent INDENT", "6",
-                        "indent: NULL", "6",
 
                         "inline_element: inline_text", "6",
                         "inline_element: link", "6",
@@ -168,6 +170,12 @@ static char* grammar_rules[] = {
                                 "inline_code_text_item: DOUBLETILDE", "8",
                                 "inline_code_text_item: LEFTSQUARE", "8",
                                 "inline_code_text_item: EXCLAMATION", "8",
+
+                            "code_text: code_text code_text_item", "7",
+                            "code_text: code_text_item", "7",
+
+                                "code_text_item: inline_code_text_item", "8",
+                                "code_text_item: BACKTICK", "8",
 
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
@@ -395,6 +403,9 @@ block:
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
         }
+    | codeblock {
+            show_rule("block: codeblock");
+        }
     /* error recovery */
     | error {
             show_rule("block: error");
@@ -420,14 +431,25 @@ unorderlist_0:
     | unorderlist_0 LF_UL line {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
         }
-    | unorderlist_0 unorderlist_1 {
-            show_rule("unorderlist_0: unorderlist_0 unorderlist_1");
-        }
     | unorderlist_0 LF_INDENT line {
             show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");
         }
+    | unorderlist_0 LF_INDENT2 code_text LINEBREAK {
+            show_rule("unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK");
+        }
+    | unorderlist_0 unorderlist_1 {
+            show_rule("unorderlist_0: unorderlist_0 unorderlist_1");
+        }
     ;
 
+codeblock: 
+    LF_INDENT code_text LINEBREAK {
+            show_rule("codeblock: LF_INDENT code_text LINEBREAK");
+        }
+    | codeblock LF_INDENT code_text LINEBREAK {
+            show_rule("codeblock: codeblock LF_INDENT code_text LINEBREAK");
+        }
+    ;
 
 lines:
     line {
@@ -447,6 +469,9 @@ unorderlist_1:
         }
     | unorderlist_1 LF_INDENT2 line {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT2 line");
+        }
+    | unorderlist_1 LF_INDENT3 code_text LINEBREAK {
+            show_rule("unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK");
         }
     | unorderlist_1 unorderlist_2 {
             show_rule("unorderlist_1: unorderlist_1 unorderlist_2");
@@ -476,6 +501,9 @@ unorderlist_2:
     | unorderlist_2 LF_INDENT3 line {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT3 line");
         }
+    | unorderlist_2 LF_INDENT4 code_text LINEBREAK {
+            show_rule("unorderlist_2: unorderlist_2 LF_INDENT4 code_text LINEBREAK");
+        }
     ;
 
 inline_elements:
@@ -484,21 +512,6 @@ inline_elements:
         }
     | inline_element {
             show_rule("inline_elements: inline_element");
-        }
-    ;
-
-indents: 
-    LF_INDENT indent {
-            show_rule("indents: LF_INDENT indent");
-        }
-    ;
-
-indent: 
-    indent INDENT {
-            show_rule("indent: indent INDENT");
-        }
-    | /* NULL */ {
-            show_rule("indent: NULL");
         }
     ;
 
@@ -625,6 +638,22 @@ inline_code_text_item:
         }           
     ;
 
+code_text:
+    code_text code_text_item {
+            show_rule("code_text: code_text code_text_item");
+        }
+    | code_text_item {
+            show_rule("code_text: code_text_item");
+        }
+    ;
+
+code_text_item:
+    inline_code_text_item {
+            show_rule("code_text_item: inline_code_text_item");
+        }
+    | BACKTICK {
+            show_rule("code_text_item: BACKTICK");
+        }
 
 link: 
     LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
