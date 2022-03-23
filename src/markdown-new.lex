@@ -101,6 +101,9 @@ blankline ^[ \t]*\r?\n
 quoteblankline ^>[ ]{0,4}\r?\n
 normaltext [^#@>\<*_\\`{}()\[\]+\-! \t0-9.\r\n|]+|.
 indent [ ]{4}|\t
+quote \>[ ]
+header #{1,6}
+unorderlist [*+-][ ]
 
 
 %%
@@ -111,7 +114,6 @@ indent [ ]{4}|\t
 \r?\n                                   { yylineno++; P("LINEBREAK"); RETURN(LINEBREAK); }
 
 ^#{1,6}                                 { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
-#{1,6}                                  { SETYYLVAL(yytext); P("H"); RETURN(H); }
 
 ^[*+-][ ]                               { SETYYLVAL(yytext); P("LF_UL"); RETURN(LF_UL); }
 
@@ -123,6 +125,9 @@ indent [ ]{4}|\t
 ^{indent}{3}                            { SETYYLVAL(yytext); P("LF_INDENT3"); RETURN(LF_INDENT3); }
 ^{indent}{4}                            { SETYYLVAL(yytext); P("LF_INDENT4"); RETURN(LF_INDENT4); }
 ^{indent}{5}                            { SETYYLVAL(yytext); P("LF_INDENT5"); RETURN(LF_INDENT5); }
+
+^{quote}{header}                        { SETYYLVAL(yytext); P("LF_Q_H"); RETURN(LF_Q_H); }
+^{quote}{unorderlist}                   { SETYYLVAL(yytext); P("LF_Q_UL"); RETURN(LF_Q_UL); }
 
 
 
@@ -139,7 +144,6 @@ indent [ ]{4}|\t
 [0-9]+                                  { SETYYLVAL(yytext); P("DIGIT"); RETURN(DIGIT); }
 \.                                      { SETYYLVAL(yytext); P("DOT"); RETURN(DOT); }
 ^[ ]{4}|\t                              { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
-[ ]{4}|\t                               { SETYYLVAL(yytext); P("INDENT"); RETURN(INDENT); }
 [ ]                                     { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 \[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
 \]                                      { SETYYLVAL(yytext); P("RIGHTSQUARE"); RETURN(RIGHTSQUARE); }

@@ -42,119 +42,103 @@
      BLANKLINE = 258,
      LINEBREAK = 259,
      LF_H = 260,
-     H = 261,
-     LF_UL = 262,
-     UL = 263,
-     LF_INDENT_UL = 264,
-     LF_INDENT2_UL = 265,
-     LF_INDENT3_UL = 266,
-     LF_INDENT4_UL = 267,
-     INDENT_UL = 268,
-     INDENT2_UL = 269,
-     INDENT3_UL = 270,
-     INDENT4_UL = 271,
-     SPECIALCHAR = 272,
-     LESSTHAN = 273,
-     LARGERTHAN = 274,
-     TRIPLEBACKTICK = 275,
-     BACKTICK = 276,
-     VERTICAL = 277,
-     DOUBLEASTERISK = 278,
-     DOUBLETILDE = 279,
-     ASTERISK = 280,
-     PLUS = 281,
-     MINUS = 282,
-     DIGIT = 283,
-     DOT = 284,
-     LF_INDENT = 285,
-     LF_INDENT2 = 286,
-     LF_INDENT3 = 287,
-     LF_INDENT4 = 288,
-     LF_INDENT5 = 289,
-     INDENT = 290,
-     INDENT2 = 291,
-     INDENT3 = 292,
-     INDENT4 = 293,
-     INDENT5 = 294,
-     SPACE = 295,
-     LEFTSQUARE = 296,
-     RIGHTSQUARE = 297,
-     LEFTBRACKET = 298,
-     RIGHTBRACKET = 299,
-     EXCLAMATION = 300,
-     DOUBLEUNDERSCORE = 301,
-     UNDERSCORE = 302,
-     LEFTPARENTHESIS = 303,
-     RIGHTPARENTHESIS = 304,
-     TEXT = 305,
-     ITALICSTART = 306,
-     LISTSTART = 307
+     LF_UL = 261,
+     UL = 262,
+     LF_INDENT_UL = 263,
+     LF_INDENT2_UL = 264,
+     LF_INDENT3_UL = 265,
+     LF_INDENT4_UL = 266,
+     LF_INDENT = 267,
+     LF_INDENT2 = 268,
+     LF_INDENT3 = 269,
+     LF_INDENT4 = 270,
+     LF_INDENT5 = 271,
+     LF_Q_H = 272,
+     LF_Q_UL = 273,
+     SPECIALCHAR = 274,
+     LESSTHAN = 275,
+     LARGERTHAN = 276,
+     TRIPLEBACKTICK = 277,
+     BACKTICK = 278,
+     VERTICAL = 279,
+     DOUBLEASTERISK = 280,
+     DOUBLETILDE = 281,
+     ASTERISK = 282,
+     PLUS = 283,
+     MINUS = 284,
+     DIGIT = 285,
+     DOT = 286,
+     SPACE = 287,
+     LEFTSQUARE = 288,
+     RIGHTSQUARE = 289,
+     LEFTBRACKET = 290,
+     RIGHTBRACKET = 291,
+     EXCLAMATION = 292,
+     DOUBLEUNDERSCORE = 293,
+     UNDERSCORE = 294,
+     LEFTPARENTHESIS = 295,
+     RIGHTPARENTHESIS = 296,
+     TEXT = 297,
+     ITALICSTART = 298,
+     LISTSTART = 299
    };
 #endif
 /* Tokens.  */
 #define BLANKLINE 258
 #define LINEBREAK 259
 #define LF_H 260
-#define H 261
-#define LF_UL 262
-#define UL 263
-#define LF_INDENT_UL 264
-#define LF_INDENT2_UL 265
-#define LF_INDENT3_UL 266
-#define LF_INDENT4_UL 267
-#define INDENT_UL 268
-#define INDENT2_UL 269
-#define INDENT3_UL 270
-#define INDENT4_UL 271
-#define SPECIALCHAR 272
-#define LESSTHAN 273
-#define LARGERTHAN 274
-#define TRIPLEBACKTICK 275
-#define BACKTICK 276
-#define VERTICAL 277
-#define DOUBLEASTERISK 278
-#define DOUBLETILDE 279
-#define ASTERISK 280
-#define PLUS 281
-#define MINUS 282
-#define DIGIT 283
-#define DOT 284
-#define LF_INDENT 285
-#define LF_INDENT2 286
-#define LF_INDENT3 287
-#define LF_INDENT4 288
-#define LF_INDENT5 289
-#define INDENT 290
-#define INDENT2 291
-#define INDENT3 292
-#define INDENT4 293
-#define INDENT5 294
-#define SPACE 295
-#define LEFTSQUARE 296
-#define RIGHTSQUARE 297
-#define LEFTBRACKET 298
-#define RIGHTBRACKET 299
-#define EXCLAMATION 300
-#define DOUBLEUNDERSCORE 301
-#define UNDERSCORE 302
-#define LEFTPARENTHESIS 303
-#define RIGHTPARENTHESIS 304
-#define TEXT 305
-#define ITALICSTART 306
-#define LISTSTART 307
+#define LF_UL 261
+#define UL 262
+#define LF_INDENT_UL 263
+#define LF_INDENT2_UL 264
+#define LF_INDENT3_UL 265
+#define LF_INDENT4_UL 266
+#define LF_INDENT 267
+#define LF_INDENT2 268
+#define LF_INDENT3 269
+#define LF_INDENT4 270
+#define LF_INDENT5 271
+#define LF_Q_H 272
+#define LF_Q_UL 273
+#define SPECIALCHAR 274
+#define LESSTHAN 275
+#define LARGERTHAN 276
+#define TRIPLEBACKTICK 277
+#define BACKTICK 278
+#define VERTICAL 279
+#define DOUBLEASTERISK 280
+#define DOUBLETILDE 281
+#define ASTERISK 282
+#define PLUS 283
+#define MINUS 284
+#define DIGIT 285
+#define DOT 286
+#define SPACE 287
+#define LEFTSQUARE 288
+#define RIGHTSQUARE 289
+#define LEFTBRACKET 290
+#define RIGHTBRACKET 291
+#define EXCLAMATION 292
+#define DOUBLEUNDERSCORE 293
+#define UNDERSCORE 294
+#define LEFTPARENTHESIS 295
+#define RIGHTPARENTHESIS 296
+#define TEXT 297
+#define ITALICSTART 298
+#define LISTSTART 299
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 250 "markdown-new.y"
+#line 254 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 158 "markdown-new.y.h"
+#line 142 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

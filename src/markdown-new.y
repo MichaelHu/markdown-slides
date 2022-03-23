@@ -94,7 +94,11 @@ static char* grammar_rules[] = {
     "block: paragraph", "1",
     "block: unorderlist_0", "1",
     "block: codeblock", "1",
+    "block: quote_block", "1",
     "block: error",     "1",
+
+    "quote_block: quote_block quote_header", "1",
+    "quote_block: NULL", "1",
 
         "header: LF_H inline_elements LINEBREAK", "2",
 
@@ -108,6 +112,8 @@ static char* grammar_rules[] = {
 
         "codeblock: LF_INDENT code_text LINEBREAK", "2",
         "codeblock: codeblock LF_INDENT code_text LINEBREAK", "2",
+
+        "quote_header: LF_Q_H inline_elements LINEBREAK", "2",
 
             "lines: line", "3",
             "lines: lines line", "3",
@@ -149,7 +155,6 @@ static char* grammar_rules[] = {
                                 "inline_text_item: MINUS", "8",
                                 "inline_text_item: DIGIT", "8",
                                 "inline_text_item: DOT", "8",
-                                "inline_text_item: INDENT", "8",
                                 "inline_text_item: SPACE", "8",
                                 "inline_text_item: RIGHTSQUARE", "8",
                                 "inline_text_item: LEFTBRACKET", "8",
@@ -164,7 +169,6 @@ static char* grammar_rules[] = {
                             "inline_code_text: inline_code_text_item", "7",
 
                                 "inline_code_text_item: inline_text_item", "8",
-                                "inline_code_text_item: H", "8",
                                 "inline_code_text_item: ASTERISK", "8",
                                 "inline_code_text_item: DOUBLEASTERISK", "8",
                                 "inline_code_text_item: DOUBLETILDE", "8",
@@ -297,7 +301,6 @@ static void show_rule( char *str ){
 %token LINEBREAK           
 
 %token LF_H                
-%token H                   
 
 %token LF_UL                
 %token UL                
@@ -307,10 +310,14 @@ static void show_rule( char *str ){
 %token LF_INDENT3_UL                
 %token LF_INDENT4_UL                
 
-%token INDENT_UL                
-%token INDENT2_UL                
-%token INDENT3_UL                
-%token INDENT4_UL                
+%token LF_INDENT              
+%token LF_INDENT2
+%token LF_INDENT3
+%token LF_INDENT4
+%token LF_INDENT5
+
+%token LF_Q_H
+%token LF_Q_UL
 
 %token SPECIALCHAR         
 %token LESSTHAN            
@@ -325,18 +332,6 @@ static void show_rule( char *str ){
 %token MINUS               
 %token DIGIT               
 %token DOT                 
-
-%token LF_INDENT              
-%token LF_INDENT2
-%token LF_INDENT3
-%token LF_INDENT4
-%token LF_INDENT5
-
-%token INDENT              
-%token INDENT2
-%token INDENT3
-%token INDENT4
-%token INDENT5
 
 %token SPACE               
 %token LEFTSQUARE          
@@ -406,9 +401,21 @@ block:
     | codeblock {
             show_rule("block: codeblock");
         }
+    | quote_block {
+            show_rule("block: quote_block");
+        }
     /* error recovery */
     | error {
             show_rule("block: error");
+        }
+    ;
+
+quote_block:
+    quote_block quote_header {
+            show_rule("quote_block: quote_block quote_header");
+        }
+    | /* NULL */ {
+            show_rule("quote_block: NULL");
         }
     ;
 
@@ -448,6 +455,12 @@ codeblock:
         }
     | codeblock LF_INDENT code_text LINEBREAK {
             show_rule("codeblock: codeblock LF_INDENT code_text LINEBREAK");
+        }
+    ;
+
+quote_header: 
+    LF_Q_H inline_elements LINEBREAK {
+            show_rule("quote_header: LF_Q_H inline_elements LINEBREAK");
         }
     ;
 
@@ -573,9 +586,6 @@ inline_text_item:
     | DOT  {
             show_rule("inline_text_item: DOT");
         }           
-    | INDENT {
-            show_rule("inline_text_item: INDENT");
-        }           
     | SPACE {
             show_rule("inline_text_item: SPACE");
         }           
@@ -617,9 +627,6 @@ inline_code_text:
 inline_code_text_item:
     inline_text_item {
             show_rule("inline_code_text_item: inline_text_item");
-        }
-    | H {
-            show_rule("inline_code_text_item: H");
         }
     | ASTERISK {
             show_rule("inline_code_text_item: ASTERISK");
