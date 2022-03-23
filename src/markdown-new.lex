@@ -100,6 +100,7 @@ static void clearAllState() {
 blankline ^[ \t]*\r?\n
 quoteblankline ^>[ ]{0,4}\r?\n
 normaltext [^#@>\<*_\\`{}()\[\]+\-! \t0-9.\r\n|]+|.
+indent [ ]{4}|\t
 
 
 %%
@@ -108,8 +109,23 @@ normaltext [^#@>\<*_\\`{}()\[\]+\-! \t0-9.\r\n|]+|.
 
 {blankline}                             { yylineno++; P("BLANKLINE"); RETURN(BLANKLINE); }
 \r?\n                                   { yylineno++; P("LINEBREAK"); RETURN(LINEBREAK); }
+
 ^#{1,6}                                 { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
 #{1,6}                                  { SETYYLVAL(yytext); P("H"); RETURN(H); }
+
+^[*+-][ ]                               { SETYYLVAL(yytext); P("LF_UL"); RETURN(LF_UL); }
+
+^{indent}[*+-][ ]                       { SETYYLVAL(yytext); P("LF_INDENT_UL"); RETURN(LF_INDENT_UL); }
+^{indent}{2}[*+-][ ]                    { SETYYLVAL(yytext); P("LF_INDENT2_UL"); RETURN(LF_INDENT2_UL); }
+
+^{indent}                               { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
+^{indent}{2}                            { SETYYLVAL(yytext); P("LF_INDENT2"); RETURN(LF_INDENT2); }
+^{indent}{3}                            { SETYYLVAL(yytext); P("LF_INDENT3"); RETURN(LF_INDENT3); }
+^{indent}{4}                            { SETYYLVAL(yytext); P("LF_INDENT4"); RETURN(LF_INDENT4); }
+^{indent}{5}                            { SETYYLVAL(yytext); P("LF_INDENT5"); RETURN(LF_INDENT5); }
+
+
+
 \\[\\`*_{}()#+\-.!]                     { SETYYLVAL(yytext); P("SPECIALCHAR"); RETURN(SPECIALCHAR); }
 \<                                      { SETYYLVAL(yytext); P("LESSTHAN"); RETURN(LESSTHAN); }
 \>                                      { SETYYLVAL(yytext); P("LARGERTHAN"); RETURN(LARGERTHAN); }

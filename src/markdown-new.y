@@ -92,23 +92,33 @@ static char* grammar_rules[] = {
 
     "block: header",    "1",
     "block: paragraph", "1",
-    "block: unorderlist", "1",
+    "block: unorderlist_0", "1",
     "block: error",     "1",
 
         "header: LF_H inline_elements LINEBREAK", "2",
 
         "paragraph: lines", "2",
 
-        "unorderlist: ASTERISK SPACE line %prec LISTSTART", "2",
-        "unorderlist: indents ASTERISK SPACE line %prec LISTSTART", "2",
+        "unorderlist_0: LF_UL line", "2",
+        "unorderlist_0: unorderlist_0 LF_UL line", "2",
+        "unorderlist_0: unorderlist_0 unorderlist_1", "2",
+        "unorderlist_0: unorderlist_0 LF_INDENT line", "2",
 
-            "lines: lines line", "3",
             "lines: line", "3",
-            "lines: NULL", "3",
+            "lines: lines line", "3",
+
+            "unorderlist_1: LF_INDENT_UL line", "3",
+            "unorderlist_1: unorderlist_1 LF_INDENT_UL line", "3",
+            "unorderlist_1: unorderlist_1 LF_INDENT2 line", "3",
+            "unorderlist_1: unorderlist_1 unorderlist_2", "3",
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
                 "line: BLANKLINE", "4",
+
+                "unorderlist_2: LF_INDENT2_UL line", "4",
+                "unorderlist_2: unorderlist_2 LF_INDENT2_UL line", "4",
+                "unorderlist_2: unorderlist_2 LF_INDENT3 line", "4",
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",
@@ -139,12 +149,11 @@ static char* grammar_rules[] = {
                                 "inline_text_item: DOT", "8",
                                 "inline_text_item: INDENT", "8",
                                 "inline_text_item: SPACE", "8",
-                                "inline_text_item: LEFTSQUARE", "8",
                                 "inline_text_item: RIGHTSQUARE", "8",
                                 "inline_text_item: LEFTBRACKET", "8",
                                 "inline_text_item: RIGHTBRACKET", "8",
-                                "inline_text_item: DOUBLEUNDERSCORE", "8",
                                 "inline_text_item: UNDERSCORE", "8",
+                                "inline_text_item: DOUBLEUNDERSCORE", "8",
                                 "inline_text_item: LEFTPARENTHESIS", "8",
                                 "inline_text_item: RIGHTPARENTHESIS", "8",
                                 "inline_text_item: TEXT", "8",
@@ -152,11 +161,13 @@ static char* grammar_rules[] = {
                             "inline_code_text: inline_code_text inline_code_text_item", "7",
                             "inline_code_text: inline_code_text_item", "7",
 
-                                "inline_code_text_item: inline_text_item", "7",
-                                "inline_code_text_item: H", "7",
-                                "inline_code_text_item: ASTERISK", "7",
-                                "inline_code_text_item: DOUBLEASTERISK", "7",
-                                "inline_code_text_item: DOUBLETILDE", "7",
+                                "inline_code_text_item: inline_text_item", "8",
+                                "inline_code_text_item: H", "8",
+                                "inline_code_text_item: ASTERISK", "8",
+                                "inline_code_text_item: DOUBLEASTERISK", "8",
+                                "inline_code_text_item: DOUBLETILDE", "8",
+                                "inline_code_text_item: LEFTSQUARE", "8",
+                                "inline_code_text_item: EXCLAMATION", "8",
 
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
@@ -276,8 +287,23 @@ static void show_rule( char *str ){
 
 %token BLANKLINE
 %token LINEBREAK           
-%token H                   
+
 %token LF_H                
+%token H                   
+
+%token LF_UL                
+%token UL                
+
+%token LF_INDENT_UL                
+%token LF_INDENT2_UL                
+%token LF_INDENT3_UL                
+%token LF_INDENT4_UL                
+
+%token INDENT_UL                
+%token INDENT2_UL                
+%token INDENT3_UL                
+%token INDENT4_UL                
+
 %token SPECIALCHAR         
 %token LESSTHAN            
 %token LARGERTHAN          
@@ -291,8 +317,19 @@ static void show_rule( char *str ){
 %token MINUS               
 %token DIGIT               
 %token DOT                 
+
 %token LF_INDENT              
+%token LF_INDENT2
+%token LF_INDENT3
+%token LF_INDENT4
+%token LF_INDENT5
+
 %token INDENT              
+%token INDENT2
+%token INDENT3
+%token INDENT4
+%token INDENT5
+
 %token SPACE               
 %token LEFTSQUARE          
 %token RIGHTSQUARE         
@@ -355,8 +392,8 @@ block:
     | paragraph {
             show_rule("block: paragraph");
         }
-    | unorderlist {
-            show_rule("block: unorderlist");
+    | unorderlist_0 {
+            show_rule("block: unorderlist_0");
         }
     /* error recovery */
     | error {
@@ -376,27 +413,46 @@ paragraph:
         }
     ;
 
-unorderlist: 
-    ASTERISK SPACE line %prec LISTSTART {
-            show_rule("unorderlist: ASTERISK SPACE line %prec LISTSTART");
+unorderlist_0: 
+    LF_UL line {
+            show_rule("unorderlist_0: LF_UL line");
         }
-    | indents ASTERISK SPACE line %prec LISTSTART {
-            show_rule("unorderlist: indents ASTERISK SPACE line %prec LISTSTART");
+    | unorderlist_0 LF_UL line {
+            show_rule("unorderlist_0: unorderlist_0 LF_UL line");
+        }
+    | unorderlist_0 unorderlist_1 {
+            show_rule("unorderlist_0: unorderlist_0 unorderlist_1");
+        }
+    | unorderlist_0 LF_INDENT line {
+            show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");
         }
     ;
 
 
 lines:
-    lines line {
-            show_rule("lines: lines line");
-        }
-    | line {
+    line {
             show_rule("lines: line");
         }
-    | {
-            show_rule("lines: NULL");
+    | lines line {
+            show_rule("lines: lines line");
         }
     ;
+
+unorderlist_1: 
+    LF_INDENT_UL line {
+            show_rule("unorderlist_1: LF_INDENT_UL line");
+        }
+    | unorderlist_1 LF_INDENT_UL line {
+            show_rule("unorderlist_1: unorderlist_1 LF_INDENT_UL line");
+        }
+    | unorderlist_1 LF_INDENT2 line {
+            show_rule("unorderlist_1: unorderlist_1 LF_INDENT2 line");
+        }
+    | unorderlist_1 unorderlist_2 {
+            show_rule("unorderlist_1: unorderlist_1 unorderlist_2");
+        }
+    ;
+
 
 line:
     inline_elements LINEBREAK {
@@ -407,6 +463,18 @@ line:
         }
     | BLANKLINE {
             show_rule("line: BLANKLINE");
+        }
+    ;
+
+unorderlist_2: 
+    LF_INDENT2_UL line {
+            show_rule("unorderlist_2: LF_INDENT2_UL line");
+        }
+    | unorderlist_2 LF_INDENT2_UL line {
+            show_rule("unorderlist_2: unorderlist_2 LF_INDENT2_UL line");
+        }
+    | unorderlist_2 LF_INDENT3 line {
+            show_rule("unorderlist_2: unorderlist_2 LF_INDENT3 line");
         }
     ;
 
@@ -498,12 +566,6 @@ inline_text_item:
     | SPACE {
             show_rule("inline_text_item: SPACE");
         }           
-    | EXCLAMATION {
-            show_rule("inline_text_item: EXCLAMATION");
-        }           
-    | LEFTSQUARE {
-            show_rule("inline_text_item: LEFTSQUARE");
-        }           
     | RIGHTSQUARE {
             show_rule("inline_text_item: RIGHTSQUARE");
         }           
@@ -513,11 +575,11 @@ inline_text_item:
     | RIGHTBRACKET {
             show_rule("inline_text_item: RIGHTBRACKET");
         }           
-    | DOUBLEUNDERSCORE {
-            show_rule("inline_text_item: DOUBLEUNDERSCORE");
-        }           
     | UNDERSCORE {
             show_rule("inline_text_item: UNDERSCORE");
+        }           
+    | DOUBLEUNDERSCORE {
+            show_rule("inline_text_item: DOUBLEUNDERSCORE");
         }           
     | LEFTPARENTHESIS {
             show_rule("inline_text_item: LEFTPARENTHESIS");
@@ -555,6 +617,12 @@ inline_code_text_item:
     | DOUBLETILDE {
             show_rule("inline_code_text_item: DOUBLETILDE");
         }
+    | EXCLAMATION {
+            show_rule("inline_text_item: EXCLAMATION");
+        }           
+    | LEFTSQUARE {
+            show_rule("inline_text_item: LEFTSQUARE");
+        }           
     ;
 
 

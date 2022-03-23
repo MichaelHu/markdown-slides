@@ -41,84 +41,120 @@
    enum yytokentype {
      BLANKLINE = 258,
      LINEBREAK = 259,
-     H = 260,
-     LF_H = 261,
-     SPECIALCHAR = 262,
-     LESSTHAN = 263,
-     LARGERTHAN = 264,
-     TRIPLEBACKTICK = 265,
-     BACKTICK = 266,
-     VERTICAL = 267,
-     DOUBLEASTERISK = 268,
-     DOUBLETILDE = 269,
-     ASTERISK = 270,
-     PLUS = 271,
-     MINUS = 272,
-     DIGIT = 273,
-     DOT = 274,
-     LF_INDENT = 275,
-     INDENT = 276,
-     SPACE = 277,
-     LEFTSQUARE = 278,
-     RIGHTSQUARE = 279,
-     LEFTBRACKET = 280,
-     RIGHTBRACKET = 281,
-     EXCLAMATION = 282,
-     DOUBLEUNDERSCORE = 283,
-     UNDERSCORE = 284,
-     LEFTPARENTHESIS = 285,
-     RIGHTPARENTHESIS = 286,
-     TEXT = 287,
-     ITALICSTART = 288,
-     LISTSTART = 289
+     LF_H = 260,
+     H = 261,
+     LF_UL = 262,
+     UL = 263,
+     LF_INDENT_UL = 264,
+     LF_INDENT2_UL = 265,
+     LF_INDENT3_UL = 266,
+     LF_INDENT4_UL = 267,
+     INDENT_UL = 268,
+     INDENT2_UL = 269,
+     INDENT3_UL = 270,
+     INDENT4_UL = 271,
+     SPECIALCHAR = 272,
+     LESSTHAN = 273,
+     LARGERTHAN = 274,
+     TRIPLEBACKTICK = 275,
+     BACKTICK = 276,
+     VERTICAL = 277,
+     DOUBLEASTERISK = 278,
+     DOUBLETILDE = 279,
+     ASTERISK = 280,
+     PLUS = 281,
+     MINUS = 282,
+     DIGIT = 283,
+     DOT = 284,
+     LF_INDENT = 285,
+     LF_INDENT2 = 286,
+     LF_INDENT3 = 287,
+     LF_INDENT4 = 288,
+     LF_INDENT5 = 289,
+     INDENT = 290,
+     INDENT2 = 291,
+     INDENT3 = 292,
+     INDENT4 = 293,
+     INDENT5 = 294,
+     SPACE = 295,
+     LEFTSQUARE = 296,
+     RIGHTSQUARE = 297,
+     LEFTBRACKET = 298,
+     RIGHTBRACKET = 299,
+     EXCLAMATION = 300,
+     DOUBLEUNDERSCORE = 301,
+     UNDERSCORE = 302,
+     LEFTPARENTHESIS = 303,
+     RIGHTPARENTHESIS = 304,
+     TEXT = 305,
+     ITALICSTART = 306,
+     LISTSTART = 307
    };
 #endif
 /* Tokens.  */
 #define BLANKLINE 258
 #define LINEBREAK 259
-#define H 260
-#define LF_H 261
-#define SPECIALCHAR 262
-#define LESSTHAN 263
-#define LARGERTHAN 264
-#define TRIPLEBACKTICK 265
-#define BACKTICK 266
-#define VERTICAL 267
-#define DOUBLEASTERISK 268
-#define DOUBLETILDE 269
-#define ASTERISK 270
-#define PLUS 271
-#define MINUS 272
-#define DIGIT 273
-#define DOT 274
-#define LF_INDENT 275
-#define INDENT 276
-#define SPACE 277
-#define LEFTSQUARE 278
-#define RIGHTSQUARE 279
-#define LEFTBRACKET 280
-#define RIGHTBRACKET 281
-#define EXCLAMATION 282
-#define DOUBLEUNDERSCORE 283
-#define UNDERSCORE 284
-#define LEFTPARENTHESIS 285
-#define RIGHTPARENTHESIS 286
-#define TEXT 287
-#define ITALICSTART 288
-#define LISTSTART 289
+#define LF_H 260
+#define H 261
+#define LF_UL 262
+#define UL 263
+#define LF_INDENT_UL 264
+#define LF_INDENT2_UL 265
+#define LF_INDENT3_UL 266
+#define LF_INDENT4_UL 267
+#define INDENT_UL 268
+#define INDENT2_UL 269
+#define INDENT3_UL 270
+#define INDENT4_UL 271
+#define SPECIALCHAR 272
+#define LESSTHAN 273
+#define LARGERTHAN 274
+#define TRIPLEBACKTICK 275
+#define BACKTICK 276
+#define VERTICAL 277
+#define DOUBLEASTERISK 278
+#define DOUBLETILDE 279
+#define ASTERISK 280
+#define PLUS 281
+#define MINUS 282
+#define DIGIT 283
+#define DOT 284
+#define LF_INDENT 285
+#define LF_INDENT2 286
+#define LF_INDENT3 287
+#define LF_INDENT4 288
+#define LF_INDENT5 289
+#define INDENT 290
+#define INDENT2 291
+#define INDENT3 292
+#define INDENT4 293
+#define INDENT5 294
+#define SPACE 295
+#define LEFTSQUARE 296
+#define RIGHTSQUARE 297
+#define LEFTBRACKET 298
+#define RIGHTBRACKET 299
+#define EXCLAMATION 300
+#define DOUBLEUNDERSCORE 301
+#define UNDERSCORE 302
+#define LEFTPARENTHESIS 303
+#define RIGHTPARENTHESIS 304
+#define TEXT 305
+#define ITALICSTART 306
+#define LISTSTART 307
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 231 "markdown-new.y"
+#line 242 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 122 "markdown-new.y.h"
+#line 158 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
