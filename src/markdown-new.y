@@ -118,12 +118,9 @@ static char* grammar_rules[] = {
 
         "quote_unorderlist_0: LF_Q_UL line", "2",
         "quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL line", "2",
-
-        /*
-        "quote_unorderlist_0: quote_unorderlist_0 LF_INDENT line", "2",
-        "quote_unorderlist_0: quote_unorderlist_0 LF_INDENT2 code_text LINEBREAK", "2",
-        "quote_unorderlist_0: quote_unorderlist_0 unorderlist_1", "2",
-        */
+        "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line", "2",
+        "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK", "2",
+        "quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1", "2",
 
             "lines: line", "3",
             "lines: lines line", "3",
@@ -133,6 +130,14 @@ static char* grammar_rules[] = {
             "unorderlist_1: unorderlist_1 LF_INDENT2 line", "3",
             "unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK", "3",
             "unorderlist_1: unorderlist_1 unorderlist_2", "3",
+
+            "quote_unorderlist_1: LF_Q_INDENT_UL line", "3",
+            "quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT_UL line", "3",
+            "quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT2 line", "3",
+            "quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK", "3",
+            /*
+            "quote_unorderlist_1: quote_unorderlist_1 quote_unorderlist_3", "3",
+            */
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
@@ -329,6 +334,13 @@ static void show_rule( char *str ){
 %token LF_Q_H
 %token LF_Q_UL
 
+%token LF_Q_INDENT_UL                
+%token LF_Q_INDENT2_UL                
+
+%token LF_Q_INDENT              
+%token LF_Q_INDENT2
+%token LF_Q_INDENT3
+
 %token SPECIALCHAR         
 %token LESSTHAN            
 %token LARGERTHAN          
@@ -484,6 +496,15 @@ quote_unorderlist_0:
     | quote_unorderlist_0 LF_Q_UL line {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL line");
         }
+    | quote_unorderlist_0 LF_Q_INDENT line {
+            show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line");
+        }
+    | quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK {
+            show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK");
+        }
+    | quote_unorderlist_0 quote_unorderlist_1 {
+            show_rule("quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1");
+        }
     ;
 
 lines:
@@ -513,6 +534,20 @@ unorderlist_1:
         }
     ;
 
+quote_unorderlist_1: 
+    LF_Q_INDENT_UL line {
+            show_rule("quote_unorderlist_1: LF_Q_INDENT_UL line");
+        }
+    | quote_unorderlist_1 LF_Q_INDENT_UL line {
+            show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT_UL line");
+        }
+    | quote_unorderlist_1 LF_Q_INDENT2 line {
+            show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT2 line");
+        }
+    | quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK {
+            show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK");
+        }
+    ;
 
 line:
     inline_elements LINEBREAK {

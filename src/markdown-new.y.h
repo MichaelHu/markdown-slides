@@ -55,32 +55,37 @@
      LF_INDENT5 = 271,
      LF_Q_H = 272,
      LF_Q_UL = 273,
-     SPECIALCHAR = 274,
-     LESSTHAN = 275,
-     LARGERTHAN = 276,
-     TRIPLEBACKTICK = 277,
-     BACKTICK = 278,
-     VERTICAL = 279,
-     DOUBLEASTERISK = 280,
-     DOUBLETILDE = 281,
-     ASTERISK = 282,
-     PLUS = 283,
-     MINUS = 284,
-     DIGIT = 285,
-     DOT = 286,
-     SPACE = 287,
-     LEFTSQUARE = 288,
-     RIGHTSQUARE = 289,
-     LEFTBRACKET = 290,
-     RIGHTBRACKET = 291,
-     EXCLAMATION = 292,
-     DOUBLEUNDERSCORE = 293,
-     UNDERSCORE = 294,
-     LEFTPARENTHESIS = 295,
-     RIGHTPARENTHESIS = 296,
-     TEXT = 297,
-     ITALICSTART = 298,
-     LISTSTART = 299
+     LF_Q_INDENT_UL = 274,
+     LF_Q_INDENT2_UL = 275,
+     LF_Q_INDENT = 276,
+     LF_Q_INDENT2 = 277,
+     LF_Q_INDENT3 = 278,
+     SPECIALCHAR = 279,
+     LESSTHAN = 280,
+     LARGERTHAN = 281,
+     TRIPLEBACKTICK = 282,
+     BACKTICK = 283,
+     VERTICAL = 284,
+     DOUBLEASTERISK = 285,
+     DOUBLETILDE = 286,
+     ASTERISK = 287,
+     PLUS = 288,
+     MINUS = 289,
+     DIGIT = 290,
+     DOT = 291,
+     SPACE = 292,
+     LEFTSQUARE = 293,
+     RIGHTSQUARE = 294,
+     LEFTBRACKET = 295,
+     RIGHTBRACKET = 296,
+     EXCLAMATION = 297,
+     DOUBLEUNDERSCORE = 298,
+     UNDERSCORE = 299,
+     LEFTPARENTHESIS = 300,
+     RIGHTPARENTHESIS = 301,
+     TEXT = 302,
+     ITALICSTART = 303,
+     LISTSTART = 304
    };
 #endif
 /* Tokens.  */
@@ -100,45 +105,50 @@
 #define LF_INDENT5 271
 #define LF_Q_H 272
 #define LF_Q_UL 273
-#define SPECIALCHAR 274
-#define LESSTHAN 275
-#define LARGERTHAN 276
-#define TRIPLEBACKTICK 277
-#define BACKTICK 278
-#define VERTICAL 279
-#define DOUBLEASTERISK 280
-#define DOUBLETILDE 281
-#define ASTERISK 282
-#define PLUS 283
-#define MINUS 284
-#define DIGIT 285
-#define DOT 286
-#define SPACE 287
-#define LEFTSQUARE 288
-#define RIGHTSQUARE 289
-#define LEFTBRACKET 290
-#define RIGHTBRACKET 291
-#define EXCLAMATION 292
-#define DOUBLEUNDERSCORE 293
-#define UNDERSCORE 294
-#define LEFTPARENTHESIS 295
-#define RIGHTPARENTHESIS 296
-#define TEXT 297
-#define ITALICSTART 298
-#define LISTSTART 299
+#define LF_Q_INDENT_UL 274
+#define LF_Q_INDENT2_UL 275
+#define LF_Q_INDENT 276
+#define LF_Q_INDENT2 277
+#define LF_Q_INDENT3 278
+#define SPECIALCHAR 279
+#define LESSTHAN 280
+#define LARGERTHAN 281
+#define TRIPLEBACKTICK 282
+#define BACKTICK 283
+#define VERTICAL 284
+#define DOUBLEASTERISK 285
+#define DOUBLETILDE 286
+#define ASTERISK 287
+#define PLUS 288
+#define MINUS 289
+#define DIGIT 290
+#define DOT 291
+#define SPACE 292
+#define LEFTSQUARE 293
+#define RIGHTSQUARE 294
+#define LEFTBRACKET 295
+#define RIGHTBRACKET 296
+#define EXCLAMATION 297
+#define DOUBLEUNDERSCORE 298
+#define UNDERSCORE 299
+#define LEFTPARENTHESIS 300
+#define RIGHTPARENTHESIS 301
+#define TEXT 302
+#define ITALICSTART 303
+#define LISTSTART 304
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 264 "markdown-new.y"
+#line 269 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 142 "markdown-new.y.h"
+#line 152 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

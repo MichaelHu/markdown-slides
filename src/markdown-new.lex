@@ -129,6 +129,13 @@ unorderlist [*+-][ ]
 ^{quote}{header}                        { SETYYLVAL(yytext); P("LF_Q_H"); RETURN(LF_Q_H); }
 ^{quote}{unorderlist}                   { SETYYLVAL(yytext); P("LF_Q_UL"); RETURN(LF_Q_UL); }
 
+^{quote}{indent}[*+-][ ]                { SETYYLVAL(yytext); P("LF_Q_INDENT_UL"); RETURN(LF_Q_INDENT_UL); }
+^{quote}{indent}{2}[*+-][ ]             { SETYYLVAL(yytext); P("LF_Q_INDENT2_UL"); RETURN(LF_Q_INDENT2_UL); }
+
+^{quote}{indent}                        { SETYYLVAL(yytext); P("LF_Q_INDENT"); RETURN(LF_Q_INDENT); }
+^{quote}{indent}{2}                     { SETYYLVAL(yytext); P("LF_Q_INDENT2"); RETURN(LF_Q_INDENT2); }
+^{quote}{indent}{3}                     { SETYYLVAL(yytext); P("LF_Q_INDENT3"); RETURN(LF_Q_INDENT3); }
+
 
 
 \\[\\`*_{}()#+\-.!]                     { SETYYLVAL(yytext); P("SPECIALCHAR"); RETURN(SPECIALCHAR); }
