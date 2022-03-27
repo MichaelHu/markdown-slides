@@ -99,6 +99,7 @@ static char* grammar_rules[] = {
 
     "quote_block: quote_block quote_header", "1",
     "quote_block: quote_block quote_unorderlist_0", "1",
+    "quote_block: quote_block quote_paragraph", "1",
     "quote_block: NULL", "1",
 
         "header: LF_H inline_elements LINEBREAK", "2",
@@ -121,6 +122,9 @@ static char* grammar_rules[] = {
         "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line", "2",
         "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK", "2",
         "quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1", "2",
+
+        "quote_paragraph: LF_Q line", "2",
+        "quote_paragraph: quote_paragraph LF_Q line", "2",
 
             "lines: line", "3",
             "lines: lines line", "3",
@@ -341,6 +345,8 @@ static void show_rule( char *str ){
 %token LF_Q_INDENT2
 %token LF_Q_INDENT3
 
+%token LF_Q
+
 %token SPECIALCHAR         
 %token LESSTHAN            
 %token LARGERTHAN          
@@ -439,6 +445,9 @@ quote_block:
     | quote_block quote_unorderlist_0 {
             show_rule("quote_block: quote_block quote_unorderlist_0");
         }
+    | quote_block quote_paragraph {
+            show_rule("quote_block: quote_block quote_paragraph");
+        }
     | /* NULL */ {
             show_rule("quote_block: NULL");
         }
@@ -504,6 +513,15 @@ quote_unorderlist_0:
         }
     | quote_unorderlist_0 quote_unorderlist_1 {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1");
+        }
+    ;
+
+quote_paragraph: 
+    LF_Q line {
+            show_rule("quote_paragraph: LF_Q line");
+        }
+    | quote_paragraph LF_Q line {
+            show_rule("quote_paragraph: quote_paragraph LF_Q line");
         }
     ;
 

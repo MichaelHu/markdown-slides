@@ -2693,6 +2693,87 @@
             [> quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK
         [> quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1
     [> quote_block: quote_block quote_unorderlist_0
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: MINUS
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: MINUS
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+        [> quote_paragraph: LF_Q line
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: MINUS
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: MINUS
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+        [> quote_paragraph: quote_paragraph LF_Q line
+    [> quote_block: quote_block quote_paragraph
     [> block: quote_block
 [> blocks: blocks block
                 [> line: BLANKLINE

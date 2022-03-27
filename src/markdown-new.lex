@@ -136,6 +136,8 @@ unorderlist [*+-][ ]
 ^{quote}{indent}{2}                     { SETYYLVAL(yytext); P("LF_Q_INDENT2"); RETURN(LF_Q_INDENT2); }
 ^{quote}{indent}{3}                     { SETYYLVAL(yytext); P("LF_Q_INDENT3"); RETURN(LF_Q_INDENT3); }
 
+^{quote}                                { SETYYLVAL(yytext); P("LF_Q"); RETURN(LF_Q); }
+
 
 
 \\[\\`*_{}()#+\-.!]                     { SETYYLVAL(yytext); P("SPECIALCHAR"); RETURN(SPECIALCHAR); }
