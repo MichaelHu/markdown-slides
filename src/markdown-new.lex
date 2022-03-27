@@ -113,12 +113,12 @@ unorderlist [*+-][ ]
 {blankline}                             { yylineno++; P("BLANKLINE"); RETURN(BLANKLINE); }
 \r?\n                                   { yylineno++; P("LINEBREAK"); RETURN(LINEBREAK); }
 
-^#{1,6}                                 { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
+^{header}                               { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
 
-^[*+-][ ]                               { SETYYLVAL(yytext); P("LF_UL"); RETURN(LF_UL); }
+^{unorderlist}                          { SETYYLVAL(yytext); P("LF_UL"); RETURN(LF_UL); }
 
-^{indent}[*+-][ ]                       { SETYYLVAL(yytext); P("LF_INDENT_UL"); RETURN(LF_INDENT_UL); }
-^{indent}{2}[*+-][ ]                    { SETYYLVAL(yytext); P("LF_INDENT2_UL"); RETURN(LF_INDENT2_UL); }
+^{indent}{unorderlist}                  { SETYYLVAL(yytext); P("LF_INDENT_UL"); RETURN(LF_INDENT_UL); }
+^{indent}{2}{unorderlist}               { SETYYLVAL(yytext); P("LF_INDENT2_UL"); RETURN(LF_INDENT2_UL); }
 
 ^{indent}                               { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
 ^{indent}{2}                            { SETYYLVAL(yytext); P("LF_INDENT2"); RETURN(LF_INDENT2); }
@@ -129,8 +129,8 @@ unorderlist [*+-][ ]
 ^{quote}{header}                        { SETYYLVAL(yytext); P("LF_Q_H"); RETURN(LF_Q_H); }
 ^{quote}{unorderlist}                   { SETYYLVAL(yytext); P("LF_Q_UL"); RETURN(LF_Q_UL); }
 
-^{quote}{indent}[*+-][ ]                { SETYYLVAL(yytext); P("LF_Q_INDENT_UL"); RETURN(LF_Q_INDENT_UL); }
-^{quote}{indent}{2}[*+-][ ]             { SETYYLVAL(yytext); P("LF_Q_INDENT2_UL"); RETURN(LF_Q_INDENT2_UL); }
+^{quote}{indent}{unorderlist}           { SETYYLVAL(yytext); P("LF_Q_INDENT_UL"); RETURN(LF_Q_INDENT_UL); }
+^{quote}{indent}{2}{unorderlist}        { SETYYLVAL(yytext); P("LF_Q_INDENT2_UL"); RETURN(LF_Q_INDENT2_UL); }
 
 ^{quote}{indent}                        { SETYYLVAL(yytext); P("LF_Q_INDENT"); RETURN(LF_Q_INDENT); }
 ^{quote}{indent}{2}                     { SETYYLVAL(yytext); P("LF_Q_INDENT2"); RETURN(LF_Q_INDENT2); }
