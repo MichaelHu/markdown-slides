@@ -100,6 +100,7 @@ static char* grammar_rules[] = {
     "quote_block: quote_block quote_header", "1",
     "quote_block: quote_block quote_unorderlist_0", "1",
     "quote_block: quote_block quote_paragraph", "1",
+    "quote_block: quote_block quote_codeblock", "1",
     "quote_block: NULL", "1",
 
         "header: LF_H inline_elements LINEBREAK", "2",
@@ -125,6 +126,9 @@ static char* grammar_rules[] = {
 
         "quote_paragraph: LF_Q line", "2",
         "quote_paragraph: quote_paragraph LF_Q line", "2",
+
+        "quote_codeblock: LF_Q_INDENT code_text LINEBREAK", "2",
+        "quote_codeblock: quote_codeblock LF_Q_INDENT code_text LINEBREAK", "2",
 
             "lines: line", "3",
             "lines: lines line", "3",
@@ -448,6 +452,9 @@ quote_block:
     | quote_block quote_paragraph {
             show_rule("quote_block: quote_block quote_paragraph");
         }
+    | quote_block quote_codeblock {
+            show_rule("quote_block: quote_block quote_codeblock");
+        }
     | /* NULL */ {
             show_rule("quote_block: NULL");
         }
@@ -522,6 +529,15 @@ quote_paragraph:
         }
     | quote_paragraph LF_Q line {
             show_rule("quote_paragraph: quote_paragraph LF_Q line");
+        }
+    ;
+
+quote_codeblock: 
+    LF_Q_INDENT code_text LINEBREAK {
+            show_rule("quote_codeblock: LF_Q_INDENT code_text LINEBREAK");
+        }
+    | quote_codeblock LF_Q_INDENT code_text LINEBREAK {
+            show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT code_text LINEBREAK");
         }
     ;
 
