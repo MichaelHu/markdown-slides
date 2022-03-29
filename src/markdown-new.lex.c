@@ -370,14 +370,14 @@ static const flex_int16_t yy_accept[146] =
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,   46,   44,    2,   44,   33,   38,
        36,   37,   27,   28,   29,   31,   30,   21,   22,   34,
-       44,   35,   41,   24,   42,   25,   43,   44,    7,    1,
+       44,   35,   41,   24,   42,   25,   43,   44,   11,    1,
        44,   33,    3,   27,   28,   29,   22,   45,    2,   26,
-       30,   20,   40,    0,   39,    8,    1,    0,    0,    0,
+       30,   20,   40,    0,   39,   10,    1,    0,    0,    0,
         1,    0,    0,    3,    4,   19,   23,    9,    0,    0,
 
-        0,    5,    0,    3,   16,    0,   12,    0,   10,    0,
-        0,    6,    0,    7,    3,   17,    0,    0,    0,   12,
-       13,   11,    0,    0,    0,    3,   18,    0,    0,    0,
+        0,    5,    0,    3,   18,    0,   12,    0,    8,    0,
+        0,    6,    0,   11,    3,   17,    0,    0,    0,   12,
+       13,    7,    0,    0,    0,    3,   16,    0,    0,    0,
        14,    0,   12,    0,    0,    3,    0,   15,    0,   12,
         0,    0,   12,   12,    0
     } ;
@@ -955,12 +955,12 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 124 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
+{ SETYYLVAL(yytext); P("LF_INDENT5"); RETURN(LF_INDENT5); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 125 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_INDENT2"); RETURN(LF_INDENT2); }
+{ SETYYLVAL(yytext); P("LF_INDENT4"); RETURN(LF_INDENT4); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
@@ -970,12 +970,12 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 127 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_INDENT4"); RETURN(LF_INDENT4); }
+{ SETYYLVAL(yytext); P("LF_INDENT2"); RETURN(LF_INDENT2); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 128 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_INDENT5"); RETURN(LF_INDENT5); }
+{ SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
@@ -1000,7 +1000,7 @@ YY_RULE_SETUP
 case 16:
 YY_RULE_SETUP
 #line 136 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_Q_INDENT"); RETURN(LF_Q_INDENT); }
+{ SETYYLVAL(yytext); P("LF_Q_INDENT3"); RETURN(LF_Q_INDENT3); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
@@ -1010,7 +1010,7 @@ YY_RULE_SETUP
 case 18:
 YY_RULE_SETUP
 #line 138 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_Q_INDENT3"); RETURN(LF_Q_INDENT3); }
+{ SETYYLVAL(yytext); P("LF_Q_INDENT"); RETURN(LF_Q_INDENT); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP

@@ -120,11 +120,11 @@ unorderlist [*+-][ ]
 ^{indent}{unorderlist}                  { SETYYLVAL(yytext); P("LF_INDENT_UL"); RETURN(LF_INDENT_UL); }
 ^{indent}{2}{unorderlist}               { SETYYLVAL(yytext); P("LF_INDENT2_UL"); RETURN(LF_INDENT2_UL); }
 
-^{indent}                               { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
-^{indent}{2}                            { SETYYLVAL(yytext); P("LF_INDENT2"); RETURN(LF_INDENT2); }
-^{indent}{3}                            { SETYYLVAL(yytext); P("LF_INDENT3"); RETURN(LF_INDENT3); }
-^{indent}{4}                            { SETYYLVAL(yytext); P("LF_INDENT4"); RETURN(LF_INDENT4); }
 ^{indent}{5}                            { SETYYLVAL(yytext); P("LF_INDENT5"); RETURN(LF_INDENT5); }
+^{indent}{4}                            { SETYYLVAL(yytext); P("LF_INDENT4"); RETURN(LF_INDENT4); }
+^{indent}{3}                            { SETYYLVAL(yytext); P("LF_INDENT3"); RETURN(LF_INDENT3); }
+^{indent}{2}                            { SETYYLVAL(yytext); P("LF_INDENT2"); RETURN(LF_INDENT2); }
+^{indent}                               { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
 
 ^{quote}{header}                        { SETYYLVAL(yytext); P("LF_Q_H"); RETURN(LF_Q_H); }
 ^{quote}{unorderlist}                   { SETYYLVAL(yytext); P("LF_Q_UL"); RETURN(LF_Q_UL); }
@@ -132,9 +132,9 @@ unorderlist [*+-][ ]
 ^{quote}{indent}{unorderlist}           { SETYYLVAL(yytext); P("LF_Q_INDENT_UL"); RETURN(LF_Q_INDENT_UL); }
 ^{quote}{indent}{2}{unorderlist}        { SETYYLVAL(yytext); P("LF_Q_INDENT2_UL"); RETURN(LF_Q_INDENT2_UL); }
 
-^{quote}{indent}                        { SETYYLVAL(yytext); P("LF_Q_INDENT"); RETURN(LF_Q_INDENT); }
-^{quote}{indent}{2}                     { SETYYLVAL(yytext); P("LF_Q_INDENT2"); RETURN(LF_Q_INDENT2); }
 ^{quote}{indent}{3}                     { SETYYLVAL(yytext); P("LF_Q_INDENT3"); RETURN(LF_Q_INDENT3); }
+^{quote}{indent}{2}                     { SETYYLVAL(yytext); P("LF_Q_INDENT2"); RETURN(LF_Q_INDENT2); }
+^{quote}{indent}                        { SETYYLVAL(yytext); P("LF_Q_INDENT"); RETURN(LF_Q_INDENT); }
 
 ^{quote}                                { SETYYLVAL(yytext); P("LF_Q"); RETURN(LF_Q); }
 
