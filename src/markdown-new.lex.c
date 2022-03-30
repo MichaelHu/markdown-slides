@@ -1019,132 +1019,132 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 144 "markdown-new.lex"
+#line 142 "markdown-new.lex"
 { SETYYLVAL(yytext); P("SPECIALCHAR"); RETURN(SPECIALCHAR); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 145 "markdown-new.lex"
+#line 143 "markdown-new.lex"
 { SETYYLVAL(yytext); P("LESSTHAN"); RETURN(LESSTHAN); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 146 "markdown-new.lex"
+#line 144 "markdown-new.lex"
 { SETYYLVAL(yytext); P("LARGERTHAN"); RETURN(LARGERTHAN); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 147 "markdown-new.lex"
+#line 145 "markdown-new.lex"
 { SETYYLVAL(yytext); P("TRIPLEBACKTICK"); RETURN(TRIPLEBACKTICK); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 148 "markdown-new.lex"
+#line 146 "markdown-new.lex"
 { SETYYLVAL(yytext); P("BACKTICK"); RETURN(BACKTICK); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 149 "markdown-new.lex"
+#line 147 "markdown-new.lex"
 { SETYYLVAL(yytext); P("VERTICAL"); RETURN(VERTICAL); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 150 "markdown-new.lex"
+#line 148 "markdown-new.lex"
 { SETYYLVAL(yytext); P("DOUBLEASTERISK"); RETURN(DOUBLEASTERISK); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 151 "markdown-new.lex"
+#line 149 "markdown-new.lex"
 { SETYYLVAL(yytext); P("ASTERISK"); RETURN(ASTERISK); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 152 "markdown-new.lex"
+#line 150 "markdown-new.lex"
 { SETYYLVAL(yytext); P("PLUS"); RETURN(PLUS); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 153 "markdown-new.lex"
+#line 151 "markdown-new.lex"
 { SETYYLVAL(yytext); P("MINUS"); RETURN(MINUS); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 154 "markdown-new.lex"
+#line 152 "markdown-new.lex"
 { SETYYLVAL(yytext); P("DIGIT"); RETURN(DIGIT); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 155 "markdown-new.lex"
+#line 153 "markdown-new.lex"
 { SETYYLVAL(yytext); P("DOT"); RETURN(DOT); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 156 "markdown-new.lex"
+#line 154 "markdown-new.lex"
 { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 157 "markdown-new.lex"
+#line 155 "markdown-new.lex"
 { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 158 "markdown-new.lex"
+#line 156 "markdown-new.lex"
 { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 159 "markdown-new.lex"
+#line 157 "markdown-new.lex"
 { SETYYLVAL(yytext); P("RIGHTSQUARE"); RETURN(RIGHTSQUARE); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 160 "markdown-new.lex"
+#line 158 "markdown-new.lex"
 { SETYYLVAL(yytext); P("LEFTBRACKET"); RETURN(LEFTBRACKET); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 161 "markdown-new.lex"
+#line 159 "markdown-new.lex"
 { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 162 "markdown-new.lex"
+#line 160 "markdown-new.lex"
 { SETYYLVAL(yytext); P("EXCLAMATION"); RETURN(EXCLAMATION); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 163 "markdown-new.lex"
+#line 161 "markdown-new.lex"
 { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 164 "markdown-new.lex"
+#line 162 "markdown-new.lex"
 { SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 165 "markdown-new.lex"
+#line 163 "markdown-new.lex"
 { SETYYLVAL(yytext); P("UNDERSCORE"); RETURN(UNDERSCORE); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 166 "markdown-new.lex"
+#line 164 "markdown-new.lex"
 { SETYYLVAL(yytext); P("LEFTPARENTHESIS"); RETURN(LEFTPARENTHESIS); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 167 "markdown-new.lex"
+#line 165 "markdown-new.lex"
 { SETYYLVAL(yytext); P("RIGHTPARENTHESIS"); RETURN(RIGHTPARENTHESIS); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 168 "markdown-new.lex"
+#line 166 "markdown-new.lex"
 { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 173 "markdown-new.lex"
+#line 171 "markdown-new.lex"
 ECHO;
 	YY_BREAK
 #line 1150 "markdown-new.lex.c"
@@ -2176,7 +2176,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 173 "markdown-new.lex"
+#line 171 "markdown-new.lex"
 
 
 int yywrap(){

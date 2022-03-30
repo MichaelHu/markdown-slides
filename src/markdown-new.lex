@@ -138,8 +138,6 @@ unorderlist [*+-][ ]
 
 ^{quote}                                { SETYYLVAL(yytext); P("LF_Q"); RETURN(LF_Q); }
 
-
-
 \\[\\`*_{}()#+\-.!]                     { SETYYLVAL(yytext); P("SPECIALCHAR"); RETURN(SPECIALCHAR); }
 \<                                      { SETYYLVAL(yytext); P("LESSTHAN"); RETURN(LESSTHAN); }
 \>                                      { SETYYLVAL(yytext); P("LARGERTHAN"); RETURN(LARGERTHAN); }
