@@ -9,7 +9,7 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 1
+#define _ISDEBUGPARSER 0
 #define _SHOW_TREE_AFTER_LEVEL_FIX 0
 #define _SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES 0
 #define _SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES 0
@@ -335,62 +335,99 @@ static void show_rule( char *str ){
 %nonassoc STARX
 */
 
-%token BLANKLINE
-%token LINEBREAK           
 
-%token LF_H                
+    /* bind union part with terminal symbol */
+%token <text> BLANKLINE
+%token <text> LINEBREAK           
 
-%token LF_UL                
-%token UL                
+%token <text> LF_H                
 
-%token LF_INDENT_UL                
-%token LF_INDENT2_UL                
-%token LF_INDENT3_UL                
-%token LF_INDENT4_UL                
+%token <text> LF_UL                
+%token <text> UL                
 
-%token LF_INDENT              
-%token LF_INDENT2
-%token LF_INDENT3
-%token LF_INDENT4
-%token LF_INDENT5
+%token <text> LF_INDENT_UL                
+%token <text> LF_INDENT2_UL                
+%token <text> LF_INDENT3_UL                
+%token <text> LF_INDENT4_UL                
 
-%token LF_Q_H
-%token LF_Q_UL
+%token <text> LF_INDENT              
+%token <text> LF_INDENT2
+%token <text> LF_INDENT3
+%token <text> LF_INDENT4
+%token <text> LF_INDENT5
 
-%token LF_Q_INDENT_UL                
-%token LF_Q_INDENT2_UL                
+%token <text> LF_Q_H
+%token <text> LF_Q_UL
 
-%token LF_Q_INDENT              
-%token LF_Q_INDENT2
-%token LF_Q_INDENT3
+%token <text> LF_Q_INDENT_UL                
+%token <text> LF_Q_INDENT2_UL                
 
-%token LF_Q
+%token <text> LF_Q_INDENT              
+%token <text> LF_Q_INDENT2
+%token <text> LF_Q_INDENT3
 
-%token SPECIALCHAR         
-%token LESSTHAN            
-%token LARGERTHAN          
-%token TRIPLEBACKTICK      
-%token BACKTICK            
-%token VERTICAL            
-%token DOUBLEASTERISK      
-%token DOUBLETILDE      
-%token ASTERISK            
-%token PLUS                
-%token MINUS               
-%token DIGIT               
-%token DOT                 
+%token <text> LF_Q
 
-%token SPACE               
-%token LEFTSQUARE          
-%token RIGHTSQUARE         
-%token LEFTBRACKET         
-%token RIGHTBRACKET        
-%token EXCLAMATION         
-%token DOUBLEUNDERSCORE    
-%token UNDERSCORE          
-%token LEFTPARENTHESIS     
-%token RIGHTPARENTHESIS    
-%token TEXT                
+%token <text> SPECIALCHAR         
+%token <text> LESSTHAN            
+%token <text> LARGERTHAN          
+%token <text> TRIPLEBACKTICK      
+%token <text> BACKTICK            
+%token <text> VERTICAL            
+%token <text> DOUBLEASTERISK      
+%token <text> DOUBLETILDE      
+%token <text> ASTERISK            
+%token <text> PLUS                
+%token <text> MINUS               
+%token <text> DIGIT               
+%token <text> DOT                 
+
+%token <text> SPACE               
+%token <text> LEFTSQUARE          
+%token <text> RIGHTSQUARE         
+%token <text> LEFTBRACKET         
+%token <text> RIGHTBRACKET        
+%token <text> EXCLAMATION         
+%token <text> DOUBLEUNDERSCORE    
+%token <text> UNDERSCORE          
+%token <text> LEFTPARENTHESIS     
+%token <text> RIGHTPARENTHESIS    
+%token <text> TEXT                
+
+
+    /* bind union part with nonterminal symbol */
+%type <text> markdownfile
+%type <text> blocks
+%type <text> block
+%type <text> quote_block
+%type <text> header
+%type <text> paragraph
+%type <text> unorderlist_0
+%type <text> codeblock
+%type <text> quote_header
+%type <text> quote_unorderlist_0
+%type <text> quote_paragraph
+%type <text> quote_codeblock
+%type <text> lines
+%type <text> unorderlist_1
+%type <text> quote_unorderlist_1
+%type <text> lf_indents
+%type <text> line
+%type <text> unorderlist_2
+%type <text> inline_elements
+%type <text> inline_element
+%type <text> inline_text
+%type <text> inline_text_item
+%type <text> inline_code_text
+%type <text> inline_code_text_item
+%type <text> code_text
+%type <text> code_text_item
+%type <text> link
+%type <text> image
+%type <text> italic
+%type <text> strong
+%type <text> linethrough
+%type <text> inlinecode
 
 %nonassoc ITALICSTART
 %nonassoc LISTSTART
@@ -406,6 +443,9 @@ markdownfile:
              * 1. _root_node == $1
              */
             show_rule("markdownfile: blocks");
+            fprintf(stdout, "==================================\n");
+            fprintf(stdout, "%s", $1);
+            fprintf(stdout, "==================================\n");
             /**
             parse_doc();
             is_doc_parsed = 1;
@@ -427,9 +467,11 @@ markdownfile:
 blocks:
     blocks block {
             show_rule("blocks: blocks block");
+            $$ = str_concat($1, $2);
         }
     | /* NULL */{
             show_rule("blocks: NULL");
+            $$ = "";
         }
     ;
 
@@ -438,9 +480,11 @@ blocks:
 block:
     header {
             show_rule("block: header");
+            $$ = $1;
         }
     | paragraph {
             show_rule("block: paragraph");
+            $$ = $1;
         }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
@@ -478,12 +522,14 @@ quote_block:
 header:
     LF_H inline_elements LINEBREAK {              
             show_rule("header: LF_H inline_elements LINEBREAK");
+            $$ = str_format("<h?>%s</h?>", $2);
         }   
     ;
 
 paragraph:
     lines {
             show_rule("paragraph: lines");
+            $$ = $1;
         }
     ;
 
@@ -577,9 +623,11 @@ quote_codeblock:
 lines:
     line {
             show_rule("lines: line");
+            $$ = $1;
         }
     | lines line {
             show_rule("lines: lines line");
+            $$ = str_concat($1, $2);
         }
     ;
 
@@ -643,12 +691,15 @@ lf_indents:
 line:
     inline_elements LINEBREAK {
             show_rule("line: inline_elements LINEBREAK");
+            $$ = str_concat($1, $2);
         }
     | inline_elements {
             show_rule("line: inline_elements");
+            $$ = $1;
         }
     | BLANKLINE {
             show_rule("line: BLANKLINE");
+            $$ = "\n";
         }
     ;
 
@@ -673,18 +724,22 @@ unorderlist_2:
 inline_elements:
     inline_elements inline_element {
             show_rule("inline_elements: inline_elements inline_element");
+            $$ = str_concat($1, $2);
         }
     | inline_element {
             show_rule("inline_elements: inline_element");
+            $$ = $1;
         }
     ;
 
 inline_element:
     inline_text {
             show_rule("inline_element: inline_text");
+            $$ = $1;
         }
     | link {
             show_rule("inline_element: link");
+            $$ = $1;
         }
     | image {
             show_rule("inline_element: image");
@@ -700,125 +755,159 @@ inline_element:
         }
     | inlinecode {
             show_rule("inline_element: inlinecode");
+            $$ = $1;
         }
     ;
 
 inline_text:
     inline_text inline_text_item {
             show_rule("inline_text: inline_text inline_text_item");
+            $$ = str_concat($1, $2);
         }
     | inline_text_item {
             show_rule("inline_text: inline_text_item");
+            $$ = $1;
         }
     ;
 
 inline_text_item:
     LESSTHAN {
             show_rule("inline_text_item: LESSTHAN");
+            $$ = $1;
         }           
     | LARGERTHAN {
             show_rule("inline_text_item: LARGERTHAN");
+            $$ = $1;
         }           
     | TRIPLEBACKTICK {
             show_rule("inline_text_item: TRIPLEBACKTICK");
+            $$ = $1;
         }           
     | VERTICAL {
             show_rule("inline_text_item: VERTICAL");
+            $$ = $1;
         }           
     | PLUS {
             show_rule("inline_text_item: PLUS");
+            $$ = $1;
         }           
     | MINUS {
             show_rule("inline_text_item: MINUS");
+            $$ = $1;
         }           
     | DIGIT  {
             show_rule("inline_text_item: DIGIT");
+            $$ = $1;
         }           
     | DOT  {
             show_rule("inline_text_item: DOT");
+            $$ = $1;
         }           
     | SPACE {
             show_rule("inline_text_item: SPACE");
+            $$ = $1;
         }           
     | RIGHTSQUARE {
             show_rule("inline_text_item: RIGHTSQUARE");
+            $$ = $1;
         }           
     | LEFTBRACKET {
             show_rule("inline_text_item: LEFTBRACKET");
+            $$ = $1;
         }           
     | RIGHTBRACKET {
             show_rule("inline_text_item: RIGHTBRACKET");
+            $$ = $1;
         }           
     | UNDERSCORE {
             show_rule("inline_text_item: UNDERSCORE");
+            $$ = $1;
         }           
     | DOUBLEUNDERSCORE {
             show_rule("inline_text_item: DOUBLEUNDERSCORE");
+            $$ = $1;
         }           
     | LEFTPARENTHESIS {
             show_rule("inline_text_item: LEFTPARENTHESIS");
+            $$ = $1;
         }           
     | RIGHTPARENTHESIS {
             show_rule("inline_text_item: RIGHTPARENTHESIS");
+            $$ = $1;
         }           
     | TEXT {
             show_rule("inline_text_item: TEXT");
+            $$ = $1;
         }           
     ;          
 
 inline_code_text:
     inline_code_text inline_code_text_item {
             show_rule("inline_code_text: inline_code_text inline_code_text_item");
+            $$ = str_concat($1, $2);
         }
     | inline_code_text_item {
             show_rule("inline_code_text: inline_code_text_item");
+            $$ = $1;
         }
     ;
 
 inline_code_text_item:
     inline_text_item {
             show_rule("inline_code_text_item: inline_text_item");
+            $$ = $1;
         }
     | ASTERISK {
             show_rule("inline_code_text_item: ASTERISK");
+            $$ = $1;
         }
     | DOUBLEASTERISK {
             show_rule("inline_code_text_item: DOUBLEASTERISK");
+            $$ = $1;
         }
     | DOUBLETILDE {
             show_rule("inline_code_text_item: DOUBLETILDE");
+            $$ = $1;
         }
     | EXCLAMATION {
             show_rule("inline_text_item: EXCLAMATION");
+            $$ = $1;
         }           
     | LEFTSQUARE {
             show_rule("inline_text_item: LEFTSQUARE");
+            $$ = $1;
         }           
     ;
 
 code_text:
     code_text code_text_item {
             show_rule("code_text: code_text code_text_item");
+            $$ = str_concat($1, $2);
         }
     | code_text_item {
             show_rule("code_text: code_text_item");
+            $$ = $1;
         }
     ;
 
 code_text_item:
     inline_code_text_item {
             show_rule("code_text_item: inline_code_text_item");
+            $$ = $1;
         }
     | BACKTICK {
             show_rule("code_text_item: BACKTICK");
+            $$ = $1;
         }
 
 link: 
     LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+            $$ = str_format("<a href=\"%s\">%s</a>", $5, $2);
         }
     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+            $$ = str_format("<a href=\"%s\" title=\"%s\">%s</a>", $5, $7, $2);
         }
     | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
@@ -903,6 +992,7 @@ linethrough:
 inlinecode:
     BACKTICK inline_code_text BACKTICK {
             show_rule("inlinecode: BACKTICK inline_code_text BACKTICK");
+            $$ = str_format("<pre>%s</pre>", $2);
         }
     | BACKTICK inline_code_text error {
             show_rule("inlinecode: BACKTICK inline_code_text error");
