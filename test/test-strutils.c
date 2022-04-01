@@ -260,6 +260,49 @@ static void test_str_replace(void) {
         , "Hello, Michael!" 
     );
 
+    test_util_str_equal(
+        "test 5"
+        , str_replace(s1, "", "|")
+        , "Hello, Michael!" 
+    );
+
+}
+
+static void test_str_replace_right(void) {
+    char *s1 = "Hello, Michael!";
+
+    test_util_log_str("\n# test_str_replace_right");
+
+    test_util_str_equal(
+        "test 1"
+        , str_replace_right(s1, "o", "O")
+        , "HellO, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 2"
+        , str_replace_right(s1, "l", "L")
+        , "Hello, MichaeL!" 
+    );
+
+    test_util_str_equal(
+        "test 3"
+        , str_replace_right(s1, "e", "")
+        , "Hello, Michal!" 
+    );
+
+    test_util_str_equal(
+        "test 4"
+        , str_replace_right(s1, "xxx", "")
+        , "Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5"
+        , str_replace_right(s1, "", "|")
+        , "Hello, Michael!" 
+    );
+
 }
 
 static void test_str_memory_stat(void) {
@@ -280,6 +323,7 @@ void test_strutils(void) {
     test_str_from_arr();
 
     test_str_replace();
+    test_str_replace_right();
 
     test_str_memory_stat();
 }

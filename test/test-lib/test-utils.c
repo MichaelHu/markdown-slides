@@ -31,7 +31,7 @@ void test_util_str_equal(char *description, char *s1, char *s2) {
         test_util_log("%s: pass", description);
     }
     else {
-        test_util_log("%s: fail", description);
+        test_util_log("\033[4;31;42m %s: fail \033[0m", description);
     }
 }
 
@@ -40,6 +40,6 @@ void test_util_int_equal(char *description, int a, int b) {
         test_util_log("%s: pass", description);
     }
     else {
-        test_util_log("%s: fail", description);
+        test_util_log("\033[4;31;42m %s: fail \033[0m", description);
     }
 }

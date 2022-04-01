@@ -294,6 +294,11 @@ char *str_replace(char *s, char *pattern, char *replacement) {
     char *p = s, *t = s, *str_ret = "";
     int str_len = strlen(s), pattern_len = strlen(pattern);
 
+    if (pattern_len == 0) {
+        str_ret = str_concat(s, "");
+        return str_ret;
+    }
+
     while ((t = strstr(p, pattern))) {
         str_ret = str_concat(str_ret, str_new_copy(p, t));
         str_ret = str_concat(str_ret, replacement);
@@ -305,6 +310,35 @@ char *str_replace(char *s, char *pattern, char *replacement) {
 
     if (!t) {
         str_ret = str_concat(str_ret, str_new_copy(p, s + str_len));
+    }
+
+    return str_ret;
+}
+
+char *str_replace_right(char *s, char *pattern, char *replacement) {
+    char *p = s, *t = s, *last_t = NULL, *str_ret = "";
+    int str_len = strlen(s), pattern_len = strlen(pattern);
+
+    if (pattern_len == 0) {
+        str_ret = str_concat(s, "");
+        return str_ret;
+    }
+
+    while ((t = strstr(p, pattern))) {
+        last_t = t;
+        p = t + pattern_len;
+        if (p - s >= str_len) {
+            break;
+        }
+    }
+
+    if (last_t) {
+        str_ret = str_concat(str_ret, str_new_copy(s, last_t));
+        str_ret = str_concat(str_ret, replacement);
+        str_ret = str_concat(str_ret, str_new_copy(p, s + str_len));
+    }
+    else {
+        str_ret = str_concat(s, "");
     }
 
     return str_ret;
