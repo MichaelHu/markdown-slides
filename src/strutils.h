@@ -11,6 +11,7 @@ char *str_padding_left(char *s, int count);
 char *str_trim_left(char *s);
 char *str_trim_right(char *s);
 char *str_trim(char *s);
+char *str_trim_left_n_lf_indents( char *str, int cnt );
 char *str_new_copy(char *start, char *end);
 t_str_collection *str_split(char *s, char *sep);
 int count_of_char(char *s, char c);

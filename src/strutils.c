@@ -368,3 +368,38 @@ char *str_replace_right(char *s, char *pattern, char *replacement) {
     return str_ret;
 }
 
+char* str_trim_left_n_lf_indents( char *str, int cnt ){
+    char *p = str;
+    char *str_ret;
+    int str_len = strlen(str);
+
+    while( cnt > 0 ){
+        if( strstr( p, "\t" ) == p ){
+            p++;
+        }
+        else if( strstr( p, "    " ) == p ){
+            p+=4;
+        }
+        else {
+            break;
+        }
+
+        if( p > str + str_len ) {
+            break;
+        }
+
+        cnt--;
+    }
+
+    /* no match */
+    if( cnt > 0 ) {
+        return str_ret = str_concat( str, "" );
+    }
+    else{
+        str_ret = str_concat(p, "");
+    }
+
+    return str_ret;
+}
+
+

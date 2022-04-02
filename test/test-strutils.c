@@ -348,6 +348,114 @@ static void test_str_replace_right(void) {
 
 }
 
+static void test_str_trim_left_n_lf_indents(void) {
+    char *s1 = "\tHello, Michael!";
+    char *s2 = "    Hello, Michael!";
+    char *s3 = "   Hello, Michael!";
+    char *s4 = "   \tHello, Michael!";
+    char *s5 = "\t    \t\tHello, Michael!";
+    char *s6 = "\t     \tHello, Michael!";
+
+    test_util_log_str("\n# test_str_trim_left_n_lf_indents");
+
+    test_util_str_equal(
+        "test 1"
+        , str_trim_left_n_lf_indents(s1, 1)
+        , "Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 1-1"
+        , str_trim_left_n_lf_indents(s1, 2)
+        , "\tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 2"
+        , str_trim_left_n_lf_indents(s2, 1)
+        , "Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 2-1"
+        , str_trim_left_n_lf_indents(s2, 0)
+        , "    Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 3"
+        , str_trim_left_n_lf_indents(s3, 1)
+        , "   Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 3-1"
+        , str_trim_left_n_lf_indents(s3, 100)
+        , "   Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 4"
+        , str_trim_left_n_lf_indents(s4, 1)
+        , "   \tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 4-1"
+        , str_trim_left_n_lf_indents(s4, 2)
+        , "   \tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5"
+        , str_trim_left_n_lf_indents(s5, 1)
+        , "    \t\tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5-1"
+        , str_trim_left_n_lf_indents(s5, 2)
+        , "\t\tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5-2"
+        , str_trim_left_n_lf_indents(s5, 3)
+        , "\tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5-3"
+        , str_trim_left_n_lf_indents(s5, 4)
+        , "Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5-4"
+        , str_trim_left_n_lf_indents(s5, 5)
+        , "\t    \t\tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 6"
+        , str_trim_left_n_lf_indents(s6, 1)
+        , "     \tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 6-1"
+        , str_trim_left_n_lf_indents(s6, 2)
+        , " \tHello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 6-2"
+        , str_trim_left_n_lf_indents(s6, 3)
+        , "\t     \tHello, Michael!" 
+    );
+
+}
+
 static void test_str_memory_stat(void) {
     test_util_log_str("\n# test_str_memory_stat");
 
@@ -366,7 +474,10 @@ void test_strutils(void) {
     test_str_from_arr();
 
     test_str_replace();
+    test_str_replace_left();
     test_str_replace_right();
+
+    test_str_trim_left_n_lf_indents();
 
     test_str_memory_stat();
 }
