@@ -511,7 +511,7 @@ block:
         }
     | quote_block {
             show_rule("block: quote_block");
-            $$ = $1;
+            $$ = str_format("<blockquote>%s</blockquote>", $1);
         }
     /* error recovery */
     | error {
@@ -522,15 +522,19 @@ block:
 quote_block:
     quote_block quote_header {
             show_rule("quote_block: quote_block quote_header");
+            $$ = str_concat($1, $2);
         }
     | quote_block quote_unorderlist_0 {
             show_rule("quote_block: quote_block quote_unorderlist_0");
+            $$ = str_concat($1, $2);
         }
     | quote_block quote_paragraph {
             show_rule("quote_block: quote_block quote_paragraph");
+            $$ = str_concat($1, $2);
         }
     | quote_block quote_codeblock {
             show_rule("quote_block: quote_block quote_codeblock");
+            $$ = str_concat($1, $2);
         }
     | /* NULL */ {
             show_rule("quote_block: NULL");
@@ -541,7 +545,7 @@ quote_block:
 header:
     LF_H inline_elements LINEBREAK {              
             show_rule("header: LF_H inline_elements LINEBREAK");
-            $$ = str_format("<h?>%s</h?>", $2);
+            $$ = str_format("<h%d>%s</h%d>%s", strlen($1), $2, strlen($1), $3);
         }   
     ;
 
@@ -597,6 +601,7 @@ lf_indents2_codeblock:
 quote_header: 
     LF_Q_H inline_elements LINEBREAK {
             show_rule("quote_header: LF_Q_H inline_elements LINEBREAK");
+            $$ = str_format("<h%d>%s</h%d>%s", strlen(str_replace_left($1, "> ", "")), $2, strlen(str_replace_left($1, "> ", "")), $3);
         }
     ;
 
@@ -795,6 +800,7 @@ inline_element:
         }
     | italic {
             show_rule("inline_element: italic");
+            $$ = $1;
         }
     | strong {
             show_rule("inline_element: strong");
@@ -978,9 +984,11 @@ link:
 image: 
     EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+            $$ = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", $6, $3, "");
         }
     | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
+            $$ = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", $6, $3, $8);
         }
     | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
@@ -1005,6 +1013,7 @@ image:
 italic: 
     ASTERISK inline_text ASTERISK %prec ITALICSTART {
             show_rule("italic: ASTERISK inline_text ASTERISK %prec ITALICSTART");
+            $$ = str_format("<i>%s</i>", $2);
         }
     | ASTERISK inline_text error %prec ITALICSTART {
             show_rule("italic: ASTERISK inline_text error %prec ITALICSTART");
@@ -1017,6 +1026,7 @@ italic:
 strong:
     DOUBLEASTERISK inline_text DOUBLEASTERISK {
             show_rule("strong: DOUBLEASTERISK inline_text DOUBLEASTERISK");
+            $$ = str_format("<strong>%s</strong>", $2);
         }
     | DOUBLEASTERISK inline_text error {
             show_rule("strong: DOUBLEASTERISK inline_text error");
@@ -1029,6 +1039,7 @@ strong:
 linethrough:
     DOUBLETILDE inline_text DOUBLETILDE {
             show_rule("linethrough: DOUBLETILDE inline_text DOUBLETILDE");
+            $$ = str_format("<del>%s</del>", $2);
         }
     | DOUBLETILDE inline_text error {
             show_rule("linethrough: DOUBLETILDE inline_text error");
@@ -1041,7 +1052,7 @@ linethrough:
 inlinecode:
     BACKTICK inline_code_text BACKTICK {
             show_rule("inlinecode: BACKTICK inline_code_text BACKTICK");
-            $$ = str_format("<pre>%s</pre>", $2);
+            $$ = str_format("<code>%s</code>", $2);
         }
     | BACKTICK inline_code_text error {
             show_rule("inlinecode: BACKTICK inline_code_text error");

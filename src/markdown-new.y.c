@@ -865,19 +865,19 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint16 yyrline[] =
 {
        0,   453,   453,   483,   487,   496,   500,   504,   508,   512,
-     517,   523,   526,   529,   532,   535,   542,   549,   556,   560,
-     564,   568,   572,   578,   582,   589,   592,   598,   604,   607,
-     610,   613,   616,   619,   625,   628,   634,   637,   640,   643,
-     649,   653,   660,   663,   666,   669,   672,   675,   678,   684,
-     687,   690,   693,   699,   702,   708,   711,   717,   720,   726,
-     729,   735,   741,   745,   749,   756,   759,   762,   765,   768,
-     774,   778,   785,   789,   793,   796,   799,   802,   805,   812,
-     816,   823,   827,   831,   835,   839,   843,   847,   851,   855,
-     859,   863,   867,   871,   875,   879,   883,   887,   894,   898,
-     905,   909,   913,   917,   921,   925,   932,   936,   943,   947,
-     953,   957,   961,   964,   967,   970,   973,   979,   982,   985,
-     988,   991,   994,   997,  1000,  1006,  1009,  1012,  1018,  1021,
-    1024,  1030,  1033,  1036,  1042,  1046,  1049
+     517,   523,   527,   531,   535,   539,   546,   553,   560,   564,
+     568,   572,   576,   582,   586,   593,   596,   602,   609,   612,
+     615,   618,   621,   624,   630,   633,   639,   642,   645,   648,
+     654,   658,   665,   668,   671,   674,   677,   680,   683,   689,
+     692,   695,   698,   704,   707,   713,   716,   722,   725,   731,
+     734,   740,   746,   750,   754,   761,   764,   767,   770,   773,
+     779,   783,   790,   794,   798,   801,   805,   808,   811,   818,
+     822,   829,   833,   837,   841,   845,   849,   853,   857,   861,
+     865,   869,   873,   877,   881,   885,   889,   893,   900,   904,
+     911,   915,   919,   923,   927,   931,   938,   942,   949,   953,
+     959,   963,   967,   970,   973,   976,   979,   985,   989,   993,
+     996,   999,  1002,  1005,  1008,  1014,  1018,  1021,  1027,  1031,
+    1034,  1040,  1044,  1047,  1053,  1057,  1060
 };
 #endif
 
@@ -2334,7 +2334,7 @@ yyreduce:
 #line 512 "markdown-new.y"
     {
             show_rule("block: quote_block");
-            (yyval.text) = (yyvsp[(1) - (1)].text);
+            (yyval.text) = str_format("<blockquote>%s</blockquote>", (yyvsp[(1) - (1)].text));
         ;}
     break;
 
@@ -2349,32 +2349,36 @@ yyreduce:
 #line 523 "markdown-new.y"
     {
             show_rule("quote_block: quote_block quote_header");
+            (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
         ;}
     break;
 
   case 12:
-#line 526 "markdown-new.y"
+#line 527 "markdown-new.y"
     {
             show_rule("quote_block: quote_block quote_unorderlist_0");
+            (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
         ;}
     break;
 
   case 13:
-#line 529 "markdown-new.y"
+#line 531 "markdown-new.y"
     {
             show_rule("quote_block: quote_block quote_paragraph");
+            (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
         ;}
     break;
 
   case 14:
-#line 532 "markdown-new.y"
+#line 535 "markdown-new.y"
     {
             show_rule("quote_block: quote_block quote_codeblock");
+            (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
         ;}
     break;
 
   case 15:
-#line 535 "markdown-new.y"
+#line 539 "markdown-new.y"
     {
             show_rule("quote_block: NULL");
             (yyval.text) = "";
@@ -2382,15 +2386,15 @@ yyreduce:
     break;
 
   case 16:
-#line 542 "markdown-new.y"
+#line 546 "markdown-new.y"
     {              
             show_rule("header: LF_H inline_elements LINEBREAK");
-            (yyval.text) = str_format("<h?>%s</h?>", (yyvsp[(2) - (3)].text));
+            (yyval.text) = str_format("<h%d>%s</h%d>%s", strlen((yyvsp[(1) - (3)].text)), (yyvsp[(2) - (3)].text), strlen((yyvsp[(1) - (3)].text)), (yyvsp[(3) - (3)].text));
         ;}
     break;
 
   case 17:
-#line 549 "markdown-new.y"
+#line 553 "markdown-new.y"
     {
             show_rule("paragraph: lines");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2398,7 +2402,7 @@ yyreduce:
     break;
 
   case 18:
-#line 556 "markdown-new.y"
+#line 560 "markdown-new.y"
     {
             show_rule("unorderlist_0: LF_UL line");
             (yyval.text) = str_format("<li>%s</li>", (yyvsp[(2) - (2)].text));
@@ -2406,7 +2410,7 @@ yyreduce:
     break;
 
   case 19:
-#line 560 "markdown-new.y"
+#line 564 "markdown-new.y"
     {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
             (yyval.text) = str_format("%s<li>%s</li>", (yyvsp[(1) - (3)].text), (yyvsp[(2) - (3)].text));
@@ -2414,7 +2418,7 @@ yyreduce:
     break;
 
   case 20:
-#line 564 "markdown-new.y"
+#line 568 "markdown-new.y"
     {
             show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");
             (yyval.text) = str_format("%s%s</li>", str_replace_right((yyvsp[(1) - (3)].text),"</li>", ""), (yyvsp[(2) - (3)].text));
@@ -2422,7 +2426,7 @@ yyreduce:
     break;
 
   case 21:
-#line 568 "markdown-new.y"
+#line 572 "markdown-new.y"
     {
             show_rule("unorderlist_0: unorderlist_0 lf_indents2_codeblock");
             (yyval.text) = str_format("%s<pre><code>%s</code></pre></li>", str_replace_right((yyvsp[(1) - (2)].text),"</li>", ""), (yyvsp[(2) - (2)].text));
@@ -2430,14 +2434,14 @@ yyreduce:
     break;
 
   case 22:
-#line 572 "markdown-new.y"
+#line 576 "markdown-new.y"
     {
             show_rule("unorderlist_0: unorderlist_0 unorderlist_1");
         ;}
     break;
 
   case 23:
-#line 578 "markdown-new.y"
+#line 582 "markdown-new.y"
     {
             show_rule("codeblock: lf_indents code_text LINEBREAK");
             (yyval.text) = str_format("%s%s%s", str_trim_left_n_lf_indents((yyvsp[(1) - (3)].text), 1), (yyvsp[(2) - (3)].text), (yyvsp[(3) - (3)].text));
@@ -2445,7 +2449,7 @@ yyreduce:
     break;
 
   case 24:
-#line 582 "markdown-new.y"
+#line 586 "markdown-new.y"
     {
             show_rule("codeblock: codeblock lf_indents code_text LINEBREAK");
             (yyval.text) = str_format("%s%s%s%s", (yyvsp[(1) - (4)].text), str_trim_left_n_lf_indents((yyvsp[(2) - (4)].text), 1), (yyvsp[(3) - (4)].text), (yyvsp[(4) - (4)].text));
@@ -2453,112 +2457,113 @@ yyreduce:
     break;
 
   case 25:
-#line 589 "markdown-new.y"
+#line 593 "markdown-new.y"
     {
             show_rule("lf_indents2_codeblock: lf_indents2 code_text LINEBREAK");
         ;}
     break;
 
   case 26:
-#line 592 "markdown-new.y"
+#line 596 "markdown-new.y"
     {
             show_rule("lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK");
         ;}
     break;
 
   case 27:
-#line 598 "markdown-new.y"
+#line 602 "markdown-new.y"
     {
             show_rule("quote_header: LF_Q_H inline_elements LINEBREAK");
+            (yyval.text) = str_format("<h%d>%s</h%d>%s", strlen(str_replace_left((yyvsp[(1) - (3)].text), "> ", "")), (yyvsp[(2) - (3)].text), strlen(str_replace_left((yyvsp[(1) - (3)].text), "> ", "")), (yyvsp[(3) - (3)].text));
         ;}
     break;
 
   case 28:
-#line 604 "markdown-new.y"
+#line 609 "markdown-new.y"
     {
             show_rule("quote_unorderlist_0: LF_Q_UL line");
         ;}
     break;
 
   case 29:
-#line 607 "markdown-new.y"
+#line 612 "markdown-new.y"
     {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL line");
         ;}
     break;
 
   case 30:
-#line 610 "markdown-new.y"
+#line 615 "markdown-new.y"
     {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line");
         ;}
     break;
 
   case 31:
-#line 613 "markdown-new.y"
+#line 618 "markdown-new.y"
     {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK");
         ;}
     break;
 
   case 32:
-#line 616 "markdown-new.y"
+#line 621 "markdown-new.y"
     {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT3 code_text LINEBREAK");
         ;}
     break;
 
   case 33:
-#line 619 "markdown-new.y"
+#line 624 "markdown-new.y"
     {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1");
         ;}
     break;
 
   case 34:
-#line 625 "markdown-new.y"
+#line 630 "markdown-new.y"
     {
             show_rule("quote_paragraph: LF_Q line");
         ;}
     break;
 
   case 35:
-#line 628 "markdown-new.y"
+#line 633 "markdown-new.y"
     {
             show_rule("quote_paragraph: quote_paragraph LF_Q line");
         ;}
     break;
 
   case 36:
-#line 634 "markdown-new.y"
+#line 639 "markdown-new.y"
     {
             show_rule("quote_codeblock: LF_Q_INDENT code_text LINEBREAK");
         ;}
     break;
 
   case 37:
-#line 637 "markdown-new.y"
+#line 642 "markdown-new.y"
     {
             show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT code_text LINEBREAK");
         ;}
     break;
 
   case 38:
-#line 640 "markdown-new.y"
+#line 645 "markdown-new.y"
     {
             show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT2 code_text LINEBREAK");
         ;}
     break;
 
   case 39:
-#line 643 "markdown-new.y"
+#line 648 "markdown-new.y"
     {
             show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT3 code_text LINEBREAK");
         ;}
     break;
 
   case 40:
-#line 649 "markdown-new.y"
+#line 654 "markdown-new.y"
     {
             show_rule("lines: line");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2566,7 +2571,7 @@ yyreduce:
     break;
 
   case 41:
-#line 653 "markdown-new.y"
+#line 658 "markdown-new.y"
     {
             show_rule("lines: lines line");
             (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
@@ -2574,147 +2579,147 @@ yyreduce:
     break;
 
   case 42:
-#line 660 "markdown-new.y"
+#line 665 "markdown-new.y"
     {
             show_rule("unorderlist_1: LF_INDENT_UL line");
         ;}
     break;
 
   case 43:
-#line 663 "markdown-new.y"
+#line 668 "markdown-new.y"
     {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT_UL line");
         ;}
     break;
 
   case 44:
-#line 666 "markdown-new.y"
+#line 671 "markdown-new.y"
     {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT2 line");
         ;}
     break;
 
   case 45:
-#line 669 "markdown-new.y"
+#line 674 "markdown-new.y"
     {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK");
         ;}
     break;
 
   case 46:
-#line 672 "markdown-new.y"
+#line 677 "markdown-new.y"
     {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT4 code_text LINEBREAK");
         ;}
     break;
 
   case 47:
-#line 675 "markdown-new.y"
+#line 680 "markdown-new.y"
     {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT5 code_text LINEBREAK");
         ;}
     break;
 
   case 48:
-#line 678 "markdown-new.y"
+#line 683 "markdown-new.y"
     {
             show_rule("unorderlist_1: unorderlist_1 unorderlist_2");
         ;}
     break;
 
   case 49:
-#line 684 "markdown-new.y"
+#line 689 "markdown-new.y"
     {
             show_rule("quote_unorderlist_1: LF_Q_INDENT_UL line");
         ;}
     break;
 
   case 50:
-#line 687 "markdown-new.y"
+#line 692 "markdown-new.y"
     {
             show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT_UL line");
         ;}
     break;
 
   case 51:
-#line 690 "markdown-new.y"
+#line 695 "markdown-new.y"
     {
             show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT2 line");
         ;}
     break;
 
   case 52:
-#line 693 "markdown-new.y"
+#line 698 "markdown-new.y"
     {
             show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK");
         ;}
     break;
 
   case 53:
-#line 699 "markdown-new.y"
+#line 704 "markdown-new.y"
     {
             show_rule("lf_indents: LF_INDENT");
         ;}
     break;
 
   case 54:
-#line 702 "markdown-new.y"
+#line 707 "markdown-new.y"
     {
             show_rule("lf_indents: lf_indents2");
         ;}
     break;
 
   case 55:
-#line 708 "markdown-new.y"
+#line 713 "markdown-new.y"
     {
             show_rule("lf_indents2: LF_INDENT2");
         ;}
     break;
 
   case 56:
-#line 711 "markdown-new.y"
+#line 716 "markdown-new.y"
     {
             show_rule("lf_indents2: lf_indents3");
         ;}
     break;
 
   case 57:
-#line 717 "markdown-new.y"
+#line 722 "markdown-new.y"
     {
             show_rule("lf_indents3: LF_INDENT3");
         ;}
     break;
 
   case 58:
-#line 720 "markdown-new.y"
+#line 725 "markdown-new.y"
     {
             show_rule("lf_indents3: lf_indents4");
         ;}
     break;
 
   case 59:
-#line 726 "markdown-new.y"
+#line 731 "markdown-new.y"
     {
             show_rule("lf_indents4: LF_INDENT4");
         ;}
     break;
 
   case 60:
-#line 729 "markdown-new.y"
+#line 734 "markdown-new.y"
     {
             show_rule("lf_indents4: lf_indents5");
         ;}
     break;
 
   case 61:
-#line 735 "markdown-new.y"
+#line 740 "markdown-new.y"
     {
             show_rule("lf_indents5: LF_INDENT5");
         ;}
     break;
 
   case 62:
-#line 741 "markdown-new.y"
+#line 746 "markdown-new.y"
     {
             show_rule("line: inline_elements LINEBREAK");
             (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
@@ -2722,7 +2727,7 @@ yyreduce:
     break;
 
   case 63:
-#line 745 "markdown-new.y"
+#line 750 "markdown-new.y"
     {
             show_rule("line: inline_elements");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2730,7 +2735,7 @@ yyreduce:
     break;
 
   case 64:
-#line 749 "markdown-new.y"
+#line 754 "markdown-new.y"
     {
             show_rule("line: BLANKLINE");
             (yyval.text) = "\n";
@@ -2738,42 +2743,42 @@ yyreduce:
     break;
 
   case 65:
-#line 756 "markdown-new.y"
+#line 761 "markdown-new.y"
     {
             show_rule("unorderlist_2: LF_INDENT2_UL line");
         ;}
     break;
 
   case 66:
-#line 759 "markdown-new.y"
+#line 764 "markdown-new.y"
     {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT2_UL line");
         ;}
     break;
 
   case 67:
-#line 762 "markdown-new.y"
+#line 767 "markdown-new.y"
     {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT3 line");
         ;}
     break;
 
   case 68:
-#line 765 "markdown-new.y"
+#line 770 "markdown-new.y"
     {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT4 code_text LINEBREAK");
         ;}
     break;
 
   case 69:
-#line 768 "markdown-new.y"
+#line 773 "markdown-new.y"
     {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT5 code_text LINEBREAK");
         ;}
     break;
 
   case 70:
-#line 774 "markdown-new.y"
+#line 779 "markdown-new.y"
     {
             show_rule("inline_elements: inline_elements inline_element");
             (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
@@ -2781,7 +2786,7 @@ yyreduce:
     break;
 
   case 71:
-#line 778 "markdown-new.y"
+#line 783 "markdown-new.y"
     {
             show_rule("inline_elements: inline_element");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2789,7 +2794,7 @@ yyreduce:
     break;
 
   case 72:
-#line 785 "markdown-new.y"
+#line 790 "markdown-new.y"
     {
             show_rule("inline_element: inline_text");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2797,7 +2802,7 @@ yyreduce:
     break;
 
   case 73:
-#line 789 "markdown-new.y"
+#line 794 "markdown-new.y"
     {
             show_rule("inline_element: link");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2805,35 +2810,36 @@ yyreduce:
     break;
 
   case 74:
-#line 793 "markdown-new.y"
+#line 798 "markdown-new.y"
     {
             show_rule("inline_element: image");
         ;}
     break;
 
   case 75:
-#line 796 "markdown-new.y"
+#line 801 "markdown-new.y"
     {
             show_rule("inline_element: italic");
+            (yyval.text) = (yyvsp[(1) - (1)].text);
         ;}
     break;
 
   case 76:
-#line 799 "markdown-new.y"
+#line 805 "markdown-new.y"
     {
             show_rule("inline_element: strong");
         ;}
     break;
 
   case 77:
-#line 802 "markdown-new.y"
+#line 808 "markdown-new.y"
     {
             show_rule("inline_element: linethrough");
         ;}
     break;
 
   case 78:
-#line 805 "markdown-new.y"
+#line 811 "markdown-new.y"
     {
             show_rule("inline_element: inlinecode");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2841,7 +2847,7 @@ yyreduce:
     break;
 
   case 79:
-#line 812 "markdown-new.y"
+#line 818 "markdown-new.y"
     {
             show_rule("inline_text: inline_text inline_text_item");
             (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
@@ -2849,7 +2855,7 @@ yyreduce:
     break;
 
   case 80:
-#line 816 "markdown-new.y"
+#line 822 "markdown-new.y"
     {
             show_rule("inline_text: inline_text_item");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2857,7 +2863,7 @@ yyreduce:
     break;
 
   case 81:
-#line 823 "markdown-new.y"
+#line 829 "markdown-new.y"
     {
             show_rule("inline_text_item: LESSTHAN");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2865,7 +2871,7 @@ yyreduce:
     break;
 
   case 82:
-#line 827 "markdown-new.y"
+#line 833 "markdown-new.y"
     {
             show_rule("inline_text_item: LARGERTHAN");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2873,7 +2879,7 @@ yyreduce:
     break;
 
   case 83:
-#line 831 "markdown-new.y"
+#line 837 "markdown-new.y"
     {
             show_rule("inline_text_item: TRIPLEBACKTICK");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2881,7 +2887,7 @@ yyreduce:
     break;
 
   case 84:
-#line 835 "markdown-new.y"
+#line 841 "markdown-new.y"
     {
             show_rule("inline_text_item: VERTICAL");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2889,7 +2895,7 @@ yyreduce:
     break;
 
   case 85:
-#line 839 "markdown-new.y"
+#line 845 "markdown-new.y"
     {
             show_rule("inline_text_item: PLUS");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2897,7 +2903,7 @@ yyreduce:
     break;
 
   case 86:
-#line 843 "markdown-new.y"
+#line 849 "markdown-new.y"
     {
             show_rule("inline_text_item: MINUS");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2905,7 +2911,7 @@ yyreduce:
     break;
 
   case 87:
-#line 847 "markdown-new.y"
+#line 853 "markdown-new.y"
     {
             show_rule("inline_text_item: DIGIT");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2913,7 +2919,7 @@ yyreduce:
     break;
 
   case 88:
-#line 851 "markdown-new.y"
+#line 857 "markdown-new.y"
     {
             show_rule("inline_text_item: DOT");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2921,7 +2927,7 @@ yyreduce:
     break;
 
   case 89:
-#line 855 "markdown-new.y"
+#line 861 "markdown-new.y"
     {
             show_rule("inline_text_item: SPACE");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2929,7 +2935,7 @@ yyreduce:
     break;
 
   case 90:
-#line 859 "markdown-new.y"
+#line 865 "markdown-new.y"
     {
             show_rule("inline_text_item: RIGHTSQUARE");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2937,7 +2943,7 @@ yyreduce:
     break;
 
   case 91:
-#line 863 "markdown-new.y"
+#line 869 "markdown-new.y"
     {
             show_rule("inline_text_item: LEFTBRACKET");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2945,7 +2951,7 @@ yyreduce:
     break;
 
   case 92:
-#line 867 "markdown-new.y"
+#line 873 "markdown-new.y"
     {
             show_rule("inline_text_item: RIGHTBRACKET");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2953,7 +2959,7 @@ yyreduce:
     break;
 
   case 93:
-#line 871 "markdown-new.y"
+#line 877 "markdown-new.y"
     {
             show_rule("inline_text_item: UNDERSCORE");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2961,7 +2967,7 @@ yyreduce:
     break;
 
   case 94:
-#line 875 "markdown-new.y"
+#line 881 "markdown-new.y"
     {
             show_rule("inline_text_item: DOUBLEUNDERSCORE");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2969,7 +2975,7 @@ yyreduce:
     break;
 
   case 95:
-#line 879 "markdown-new.y"
+#line 885 "markdown-new.y"
     {
             show_rule("inline_text_item: LEFTPARENTHESIS");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2977,7 +2983,7 @@ yyreduce:
     break;
 
   case 96:
-#line 883 "markdown-new.y"
+#line 889 "markdown-new.y"
     {
             show_rule("inline_text_item: RIGHTPARENTHESIS");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2985,7 +2991,7 @@ yyreduce:
     break;
 
   case 97:
-#line 887 "markdown-new.y"
+#line 893 "markdown-new.y"
     {
             show_rule("inline_text_item: TEXT");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -2993,7 +2999,7 @@ yyreduce:
     break;
 
   case 98:
-#line 894 "markdown-new.y"
+#line 900 "markdown-new.y"
     {
             show_rule("inline_code_text: inline_code_text inline_code_text_item");
             (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
@@ -3001,7 +3007,7 @@ yyreduce:
     break;
 
   case 99:
-#line 898 "markdown-new.y"
+#line 904 "markdown-new.y"
     {
             show_rule("inline_code_text: inline_code_text_item");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3009,7 +3015,7 @@ yyreduce:
     break;
 
   case 100:
-#line 905 "markdown-new.y"
+#line 911 "markdown-new.y"
     {
             show_rule("inline_code_text_item: inline_text_item");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3017,7 +3023,7 @@ yyreduce:
     break;
 
   case 101:
-#line 909 "markdown-new.y"
+#line 915 "markdown-new.y"
     {
             show_rule("inline_code_text_item: ASTERISK");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3025,7 +3031,7 @@ yyreduce:
     break;
 
   case 102:
-#line 913 "markdown-new.y"
+#line 919 "markdown-new.y"
     {
             show_rule("inline_code_text_item: DOUBLEASTERISK");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3033,7 +3039,7 @@ yyreduce:
     break;
 
   case 103:
-#line 917 "markdown-new.y"
+#line 923 "markdown-new.y"
     {
             show_rule("inline_code_text_item: DOUBLETILDE");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3041,7 +3047,7 @@ yyreduce:
     break;
 
   case 104:
-#line 921 "markdown-new.y"
+#line 927 "markdown-new.y"
     {
             show_rule("inline_text_item: EXCLAMATION");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3049,7 +3055,7 @@ yyreduce:
     break;
 
   case 105:
-#line 925 "markdown-new.y"
+#line 931 "markdown-new.y"
     {
             show_rule("inline_text_item: LEFTSQUARE");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3057,7 +3063,7 @@ yyreduce:
     break;
 
   case 106:
-#line 932 "markdown-new.y"
+#line 938 "markdown-new.y"
     {
             show_rule("code_text: code_text code_text_item");
             (yyval.text) = str_concat((yyvsp[(1) - (2)].text), (yyvsp[(2) - (2)].text));
@@ -3065,7 +3071,7 @@ yyreduce:
     break;
 
   case 107:
-#line 936 "markdown-new.y"
+#line 942 "markdown-new.y"
     {
             show_rule("code_text: code_text_item");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3073,7 +3079,7 @@ yyreduce:
     break;
 
   case 108:
-#line 943 "markdown-new.y"
+#line 949 "markdown-new.y"
     {
             show_rule("code_text_item: inline_code_text_item");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3081,7 +3087,7 @@ yyreduce:
     break;
 
   case 109:
-#line 947 "markdown-new.y"
+#line 953 "markdown-new.y"
     {
             show_rule("code_text_item: BACKTICK");
             (yyval.text) = (yyvsp[(1) - (1)].text);
@@ -3089,7 +3095,7 @@ yyreduce:
     break;
 
   case 110:
-#line 953 "markdown-new.y"
+#line 959 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
             (yyval.text) = str_format("<a href=\"%s\">%s</a>", (yyvsp[(5) - (6)].text), (yyvsp[(2) - (6)].text));
@@ -3097,7 +3103,7 @@ yyreduce:
     break;
 
   case 111:
-#line 957 "markdown-new.y"
+#line 963 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
             (yyval.text) = str_format("<a href=\"%s\" title=\"%s\">%s</a>", (yyvsp[(5) - (8)].text), (yyvsp[(7) - (8)].text), (yyvsp[(2) - (8)].text));
@@ -3105,176 +3111,181 @@ yyreduce:
     break;
 
   case 112:
-#line 961 "markdown-new.y"
+#line 967 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
         ;}
     break;
 
   case 113:
-#line 964 "markdown-new.y"
+#line 970 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
         ;}
     break;
 
   case 114:
-#line 967 "markdown-new.y"
+#line 973 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE error");
         ;}
     break;
 
   case 115:
-#line 970 "markdown-new.y"
+#line 976 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE inline_text error");
         ;}
     break;
 
   case 116:
-#line 973 "markdown-new.y"
+#line 979 "markdown-new.y"
     {
             show_rule("link: LEFTSQUARE error");
         ;}
     break;
 
   case 117:
-#line 979 "markdown-new.y"
+#line 985 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
+            (yyval.text) = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", (yyvsp[(6) - (7)].text), (yyvsp[(3) - (7)].text), "");
         ;}
     break;
 
   case 118:
-#line 982 "markdown-new.y"
+#line 989 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
+            (yyval.text) = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", (yyvsp[(6) - (9)].text), (yyvsp[(3) - (9)].text), (yyvsp[(8) - (9)].text));
         ;}
     break;
 
   case 119:
-#line 985 "markdown-new.y"
+#line 993 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
         ;}
     break;
 
   case 120:
-#line 988 "markdown-new.y"
+#line 996 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
         ;}
     break;
 
   case 121:
-#line 991 "markdown-new.y"
+#line 999 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error");
         ;}
     break;
 
   case 122:
-#line 994 "markdown-new.y"
+#line 1002 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE inline_text error");
         ;}
     break;
 
   case 123:
-#line 997 "markdown-new.y"
+#line 1005 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION LEFTSQUARE error");
         ;}
     break;
 
   case 124:
-#line 1000 "markdown-new.y"
+#line 1008 "markdown-new.y"
     {
             show_rule("image: EXCLAMATION error");
         ;}
     break;
 
   case 125:
-#line 1006 "markdown-new.y"
+#line 1014 "markdown-new.y"
     {
             show_rule("italic: ASTERISK inline_text ASTERISK %prec ITALICSTART");
+            (yyval.text) = str_format("<i>%s</i>", (yyvsp[(2) - (3)].text));
         ;}
     break;
 
   case 126:
-#line 1009 "markdown-new.y"
+#line 1018 "markdown-new.y"
     {
             show_rule("italic: ASTERISK inline_text error %prec ITALICSTART");
         ;}
     break;
 
   case 127:
-#line 1012 "markdown-new.y"
+#line 1021 "markdown-new.y"
     {
             show_rule("italic: ASTERISK error %prec ITALICSTART");
         ;}
     break;
 
   case 128:
-#line 1018 "markdown-new.y"
+#line 1027 "markdown-new.y"
     {
             show_rule("strong: DOUBLEASTERISK inline_text DOUBLEASTERISK");
+            (yyval.text) = str_format("<strong>%s</strong>", (yyvsp[(2) - (3)].text));
         ;}
     break;
 
   case 129:
-#line 1021 "markdown-new.y"
+#line 1031 "markdown-new.y"
     {
             show_rule("strong: DOUBLEASTERISK inline_text error");
         ;}
     break;
 
   case 130:
-#line 1024 "markdown-new.y"
+#line 1034 "markdown-new.y"
     {
             show_rule("strong: DOUBLEASTERISK error");
         ;}
     break;
 
   case 131:
-#line 1030 "markdown-new.y"
+#line 1040 "markdown-new.y"
     {
             show_rule("linethrough: DOUBLETILDE inline_text DOUBLETILDE");
+            (yyval.text) = str_format("<del>%s</del>", (yyvsp[(2) - (3)].text));
         ;}
     break;
 
   case 132:
-#line 1033 "markdown-new.y"
+#line 1044 "markdown-new.y"
     {
             show_rule("linethrough: DOUBLETILDE inline_text error");
         ;}
     break;
 
   case 133:
-#line 1036 "markdown-new.y"
+#line 1047 "markdown-new.y"
     {
             show_rule("linethrough: DOUBLETILDE error");
         ;}
     break;
 
   case 134:
-#line 1042 "markdown-new.y"
+#line 1053 "markdown-new.y"
     {
             show_rule("inlinecode: BACKTICK inline_code_text BACKTICK");
-            (yyval.text) = str_format("<pre>%s</pre>", (yyvsp[(2) - (3)].text));
+            (yyval.text) = str_format("<code>%s</code>", (yyvsp[(2) - (3)].text));
         ;}
     break;
 
   case 135:
-#line 1046 "markdown-new.y"
+#line 1057 "markdown-new.y"
     {
             show_rule("inlinecode: BACKTICK inline_code_text error");
         ;}
     break;
 
   case 136:
-#line 1049 "markdown-new.y"
+#line 1060 "markdown-new.y"
     {
             show_rule("inlinecode: BACKTICK error");
         ;}
@@ -3282,7 +3293,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 3286 "markdown-new.y.c"
+#line 3297 "markdown-new.y.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3502,7 +3513,7 @@ yyreturn:
 }
 
 
-#line 1054 "markdown-new.y"
+#line 1065 "markdown-new.y"
 
 
 
