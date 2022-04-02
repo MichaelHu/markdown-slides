@@ -111,7 +111,7 @@ unorderlist [*+-][ ]
     /* special chars: "\[]^-?.*+|()$/{}%<> */
 
 {blankline}                             { yylineno++; P("BLANKLINE"); RETURN(BLANKLINE); }
-\r?\n                                   { yylineno++; P("LINEBREAK"); RETURN(LINEBREAK); }
+\r?\n                                   { yylineno++; SETYYLVAL(yytext); P("LINEBREAK"); RETURN(LINEBREAK); }
 
 ^{header}                               { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
 

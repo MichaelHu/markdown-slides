@@ -291,6 +291,277 @@
             [> lines: lines line
                 [> line: BLANKLINE
             [> lines: lines line
+        [> paragraph: lines
+    [> block: paragraph
+[> blocks: blocks block
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                            [> link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+                        [> inline_element: link
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+        [> unorderlist_0: LF_UL line
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                            [> image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+                        [> inline_element: image
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+        [> unorderlist_0: unorderlist_0 LF_UL line
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                            [> link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET
+                        [> inline_element: link
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+        [> unorderlist_0: unorderlist_0 LF_UL line
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                            [> image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET
+                        [> inline_element: image
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+        [> unorderlist_0: unorderlist_0 LF_UL line
+    [> block: unorderlist_0
+[> blocks: blocks block
+                [> line: BLANKLINE
+            [> lines: line
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text_item
                                 [> inline_text_item: TEXT
@@ -472,7 +743,7 @@
 [> blocks: blocks block
                 [> line: BLANKLINE
             [> lines: line
-[ line 19 ] syntax error, unexpected LINEBREAK, 
+[ line 24 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> italic: ASTERISK error %prec ITALICSTART [0m
                         [> inline_element: italic
@@ -557,7 +828,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: RIGHTBRACKET
                             [> inline_text: inline_text inline_text_item
-[ line 21 ] syntax error, unexpected LINEBREAK, 
+[ line 26 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> image: EXCLAMATION LEFTSQUARE inline_text error [0m
                         [> inline_element: image
@@ -632,7 +903,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: RIGHTBRACKET
                             [> inline_text: inline_text inline_text_item
-[ line 23 ] syntax error, unexpected LINEBREAK, 
+[ line 28 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> link: LEFTSQUARE inline_text error [0m
                         [> inline_element: link
@@ -765,7 +1036,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text inline_text_item
-[ line 29 ] syntax error, unexpected LEFTSQUARE, [
+[ line 34 ] syntax error, unexpected LEFTSQUARE, [
 [4;31;42m                             [> strong: DOUBLEASTERISK inline_text error [0m
                         [> inline_element: strong
                     [> inline_elements: inline_elements inline_element
@@ -847,7 +1118,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: RIGHTBRACKET
                             [> inline_text: inline_text inline_text_item
-[ line 30 ] syntax error, unexpected LINEBREAK, 
+[ line 35 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> link: LEFTSQUARE inline_text error [0m
                         [> inline_element: link
@@ -937,7 +1208,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text inline_text_item
-[ line 33 ] syntax error, unexpected BACKTICK, `
+[ line 38 ] syntax error, unexpected BACKTICK, `
 [4;31;42m                             [> linethrough: DOUBLETILDE inline_text error [0m
                         [> inline_element: linethrough
                     [> inline_elements: inline_elements inline_element
@@ -1037,7 +1308,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-[ line 39 ] syntax error, unexpected LINEBREAK, 
+[ line 44 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> inlinecode: BACKTICK error [0m
                         [> inline_element: inlinecode
@@ -1134,7 +1405,7 @@
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                             [> inline_code_text: inline_code_text inline_code_text_item
-[ line 40 ] syntax error, unexpected LINEBREAK, 
+[ line 45 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> inlinecode: BACKTICK inline_code_text error [0m
                         [> inline_element: inlinecode
@@ -1233,7 +1504,7 @@
                             [> inline_code_text: inline_code_text inline_code_text_item
                                 [> inline_code_text_item: DOUBLEASTERISK
                             [> inline_code_text: inline_code_text inline_code_text_item
-[ line 41 ] syntax error, unexpected LINEBREAK, 
+[ line 46 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> inlinecode: BACKTICK inline_code_text error [0m
                         [> inline_element: inlinecode

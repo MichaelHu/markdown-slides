@@ -930,7 +930,7 @@ case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
 #line 115 "markdown-new.lex"
-{ yylineno++; P("LINEBREAK"); RETURN(LINEBREAK); }
+{ yylineno++; SETYYLVAL(yytext); P("LINEBREAK"); RETURN(LINEBREAK); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
