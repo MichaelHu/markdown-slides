@@ -9,7 +9,7 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 1
+#define _ISDEBUGPARSER 0
 #define _SHOW_TREE_AFTER_LEVEL_FIX 0
 #define _SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES 0
 #define _SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES 0
@@ -458,11 +458,9 @@ markdownfile:
 
             show_rule("markdownfile: blocks");
 
-            /*
             fprintf(stdout, "==================================\n");
             fprintf(stdout, "%s", $1);
             fprintf(stdout, "==================================\n");
-            */
 
             /**
             parse_doc();
@@ -506,7 +504,7 @@ block:
         }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
-            $$ = $1;
+            $$ = str_format("<ul>%s</ul>", $1);
         }
     | codeblock {
             show_rule("block: codeblock");
@@ -537,6 +535,7 @@ quote_block:
         }
     | /* NULL */ {
             show_rule("quote_block: NULL");
+            $$ = "";
         }
     ;
 

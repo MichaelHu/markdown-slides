@@ -315,6 +315,30 @@ char *str_replace(char *s, char *pattern, char *replacement) {
     return str_ret;
 }
 
+char *str_replace_left(char *s, char *pattern, char *replacement) {
+    char *p = s, *t = s, *str_ret = "";
+    int str_len = strlen(s), pattern_len = strlen(pattern);
+
+    if (pattern_len == 0) {
+        str_ret = str_concat(s, "");
+        return str_ret;
+    }
+
+    t = strstr(p, pattern);
+
+    if (t) {
+        str_ret = str_concat(str_ret, str_new_copy(s, t));
+        str_ret = str_concat(str_ret, replacement);
+        p = t + pattern_len;
+        str_ret = str_concat(str_ret, str_new_copy(p, s + str_len));
+    }
+    else {
+        str_ret = str_concat(s, "");
+    }
+
+    return str_ret;
+}
+
 char *str_replace_right(char *s, char *pattern, char *replacement) {
     char *p = s, *t = s, *last_t = NULL, *str_ret = "";
     int str_len = strlen(s), pattern_len = strlen(pattern);

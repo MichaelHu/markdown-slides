@@ -268,6 +268,49 @@ static void test_str_replace(void) {
 
 }
 
+static void test_str_replace_left(void) {
+    char *s1 = "Hello, Michael!";
+
+    test_util_log_str("\n# test_str_replace_left");
+
+    test_util_str_equal(
+        "test 1"
+        , str_replace_left(s1, "o", "O")
+        , "HellO, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 2"
+        , str_replace_left(s1, "l", "L")
+        , "HeLlo, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 3"
+        , str_replace_left(s1, "e", "")
+        , "Hllo, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 4"
+        , str_replace_left(s1, "xxx", "")
+        , "Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 5"
+        , str_replace_left(s1, "", "|")
+        , "Hello, Michael!" 
+    );
+
+    test_util_str_equal(
+        "test 6"
+        , str_replace_left(s1, "ll", "----")
+        , "He----o, Michael!" 
+    );
+
+}
+
 static void test_str_replace_right(void) {
     char *s1 = "Hello, Michael!";
 
