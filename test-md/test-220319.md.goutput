@@ -315,6 +315,38 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DOT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements LINEBREAK
+            [> lines: lines line
+                [> line: BLANKLINE
+            [> lines: lines line
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
                             [> italic: ASTERISK inline_text ASTERISK %prec ITALICSTART
                         [> inline_element: italic
                     [> inline_elements: inline_element
@@ -440,7 +472,7 @@
 [> blocks: blocks block
                 [> line: BLANKLINE
             [> lines: line
-[ line 17 ] syntax error, unexpected LINEBREAK, 
+[ line 19 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> italic: ASTERISK error %prec ITALICSTART [0m
                         [> inline_element: italic
@@ -525,7 +557,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: RIGHTBRACKET
                             [> inline_text: inline_text inline_text_item
-[ line 19 ] syntax error, unexpected LINEBREAK, 
+[ line 21 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> image: EXCLAMATION LEFTSQUARE inline_text error [0m
                         [> inline_element: image
@@ -600,7 +632,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: RIGHTBRACKET
                             [> inline_text: inline_text inline_text_item
-[ line 21 ] syntax error, unexpected LINEBREAK, 
+[ line 23 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> link: LEFTSQUARE inline_text error [0m
                         [> inline_element: link
@@ -733,7 +765,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text inline_text_item
-[ line 27 ] syntax error, unexpected LEFTSQUARE, [
+[ line 29 ] syntax error, unexpected LEFTSQUARE, [
 [4;31;42m                             [> strong: DOUBLEASTERISK inline_text error [0m
                         [> inline_element: strong
                     [> inline_elements: inline_elements inline_element
@@ -815,7 +847,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: RIGHTBRACKET
                             [> inline_text: inline_text inline_text_item
-[ line 28 ] syntax error, unexpected LINEBREAK, 
+[ line 30 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> link: LEFTSQUARE inline_text error [0m
                         [> inline_element: link
@@ -905,7 +937,7 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text inline_text_item
-[ line 31 ] syntax error, unexpected BACKTICK, `
+[ line 33 ] syntax error, unexpected BACKTICK, `
 [4;31;42m                             [> linethrough: DOUBLETILDE inline_text error [0m
                         [> inline_element: linethrough
                     [> inline_elements: inline_elements inline_element
@@ -1005,7 +1037,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-[ line 37 ] syntax error, unexpected LINEBREAK, 
+[ line 39 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> inlinecode: BACKTICK error [0m
                         [> inline_element: inlinecode
@@ -1102,7 +1134,7 @@
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                             [> inline_code_text: inline_code_text inline_code_text_item
-[ line 38 ] syntax error, unexpected LINEBREAK, 
+[ line 40 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> inlinecode: BACKTICK inline_code_text error [0m
                         [> inline_element: inlinecode
@@ -1201,10 +1233,67 @@
                             [> inline_code_text: inline_code_text inline_code_text_item
                                 [> inline_code_text_item: DOUBLEASTERISK
                             [> inline_code_text: inline_code_text inline_code_text_item
-[ line 39 ] syntax error, unexpected LINEBREAK, 
+[ line 41 ] syntax error, unexpected LINEBREAK, 
 
 [4;31;42m                             [> inlinecode: BACKTICK inline_code_text error [0m
                         [> inline_element: inlinecode
+                    [> inline_elements: inline_elements inline_element
+                [> line: inline_elements LINEBREAK
+            [> lines: lines line
+                [> line: BLANKLINE
+            [> lines: lines line
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                            [> inline_code_text: inline_code_text inline_code_text_item
+                            [> inlinecode: BACKTICK inline_code_text BACKTICK
+                        [> inline_element: inlinecode
+                    [> inline_elements: inline_elements inline_element
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                        [> inline_element: inline_text
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
             [> lines: lines line
@@ -1565,6 +1654,7 @@
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
         [> unorderlist_0: unorderlist_0 LF_UL line
+            [> lf_indents2: LF_INDENT2
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -1601,7 +1691,8 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2 code_text LINEBREAK
+            [> lf_indents2: LF_INDENT2
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -1638,52 +1729,9 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: DIGIT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT3 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents3: LF_INDENT3
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -1728,7 +1776,10 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT4 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents4: LF_INDENT4
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -1773,105 +1824,11 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: DIGIT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -1916,52 +1873,11 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT3 code_text LINEBREAK
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: TEXT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: DIGIT
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: SPACE
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -2022,7 +1938,145 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents2: LF_INDENT2
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents3: LF_INDENT3
+            [> lf_indents2: lf_indents3
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: DIGIT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: DIGIT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: SPACE
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -2083,27 +2137,15 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: SPACE
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
                                 [> inline_text_item: SPACE
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -2160,27 +2202,15 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
                                 [> inline_text_item: SPACE
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> inline_text_item: SPACE
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
                                 [> inline_text_item: SPACE
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -2253,7 +2283,105 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+            [> lf_indents5: LF_INDENT5
+            [> lf_indents4: lf_indents5
+            [> lf_indents3: lf_indents4
+            [> lf_indents2: lf_indents3
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: TEXT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: SPACE
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+                                [> inline_text_item: DIGIT
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
+        [> lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+        [> unorderlist_0: unorderlist_0 lf_indents2_codeblock
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text_item
                                 [> inline_text_item: TEXT
@@ -3260,7 +3388,8 @@
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
         [> codeblock: codeblock lf_indents code_text LINEBREAK
-            [> lf_indents: LF_INDENT2
+            [> lf_indents2: LF_INDENT2
+            [> lf_indents: lf_indents2
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -3326,7 +3455,9 @@
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
         [> codeblock: codeblock lf_indents code_text LINEBREAK
-            [> lf_indents: LF_INDENT3
+            [> lf_indents3: LF_INDENT3
+            [> lf_indents2: lf_indents3
+            [> lf_indents: lf_indents2
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -3450,7 +3581,8 @@
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
         [> codeblock: codeblock lf_indents code_text LINEBREAK
-            [> lf_indents: LF_INDENT2
+            [> lf_indents2: LF_INDENT2
+            [> lf_indents: lf_indents2
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item

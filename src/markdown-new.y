@@ -9,7 +9,7 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 0
+#define _ISDEBUGPARSER 1
 #define _SHOW_TREE_AFTER_LEVEL_FIX 0
 #define _SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES 0
 #define _SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES 0
@@ -110,14 +110,14 @@ static char* grammar_rules[] = {
         "unorderlist_0: LF_UL line", "2",
         "unorderlist_0: unorderlist_0 LF_UL line", "2",
         "unorderlist_0: unorderlist_0 LF_INDENT line", "2",
-        "unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK", "2",
-        "unorderlist_0: unorderlist_0 LF_INDENT3 code_text LINEBREAK", "2",
-        "unorderlist_0: unorderlist_0 LF_INDENT4 code_text LINEBREAK", "2",
-        "unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK", "2",
+        "unorderlist_0: unorderlist_0 lf_indents2_codeblock", "2",
         "unorderlist_0: unorderlist_0 unorderlist_1", "2",
 
         "codeblock: lf_indents code_text LINEBREAK", "2",
         "codeblock: codeblock lf_indents code_text LINEBREAK", "2",
+
+        "lf_indents2_codeblock: lf_indents2 code_text LINEBREAK", "2",
+        "lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK", "2",
 
         "quote_header: LF_Q_H inline_elements LINEBREAK", "2",
 
@@ -156,10 +156,18 @@ static char* grammar_rules[] = {
             */
 
             "lf_indents: LF_INDENT", "3",
-            "lf_indents: LF_INDENT2", "3",
-            "lf_indents: LF_INDENT3", "3",
-            "lf_indents: LF_INDENT4", "3",
-            "lf_indents: LF_INDENT5", "3",
+            "lf_indents: lf_indents2", "3",
+
+            "lf_indents2: LF_INDENT2", "3",
+            "lf_indents2: lf_indents3", "3",
+
+            "lf_indents3: LF_INDENT3", "3",
+            "lf_indents3: lf_indents4", "3",
+
+            "lf_indents4: LF_INDENT4", "3",
+            "lf_indents4: lf_indents5", "3",
+
+            "lf_indents5: LF_INDENT5", "3",
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
@@ -404,6 +412,7 @@ static void show_rule( char *str ){
 %type <text> paragraph
 %type <text> unorderlist_0
 %type <text> codeblock
+%type <text> lf_indents2_codeblock
 %type <text> quote_header
 %type <text> quote_unorderlist_0
 %type <text> quote_paragraph
@@ -412,6 +421,10 @@ static void show_rule( char *str ){
 %type <text> unorderlist_1
 %type <text> quote_unorderlist_1
 %type <text> lf_indents
+%type <text> lf_indents2
+%type <text> lf_indents3
+%type <text> lf_indents4
+%type <text> lf_indents5
 %type <text> line
 %type <text> unorderlist_2
 %type <text> inline_elements
@@ -442,10 +455,15 @@ markdownfile:
             /**
              * 1. _root_node == $1
              */
+
             show_rule("markdownfile: blocks");
+
+            /*
             fprintf(stdout, "==================================\n");
             fprintf(stdout, "%s", $1);
             fprintf(stdout, "==================================\n");
+            */
+
             /**
             parse_doc();
             is_doc_parsed = 1;
@@ -488,12 +506,15 @@ block:
         }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
+            $$ = $1;
         }
     | codeblock {
             show_rule("block: codeblock");
+            $$ = $1;
         }
     | quote_block {
             show_rule("block: quote_block");
+            $$ = $1;
         }
     /* error recovery */
     | error {
@@ -536,24 +557,19 @@ paragraph:
 unorderlist_0: 
     LF_UL line {
             show_rule("unorderlist_0: LF_UL line");
+            $$ = str_format("<li>%s</li>", $2);
         }
     | unorderlist_0 LF_UL line {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
+            $$ = str_format("%s<li>%s</li>", $1, $2);
         }
     | unorderlist_0 LF_INDENT line {
             show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");
+            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $2);
         }
-    | unorderlist_0 LF_INDENT2 code_text LINEBREAK {
-            show_rule("unorderlist_0: unorderlist_0 LF_INDENT2 code_text LINEBREAK");
-        }
-    | unorderlist_0 LF_INDENT3 code_text LINEBREAK {
-            show_rule("unorderlist_0: unorderlist_0 LF_INDENT3 code_text LINEBREAK");
-        }
-    | unorderlist_0 LF_INDENT4 code_text LINEBREAK {
-            show_rule("unorderlist_0: unorderlist_0 LF_INDENT4 code_text LINEBREAK");
-        }
-    | unorderlist_0 LF_INDENT5 code_text LINEBREAK {
-            show_rule("unorderlist_0: unorderlist_0 LF_INDENT5 code_text LINEBREAK");
+    | unorderlist_0 lf_indents2_codeblock {
+            show_rule("unorderlist_0: unorderlist_0 lf_indents2_codeblock");
+            $$ = str_format("%s<pre><code>%s</code></pre></li>", str_replace_right($1,"</li>", ""), $2);
         }
     | unorderlist_0 unorderlist_1 {
             show_rule("unorderlist_0: unorderlist_0 unorderlist_1");
@@ -566,6 +582,15 @@ codeblock:
         }
     | codeblock lf_indents code_text LINEBREAK {
             show_rule("codeblock: codeblock lf_indents code_text LINEBREAK");
+        }
+    ;
+
+lf_indents2_codeblock: 
+    lf_indents2 code_text LINEBREAK {
+            show_rule("lf_indents2_codeblock: lf_indents2 code_text LINEBREAK");
+        }
+    | lf_indents2_codeblock lf_indents2 code_text LINEBREAK {
+            show_rule("lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK");
         }
     ;
 
@@ -674,17 +699,41 @@ lf_indents:
     LF_INDENT {
             show_rule("lf_indents: LF_INDENT");
         }
-    | LF_INDENT2 {
-            show_rule("lf_indents: LF_INDENT2");
+    | lf_indents2 {
+            show_rule("lf_indents: lf_indents2");
         }
-    | LF_INDENT3 {
-            show_rule("lf_indents: LF_INDENT3");
+    ;
+
+lf_indents2: 
+    LF_INDENT2 {
+            show_rule("lf_indents2: LF_INDENT2");
         }
-    | LF_INDENT4 {
-            show_rule("lf_indents: LF_INDENT4");
+    | lf_indents3 {
+            show_rule("lf_indents2: lf_indents3");
         }
-    | LF_INDENT5 {
-            show_rule("lf_indents: LF_INDENT5");
+    ;
+
+lf_indents3: 
+    LF_INDENT3 {
+            show_rule("lf_indents3: LF_INDENT3");
+        }
+    | lf_indents4 {
+            show_rule("lf_indents3: lf_indents4");
+        }
+    ;
+
+lf_indents4: 
+    LF_INDENT4 {
+            show_rule("lf_indents4: LF_INDENT4");
+        }
+    | lf_indents5 {
+            show_rule("lf_indents4: lf_indents5");
+        }
+    ;
+
+lf_indents5: 
+    LF_INDENT5 {
+            show_rule("lf_indents5: LF_INDENT5");
         }
     ;
 
