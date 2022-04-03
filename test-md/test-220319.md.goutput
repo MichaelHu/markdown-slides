@@ -2665,6 +2665,7 @@
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
             [> unorderlist_1: LF_INDENT_UL line
+            [> lf_indents3: LF_INDENT3
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -2709,7 +2710,8 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-            [> unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK
+            [> lf_indents3_codeblock: lf_indents3 code_text LINEBREAK
+            [> unorderlist_1: unorderlist_1 lf_indents3_codeblock
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text_item
                                 [> inline_text_item: TEXT

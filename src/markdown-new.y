@@ -142,9 +142,7 @@ static char* grammar_rules[] = {
             "unorderlist_1: LF_INDENT_UL line", "3",
             "unorderlist_1: unorderlist_1 LF_INDENT_UL line", "3",
             "unorderlist_1: unorderlist_1 LF_INDENT2 line", "3",
-            "unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK", "3",
-            "unorderlist_1: unorderlist_1 LF_INDENT4 code_text LINEBREAK", "3",
-            "unorderlist_1: unorderlist_1 LF_INDENT5 code_text LINEBREAK", "3",
+            "unorderlist_1: unorderlist_1 lf_indents3_codeblock", "3",
             "unorderlist_1: unorderlist_1 unorderlist_2", "3",
 
             "quote_unorderlist_1: LF_Q_INDENT_UL line", "3",
@@ -168,6 +166,9 @@ static char* grammar_rules[] = {
             "lf_indents4: lf_indents5", "3",
 
             "lf_indents5: LF_INDENT5", "3",
+
+            "lf_indents3_codeblock: lf_indents3 code_text LINEBREAK", "3",
+            "lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK", "3",
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
@@ -424,6 +425,7 @@ static void show_rule( char *str ){
 %type <text> lf_indents3
 %type <text> lf_indents4
 %type <text> lf_indents5
+%type <text> lf_indents3_codeblock
 %type <text> line
 %type <text> unorderlist_2
 %type <text> inline_elements
@@ -563,11 +565,11 @@ unorderlist_0:
         }
     | unorderlist_0 LF_UL line {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
-            $$ = str_format("%s<li>%s</li>", $1, $2);
+            $$ = str_format("%s<li>%s</li>", $1, $3);
         }
     | unorderlist_0 LF_INDENT line {
             show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");
-            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $2);
+            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $3);
         }
     | unorderlist_0 lf_indents2_codeblock {
             show_rule("unorderlist_0: unorderlist_0 lf_indents2_codeblock");
@@ -664,21 +666,19 @@ lines:
 unorderlist_1: 
     LF_INDENT_UL line {
             show_rule("unorderlist_1: LF_INDENT_UL line");
+            $$ = str_format("<li>%s</li>", $2);
         }
     | unorderlist_1 LF_INDENT_UL line {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT_UL line");
+            $$ = str_format("%s<li>%s</li>", $1, $3);
         }
     | unorderlist_1 LF_INDENT2 line {
             show_rule("unorderlist_1: unorderlist_1 LF_INDENT2 line");
+            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $3);
         }
-    | unorderlist_1 LF_INDENT3 code_text LINEBREAK {
-            show_rule("unorderlist_1: unorderlist_1 LF_INDENT3 code_text LINEBREAK");
-        }
-    | unorderlist_1 LF_INDENT4 code_text LINEBREAK {
-            show_rule("unorderlist_1: unorderlist_1 LF_INDENT4 code_text LINEBREAK");
-        }
-    | unorderlist_1 LF_INDENT5 code_text LINEBREAK {
-            show_rule("unorderlist_1: unorderlist_1 LF_INDENT5 code_text LINEBREAK");
+    | unorderlist_1 lf_indents3_codeblock {
+            show_rule("unorderlist_1: unorderlist_1 lf_indents3_codeblock");
+            $$ = str_format("%s<pre><code>%s</code></pre></li>", str_replace_right($1, "</li>", ""), $2);
         }
     | unorderlist_1 unorderlist_2 {
             show_rule("unorderlist_1: unorderlist_1 unorderlist_2");
@@ -703,26 +703,32 @@ quote_unorderlist_1:
 lf_indents: 
     LF_INDENT {
             show_rule("lf_indents: LF_INDENT");
+            $$ = $1;
         }
     | lf_indents2 {
             show_rule("lf_indents: lf_indents2");
+            $$ = $1;
         }
     ;
 
 lf_indents2: 
     LF_INDENT2 {
             show_rule("lf_indents2: LF_INDENT2");
+            $$ = $1;
         }
     | lf_indents3 {
             show_rule("lf_indents2: lf_indents3");
+            $$ = $1;
         }
     ;
 
 lf_indents3: 
     LF_INDENT3 {
             show_rule("lf_indents3: LF_INDENT3");
+            $$ = $1;
         }
     | lf_indents4 {
+            $$ = $1;
             show_rule("lf_indents3: lf_indents4");
         }
     ;
@@ -730,15 +736,27 @@ lf_indents3:
 lf_indents4: 
     LF_INDENT4 {
             show_rule("lf_indents4: LF_INDENT4");
+            $$ = $1;
         }
     | lf_indents5 {
             show_rule("lf_indents4: lf_indents5");
+            $$ = $1;
         }
     ;
 
 lf_indents5: 
     LF_INDENT5 {
             show_rule("lf_indents5: LF_INDENT5");
+            $$ = $1;
+        }
+    ;
+
+lf_indents3_codeblock: 
+    lf_indents3 code_text LINEBREAK {
+            show_rule("lf_indents3_codeblock: lf_indents3 code_text LINEBREAK");
+        }
+    | lf_indents3_codeblock lf_indents3 code_text LINEBREAK {
+            show_rule("lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK");
         }
     ;
 
@@ -804,9 +822,11 @@ inline_element:
         }
     | strong {
             show_rule("inline_element: strong");
+            $$ = $1;
         }
     | linethrough {
             show_rule("inline_element: linethrough");
+            $$ = $1;
         }
     | inlinecode {
             show_rule("inline_element: inlinecode");
