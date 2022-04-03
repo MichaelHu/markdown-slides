@@ -177,11 +177,13 @@ static char* grammar_rules[] = {
                 "unorderlist_2: LF_INDENT2_UL line", "4",
                 "unorderlist_2: unorderlist_2 LF_INDENT2_UL line", "4",
                 "unorderlist_2: unorderlist_2 LF_INDENT3 line", "4",
-                "unorderlist_2: unorderlist_2 LF_INDENT4 code_text LINEBREAK", "4",
-                "unorderlist_2: unorderlist_2 LF_INDENT5 code_text LINEBREAK", "4",
+                "unorderlist_2: unorderlist_2 lf_indents4_codeblock", "4",
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",
+
+                    "lf_indents4_codeblock: lf_indents4 code_text LINEBREAK", "5",
+                    "lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text LINEBREAK", "5",
 
                         "inline_element: inline_text", "6",
                         "inline_element: link", "6",
@@ -429,6 +431,7 @@ static void show_rule( char *str ){
 %type <text> line
 %type <text> unorderlist_2
 %type <text> inline_elements
+%type <text> lf_indents4_codeblock
 %type <text> inline_element
 %type <text> inline_text
 %type <text> inline_text_item
@@ -594,9 +597,11 @@ codeblock:
 lf_indents2_codeblock: 
     lf_indents2 code_text LINEBREAK {
             show_rule("lf_indents2_codeblock: lf_indents2 code_text LINEBREAK");
+            $$ = str_format("%s%s%s", str_trim_left_n_lf_indents($1, 2), $2, $3);
         }
     | lf_indents2_codeblock lf_indents2 code_text LINEBREAK {
             show_rule("lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK");
+            $$ = str_format("%s%s%s%s", $1, str_trim_left_n_lf_indents($2, 2), $3, $4);
         }
     ;
 
@@ -682,6 +687,7 @@ unorderlist_1:
         }
     | unorderlist_1 unorderlist_2 {
             show_rule("unorderlist_1: unorderlist_1 unorderlist_2");
+            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $2);
         }
     ;
 
@@ -754,9 +760,11 @@ lf_indents5:
 lf_indents3_codeblock: 
     lf_indents3 code_text LINEBREAK {
             show_rule("lf_indents3_codeblock: lf_indents3 code_text LINEBREAK");
+            $$ = str_format("%s%s%s", str_trim_left_n_lf_indents($1, 3), $2, $3);
         }
     | lf_indents3_codeblock lf_indents3 code_text LINEBREAK {
             show_rule("lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK");
+            $$ = str_format("%s%s%s%s", $1, str_trim_left_n_lf_indents($2, 3), $3, $4);
         }
     ;
 
@@ -778,18 +786,19 @@ line:
 unorderlist_2: 
     LF_INDENT2_UL line {
             show_rule("unorderlist_2: LF_INDENT2_UL line");
+            $$ = str_format("<li>%s</li>", $2);
         }
     | unorderlist_2 LF_INDENT2_UL line {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT2_UL line");
+            $$ = str_format("%s<li>%s</li>", $1, $3);
         }
     | unorderlist_2 LF_INDENT3 line {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT3 line");
+            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $3);
         }
-    | unorderlist_2 LF_INDENT4 code_text LINEBREAK {
+    | unorderlist_2 lf_indents4_codeblock {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT4 code_text LINEBREAK");
-        }
-    | unorderlist_2 LF_INDENT5 code_text LINEBREAK {
-            show_rule("unorderlist_2: unorderlist_2 LF_INDENT5 code_text LINEBREAK");
+            $$ = str_format("%s<pre><code>%s</code></pre></li>", str_replace_right($1, "</li>", ""), $2);
         }
     ;
 
@@ -803,6 +812,19 @@ inline_elements:
             $$ = $1;
         }
     ;
+
+lf_indents4_codeblock: 
+    lf_indents4 code_text LINEBREAK {
+            show_rule("lf_indents4_codeblock: lf_indents4 code_text LINEBREAK");
+            $$ = str_format("%s%s%s", str_trim_left_n_lf_indents($1, 4), $2, $3);
+        }
+    | lf_indents4_codeblock lf_indents4 code_text LINEBREAK {
+            show_rule("lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text LINEBREAK");
+            $$ = str_format("%s%s%s%s", $1, str_trim_left_n_lf_indents($2, 4), $3, $4);
+        }
+    ;
+
+
 
 inline_element:
     inline_text {
