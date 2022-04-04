@@ -131,10 +131,8 @@ static char* grammar_rules[] = {
         "quote_paragraph: LF_Q line", "2",
         "quote_paragraph: quote_paragraph LF_Q line", "2",
 
-        "quote_codeblock: LF_Q_INDENT code_text LINEBREAK", "2",
-        "quote_codeblock: quote_codeblock LF_Q_INDENT code_text LINEBREAK", "2",
-        "quote_codeblock: quote_codeblock LF_Q_INDENT2 code_text LINEBREAK", "2",
-        "quote_codeblock: quote_codeblock LF_Q_INDENT3 code_text LINEBREAK", "2",
+        "quote_codeblock: lf_q_indents code_text LINEBREAK", "2",
+        "quote_codeblock: quote_codeblock lf_q_indents code_text LINEBREAK", "2",
 
             "lines: line", "3",
             "lines: lines line", "3",
@@ -169,6 +167,14 @@ static char* grammar_rules[] = {
 
             "lf_indents3_codeblock: lf_indents3 code_text LINEBREAK", "3",
             "lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK", "3",
+
+            "lf_q_indents: LF_Q_INDENT", "3",
+            "lf_q_indents: lf_q_indents2", "3",
+
+            "lf_q_indents2: LF_Q_INDENT2", "3",
+            "lf_q_indents2: lf_q_indents3", "3",
+
+            "lf_q_indents3: LF_Q_INDENT3", "3",
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
@@ -428,6 +434,9 @@ static void show_rule( char *str ){
 %type <text> lf_indents4
 %type <text> lf_indents5
 %type <text> lf_indents3_codeblock
+%type <text> lf_q_indents
+%type <text> lf_q_indents2
+%type <text> lf_q_indents3
 %type <text> line
 %type <text> unorderlist_2
 %type <text> inline_elements
@@ -531,15 +540,15 @@ quote_block:
         }
     | quote_block quote_unorderlist_0 {
             show_rule("quote_block: quote_block quote_unorderlist_0");
-            $$ = str_concat($1, $2);
+            $$ = str_format("%s<ul>%s</ul>", $1, $2);
         }
     | quote_block quote_paragraph {
             show_rule("quote_block: quote_block quote_paragraph");
-            $$ = str_concat($1, $2);
+            $$ = str_format("%s<p>%s</p>", $1, $2);
         }
     | quote_block quote_codeblock {
             show_rule("quote_block: quote_block quote_codeblock");
-            $$ = str_concat($1, $2);
+            $$ = str_format("%s<pre><code>%s</code></pre>", $1, $2);
         }
     | /* NULL */ {
             show_rule("quote_block: NULL");
@@ -615,9 +624,11 @@ quote_header:
 quote_unorderlist_0: 
     LF_Q_UL line {
             show_rule("quote_unorderlist_0: LF_Q_UL line");
+            $$ = str_format("<li>%s</li>", $2);
         }
     | quote_unorderlist_0 LF_Q_UL line {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL line");
+            $$ = str_format("%s<li>%s</li>", $1, $3);
         }
     | quote_unorderlist_0 LF_Q_INDENT line {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line");
@@ -643,17 +654,13 @@ quote_paragraph:
     ;
 
 quote_codeblock: 
-    LF_Q_INDENT code_text LINEBREAK {
-            show_rule("quote_codeblock: LF_Q_INDENT code_text LINEBREAK");
+    lf_q_indents code_text LINEBREAK {
+            show_rule("quote_codeblock: lf_q_indents code_text LINEBREAK");
+            $$ = str_format("%s%s%s", str_trim_left_n_lf_indents($1, 1), $2, $3);
         }
-    | quote_codeblock LF_Q_INDENT code_text LINEBREAK {
-            show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT code_text LINEBREAK");
-        }
-    | quote_codeblock LF_Q_INDENT2 code_text LINEBREAK {
-            show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT2 code_text LINEBREAK");
-        }
-    | quote_codeblock LF_Q_INDENT3 code_text LINEBREAK {
-            show_rule("quote_codeblock: quote_codeblock LF_Q_INDENT3 code_text LINEBREAK");
+    | quote_codeblock lf_q_indents code_text LINEBREAK {
+            show_rule("quote_codeblock: quote_codeblock lf_q_indents code_text LINEBREAK");
+            $$ = str_format("%s%s%s%s", $1, str_trim_left_n_lf_indents($2, 1), $3, $4);
         }
     ;
 
@@ -765,6 +772,35 @@ lf_indents3_codeblock:
     | lf_indents3_codeblock lf_indents3 code_text LINEBREAK {
             show_rule("lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK");
             $$ = str_format("%s%s%s%s", $1, str_trim_left_n_lf_indents($2, 3), $3, $4);
+        }
+    ;
+
+lf_q_indents: 
+    LF_Q_INDENT {
+            show_rule("lf_q_indents: LF_Q_INDENT");
+            $$ = $1;
+        }
+    | lf_q_indents2 {
+            show_rule("lf_q_indents: lf_q_indents2");
+            $$ = $1;
+        }
+    ;
+
+lf_q_indents2: 
+    LF_Q_INDENT2 {
+            show_rule("lf_q_indents2: LF_Q_INDENT2");
+            $$ = $1;
+        }
+    | lf_q_indents3 {
+            show_rule("lf_q_indents2: lf_q_indents3");
+            $$ = $1;
+        }
+    ;
+
+lf_q_indents3: 
+    LF_Q_INDENT3 {
+            show_rule("lf_q_indents3: LF_Q_INDENT3");
+            $$ = $1;
         }
     ;
 
