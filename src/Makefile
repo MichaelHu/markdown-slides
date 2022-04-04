@@ -6,7 +6,10 @@ lex-yacc: doyacc dolex
 
 debug: clean markdown.out
 
-doyacc:
+pre-yacc:
+	sh scripts/pre-yacc.sh
+
+doyacc: pre-yacc
 	bison -d -t --locations -v -omarkdown-new.y.c markdown-new.y
 
 dolex:
