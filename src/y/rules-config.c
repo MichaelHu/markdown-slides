@@ -48,14 +48,13 @@ static char* grammar_rules[] = {
         "quote_unorderlist_0: LF_Q_UL line", "2",
         "quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL line", "2",
         "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line", "2",
-        "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK", "2",
-        "quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT3 code_text LINEBREAK", "2",
+        "quote_unorderlist_0: quote_unorderlist_0 lf_q_indents2_codeblock", "2",
         "quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1", "2",
 
             "quote_unorderlist_1: LF_Q_INDENT_UL line", "3",
             "quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT_UL line", "3",
             "quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT2 line", "3",
-            "quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK", "3",
+            "quote_unorderlist_1: quote_unorderlist_1 lf_q_indents3_codeblock", "3",
             /*
             "quote_unorderlist_1: quote_unorderlist_1 quote_unorderlist_3", "3",
             */
@@ -83,6 +82,12 @@ static char* grammar_rules[] = {
 
                     "lf_indents4_codeblock: lf_indents4 code_text LINEBREAK", "5",
                     "lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text LINEBREAK", "5",
+
+        "lf_q_indents2_codeblock: lf_q_indents2 code_text LINEBREAK", "2",
+        "lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 code_text LINEBREAK", "2",
+
+            "lf_q_indents3_codeblock: lf_q_indents3 code_text LINEBREAK", "2",
+            "lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 code_text LINEBREAK", "2",
 
             "lf_indents: LF_INDENT", "3",
             "lf_indents: lf_indents2", "3",

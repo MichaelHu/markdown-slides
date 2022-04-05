@@ -353,8 +353,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 45
-#define YY_END_OF_BUFFER 46
+#define YY_NUM_RULES 44
+#define YY_END_OF_BUFFER 45
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -368,11 +368,11 @@ static const flex_int16_t yy_accept[146] =
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-        0,    0,    0,    0,   46,   44,    2,   44,   33,   38,
-       36,   37,   27,   28,   29,   31,   30,   21,   22,   34,
-       44,   35,   41,   24,   42,   25,   43,   44,   11,    1,
-       44,   33,    3,   27,   28,   29,   22,   45,    2,   26,
-       30,   20,   40,    0,   39,   10,    1,    0,    0,    0,
+        0,    0,    0,    0,   45,   43,    2,   43,   32,   37,
+       35,   36,   27,   28,   29,   31,   30,   21,   22,   33,
+       43,   34,   40,   24,   41,   25,   42,   43,   11,    1,
+       43,   32,    3,   27,   28,   29,   22,   44,    2,   26,
+       30,   20,   39,    0,   38,   10,    1,    0,    0,    0,
         1,    0,    0,    3,    4,   19,   23,    9,    0,    0,
 
         0,    5,    0,    3,   18,    0,   12,    0,    8,    0,
@@ -1080,74 +1080,69 @@ YY_RULE_SETUP
 case 32:
 YY_RULE_SETUP
 #line 154 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
+{ SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 155 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
+{ SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 156 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
+{ SETYYLVAL(yytext); P("RIGHTSQUARE"); RETURN(RIGHTSQUARE); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 157 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("RIGHTSQUARE"); RETURN(RIGHTSQUARE); }
+{ SETYYLVAL(yytext); P("LEFTBRACKET"); RETURN(LEFTBRACKET); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 158 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LEFTBRACKET"); RETURN(LEFTBRACKET); }
+{ SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 159 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
+{ SETYYLVAL(yytext); P("EXCLAMATION"); RETURN(EXCLAMATION); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 160 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("EXCLAMATION"); RETURN(EXCLAMATION); }
+{ SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 161 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
+{ SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 162 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
+{ SETYYLVAL(yytext); P("UNDERSCORE"); RETURN(UNDERSCORE); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 163 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("UNDERSCORE"); RETURN(UNDERSCORE); }
+{ SETYYLVAL(yytext); P("LEFTPARENTHESIS"); RETURN(LEFTPARENTHESIS); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 164 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("LEFTPARENTHESIS"); RETURN(LEFTPARENTHESIS); }
+{ SETYYLVAL(yytext); P("RIGHTPARENTHESIS"); RETURN(RIGHTPARENTHESIS); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 165 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("RIGHTPARENTHESIS"); RETURN(RIGHTPARENTHESIS); }
+{ SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 166 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
-	YY_BREAK
-case 45:
-YY_RULE_SETUP
-#line 171 "markdown-new.lex"
+#line 170 "markdown-new.lex"
 ECHO;
 	YY_BREAK
-#line 1150 "markdown-new.lex.c"
+#line 1145 "markdown-new.lex.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ESCAPE):
 case YY_STATE_EOF(CODEBLOCK):
@@ -2176,7 +2171,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 171 "markdown-new.lex"
+#line 170 "markdown-new.lex"
 
 
 int yywrap(){

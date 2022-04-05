@@ -4205,6 +4205,7 @@
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
         [> quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT line
+                [> lf_q_indents2: LF_Q_INDENT2
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -4293,7 +4294,8 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-        [> quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT2 code_text LINEBREAK
+        [> lf_q_indents2_codeblock: lf_q_indents2 code_text LINEBREAK
+        [> quote_unorderlist_0: quote_unorderlist_0 lf_q_indents2_codeblock
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text_item
                                 [> inline_text_item: TEXT
@@ -4373,6 +4375,7 @@
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
             [> quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT2 line
+                    [> lf_q_indents3: LF_Q_INDENT3
                                 [> inline_text_item: TEXT
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
@@ -4465,7 +4468,8 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text code_text_item
-            [> quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT3 code_text LINEBREAK
+        [> lf_q_indents3_codeblock: lf_q_indents3 code_text LINEBREAK
+            [> quote_unorderlist_1: quote_unorderlist_1 lf_q_indents3_codeblock
         [> quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1
     [> quote_block: quote_block quote_unorderlist_0
                                 [> inline_text_item: TEXT

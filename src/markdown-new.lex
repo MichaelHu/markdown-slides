@@ -150,7 +150,6 @@ unorderlist [*+-][ ]
 \-                                      { SETYYLVAL(yytext); P("MINUS"); RETURN(MINUS); }
 [0-9]+                                  { SETYYLVAL(yytext); P("DIGIT"); RETURN(DIGIT); }
 \.                                      { SETYYLVAL(yytext); P("DOT"); RETURN(DOT); }
-^[ ]{4}|\t                              { SETYYLVAL(yytext); P("LF_INDENT"); RETURN(LF_INDENT); }
 [ ]                                     { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 \[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
 \]                                      { SETYYLVAL(yytext); P("RIGHTSQUARE"); RETURN(RIGHTSQUARE); }

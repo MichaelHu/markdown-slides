@@ -17,7 +17,7 @@ unorderlist_1:
         }
     | unorderlist_1 unorderlist_2 {
             show_rule("unorderlist_1: unorderlist_1 unorderlist_2");
-            $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $2);
+            $$ = str_format("%s<ul>%s</ul></li>", str_replace_right($1,"</li>", ""), $2);
         }
     ;
 

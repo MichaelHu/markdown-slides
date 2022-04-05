@@ -66,11 +66,10 @@ for i in `cat <<EOF
     inline_text_item.y
     inlinecode.y
     italic.y
-    lf_indents2_codeblock.y
-    lf_indents3_codeblock.y
-    lf_indents4_codeblock.y
     lf_indentsN.y
+    lf_indentsN_codeblock.y
     lf_q_indentsN.y
+    lf_q_indentsN_codeblock.y
     line-through.y
     line.y
     lines.y

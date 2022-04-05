@@ -6,11 +6,9 @@ markdownfile:
 
             show_rule("markdownfile: blocks");
 
-            /*
             fprintf(stdout, "==================================\n");
             fprintf(stdout, "%s", $1);
             fprintf(stdout, "==================================\n");
-            */
 
             /**
             parse_doc();
