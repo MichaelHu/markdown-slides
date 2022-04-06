@@ -54,10 +54,14 @@
 %token <text> LF_UL                
 %token <text> UL                
 
+%token <text> LF_VERTICAL                
+
 %token <text> LF_INDENT_UL                
 %token <text> LF_INDENT2_UL                
 %token <text> LF_INDENT3_UL                
 %token <text> LF_INDENT4_UL                
+
+%token <text> LF_INDENT_VERTICAL                
 
 %token <text> LF_INDENT              
 %token <text> LF_INDENT2
@@ -67,9 +71,12 @@
 
 %token <text> LF_Q_H
 %token <text> LF_Q_UL
+%token <text> LF_Q_VERTICAL
 
 %token <text> LF_Q_INDENT_UL                
 %token <text> LF_Q_INDENT2_UL                
+
+%token <text> LF_Q_INDENT_VERTICAL
 
 %token <text> LF_Q_INDENT              
 %token <text> LF_Q_INDENT2
@@ -149,6 +156,12 @@
 %type <text> strong
 %type <text> linethrough
 %type <text> inlinecode
+
+%type <text> table
+%type <text> table_header
+%type <text> table_header_separator
+%type <text> table_rows
+%type <text> table_row
 
 %nonassoc ITALICSTART
 %nonassoc LISTSTART

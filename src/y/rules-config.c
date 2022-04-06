@@ -37,6 +37,21 @@ static char* grammar_rules[] = {
         "codeblock: lf_indents code_text LINEBREAK", "2",
         "codeblock: codeblock lf_indents code_text LINEBREAK", "2",
 
+    "block: table", "1",
+
+        "table: table_header table_rows", "2",
+        "table: table_rows", "2",
+
+            "table_header: LF_VERTICAL table_row LINEBREAK table_header_separator", "3",
+
+            "table_header_separator: BLANKLINE", "3",
+
+            "table_rows: LF_VERTICAL table_row LINEBREAK", "3",
+            "table_rows: table_rows LF_VERTICAL table_row LINEBREAK", "3",
+
+                "table_row: line VERTICAL", "4",
+                "table_row: table_row line VERTICAL", "4",
+
     "block: quote_block", "1",
 
     "quote_block: quote_block quote_header", "1",
@@ -176,7 +191,6 @@ static char* grammar_rules[] = {
                                 "inline_text_item: LESSTHAN", "8",
                                 "inline_text_item: LARGERTHAN", "8",
                                 "inline_text_item: TRIPLEBACKTICK", "8",
-                                "inline_text_item: VERTICAL", "8",
                                 "inline_text_item: PLUS", "8",
                                 "inline_text_item: MINUS", "8",
                                 "inline_text_item: DIGIT", "8",
@@ -197,6 +211,7 @@ static char* grammar_rules[] = {
                                 "inline_code_text_item: DOUBLETILDE", "8",
                                 "inline_code_text_item: LEFTSQUARE", "8",
                                 "inline_code_text_item: EXCLAMATION", "8",
+                                "inline_code_text_item: VERTICAL", "8",
 
                                 "code_text_item: inline_code_text_item", "8",
                                 "code_text_item: BACKTICK", "8"

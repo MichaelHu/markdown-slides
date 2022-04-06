@@ -11,10 +11,6 @@ inline_text_item:
             show_rule("inline_text_item: TRIPLEBACKTICK");
             $$ = $1;
         }           
-    | VERTICAL {
-            show_rule("inline_text_item: VERTICAL");
-            $$ = $1;
-        }           
     | PLUS {
             show_rule("inline_text_item: PLUS");
             $$ = $1;

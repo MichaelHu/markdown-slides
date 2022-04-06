@@ -23,6 +23,10 @@ inline_code_text_item:
             show_rule("inline_text_item: LEFTSQUARE");
             $$ = $1;
         }           
+    | VERTICAL {
+            show_rule("inline_code_text_item: VERTICAL");
+            $$ = $1;
+        }           
     ;
 
 

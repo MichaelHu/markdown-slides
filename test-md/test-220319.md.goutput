@@ -574,6 +574,28 @@
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: TEXT
                             [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text inline_text_item
                                 [> inline_text_item: TEXT
@@ -4924,5 +4946,174 @@
             [> lines: lines line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+        [> header: LF_H inline_elements LINEBREAK
+    [> block: header
+[> blocks: blocks block
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+            [> table_header_separator: BLANKLINE
+            [> table_header: LF_VERTICAL table_row LINEBREAK table_header_separator
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+            [> table_rows: LF_VERTICAL table_row LINEBREAK
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+            [> table_rows: table_rows LF_VERTICAL table_row LINEBREAK
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: TEXT
+                            [> inline_text: inline_text inline_text_item
+                                [> inline_text_item: DIGIT
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                [> line: inline_elements
+                [> table_row: table_row line VERTICAL
+            [> table_rows: table_rows LF_VERTICAL table_row LINEBREAK
+        [> table: table_header table_rows
+    [> block: table
 [> blocks: blocks block
 [> markdownfile: blocks

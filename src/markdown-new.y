@@ -127,6 +127,21 @@ static char* grammar_rules[] = {
         "codeblock: lf_indents code_text LINEBREAK", "2",
         "codeblock: codeblock lf_indents code_text LINEBREAK", "2",
 
+    "block: table", "1",
+
+        "table: table_header table_rows", "2",
+        "table: table_rows", "2",
+
+            "table_header: LF_VERTICAL table_row LINEBREAK table_header_separator", "3",
+
+            "table_header_separator: BLANKLINE", "3",
+
+            "table_rows: LF_VERTICAL table_row LINEBREAK", "3",
+            "table_rows: table_rows LF_VERTICAL table_row LINEBREAK", "3",
+
+                "table_row: line VERTICAL", "4",
+                "table_row: table_row line VERTICAL", "4",
+
     "block: quote_block", "1",
 
     "quote_block: quote_block quote_header", "1",
@@ -266,7 +281,6 @@ static char* grammar_rules[] = {
                                 "inline_text_item: LESSTHAN", "8",
                                 "inline_text_item: LARGERTHAN", "8",
                                 "inline_text_item: TRIPLEBACKTICK", "8",
-                                "inline_text_item: VERTICAL", "8",
                                 "inline_text_item: PLUS", "8",
                                 "inline_text_item: MINUS", "8",
                                 "inline_text_item: DIGIT", "8",
@@ -287,6 +301,7 @@ static char* grammar_rules[] = {
                                 "inline_code_text_item: DOUBLETILDE", "8",
                                 "inline_code_text_item: LEFTSQUARE", "8",
                                 "inline_code_text_item: EXCLAMATION", "8",
+                                "inline_code_text_item: VERTICAL", "8",
 
                                 "code_text_item: inline_code_text_item", "8",
                                 "code_text_item: BACKTICK", "8"
@@ -389,10 +404,14 @@ static void show_rule( char *str ){
 %token <text> LF_UL                
 %token <text> UL                
 
+%token <text> LF_VERTICAL                
+
 %token <text> LF_INDENT_UL                
 %token <text> LF_INDENT2_UL                
 %token <text> LF_INDENT3_UL                
 %token <text> LF_INDENT4_UL                
+
+%token <text> LF_INDENT_VERTICAL                
 
 %token <text> LF_INDENT              
 %token <text> LF_INDENT2
@@ -402,9 +421,12 @@ static void show_rule( char *str ){
 
 %token <text> LF_Q_H
 %token <text> LF_Q_UL
+%token <text> LF_Q_VERTICAL
 
 %token <text> LF_Q_INDENT_UL                
 %token <text> LF_Q_INDENT2_UL                
+
+%token <text> LF_Q_INDENT_VERTICAL
 
 %token <text> LF_Q_INDENT              
 %token <text> LF_Q_INDENT2
@@ -485,6 +507,12 @@ static void show_rule( char *str ){
 %type <text> linethrough
 %type <text> inlinecode
 
+%type <text> table
+%type <text> table_header
+%type <text> table_header_separator
+%type <text> table_rows
+%type <text> table_row
+
 %nonassoc ITALICSTART
 %nonassoc LISTSTART
 
@@ -540,6 +568,10 @@ block:
     | codeblock {
             show_rule("block: codeblock");
             $$ = str_format("<pre><code>%s</code></pre>", $1);
+        }
+    | table {
+            show_rule("block: table");
+            $$ = str_format("<table>%s</table>", $1);
         }
     | quote_block {
             show_rule("block: quote_block");
@@ -674,6 +706,10 @@ inline_code_text_item:
             show_rule("inline_text_item: LEFTSQUARE");
             $$ = $1;
         }           
+    | VERTICAL {
+            show_rule("inline_code_text_item: VERTICAL");
+            $$ = $1;
+        }           
     ;
 
 
@@ -743,10 +779,6 @@ inline_text_item:
         }           
     | TRIPLEBACKTICK {
             show_rule("inline_text_item: TRIPLEBACKTICK");
-            $$ = $1;
-        }           
-    | VERTICAL {
-            show_rule("inline_text_item: VERTICAL");
             $$ = $1;
         }           
     | PLUS {
@@ -1229,6 +1261,52 @@ unorderlist_2:
     ;
 
 
+table:
+    table_header table_rows {
+            show_rule("table: table_header table_rows");
+            $$ = str_concat($1, $2);
+        }
+    | table_rows {
+            show_rule("table: table_rows");
+            $$ = $1;
+        }
+    ;
+
+table_header:
+    LF_VERTICAL table_row LINEBREAK table_header_separator {
+            show_rule("table_header: LF_VERTICAL table_row LINEBREAK table_header_separator");
+            $$ = $2;
+        }
+    ;
+
+
+table_header_separator:
+    BLANKLINE {
+            show_rule("table_header_separator: BLANKLINE");
+            $$ = "";
+        }
+    ;
+table_row:
+    line VERTICAL {
+            show_rule("table_row: line VERTICAL");
+            $$ = str_format("<td>%s</td>", $1);
+        }
+    | table_row line VERTICAL {
+            show_rule("table_row: table_row line VERTICAL");
+            $$ = str_format("%s<td>%s</td>", $1, $2);
+        }
+    ;
+
+table_rows:
+    LF_VERTICAL table_row LINEBREAK {
+            show_rule("table_rows: LF_VERTICAL table_row LINEBREAK");
+            $$ = str_format("<tr>%s</tr>", $2);
+        }
+    | table_rows LF_VERTICAL table_row LINEBREAK {
+            show_rule("table_rows: table_rows LF_VERTICAL table_row LINEBREAK");
+            $$ = str_format("%s<tr>%s</tr>", $1, $3);
+    }
+    ;
 
     /**
      * ========== grammar rules end ===========

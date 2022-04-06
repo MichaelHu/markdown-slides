@@ -15,6 +15,10 @@ block:
             show_rule("block: codeblock");
             $$ = str_format("<pre><code>%s</code></pre>", $1);
         }
+    | table {
+            show_rule("block: table");
+            $$ = str_format("<table>%s</table>", $1);
+        }
     | quote_block {
             show_rule("block: quote_block");
             $$ = str_format("<blockquote>%s</blockquote>", $1);
