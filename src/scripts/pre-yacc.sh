@@ -64,6 +64,8 @@ for i in `cat <<EOF
     inline_elements.y
     inline_text.y
     inline_text_item.y
+    uri_text.y
+    uri_text_item.y
     inlinecode.y
     italic.y
     lf_indentsN.y

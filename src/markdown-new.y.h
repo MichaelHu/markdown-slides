@@ -65,32 +65,28 @@
      LF_Q_INDENT2 = 281,
      LF_Q_INDENT3 = 282,
      LF_Q = 283,
-     SPECIALCHAR = 284,
+     ESCAPEDCHAR = 284,
      LESSTHAN = 285,
      LARGERTHAN = 286,
      TRIPLEBACKTICK = 287,
      BACKTICK = 288,
      VERTICAL = 289,
-     DOUBLEASTERISK = 290,
-     DOUBLETILDE = 291,
+     TRIPLEASTERISK = 290,
+     DOUBLEASTERISK = 291,
      ASTERISK = 292,
-     PLUS = 293,
-     MINUS = 294,
-     DIGIT = 295,
-     DOT = 296,
-     SPACE = 297,
-     LEFTSQUARE = 298,
-     RIGHTSQUARE = 299,
-     LEFTBRACKET = 300,
-     RIGHTBRACKET = 301,
-     EXCLAMATION = 302,
-     DOUBLEUNDERSCORE = 303,
-     UNDERSCORE = 304,
-     LEFTPARENTHESIS = 305,
-     RIGHTPARENTHESIS = 306,
-     TEXT = 307,
-     ITALICSTART = 308,
-     LISTSTART = 309
+     TRIPLEUNDERSCORE = 293,
+     DOUBLEUNDERSCORE = 294,
+     UNDERSCORE = 295,
+     EXCLAMATION_LEFTSQUARE = 296,
+     LEFTSQUARE = 297,
+     RIGHTSQUARE_LEFTBRACKET = 298,
+     RIGHTBRACKET = 299,
+     DOUBLETILDE = 300,
+     RIGHTSQUARE = 301,
+     SPACE = 302,
+     TEXT = 303,
+     ITALICSTART = 304,
+     LISTSTART = 305
    };
 #endif
 /* Tokens.  */
@@ -120,45 +116,41 @@
 #define LF_Q_INDENT2 281
 #define LF_Q_INDENT3 282
 #define LF_Q 283
-#define SPECIALCHAR 284
+#define ESCAPEDCHAR 284
 #define LESSTHAN 285
 #define LARGERTHAN 286
 #define TRIPLEBACKTICK 287
 #define BACKTICK 288
 #define VERTICAL 289
-#define DOUBLEASTERISK 290
-#define DOUBLETILDE 291
+#define TRIPLEASTERISK 290
+#define DOUBLEASTERISK 291
 #define ASTERISK 292
-#define PLUS 293
-#define MINUS 294
-#define DIGIT 295
-#define DOT 296
-#define SPACE 297
-#define LEFTSQUARE 298
-#define RIGHTSQUARE 299
-#define LEFTBRACKET 300
-#define RIGHTBRACKET 301
-#define EXCLAMATION 302
-#define DOUBLEUNDERSCORE 303
-#define UNDERSCORE 304
-#define LEFTPARENTHESIS 305
-#define RIGHTPARENTHESIS 306
-#define TEXT 307
-#define ITALICSTART 308
-#define LISTSTART 309
+#define TRIPLEUNDERSCORE 293
+#define DOUBLEUNDERSCORE 294
+#define UNDERSCORE 295
+#define EXCLAMATION_LEFTSQUARE 296
+#define LEFTSQUARE 297
+#define RIGHTSQUARE_LEFTBRACKET 298
+#define RIGHTBRACKET 299
+#define DOUBLETILDE 300
+#define RIGHTSQUARE 301
+#define SPACE 302
+#define TEXT 303
+#define ITALICSTART 304
+#define LISTSTART 305
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 351 "markdown-new.y"
+#line 361 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 162 "markdown-new.y.h"
+#line 154 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

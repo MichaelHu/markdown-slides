@@ -10,7 +10,9 @@
 #undef _ONLYLEX
 #undef _ISDEBUGLEX
 
-/* #define _ONLYLEX */
+/*
+#define _ONLYLEX
+*/
 
 
 #ifdef _ONLYLEX
@@ -144,29 +146,25 @@ vertical \|
 
 ^{quote}                                { SETYYLVAL(yytext); P("LF_Q"); RETURN(LF_Q); }
 
-\\[\\`*_{}()#+\-.!]                     { SETYYLVAL(yytext); P("SPECIALCHAR"); RETURN(SPECIALCHAR); }
+\\[\\`*_()#+\-.!]                       { SETYYLVAL(yytext); P("ESCAPEDCHAR"); RETURN(ESCAPEDCHAR); }
 \<                                      { SETYYLVAL(yytext); P("LESSTHAN"); RETURN(LESSTHAN); }
 \>                                      { SETYYLVAL(yytext); P("LARGERTHAN"); RETURN(LARGERTHAN); }
 ```                                     { SETYYLVAL(yytext); P("TRIPLEBACKTICK"); RETURN(TRIPLEBACKTICK); }
 `                                       { SETYYLVAL(yytext); P("BACKTICK"); RETURN(BACKTICK); }
 \|                                      { SETYYLVAL(yytext); P("VERTICAL"); RETURN(VERTICAL); }
+\*\*\*                                  { SETYYLVAL(yytext); P("TRIPLEASTERISK"); RETURN(TRIPLEASTERISK); }
 \*\*                                    { SETYYLVAL(yytext); P("DOUBLEASTERISK"); RETURN(DOUBLEASTERISK); }
 \*                                      { SETYYLVAL(yytext); P("ASTERISK"); RETURN(ASTERISK); }
-\+                                      { SETYYLVAL(yytext); P("PLUS"); RETURN(PLUS); }
-\-                                      { SETYYLVAL(yytext); P("MINUS"); RETURN(MINUS); }
-[0-9]+                                  { SETYYLVAL(yytext); P("DIGIT"); RETURN(DIGIT); }
-\.                                      { SETYYLVAL(yytext); P("DOT"); RETURN(DOT); }
-[ ]                                     { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
-\[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
-\]                                      { SETYYLVAL(yytext); P("RIGHTSQUARE"); RETURN(RIGHTSQUARE); }
-\(                                      { SETYYLVAL(yytext); P("LEFTBRACKET"); RETURN(LEFTBRACKET); }
-\)                                      { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
-!                                       { SETYYLVAL(yytext); P("EXCLAMATION"); RETURN(EXCLAMATION); }
-~~                                      { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
+___                                     { SETYYLVAL(yytext); P("TRIPLEUNDERSCORE"); RETURN(TRIPLEUNDERSCORE); }
 __                                      { SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
 _                                       { SETYYLVAL(yytext); P("UNDERSCORE"); RETURN(UNDERSCORE); }
-\{                                      { SETYYLVAL(yytext); P("LEFTPARENTHESIS"); RETURN(LEFTPARENTHESIS); }
-\}                                      { SETYYLVAL(yytext); P("RIGHTPARENTHESIS"); RETURN(RIGHTPARENTHESIS); }
+!\[                                     { SETYYLVAL(yytext); P("EXCLAMATION_LEFTSQUARE"); RETURN(EXCLAMATION_LEFTSQUARE); }
+\[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
+\]\(                                    { SETYYLVAL(yytext); P("RIGHTSQUARE_LEFTBRACKET"); RETURN(RIGHTSQUARE_LEFTBRACKET); }
+\)                                      { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
+[ \t]                                   { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
+~~                                      { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
+
 .                                       { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 
 

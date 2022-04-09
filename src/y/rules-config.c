@@ -144,6 +144,9 @@ static char* grammar_rules[] = {
                         "inline_element: linethrough", "6",
                         "inline_element: inlinecode", "6",
 
+                            "uri_text: uri_text uri_text_item", "7",
+                            "uri_text: uri_text_item", "7",
+
                             "inline_text: inline_text inline_text_item", "7",
                             "inline_text: inline_text_item", "7",
 
@@ -153,32 +156,33 @@ static char* grammar_rules[] = {
                             "code_text: code_text code_text_item", "7",
                             "code_text: code_text_item", "7",
 
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE error", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error", "7",
                             "link: LEFTSQUARE inline_text error", "7",
                             "link: LEFTSQUARE error", "7",
-                            "link: error", "7",
 
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text error", "7",
-                            "image: EXCLAMATION LEFTSQUARE error", "7",
-                            "image: EXCLAMATION error", "7",
-                            "image: error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE error", "7",
 
-                            "italic: ASTERISK inline_text ASTERISK %prec ITALICSTART", "7",
-                            "italic: ASTERISK inline_text error %prec ITALICSTART", "7",
-                            "italic: ASTERISK error %prec ITALICSTART", "7",
+                            "italic: ASTERISK inline_text ASTERISK", "7",
+                            "italic: ASTERISK inline_text error", "7",
+                            "italic: ASTERISK error", "7",
+                            "italic: UNDERSCORE inline_text UNDERSCORE", "7",
+                            "italic: UNDERSCORE inline_text error", "7",
+                            "italic: UNDERSCORE error", "7",
 
                             "strong: DOUBLEASTERISK inline_text DOUBLEASTERISK", "7",
                             "strong: DOUBLEASTERISK inline_text error", "7",
                             "strong: DOUBLEASTERISK error", "7",
+                            "strong: DOUBLEUNDERSCORE inline_text DOUBLEUNDERSCORE", "7",
+                            "strong: DOUBLEUNDERSCORE inline_text error", "7",
+                            "strong: DOUBLEUNDERSCORE error", "7",
 
                             "linethrough: DOUBLETILDE inline_text DOUBLETILDE", "7",
                             "linethrough: DOUBLETILDE inline_text error", "7",
@@ -188,30 +192,36 @@ static char* grammar_rules[] = {
                             "inlinecode: BACKTICK inline_code_text error", "7",
                             "inlinecode: BACKTICK error", "7",
 
-                                "inline_text_item: LESSTHAN", "8",
-                                "inline_text_item: LARGERTHAN", "8",
-                                "inline_text_item: TRIPLEBACKTICK", "8",
-                                "inline_text_item: PLUS", "8",
-                                "inline_text_item: MINUS", "8",
-                                "inline_text_item: DIGIT", "8",
-                                "inline_text_item: DOT", "8",
+                                "uri_text_item: TEXT", "8",
+
+                                "inline_text_item: uri_text_item", "8",
+                                "inline_text_item: ESCAPEDCHAR", "8",
                                 "inline_text_item: SPACE", "8",
-                                "inline_text_item: RIGHTSQUARE", "8",
-                                "inline_text_item: LEFTBRACKET", "8",
-                                "inline_text_item: RIGHTBRACKET", "8",
-                                "inline_text_item: UNDERSCORE", "8",
-                                "inline_text_item: DOUBLEUNDERSCORE", "8",
-                                "inline_text_item: LEFTPARENTHESIS", "8",
-                                "inline_text_item: RIGHTPARENTHESIS", "8",
-                                "inline_text_item: TEXT", "8",
 
                                 "inline_code_text_item: inline_text_item", "8",
-                                "inline_code_text_item: ASTERISK", "8",
+                                /* simple link */
+                                "inline_code_text_item: LESSTHAN", "8",
+                                "inline_code_text_item: LARGERTHAN", "8",
+                                /* strong italic */
+                                "inline_code_text_item: TRIPLEASTERISK", "8",
+                                "inline_code_text_item: TRIPLEUNDERSCORE", "8",
+                                /* strong */
                                 "inline_code_text_item: DOUBLEASTERISK", "8",
+                                "inline_code_text_item: DOUBLEUNDERSCORE", "8",
+                                /* italic */
+                                "inline_code_text_item: ASTERISK", "8",
+                                "inline_code_text_item: UNDERSCORE", "8",
+                                /* line-through */
                                 "inline_code_text_item: DOUBLETILDE", "8",
+                                /* image and link */
+                                "inline_code_text_item: EXCLAMATION_LEFTSQUARE", "8",
                                 "inline_code_text_item: LEFTSQUARE", "8",
-                                "inline_code_text_item: EXCLAMATION", "8",
+                                "inline_code_text_item: RIGHTSQUARE_LEFTBRACKET", "8",
+                                "inline_code_text_item: RIGHTBRACKET", "8",
+                                /* table */
                                 "inline_code_text_item: VERTICAL", "8",
+                                /* code block */
+                                "inline_code_text_item: TRIPLEBACKTICK", "8",
 
                                 "code_text_item: inline_code_text_item", "8",
                                 "code_text_item: BACKTICK", "8"

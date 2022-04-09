@@ -234,6 +234,9 @@ static char* grammar_rules[] = {
                         "inline_element: linethrough", "6",
                         "inline_element: inlinecode", "6",
 
+                            "uri_text: uri_text uri_text_item", "7",
+                            "uri_text: uri_text_item", "7",
+
                             "inline_text: inline_text inline_text_item", "7",
                             "inline_text: inline_text_item", "7",
 
@@ -243,32 +246,33 @@ static char* grammar_rules[] = {
                             "code_text: code_text code_text_item", "7",
                             "code_text: code_text_item", "7",
 
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error", "7",
-                            "link: LEFTSQUARE inline_text RIGHTSQUARE error", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error", "7",
+                            "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error", "7",
                             "link: LEFTSQUARE inline_text error", "7",
                             "link: LEFTSQUARE error", "7",
-                            "link: error", "7",
 
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error", "7",
-                            "image: EXCLAMATION LEFTSQUARE inline_text error", "7",
-                            "image: EXCLAMATION LEFTSQUARE error", "7",
-                            "image: EXCLAMATION error", "7",
-                            "image: error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE inline_text error", "7",
+                            "image: EXCLAMATION_LEFTSQUARE error", "7",
 
-                            "italic: ASTERISK inline_text ASTERISK %prec ITALICSTART", "7",
-                            "italic: ASTERISK inline_text error %prec ITALICSTART", "7",
-                            "italic: ASTERISK error %prec ITALICSTART", "7",
+                            "italic: ASTERISK inline_text ASTERISK", "7",
+                            "italic: ASTERISK inline_text error", "7",
+                            "italic: ASTERISK error", "7",
+                            "italic: UNDERSCORE inline_text UNDERSCORE", "7",
+                            "italic: UNDERSCORE inline_text error", "7",
+                            "italic: UNDERSCORE error", "7",
 
                             "strong: DOUBLEASTERISK inline_text DOUBLEASTERISK", "7",
                             "strong: DOUBLEASTERISK inline_text error", "7",
                             "strong: DOUBLEASTERISK error", "7",
+                            "strong: DOUBLEUNDERSCORE inline_text DOUBLEUNDERSCORE", "7",
+                            "strong: DOUBLEUNDERSCORE inline_text error", "7",
+                            "strong: DOUBLEUNDERSCORE error", "7",
 
                             "linethrough: DOUBLETILDE inline_text DOUBLETILDE", "7",
                             "linethrough: DOUBLETILDE inline_text error", "7",
@@ -278,30 +282,36 @@ static char* grammar_rules[] = {
                             "inlinecode: BACKTICK inline_code_text error", "7",
                             "inlinecode: BACKTICK error", "7",
 
-                                "inline_text_item: LESSTHAN", "8",
-                                "inline_text_item: LARGERTHAN", "8",
-                                "inline_text_item: TRIPLEBACKTICK", "8",
-                                "inline_text_item: PLUS", "8",
-                                "inline_text_item: MINUS", "8",
-                                "inline_text_item: DIGIT", "8",
-                                "inline_text_item: DOT", "8",
+                                "uri_text_item: TEXT", "8",
+
+                                "inline_text_item: uri_text_item", "8",
+                                "inline_text_item: ESCAPEDCHAR", "8",
                                 "inline_text_item: SPACE", "8",
-                                "inline_text_item: RIGHTSQUARE", "8",
-                                "inline_text_item: LEFTBRACKET", "8",
-                                "inline_text_item: RIGHTBRACKET", "8",
-                                "inline_text_item: UNDERSCORE", "8",
-                                "inline_text_item: DOUBLEUNDERSCORE", "8",
-                                "inline_text_item: LEFTPARENTHESIS", "8",
-                                "inline_text_item: RIGHTPARENTHESIS", "8",
-                                "inline_text_item: TEXT", "8",
 
                                 "inline_code_text_item: inline_text_item", "8",
-                                "inline_code_text_item: ASTERISK", "8",
+                                /* simple link */
+                                "inline_code_text_item: LESSTHAN", "8",
+                                "inline_code_text_item: LARGERTHAN", "8",
+                                /* strong italic */
+                                "inline_code_text_item: TRIPLEASTERISK", "8",
+                                "inline_code_text_item: TRIPLEUNDERSCORE", "8",
+                                /* strong */
                                 "inline_code_text_item: DOUBLEASTERISK", "8",
+                                "inline_code_text_item: DOUBLEUNDERSCORE", "8",
+                                /* italic */
+                                "inline_code_text_item: ASTERISK", "8",
+                                "inline_code_text_item: UNDERSCORE", "8",
+                                /* line-through */
                                 "inline_code_text_item: DOUBLETILDE", "8",
+                                /* image and link */
+                                "inline_code_text_item: EXCLAMATION_LEFTSQUARE", "8",
                                 "inline_code_text_item: LEFTSQUARE", "8",
-                                "inline_code_text_item: EXCLAMATION", "8",
+                                "inline_code_text_item: RIGHTSQUARE_LEFTBRACKET", "8",
+                                "inline_code_text_item: RIGHTBRACKET", "8",
+                                /* table */
                                 "inline_code_text_item: VERTICAL", "8",
+                                /* code block */
+                                "inline_code_text_item: TRIPLEBACKTICK", "8",
 
                                 "code_text_item: inline_code_text_item", "8",
                                 "code_text_item: BACKTICK", "8"
@@ -354,48 +364,7 @@ static void show_rule( char *str ){
 };
 
     /* bind union part with terminal symbol */
-/*
-%token <text> TEXT SPECIALCHAR CODETEXT H QUOTEH HTMLBLOCK SECTION VSECTION SCRIPTSTART SCRIPTEND
-%token <text> STYLESTART STYLEEND SVGSTART SVGEND LINK BACKTICK TRIPLEBACKTICK
-%token <text> TABLEROWSTART TABLECEILEND
-%token <text> ULINDENT OLINDENT TEXTINDENT PRE_INDENT INDENTED_PRE_INDENT TABLE_INDENT QUOTE_INDENT
-%token <text> LEFTSQUARE RIGHTSQUARE_LEFTBRACKET RIGHTBRACKET EXCLAMATION_LEFTSQUARE
-%token <text> ATTRLEFT ATTRRIGHT EMPTYATTR
-%token <text> EM_BEGIN EM_END STRONG_BEGIN STRONG_END
-%token <text> INDENT_QUOTEBLANKLINE
 
-%token MINUS PLUS RIGHTPARENTHESES LEFTPARENTHESES 
-%token UNDERSCORE STAR BLANKLINE LINEBREAK LARGERTHAN
-%token DOUBLESTAR DOUBLEUNDERSCORE OLSTART ULSTART QUOTEBLANKLINE QUOTEOLSTART QUOTEULSTART
-*/
-
-    /* bind union part with nonterminal symbol */
-/*
-%type <text> text_list
-%type <text> codespan code_list error
-%type <node> blocks block
-%type <node> lines line
-%type <node> header raw_text pairedblock
-%type <node> tablerows tablerow tableceils tableceil
-%type <node> block_p line_p
-%type <node> block_blank line_blank
-%type <node> block_ul line_ul block_ol line_ol
-%type <node> block_indent_ul line_indent_ul block_indent_ol line_indent_ol block_indent_text line_indent_text
-%type <node> block_pre line_pre block_indented_pre line_indented_pre
-%type <node> inline_elements inline_element inline_text_collection inline_text
-%type <node> plaintext link inline_code standard_link standard_image inline_emphasis inline_strong
-
-%type <node> block_quote_h
-%type <node> block_quote_blank line_quote_blank
-%type <node> block_quote_p line_quote_p
-%type <node> block_quote_ul line_quote_ul block_quote_ol line_quote_ol
-
-%nonassoc TEXT SPECIALCHAR EXCLAMATION LEFTSQUARE STAR DOUBLESTAR UNDERSCORE DOUBLEUNDERSCORE BACKTICK TRIPLEBACKTICK error
-%nonassoc STARX
-*/
-
-
-    /* bind union part with terminal symbol */
 %token <text> BLANKLINE
 %token <text> LINEBREAK           
 
@@ -434,32 +403,27 @@ static void show_rule( char *str ){
 
 %token <text> LF_Q
 
-%token <text> SPECIALCHAR         
+%token <text> ESCAPEDCHAR         
 %token <text> LESSTHAN            
 %token <text> LARGERTHAN          
 %token <text> TRIPLEBACKTICK      
 %token <text> BACKTICK            
 %token <text> VERTICAL            
+%token <text> TRIPLEASTERISK      
 %token <text> DOUBLEASTERISK      
-%token <text> DOUBLETILDE      
 %token <text> ASTERISK            
-%token <text> PLUS                
-%token <text> MINUS               
-%token <text> DIGIT               
-%token <text> DOT                 
-
-%token <text> SPACE               
-%token <text> LEFTSQUARE          
-%token <text> RIGHTSQUARE         
-%token <text> LEFTBRACKET         
-%token <text> RIGHTBRACKET        
-%token <text> EXCLAMATION         
+%token <text> TRIPLEUNDERSCORE    
 %token <text> DOUBLEUNDERSCORE    
 %token <text> UNDERSCORE          
-%token <text> LEFTPARENTHESIS     
-%token <text> RIGHTPARENTHESIS    
-%token <text> TEXT                
 
+%token <text> EXCLAMATION_LEFTSQUARE 
+%token <text> LEFTSQUARE          
+%token <text> RIGHTSQUARE_LEFTBRACKET 
+%token <text> RIGHTBRACKET        
+%token <text> DOUBLETILDE      
+%token <text> RIGHTSQUARE         
+%token <text> SPACE
+%token <text> TEXT                
 
     /* bind union part with nonterminal symbol */
 %type <text> markdownfile
@@ -494,6 +458,8 @@ static void show_rule( char *str ){
 %type <text> unorderlist_2
 %type <text> inline_elements
 %type <text> inline_element
+%type <text> uri_text
+%type <text> uri_text_item
 %type <text> inline_text
 %type <text> inline_text_item
 %type <text> inline_code_text
@@ -529,9 +495,11 @@ markdownfile:
 
             show_rule("markdownfile: blocks");
 
-            fprintf(stdout, "==================================\n");
-            fprintf(stdout, "%s", $1);
-            fprintf(stdout, "==================================\n");
+            if( !_ISDEBUGPARSER ){
+                fprintf(stdout, "==================================\n");
+                fprintf(stdout, "%s", $1);
+                fprintf(stdout, "==================================\n");
+            }
 
             /**
             parse_doc();
@@ -640,31 +608,25 @@ header:
 
 
 image: 
-    EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
-            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
-            $$ = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", $6, $3, "");
+    EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET {
+            show_rule("image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET");
+            $$ = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", $4, $2, "");
         }
-    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
-            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
-            $$ = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", $6, $3, $8);
+    | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET {
+            show_rule("image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET");
+            $$ = str_format("<img src=\"%s\" alt=\"%s\" title=\"%s\">", $4, $2, $6);
         }
-    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error {
-            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
+    | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error {
+            show_rule("image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error");
         }
-    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error {
-            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
+    | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error {
+            show_rule("image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error");
         }
-    | EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error {
-            show_rule("image: EXCLAMATION LEFTSQUARE inline_text RIGHTSQUARE error");
+    | EXCLAMATION_LEFTSQUARE inline_text error {
+            show_rule("image: EXCLAMATION_LEFTSQUARE inline_text error");
         }
-    | EXCLAMATION LEFTSQUARE inline_text error {
-            show_rule("image: EXCLAMATION LEFTSQUARE inline_text error");
-        }
-    | EXCLAMATION LEFTSQUARE error {
-            show_rule("image: EXCLAMATION LEFTSQUARE error");
-        }
-    | EXCLAMATION error {
-            show_rule("image: EXCLAMATION error");
+    | EXCLAMATION_LEFTSQUARE error {
+            show_rule("image: EXCLAMATION_LEFTSQUARE error");
         }
     ;
 
@@ -686,28 +648,64 @@ inline_code_text_item:
             show_rule("inline_code_text_item: inline_text_item");
             $$ = $1;
         }
+    | LESSTHAN {
+            show_rule("inline_code_text_item: LESSTHAN");
+            $$ = $1;
+        }           
+    | LARGERTHAN {
+            show_rule("inline_code_text_item: LARGERTHAN");
+            $$ = $1;
+        }           
+    | TRIPLEASTERISK {
+            show_rule("inline_code_text_item: TRIPLEASTERISK");
+            $$ = $1;
+        }           
+    | TRIPLEUNDERSCORE {
+            show_rule("inline_code_text_item: TRIPLEUNDERSCORE");
+            $$ = $1;
+        }           
+    | DOUBLEASTERISK {
+            show_rule("inline_code_text_item: DOUBLEASTERISK");
+            $$ = $1;
+        }           
+    | DOUBLEUNDERSCORE {
+            show_rule("inline_code_text_item: DOUBLEUNDERSCORE");
+            $$ = $1;
+        }           
     | ASTERISK {
             show_rule("inline_code_text_item: ASTERISK");
             $$ = $1;
         }
-    | DOUBLEASTERISK {
-            show_rule("inline_code_text_item: DOUBLEASTERISK");
+    | UNDERSCORE {
+            show_rule("inline_code_text_item: UNDERSCORE");
             $$ = $1;
-        }
+        }           
     | DOUBLETILDE {
             show_rule("inline_code_text_item: DOUBLETILDE");
             $$ = $1;
         }
-    | EXCLAMATION {
-            show_rule("inline_text_item: EXCLAMATION");
+    | EXCLAMATION_LEFTSQUARE {
+            show_rule("inline_code_text_item: EXCLAMATION_LEFTSQUARE");
             $$ = $1;
         }           
     | LEFTSQUARE {
-            show_rule("inline_text_item: LEFTSQUARE");
+            show_rule("inline_code_text_item: LEFTSQUARE");
+            $$ = $1;
+        }           
+    | RIGHTSQUARE_LEFTBRACKET {
+            show_rule("inline_code_text_item: RIGHTSQUARE_LEFTBRACKET");
+            $$ = $1;
+        }           
+    | RIGHTBRACKET {
+            show_rule("inline_code_text_item: RIGHTBRACKET");
             $$ = $1;
         }           
     | VERTICAL {
             show_rule("inline_code_text_item: VERTICAL");
+            $$ = $1;
+        }           
+    | TRIPLEBACKTICK {
+            show_rule("inline_code_text_item: TRIPLEBACKTICK");
             $$ = $1;
         }           
     ;
@@ -769,68 +767,36 @@ inline_text:
 
 
 inline_text_item:
-    LESSTHAN {
-            show_rule("inline_text_item: LESSTHAN");
+    uri_text_item {
+            show_rule("inline_text_item: uri_text_item");
             $$ = $1;
         }           
-    | LARGERTHAN {
-            show_rule("inline_text_item: LARGERTHAN");
-            $$ = $1;
-        }           
-    | TRIPLEBACKTICK {
-            show_rule("inline_text_item: TRIPLEBACKTICK");
-            $$ = $1;
-        }           
-    | PLUS {
-            show_rule("inline_text_item: PLUS");
-            $$ = $1;
-        }           
-    | MINUS {
-            show_rule("inline_text_item: MINUS");
-            $$ = $1;
-        }           
-    | DIGIT  {
-            show_rule("inline_text_item: DIGIT");
-            $$ = $1;
-        }           
-    | DOT  {
-            show_rule("inline_text_item: DOT");
+    | ESCAPEDCHAR {
+            show_rule("inline_text_item: ESCAPEDCHAR");
             $$ = $1;
         }           
     | SPACE {
             show_rule("inline_text_item: SPACE");
             $$ = $1;
         }           
-    | RIGHTSQUARE {
-            show_rule("inline_text_item: RIGHTSQUARE");
+    ;          
+
+
+uri_text:
+    uri_text uri_text_item {
+            show_rule("uri_text: uri_text uri_text_item");
+            $$ = str_concat($1, $2);
+        }
+    | uri_text_item {
+            show_rule("uri_text: uri_text_item");
             $$ = $1;
-        }           
-    | LEFTBRACKET {
-            show_rule("inline_text_item: LEFTBRACKET");
-            $$ = $1;
-        }           
-    | RIGHTBRACKET {
-            show_rule("inline_text_item: RIGHTBRACKET");
-            $$ = $1;
-        }           
-    | UNDERSCORE {
-            show_rule("inline_text_item: UNDERSCORE");
-            $$ = $1;
-        }           
-    | DOUBLEUNDERSCORE {
-            show_rule("inline_text_item: DOUBLEUNDERSCORE");
-            $$ = $1;
-        }           
-    | LEFTPARENTHESIS {
-            show_rule("inline_text_item: LEFTPARENTHESIS");
-            $$ = $1;
-        }           
-    | RIGHTPARENTHESIS {
-            show_rule("inline_text_item: RIGHTPARENTHESIS");
-            $$ = $1;
-        }           
-    | TEXT {
-            show_rule("inline_text_item: TEXT");
+        }
+    ;
+
+
+uri_text_item:
+    TEXT {
+            show_rule("uri_text_item: TEXT");
             $$ = $1;
         }           
     ;          
@@ -852,15 +818,25 @@ inlinecode:
 
 
 italic: 
-    ASTERISK inline_text ASTERISK %prec ITALICSTART {
-            show_rule("italic: ASTERISK inline_text ASTERISK %prec ITALICSTART");
+    ASTERISK inline_text ASTERISK {
+            show_rule("italic: ASTERISK inline_text ASTERISK");
             $$ = str_format("<i>%s</i>", $2);
         }
-    | ASTERISK inline_text error %prec ITALICSTART {
-            show_rule("italic: ASTERISK inline_text error %prec ITALICSTART");
+    | ASTERISK inline_text error {
+            show_rule("italic: ASTERISK inline_text error");
         }
-    | ASTERISK error %prec ITALICSTART {
-            show_rule("italic: ASTERISK error %prec ITALICSTART");
+    | ASTERISK error {
+            show_rule("italic: ASTERISK error");
+        }
+    | UNDERSCORE inline_text UNDERSCORE {
+            show_rule("italic: UNDERSCORE inline_text UNDERSCORE");
+            $$ = str_format("<i>%s</i>", $2);
+        }
+    | UNDERSCORE inline_text error {
+            show_rule("italic: UNDERSCORE inline_text error");
+        }
+    | UNDERSCORE error {
+            show_rule("italic: UNDERSCORE error");
         }
     ;
 
@@ -1045,22 +1021,19 @@ lines:
 
 
 link: 
-    LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET {
-            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
-            $$ = str_format("<a href=\"%s\">%s</a>", $5, $2);
+    LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET");
+            $$ = str_format("<a href=\"%s\">%s</a>", $4, $2);
         }
-    | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET {
-            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text RIGHTBRACKET");
-            $$ = str_format("<a href=\"%s\" title=\"%s\">%s</a>", $5, $7, $2);
+    | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET");
+            $$ = str_format("<a href=\"%s\" title=\"%s\">%s</a>", $4, $6, $2);
         }
-    | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error {
-            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text error");
+    | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error");
         }
-    | LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET error {
-            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE LEFTBRACKET inline_text SPACE inline_text RIGHTBRACKET");
-        }
-    | LEFTSQUARE inline_text RIGHTSQUARE error {
-            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE error");
+    | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error {
+            show_rule("link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error");
         }
     | LEFTSQUARE inline_text error {
             show_rule("link: LEFTSQUARE inline_text error");
@@ -1190,6 +1163,16 @@ strong:
     | DOUBLEASTERISK error {
             show_rule("strong: DOUBLEASTERISK error");
         }
+    | DOUBLEUNDERSCORE inline_text DOUBLEUNDERSCORE {
+            show_rule("strong: DOUBLEUNDERSCORE inline_text DOUBLEUNDERSCORE");
+            $$ = str_format("<strong>%s</strong>", $2);
+        }
+    | DOUBLEUNDERSCORE inline_text error {
+            show_rule("strong: DOUBLEUNDERSCORE inline_text error");
+        }
+    | DOUBLEUNDERSCORE error {
+            show_rule("strong: DOUBLEUNDERSCORE error");
+        }
     ;
 
 
@@ -1255,7 +1238,7 @@ unorderlist_2:
             $$ = str_format("%s%s</li>", str_replace_right($1,"</li>", ""), $3);
         }
     | unorderlist_2 lf_indents4_codeblock {
-            show_rule("unorderlist_2: unorderlist_2 LF_INDENT4 code_text LINEBREAK");
+            show_rule("unorderlist_2: unorderlist_2 lf_indents4_codeblock");
             $$ = str_format("%s<pre><code>%s</code></pre></li>", str_replace_right($1, "</li>", ""), $2);
         }
     ;
