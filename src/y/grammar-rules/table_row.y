@@ -1,11 +1,11 @@
 table_row:
-    line VERTICAL {
-            show_rule("table_row: line VERTICAL");
-            $$ = str_format("<td>%s</td>", $1);
+    LF_VERTICAL table_cell {
+            show_rule("table_row: LF_VERTICAL table_cell");
+            $$ = $2;
         }
-    | table_row line VERTICAL {
-            show_rule("table_row: table_row line VERTICAL");
-            $$ = str_format("%s<td>%s</td>", $1, $2);
+    | table_row table_cell {
+            show_rule("table_row: table_row table_cell");
+            $$ = str_format("%s%s", $1, $2);
         }
     ;
 

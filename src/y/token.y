@@ -62,6 +62,9 @@
 %token <text> RIGHTBRACKET        
 %token <text> DOUBLETILDE      
 %token <text> RIGHTSQUARE         
+%token <text> MINUSSERIES_LEFT 
+%token <text> MINUSSERIES_RIGHT 
+%token <text> MINUSSERIES_CENTER 
 %token <text> SPACE
 %token <text> TEXT                
 
@@ -114,10 +117,15 @@
 %type <text> inlinecode
 
 %type <text> table
-%type <text> table_header
-%type <text> table_header_separator
+%type <text> table_head
+%type <text> table_head_separator
+%type <text> table_body
 %type <text> table_rows
 %type <text> table_row
+%type <text> table_cell
+%type <text> table_separator_row
+%type <text> table_separator_cell
+%type <text> table_separator_item
 
 %nonassoc ITALICSTART
 %nonassoc LISTSTART

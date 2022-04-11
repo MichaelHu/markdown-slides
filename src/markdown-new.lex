@@ -10,9 +10,7 @@
 #undef _ONLYLEX
 #undef _ISDEBUGLEX
 
-/*
 #define _ONLYLEX
-*/
 
 
 #ifdef _ONLYLEX
@@ -107,6 +105,8 @@ quote \>[ ]
 header #{1,6}
 unorderlist [*+-][ ]
 vertical \|
+minus_series \-{3,}
+plus_series \+{3,}
 
 
 %%
@@ -164,6 +164,9 @@ _                                       { SETYYLVAL(yytext); P("UNDERSCORE"); RE
 \)                                      { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
 [ \t]                                   { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 ~~                                      { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
+:{minus_series}                         { SETYYLVAL(yytext); P("MINUSSERIES_LEFT"); RETURN(MINUSSERIES_LEFT); }
+{minus_series}:                         { SETYYLVAL(yytext); P("MINUSSERIES_RIGHT"); RETURN(MINUSSERIES_RIGHT); }
+:{minus_series}:                        { SETYYLVAL(yytext); P("MINUSSERIES_CENTER"); RETURN(MINUSSERIES_CENTER); }
 
 .                                       { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 

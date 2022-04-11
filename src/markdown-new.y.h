@@ -83,10 +83,13 @@
      RIGHTBRACKET = 299,
      DOUBLETILDE = 300,
      RIGHTSQUARE = 301,
-     SPACE = 302,
-     TEXT = 303,
-     ITALICSTART = 304,
-     LISTSTART = 305
+     MINUSSERIES_LEFT = 302,
+     MINUSSERIES_RIGHT = 303,
+     MINUSSERIES_CENTER = 304,
+     SPACE = 305,
+     TEXT = 306,
+     ITALICSTART = 307,
+     LISTSTART = 308
    };
 #endif
 /* Tokens.  */
@@ -134,23 +137,26 @@
 #define RIGHTBRACKET 299
 #define DOUBLETILDE 300
 #define RIGHTSQUARE 301
-#define SPACE 302
-#define TEXT 303
-#define ITALICSTART 304
-#define LISTSTART 305
+#define MINUSSERIES_LEFT 302
+#define MINUSSERIES_RIGHT 303
+#define MINUSSERIES_CENTER 304
+#define SPACE 305
+#define TEXT 306
+#define ITALICSTART 307
+#define LISTSTART 308
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 361 "markdown-new.y"
+#line 373 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 154 "markdown-new.y.h"
+#line 160 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

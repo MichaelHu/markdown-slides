@@ -1,10 +1,10 @@
 table:
-    table_header table_rows {
-            show_rule("table: table_header table_rows");
-            $$ = str_concat($1, $2);
+    table_head table_head_separator table_body {
+            show_rule("table: table_head table_head_separator table_body");
+            $$ = str_format("%s%s", $1, $3);
         }
-    | table_rows {
-            show_rule("table: table_rows");
+    | table_body {
+            show_rule("table: table_body");
             $$ = $1;
         }
     ;

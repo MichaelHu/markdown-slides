@@ -39,18 +39,30 @@ static char* grammar_rules[] = {
 
     "block: table", "1",
 
-        "table: table_header table_rows", "2",
-        "table: table_rows", "2",
+        "table: table_head table_head_separator table_body", "2",
+        "table: table_body", "2",
 
-            "table_header: LF_VERTICAL table_row LINEBREAK table_header_separator", "3",
+            "table_head: LF_VERTICAL table_row LINEBREAK", "3",
 
-            "table_header_separator: BLANKLINE", "3",
+            "table_head_separator: table_separator_row LINEBREAK", "3",
 
-            "table_rows: LF_VERTICAL table_row LINEBREAK", "3",
-            "table_rows: table_rows LF_VERTICAL table_row LINEBREAK", "3",
+            "table_body: table_rows", "3",
 
-                "table_row: line VERTICAL", "4",
-                "table_row: table_row line VERTICAL", "4",
+            "table_rows: table_row LINEBREAK", "3",
+            "table_rows: table_rows table_row LINEBREAK", "3",
+
+                "table_separator_row: LF_VERTICAL table_separator_cell", "4",
+                "table_separator_row: table_separator_row table_separator_cell", "4",
+
+                "table_row: LF_VERTICAL table_cell", "4",
+                "table_row: table_row table_ceil", "4",
+
+                    "table_separator_cell: table_separator_item VERTICAL", "5",
+                    "table_cell: line VERTICAL", "5",
+
+                        "table_separator_item: MINUSSERIES_LEFT", "6",
+                        "table_separator_item: MINUSSERIES_RIGHT", "6",
+                        "table_separator_item: MINUSSERIES_CENTER", "6",
 
     "block: quote_block", "1",
 

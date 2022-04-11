@@ -88,10 +88,15 @@ for i in `cat <<EOF
     unorderlist_1.y
     unorderlist_2.y
     table.y
-    table_header.y
-    table_header_separator.y
+    table_body.y
+    table_cell.y
+    table_head.y
+    table_head_separator.y
     table_row.y
     table_rows.y
+    table_separator_cell.y
+    table_separator_item.y
+    table_separator_row.y
 EOF
 `; do 
     cat "./y/grammar-rules/$i" >> markdown-new.y;
