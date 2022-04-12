@@ -90,11 +90,13 @@ for i in `cat <<EOF
     table.y
     table_body.y
     table_cell.y
+    table_cells.y
     table_head.y
     table_head_separator.y
     table_row.y
     table_rows.y
     table_separator_cell.y
+    table_separator_cells.y
     table_separator_item.y
     table_separator_row.y
 EOF

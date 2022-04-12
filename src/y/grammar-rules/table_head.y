@@ -1,7 +1,7 @@
 table_head:
-    LF_VERTICAL table_row LINEBREAK table_head_separator {
-            show_rule("table_head: LF_VERTICAL table_row LINEBREAK table_head_separator");
-            $$ = $2;
+    table_row table_head_separator {
+            show_rule("table_head: table_row table_head_separator");
+            $$ = str_format("<thead>%s</thead>", $1);
         }
     ;
 

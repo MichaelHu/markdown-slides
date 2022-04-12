@@ -15,7 +15,7 @@
 #include "node.h"
 #include "nodetree.h"
 
-#define _ISDEBUGPARSER 1
+#define _ISDEBUGPARSER 0
 #define _SHOW_TREE_AFTER_LEVEL_FIX 0
 #define _SHOW_TREE_AFTER_COMPLEMENT_BLOCK_NODES 0
 #define _SHOW_TREE_AFTER_REARRANGE_BLOCK_NODES 0
@@ -129,30 +129,39 @@ static char* grammar_rules[] = {
 
     "block: table", "1",
 
-        "table: table_head table_head_separator table_body", "2",
+        "table: table_head table_body", "2",
         "table: table_body", "2",
 
-            "table_head: LF_VERTICAL table_row LINEBREAK", "3",
+            "table_head: table_row table_head_separator", "3",
 
-            "table_head_separator: table_separator_row LINEBREAK", "3",
+            "table_head_separator: table_separator_row", "3",
 
             "table_body: table_rows", "3",
 
-            "table_rows: table_row LINEBREAK", "3",
-            "table_rows: table_rows table_row LINEBREAK", "3",
+            "table_rows: table_row", "3",
+            "table_rows: table_rows table_row", "3",
 
-                "table_separator_row: LF_VERTICAL table_separator_cell", "4",
-                "table_separator_row: table_separator_row table_separator_cell", "4",
+                /* sep row: LF_VERTICAL_HEAD_SEP ... LINEBREAK */
+                "table_separator_row: LF_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK", "4",
 
-                "table_row: LF_VERTICAL table_cell", "4",
-                "table_row: table_row table_ceil", "4",
+                /* row: LF_VERTICAL ... LINEBREAK */
+                "table_row: LF_VERTICAL table_cells LINEBREAK", "4",
 
-                    "table_separator_cell: table_separator_item VERTICAL", "5",
+                "table_cells: table_cell", "4",
+                "table_cells: table_cells table_cell", "4",
+
+                "table_separator_cells: table_separator_cell", "4",
+                "table_separator_cells: table_separator_cells table_separator_cell", "4",
+
+                    /* cell: item VERTICAL */
+                    "table_separator_cell: table_separator_item", "5",
+
                     "table_cell: line VERTICAL", "5",
 
-                        "table_separator_item: MINUSSERIES_LEFT", "6",
-                        "table_separator_item: MINUSSERIES_RIGHT", "6",
-                        "table_separator_item: MINUSSERIES_CENTER", "6",
+                        "table_separator_item: MINUSSERIES_SEMI_VERTICAL", "6",
+                        "table_separator_item: SEMI_MINUSSERIES_VERTICAL", "6",
+                        "table_separator_item: SEMI_MINUSSERIES_SEMI_VERTICAL", "6",
+                        "table_separator_item: MINUSSERIES_VERTICAL", "6",
 
     "block: quote_block", "1",
 
@@ -386,6 +395,7 @@ static void show_rule( char *str ){
 %token <text> UL                
 
 %token <text> LF_VERTICAL                
+%token <text> LF_VERTICAL_HEAD_SEP 
 
 %token <text> LF_INDENT_UL                
 %token <text> LF_INDENT2_UL                
@@ -434,9 +444,10 @@ static void show_rule( char *str ){
 %token <text> RIGHTBRACKET        
 %token <text> DOUBLETILDE      
 %token <text> RIGHTSQUARE         
-%token <text> MINUSSERIES_LEFT 
-%token <text> MINUSSERIES_RIGHT 
-%token <text> MINUSSERIES_CENTER 
+%token <text> SEMI_MINUSSERIES_VERTICAL 
+%token <text> MINUSSERIES_SEMI_VERTICAL 
+%token <text> SEMI_MINUSSERIES_SEMI_VERTICAL 
+%token <text> MINUSSERIES_VERTICAL 
 %token <text> SPACE
 %token <text> TEXT                
 
@@ -494,8 +505,10 @@ static void show_rule( char *str ){
 %type <text> table_body
 %type <text> table_rows
 %type <text> table_row
+%type <text> table_cells
 %type <text> table_cell
 %type <text> table_separator_row
+%type <text> table_separator_cells
 %type <text> table_separator_cell
 %type <text> table_separator_item
 
@@ -1265,9 +1278,9 @@ unorderlist_2:
 
 
 table:
-    table_head table_head_separator table_body {
-            show_rule("table: table_head table_head_separator table_body");
-            $$ = str_format("%s%s", $1, $3);
+    table_head table_body {
+            show_rule("table: table_head table_body");
+            $$ = str_format("%s%s", $1, $2);
         }
     | table_body {
             show_rule("table: table_body");
@@ -1278,7 +1291,7 @@ table:
 table_body:
     table_rows {
             show_rule("table_body: table_rows");
-            $$ = $1;
+            $$ = str_format("<tbody>%s</tbody>", $1);
         }
     ;
 
@@ -1290,71 +1303,89 @@ table_cell:
         }
     ;
 
+table_cells:
+    table_cell {
+            show_rule("table_cells: table_cell");
+            $$ = str_format("%s", $1);
+        }
+    | table_cells table_cell {
+            show_rule("table_cells: table_cells table_cell");
+            $$ = str_format("%s%s", $1, $2);
+        }
+    ;
+
 table_head:
-    LF_VERTICAL table_row LINEBREAK table_head_separator {
-            show_rule("table_head: LF_VERTICAL table_row LINEBREAK table_head_separator");
-            $$ = $2;
+    table_row table_head_separator {
+            show_rule("table_head: table_row table_head_separator");
+            $$ = str_format("<thead>%s</thead>", $1);
         }
     ;
 
 
 table_head_separator:
-    table_separator_row LINEBREAK {
-            show_rule("table_head_separator: table_separator_row LINEBREAK");
+    table_separator_row {
+            show_rule("table_head_separator: table_separator_row");
             $$ = "";
         }
     ;
 table_row:
-    LF_VERTICAL table_cell {
-            show_rule("table_row: LF_VERTICAL table_cell");
-            $$ = $2;
-        }
-    | table_row table_cell {
-            show_rule("table_row: table_row table_cell");
-            $$ = str_format("%s%s", $1, $2);
-        }
-    ;
-
-table_rows:
-    LF_VERTICAL table_row LINEBREAK {
-            show_rule("table_rows: LF_VERTICAL table_row LINEBREAK");
+    LF_VERTICAL table_cells LINEBREAK {
+            show_rule("table_row: LF_VERTICAL table_cells LINEBREAK");
             $$ = str_format("<tr>%s</tr>", $2);
-        }
-    | table_rows LF_VERTICAL table_row LINEBREAK {
-            show_rule("table_rows: table_rows LF_VERTICAL table_row LINEBREAK");
-            $$ = str_format("%s<tr>%s</tr>", $1, $3);
+    }
+    ;
+table_rows:
+    table_row {
+            show_rule("table_rows: table_row");
+            $$ = str_format("%s", $1);
+    }
+    | table_rows table_row {
+            show_rule("table_rows: table_rows table_row");
+            $$ = str_format("%s%s", $1, $2);
     }
     ;
 table_separator_cell:
-    table_separator_item VERTICAL {
-            show_rule("table_separator_cell: table_separator_item VERTICAL");
+    table_separator_item {
+            show_rule("table_separator_cell: table_separator_item");
             $$ = str_format("<td>%s</td>", $1);
         }
     ;
 
+table_separator_cells:
+    table_separator_cell {
+            show_rule("table_separator_cells: table_separator_cell");
+            $$ = str_format("%s", $1);
+        }
+    | table_separator_cells table_separator_cell {
+            show_rule("table_separator_cells: table_separator_cells table_separator_cell");
+            $$ = str_format("%s%s", $1, $2);
+        }
+    ;
+
+
 table_separator_item:
-    MINUSSERIES_LEFT {
-            show_rule("table_separator_item: MINUSSERIES_LEFT");
+    MINUSSERIES_SEMI_VERTICAL {
+            show_rule("table_separator_item: MINUSSERIES_SEMI_VERTICAL");
             $$ = $1;
         }
-    | MINUSSERIES_RIGHT {
-            show_rule("table_separator_item: MINUSSERIES_RIGHT");
+    | SEMI_MINUSSERIES_VERTICAL {
+            show_rule("table_separator_item: SEMI_MINUSSERIES_VERTICAL");
             $$ = $1;
         }
-    | MINUSSERIES_CENTER {
-            show_rule("table_separator_item: MINUSSERIES_CENTER");
+    | SEMI_MINUSSERIES_SEMI_VERTICAL {
+            show_rule("table_separator_item: SEMI_MINUSSERIES_SEMI_VERTICAL");
+            $$ = $1;
+        }
+    | MINUSSERIES_VERTICAL {
+            show_rule("table_separator_item: MINUSSERIES_VERTICAL");
             $$ = $1;
         }
     ;
 
 table_separator_row:
-    LF_VERTICAL table_separator_cell {
-            show_rule("table_separator_row: LF_VERTICAL table_separator_cell");
-            $$ = $2;
-        }
-    | table_separator_row table_separator_cell {
-            show_rule("table_separator_row: table_separator_row table_separator_cell");
-            $$ = str_format("%s%s", $1, $2);
+    LF_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK {
+            show_rule("table_separator_row: LF_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK");
+            $$ = str_format("<tr>%s</tr>", $2);
         }
     ;
 

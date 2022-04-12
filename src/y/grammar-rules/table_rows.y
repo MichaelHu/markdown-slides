@@ -1,10 +1,10 @@
 table_rows:
-    LF_VERTICAL table_row LINEBREAK {
-            show_rule("table_rows: LF_VERTICAL table_row LINEBREAK");
-            $$ = str_format("<tr>%s</tr>", $2);
-        }
-    | table_rows LF_VERTICAL table_row LINEBREAK {
-            show_rule("table_rows: table_rows LF_VERTICAL table_row LINEBREAK");
-            $$ = str_format("%s<tr>%s</tr>", $1, $3);
+    table_row {
+            show_rule("table_rows: table_row");
+            $$ = str_format("%s", $1);
+    }
+    | table_rows table_row {
+            show_rule("table_rows: table_rows table_row");
+            $$ = str_format("%s%s", $1, $2);
     }
     ;

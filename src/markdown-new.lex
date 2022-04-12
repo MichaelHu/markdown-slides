@@ -10,7 +10,9 @@
 #undef _ONLYLEX
 #undef _ISDEBUGLEX
 
+/*
 #define _ONLYLEX
+*/
 
 
 #ifdef _ONLYLEX
@@ -118,6 +120,7 @@ plus_series \+{3,}
 
 ^{header}                               { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
 ^{unorderlist}                          { SETYYLVAL(yytext); P("LF_UL"); RETURN(LF_UL); }
+^{vertical}/:?{minus_series}:?          { SETYYLVAL(yytext); P("LF_VERTICAL_HEAD_SEP"); RETURN(LF_VERTICAL_HEAD_SEP); }
 ^{vertical}                             { SETYYLVAL(yytext); P("LF_VERTICAL"); RETURN(LF_VERTICAL); }
 
 ^{indent}{unorderlist}                  { SETYYLVAL(yytext); P("LF_INDENT_UL"); RETURN(LF_INDENT_UL); }
@@ -164,9 +167,10 @@ _                                       { SETYYLVAL(yytext); P("UNDERSCORE"); RE
 \)                                      { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
 [ \t]                                   { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 ~~                                      { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
-:{minus_series}                         { SETYYLVAL(yytext); P("MINUSSERIES_LEFT"); RETURN(MINUSSERIES_LEFT); }
-{minus_series}:                         { SETYYLVAL(yytext); P("MINUSSERIES_RIGHT"); RETURN(MINUSSERIES_RIGHT); }
-:{minus_series}:                        { SETYYLVAL(yytext); P("MINUSSERIES_CENTER"); RETURN(MINUSSERIES_CENTER); }
+:{minus_series}\|                       { SETYYLVAL(yytext); P("SEMI_MINUSSERIES_VERTICAL"); RETURN(SEMI_MINUSSERIES_VERTICAL); }
+{minus_series}:\|                       { SETYYLVAL(yytext); P("MINUSSERIES_SEMI_VERTICAL"); RETURN(MINUSSERIES_SEMI_VERTICAL); }
+:{minus_series}:\|                      { SETYYLVAL(yytext); P("SEMI_MINUSSERIES_SEMI_VERTICAL"); RETURN(SEMI_MINUSSERIES_SEMI_VERTICAL); }
+{minus_series}\|                        { SETYYLVAL(yytext); P("MINUSSERIES_VERTICAL"); RETURN(MINUSSERIES_VERTICAL); }
 
 .                                       { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 

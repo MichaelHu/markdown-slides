@@ -39,30 +39,39 @@ static char* grammar_rules[] = {
 
     "block: table", "1",
 
-        "table: table_head table_head_separator table_body", "2",
+        "table: table_head table_body", "2",
         "table: table_body", "2",
 
-            "table_head: LF_VERTICAL table_row LINEBREAK", "3",
+            "table_head: table_row table_head_separator", "3",
 
-            "table_head_separator: table_separator_row LINEBREAK", "3",
+            "table_head_separator: table_separator_row", "3",
 
             "table_body: table_rows", "3",
 
-            "table_rows: table_row LINEBREAK", "3",
-            "table_rows: table_rows table_row LINEBREAK", "3",
+            "table_rows: table_row", "3",
+            "table_rows: table_rows table_row", "3",
 
-                "table_separator_row: LF_VERTICAL table_separator_cell", "4",
-                "table_separator_row: table_separator_row table_separator_cell", "4",
+                /* sep row: LF_VERTICAL_HEAD_SEP ... LINEBREAK */
+                "table_separator_row: LF_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK", "4",
 
-                "table_row: LF_VERTICAL table_cell", "4",
-                "table_row: table_row table_ceil", "4",
+                /* row: LF_VERTICAL ... LINEBREAK */
+                "table_row: LF_VERTICAL table_cells LINEBREAK", "4",
 
-                    "table_separator_cell: table_separator_item VERTICAL", "5",
+                "table_cells: table_cell", "4",
+                "table_cells: table_cells table_cell", "4",
+
+                "table_separator_cells: table_separator_cell", "4",
+                "table_separator_cells: table_separator_cells table_separator_cell", "4",
+
+                    /* cell: item VERTICAL */
+                    "table_separator_cell: table_separator_item", "5",
+
                     "table_cell: line VERTICAL", "5",
 
-                        "table_separator_item: MINUSSERIES_LEFT", "6",
-                        "table_separator_item: MINUSSERIES_RIGHT", "6",
-                        "table_separator_item: MINUSSERIES_CENTER", "6",
+                        "table_separator_item: MINUSSERIES_SEMI_VERTICAL", "6",
+                        "table_separator_item: SEMI_MINUSSERIES_VERTICAL", "6",
+                        "table_separator_item: SEMI_MINUSSERIES_SEMI_VERTICAL", "6",
+                        "table_separator_item: MINUSSERIES_VERTICAL", "6",
 
     "block: quote_block", "1",
 

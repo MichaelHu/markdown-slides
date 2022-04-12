@@ -1,11 +1,7 @@
 table_separator_row:
-    LF_VERTICAL table_separator_cell {
-            show_rule("table_separator_row: LF_VERTICAL table_separator_cell");
-            $$ = $2;
-        }
-    | table_separator_row table_separator_cell {
-            show_rule("table_separator_row: table_separator_row table_separator_cell");
-            $$ = str_format("%s%s", $1, $2);
+    LF_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK {
+            show_rule("table_separator_row: LF_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK");
+            $$ = str_format("<tr>%s</tr>", $2);
         }
     ;
 

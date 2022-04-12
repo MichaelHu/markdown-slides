@@ -14,6 +14,7 @@
 %token <text> UL                
 
 %token <text> LF_VERTICAL                
+%token <text> LF_VERTICAL_HEAD_SEP 
 
 %token <text> LF_INDENT_UL                
 %token <text> LF_INDENT2_UL                
@@ -62,9 +63,10 @@
 %token <text> RIGHTBRACKET        
 %token <text> DOUBLETILDE      
 %token <text> RIGHTSQUARE         
-%token <text> MINUSSERIES_LEFT 
-%token <text> MINUSSERIES_RIGHT 
-%token <text> MINUSSERIES_CENTER 
+%token <text> SEMI_MINUSSERIES_VERTICAL 
+%token <text> MINUSSERIES_SEMI_VERTICAL 
+%token <text> SEMI_MINUSSERIES_SEMI_VERTICAL 
+%token <text> MINUSSERIES_VERTICAL 
 %token <text> SPACE
 %token <text> TEXT                
 
@@ -122,8 +124,10 @@
 %type <text> table_body
 %type <text> table_rows
 %type <text> table_row
+%type <text> table_cells
 %type <text> table_cell
 %type <text> table_separator_row
+%type <text> table_separator_cells
 %type <text> table_separator_cell
 %type <text> table_separator_item
 
