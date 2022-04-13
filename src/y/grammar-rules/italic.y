@@ -1,7 +1,8 @@
 italic: 
     ASTERISK inline_text ASTERISK {
             show_rule("italic: ASTERISK inline_text ASTERISK");
-            $$ = str_format("<i>%s</i>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<i%s>%s</i>", tag_info->attr, tag_info->content);
         }
     | ASTERISK inline_text error {
             show_rule("italic: ASTERISK inline_text error");
@@ -11,7 +12,8 @@ italic:
         }
     | UNDERSCORE inline_text UNDERSCORE {
             show_rule("italic: UNDERSCORE inline_text UNDERSCORE");
-            $$ = str_format("<i>%s</i>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<i%s>%s</i>", tag_info->attr, tag_info->content);
         }
     | UNDERSCORE inline_text error {
             show_rule("italic: UNDERSCORE inline_text error");

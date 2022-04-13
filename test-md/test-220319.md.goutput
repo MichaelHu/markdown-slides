@@ -27,8 +27,8 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -94,7 +94,7 @@
                         [> inline_element: link
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
+            [> lines: line
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -321,10 +321,10 @@
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
             [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -620,11 +620,14 @@
         [> unorderlist_0: unorderlist_0 LF_UL line
     [> block: unorderlist_0
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text inline_text_item
@@ -695,9 +698,12 @@
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+            [> lines: line
+        [> paragraph: lines
+    [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -737,13 +743,13 @@
                         [> inline_element: italic
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+            [> lines: line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -822,10 +828,7 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -880,17 +883,20 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
 [ line 24 ] syntax error, unexpected LINEBREAK, expecting ESCAPEDCHAR or SPACE or TEXT, 
 
 [4;31;42m                             [> italic: ASTERISK error [0m
                         [> inline_element: italic
                     [> inline_elements: inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+            [> lines: line
+        [> paragraph: lines
+    [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1006,7 +1012,7 @@
                         [> inline_element: image
                     [> inline_elements: inline_element
                 [> line: inline_elements
-            [> lines: lines line
+            [> lines: line
         [> paragraph: lines
     [> block: paragraph
 [> blocks: blocks block
@@ -1014,8 +1020,8 @@
 [> blocks: blocks block
 [4;31;42m     [> block: error [0m
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1115,20 +1121,17 @@
                         [> inline_element: link
                     [> inline_elements: inline_element
                 [> line: inline_elements
-            [> lines: lines line
-        [> paragraph: lines
-    [> block: paragraph
-[> blocks: blocks block
-[4;31;42m     [> block: error [0m
-[> blocks: blocks block
-[4;31;42m     [> block: error [0m
-[> blocks: blocks block
-                [> line: BLANKLINE
             [> lines: line
-                [> line: BLANKLINE
-            [> lines: lines line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+[4;31;42m     [> block: error [0m
+[> blocks: blocks block
+[4;31;42m     [> block: error [0m
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -1160,8 +1163,8 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1210,9 +1213,12 @@
                         [> inline_element: inline_text
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+            [> lines: line
+        [> paragraph: lines
+    [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1409,18 +1415,15 @@
                         [> inline_element: link
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements
-            [> lines: lines line
-        [> paragraph: lines
-    [> block: paragraph
-[> blocks: blocks block
-[4;31;42m     [> block: error [0m
-[> blocks: blocks block
-[4;31;42m     [> block: error [0m
-[> blocks: blocks block
-                [> line: BLANKLINE
             [> lines: line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+[4;31;42m     [> block: error [0m
+[> blocks: blocks block
+[4;31;42m     [> block: error [0m
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -1465,8 +1468,8 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1541,13 +1544,13 @@
                         [> inline_element: inlinecode
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+            [> lines: line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -1603,8 +1606,8 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1662,7 +1665,7 @@
                         [> inline_element: inlinecode
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
+            [> lines: line
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1923,8 +1926,11 @@
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
             [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+        [> paragraph: lines
+    [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item
@@ -1996,11 +2002,11 @@
                         [> inline_element: inline_text
                     [> inline_elements: inline_elements inline_element
                 [> line: inline_elements LINEBREAK
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
+            [> lines: line
         [> paragraph: lines
     [> block: paragraph
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -2062,10 +2068,7 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -4058,10 +4061,7 @@
         [> unorderlist_0: unorderlist_0 unorderlist_1
     [> block: unorderlist_0
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
             [> lf_indents: LF_INDENT
                                 [> uri_text_item: TEXT
@@ -4069,6 +4069,11 @@
                                 [> inline_code_text_item: inline_text_item
                                 [> code_text_item: inline_code_text_item
                             [> code_text: code_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                                [> inline_code_text_item: inline_text_item
+                                [> code_text_item: inline_code_text_item
+                            [> code_text: code_text code_text_item
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                                 [> inline_code_text_item: inline_text_item
@@ -4278,10 +4283,7 @@
         [> codeblock: codeblock lf_indents code_text LINEBREAK
     [> block: codeblock
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -4314,10 +4316,7 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
             [> lf_indents: LF_INDENT
                                 [> uri_text_item: TEXT
@@ -4778,10 +4777,7 @@
         [> codeblock: codeblock lf_indents code_text LINEBREAK
     [> block: codeblock
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
     [> quote_block: NULL
                                 [> inline_text_item: SPACE
@@ -6048,12 +6044,9 @@
     [> quote_block: quote_block quote_codeblock
     [> block: quote_block
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-                [> line: BLANKLINE
-            [> lines: lines line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> inline_text_item: SPACE
                             [> inline_text: inline_text_item
@@ -6134,10 +6127,7 @@
         [> table: table_body
     [> block: table
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6249,14 +6239,11 @@
         [> table: table_body
     [> block: table
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-                [> line: BLANKLINE
-            [> lines: lines line
-                [> line: BLANKLINE
-            [> lines: lines line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
+[> blocks: blocks block
+    [> block: BLANKLINE
+[> blocks: blocks block
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6432,10 +6419,7 @@
         [> table: table_head table_body
     [> block: table
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6658,9 +6642,6 @@
         [> table: table_head table_body
     [> block: table
 [> blocks: blocks block
-                [> line: BLANKLINE
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
+    [> block: BLANKLINE
 [> blocks: blocks block
 [> markdownfile: blocks

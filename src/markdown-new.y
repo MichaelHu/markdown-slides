@@ -103,6 +103,8 @@ static char* grammar_rules[] = {
 
         "paragraph: lines", "2",
 
+    "block: BLANKLINE", "1",
+
     "block: unorderlist_0", "1",
 
         "unorderlist_0: LF_UL line", "2",
@@ -242,7 +244,6 @@ static char* grammar_rules[] = {
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
-                "line: BLANKLINE", "4",
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",
@@ -560,6 +561,11 @@ block:
         }
     | paragraph {
             show_rule("block: paragraph");
+            tag_info = markdown_get_tag_info($1);
+            $$ = str_format("<p%s>%s</p>", tag_info->attr, tag_info->content);
+        }
+    | BLANKLINE {
+            show_rule("block: BLANKLINE");
             $$ = $1;
         }
     | unorderlist_0 {
@@ -568,7 +574,8 @@ block:
         }
     | codeblock {
             show_rule("block: codeblock");
-            $$ = str_format("<pre><code>%s</code></pre>", $1);
+            tag_info = markdown_get_tag_info($1);
+            $$ = str_format("<pre%s><code>%s</code></pre>", tag_info->attr, tag_info->content);
         }
     | table {
             show_rule("block: table");
@@ -853,7 +860,8 @@ inlinecode:
 italic: 
     ASTERISK inline_text ASTERISK {
             show_rule("italic: ASTERISK inline_text ASTERISK");
-            $$ = str_format("<i>%s</i>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<i%s>%s</i>", tag_info->attr, tag_info->content);
         }
     | ASTERISK inline_text error {
             show_rule("italic: ASTERISK inline_text error");
@@ -863,7 +871,8 @@ italic:
         }
     | UNDERSCORE inline_text UNDERSCORE {
             show_rule("italic: UNDERSCORE inline_text UNDERSCORE");
-            $$ = str_format("<i>%s</i>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<i%s>%s</i>", tag_info->attr, tag_info->content);
         }
     | UNDERSCORE inline_text error {
             show_rule("italic: UNDERSCORE inline_text error");
@@ -1033,10 +1042,6 @@ line:
     | inline_elements {
             show_rule("line: inline_elements");
             $$ = $1;
-        }
-    | BLANKLINE {
-            show_rule("line: BLANKLINE");
-            $$ = "\n";
         }
     ;
 
@@ -1212,11 +1217,13 @@ strong:
 unorderlist_0: 
     LF_UL line {
             show_rule("unorderlist_0: LF_UL line");
-            $$ = str_format("<li>%s</li>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<li%s>%s</li>", tag_info->attr, tag_info->content);
         }
     | unorderlist_0 LF_UL line {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
-            $$ = str_format("%s<li>%s</li>", $1, $3);
+            tag_info = markdown_get_tag_info($3);
+            $$ = str_format("%s<li%s>%s</li>", $1, tag_info->attr, tag_info->content);
         }
     | unorderlist_0 LF_INDENT line {
             show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");

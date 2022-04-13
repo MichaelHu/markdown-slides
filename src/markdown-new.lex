@@ -149,6 +149,8 @@ plus_series \+{3,}
 
 ^{quote}                                { SETYYLVAL(yytext); P("LF_Q"); RETURN(LF_Q); }
 
+@\[[^\]]+\]                             { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+
 \\[\\`*_()#+\-.!]                       { SETYYLVAL(yytext); P("ESCAPEDCHAR"); RETURN(ESCAPEDCHAR); }
 \<                                      { SETYYLVAL(yytext); P("LESSTHAN"); RETURN(LESSTHAN); }
 \>                                      { SETYYLVAL(yytext); P("LARGERTHAN"); RETURN(LARGERTHAN); }

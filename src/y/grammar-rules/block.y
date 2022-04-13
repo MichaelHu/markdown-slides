@@ -5,6 +5,11 @@ block:
         }
     | paragraph {
             show_rule("block: paragraph");
+            tag_info = markdown_get_tag_info($1);
+            $$ = str_format("<p%s>%s</p>", tag_info->attr, tag_info->content);
+        }
+    | BLANKLINE {
+            show_rule("block: BLANKLINE");
             $$ = $1;
         }
     | unorderlist_0 {
@@ -13,7 +18,8 @@ block:
         }
     | codeblock {
             show_rule("block: codeblock");
-            $$ = str_format("<pre><code>%s</code></pre>", $1);
+            tag_info = markdown_get_tag_info($1);
+            $$ = str_format("<pre%s><code>%s</code></pre>", tag_info->attr, tag_info->content);
         }
     | table {
             show_rule("block: table");

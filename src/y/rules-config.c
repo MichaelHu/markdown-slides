@@ -13,6 +13,8 @@ static char* grammar_rules[] = {
 
         "paragraph: lines", "2",
 
+    "block: BLANKLINE", "1",
+
     "block: unorderlist_0", "1",
 
         "unorderlist_0: LF_UL line", "2",
@@ -152,7 +154,6 @@ static char* grammar_rules[] = {
 
                 "line: inline_elements LINEBREAK", "4",
                 "line: inline_elements", "4",
-                "line: BLANKLINE", "4",
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",

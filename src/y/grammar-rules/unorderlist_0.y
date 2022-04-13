@@ -1,11 +1,13 @@
 unorderlist_0: 
     LF_UL line {
             show_rule("unorderlist_0: LF_UL line");
-            $$ = str_format("<li>%s</li>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<li%s>%s</li>", tag_info->attr, tag_info->content);
         }
     | unorderlist_0 LF_UL line {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
-            $$ = str_format("%s<li>%s</li>", $1, $3);
+            tag_info = markdown_get_tag_info($3);
+            $$ = str_format("%s<li%s>%s</li>", $1, tag_info->attr, tag_info->content);
         }
     | unorderlist_0 LF_INDENT line {
             show_rule("unorderlist_0: unorderlist_0 LF_INDENT line");

@@ -7,10 +7,6 @@ line:
             show_rule("line: inline_elements");
             $$ = $1;
         }
-    | BLANKLINE {
-            show_rule("line: BLANKLINE");
-            $$ = "\n";
-        }
     ;
 
 
