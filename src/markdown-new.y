@@ -105,6 +105,8 @@ static char* grammar_rules[] = {
 
     "block: BLANKLINE", "1",
 
+    "block: HTMLTAG", "1",
+
     "block: unorderlist_0", "1",
 
         "unorderlist_0: LF_UL line", "2",
@@ -274,6 +276,7 @@ static char* grammar_rules[] = {
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error", "7",
                             "link: LEFTSQUARE inline_text error", "7",
                             "link: LEFTSQUARE error", "7",
+                            "link: SIMPLELINK", "7",
 
                             "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
                             "image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
@@ -311,9 +314,6 @@ static char* grammar_rules[] = {
                                 "inline_text_item: SPACE", "8",
 
                                 "inline_code_text_item: inline_text_item", "8",
-                                /* simple link */
-                                "inline_code_text_item: LESSTHAN", "8",
-                                "inline_code_text_item: LARGERTHAN", "8",
                                 /* strong italic */
                                 "inline_code_text_item: TRIPLEASTERISK", "8",
                                 "inline_code_text_item: TRIPLEUNDERSCORE", "8",
@@ -426,9 +426,10 @@ static void show_rule( char *str ){
 
 %token <text> LF_Q
 
+%token <text> SIMPLELINK         
+%token <text> HTMLTAG         
+
 %token <text> ESCAPEDCHAR         
-%token <text> LESSTHAN            
-%token <text> LARGERTHAN          
 %token <text> TRIPLEBACKTICK      
 %token <text> BACKTICK            
 %token <text> VERTICAL            
@@ -568,6 +569,10 @@ block:
             show_rule("block: BLANKLINE");
             $$ = $1;
         }
+    | HTMLTAG {
+            show_rule("block: HTMLTAG");
+            $$ = $1;
+        }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
             $$ = str_format("<ul>%s</ul>", $1);
@@ -688,14 +693,6 @@ inline_code_text_item:
             show_rule("inline_code_text_item: inline_text_item");
             $$ = $1;
         }
-    | LESSTHAN {
-            show_rule("inline_code_text_item: LESSTHAN");
-            $$ = $1;
-        }           
-    | LARGERTHAN {
-            show_rule("inline_code_text_item: LARGERTHAN");
-            $$ = $1;
-        }           
     | TRIPLEASTERISK {
             show_rule("inline_code_text_item: TRIPLEASTERISK");
             $$ = $1;
@@ -1078,6 +1075,11 @@ link:
         }
     | LEFTSQUARE error {
             show_rule("link: LEFTSQUARE error");
+        }
+    | SIMPLELINK {
+            show_rule("link: SIMPLELINK");
+            tag_info = markdown_get_tag_info($1);
+            $$ = str_format("<a href=\"%s\">%s</a>", tag_info->content, tag_info->content);
         }
     ;
 

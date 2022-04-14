@@ -12,6 +12,10 @@ block:
             show_rule("block: BLANKLINE");
             $$ = $1;
         }
+    | HTMLTAG {
+            show_rule("block: HTMLTAG");
+            $$ = $1;
+        }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
             $$ = str_format("<ul>%s</ul>", $1);

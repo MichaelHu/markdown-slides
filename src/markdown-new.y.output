@@ -12,14 +12,14 @@ Terminals which are not used
    LISTSTART
 
 
-State 2 conflicts: 21 shift/reduce, 1 reduce/reduce
-State 26 conflicts: 5 shift/reduce
-State 30 conflicts: 11 shift/reduce
-State 31 conflicts: 3 shift/reduce
-State 43 conflicts: 11 shift/reduce
-State 46 conflicts: 6 shift/reduce
+State 2 conflicts: 23 shift/reduce, 1 reduce/reduce
+State 28 conflicts: 5 shift/reduce
+State 32 conflicts: 12 shift/reduce
+State 33 conflicts: 3 shift/reduce
+State 45 conflicts: 12 shift/reduce
 State 48 conflicts: 6 shift/reduce
-State 53 conflicts: 1 shift/reduce
+State 50 conflicts: 6 shift/reduce
+State 55 conflicts: 1 shift/reduce
 State 110 conflicts: 3 shift/reduce
 State 112 conflicts: 1 shift/reduce
 State 113 conflicts: 4 shift/reduce
@@ -42,140 +42,140 @@ Grammar
     2 block: header
     3      | paragraph
     4      | BLANKLINE
-    5      | unorderlist_0
-    6      | codeblock
-    7      | table
-    8      | quote_block
-    9      | error
+    5      | HTMLTAG
+    6      | unorderlist_0
+    7      | codeblock
+    8      | table
+    9      | quote_block
+   10      | error
 
-   10 blocks: blocks block
-   11       | /* empty */
+   11 blocks: blocks block
+   12       | /* empty */
 
-   12 code_text: code_text code_text_item
-   13          | code_text_item
+   13 code_text: code_text code_text_item
+   14          | code_text_item
 
-   14 code_text_item: inline_code_text_item
-   15               | BACKTICK
+   15 code_text_item: inline_code_text_item
+   16               | BACKTICK
 
-   16 codeblock: lf_indents code_text LINEBREAK
-   17          | codeblock lf_indents code_text LINEBREAK
+   17 codeblock: lf_indents code_text LINEBREAK
+   18          | codeblock lf_indents code_text LINEBREAK
 
-   18 header: LF_H inline_elements LINEBREAK
+   19 header: LF_H inline_elements LINEBREAK
 
-   19 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
-   20      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
-   21      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
-   22      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error
-   23      | EXCLAMATION_LEFTSQUARE inline_text error
-   24      | EXCLAMATION_LEFTSQUARE error
+   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
+   21      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
+   22      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
+   23      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error
+   24      | EXCLAMATION_LEFTSQUARE inline_text error
+   25      | EXCLAMATION_LEFTSQUARE error
 
-   25 inline_code_text: inline_code_text inline_code_text_item
-   26                 | inline_code_text_item
+   26 inline_code_text: inline_code_text inline_code_text_item
+   27                 | inline_code_text_item
 
-   27 inline_code_text_item: inline_text_item
-   28                      | LESSTHAN
-   29                      | LARGERTHAN
-   30                      | TRIPLEASTERISK
-   31                      | TRIPLEUNDERSCORE
-   32                      | DOUBLEASTERISK
-   33                      | DOUBLEUNDERSCORE
-   34                      | ASTERISK
-   35                      | UNDERSCORE
-   36                      | DOUBLETILDE
-   37                      | EXCLAMATION_LEFTSQUARE
-   38                      | LEFTSQUARE
-   39                      | RIGHTSQUARE_LEFTBRACKET
-   40                      | RIGHTBRACKET
-   41                      | VERTICAL
-   42                      | TRIPLEBACKTICK
+   28 inline_code_text_item: inline_text_item
+   29                      | TRIPLEASTERISK
+   30                      | TRIPLEUNDERSCORE
+   31                      | DOUBLEASTERISK
+   32                      | DOUBLEUNDERSCORE
+   33                      | ASTERISK
+   34                      | UNDERSCORE
+   35                      | DOUBLETILDE
+   36                      | EXCLAMATION_LEFTSQUARE
+   37                      | LEFTSQUARE
+   38                      | RIGHTSQUARE_LEFTBRACKET
+   39                      | RIGHTBRACKET
+   40                      | VERTICAL
+   41                      | TRIPLEBACKTICK
 
-   43 inline_element: inline_text
-   44               | link
-   45               | image
-   46               | italic
-   47               | strong
-   48               | linethrough
-   49               | inlinecode
+   42 inline_element: inline_text
+   43               | link
+   44               | image
+   45               | italic
+   46               | strong
+   47               | linethrough
+   48               | inlinecode
 
-   50 inline_elements: inline_elements inline_element
-   51                | inline_element
+   49 inline_elements: inline_elements inline_element
+   50                | inline_element
 
-   52 inline_text: inline_text inline_text_item
-   53            | inline_text_item
+   51 inline_text: inline_text inline_text_item
+   52            | inline_text_item
 
-   54 inline_text_item: uri_text_item
-   55                 | ESCAPEDCHAR
-   56                 | SPACE
+   53 inline_text_item: uri_text_item
+   54                 | ESCAPEDCHAR
+   55                 | SPACE
 
-   57 uri_text: uri_text uri_text_item
-   58         | uri_text_item
+   56 uri_text: uri_text uri_text_item
+   57         | uri_text_item
 
-   59 uri_text_item: TEXT
+   58 uri_text_item: TEXT
 
-   60 inlinecode: BACKTICK inline_code_text BACKTICK
-   61           | BACKTICK inline_code_text error
-   62           | BACKTICK error
+   59 inlinecode: BACKTICK inline_code_text BACKTICK
+   60           | BACKTICK inline_code_text error
+   61           | BACKTICK error
 
-   63 italic: ASTERISK inline_text ASTERISK
-   64       | ASTERISK inline_text error
-   65       | ASTERISK error
-   66       | UNDERSCORE inline_text UNDERSCORE
-   67       | UNDERSCORE inline_text error
-   68       | UNDERSCORE error
+   62 italic: ASTERISK inline_text ASTERISK
+   63       | ASTERISK inline_text error
+   64       | ASTERISK error
+   65       | UNDERSCORE inline_text UNDERSCORE
+   66       | UNDERSCORE inline_text error
+   67       | UNDERSCORE error
 
-   69 lf_indents: LF_INDENT
-   70           | lf_indents2
+   68 lf_indents: LF_INDENT
+   69           | lf_indents2
 
-   71 lf_indents2: LF_INDENT2
-   72            | lf_indents3
+   70 lf_indents2: LF_INDENT2
+   71            | lf_indents3
 
-   73 lf_indents3: LF_INDENT3
-   74            | lf_indents4
+   72 lf_indents3: LF_INDENT3
+   73            | lf_indents4
 
-   75 lf_indents4: LF_INDENT4
-   76            | lf_indents5
+   74 lf_indents4: LF_INDENT4
+   75            | lf_indents5
 
-   77 lf_indents5: LF_INDENT5
+   76 lf_indents5: LF_INDENT5
 
-   78 lf_indents2_codeblock: lf_indents2 code_text LINEBREAK
-   79                      | lf_indents2_codeblock lf_indents2 code_text LINEBREAK
+   77 lf_indents2_codeblock: lf_indents2 code_text LINEBREAK
+   78                      | lf_indents2_codeblock lf_indents2 code_text LINEBREAK
 
-   80 lf_indents3_codeblock: lf_indents3 code_text LINEBREAK
-   81                      | lf_indents3_codeblock lf_indents3 code_text LINEBREAK
+   79 lf_indents3_codeblock: lf_indents3 code_text LINEBREAK
+   80                      | lf_indents3_codeblock lf_indents3 code_text LINEBREAK
 
-   82 lf_indents4_codeblock: lf_indents4 code_text LINEBREAK
-   83                      | lf_indents4_codeblock lf_indents4 code_text LINEBREAK
+   81 lf_indents4_codeblock: lf_indents4 code_text LINEBREAK
+   82                      | lf_indents4_codeblock lf_indents4 code_text LINEBREAK
 
-   84 lf_q_indents: LF_Q_INDENT
-   85             | lf_q_indents2
+   83 lf_q_indents: LF_Q_INDENT
+   84             | lf_q_indents2
 
-   86 lf_q_indents2: LF_Q_INDENT2
-   87              | lf_q_indents3
+   85 lf_q_indents2: LF_Q_INDENT2
+   86              | lf_q_indents3
 
-   88 lf_q_indents3: LF_Q_INDENT3
+   87 lf_q_indents3: LF_Q_INDENT3
 
-   89 lf_q_indents2_codeblock: lf_q_indents2 code_text LINEBREAK
-   90                        | lf_q_indents2_codeblock lf_q_indents2 code_text LINEBREAK
+   88 lf_q_indents2_codeblock: lf_q_indents2 code_text LINEBREAK
+   89                        | lf_q_indents2_codeblock lf_q_indents2 code_text LINEBREAK
 
-   91 lf_q_indents3_codeblock: lf_q_indents3 code_text LINEBREAK
-   92                        | lf_q_indents3_codeblock lf_q_indents3 code_text LINEBREAK
+   90 lf_q_indents3_codeblock: lf_q_indents3 code_text LINEBREAK
+   91                        | lf_q_indents3_codeblock lf_q_indents3 code_text LINEBREAK
 
-   93 linethrough: DOUBLETILDE inline_text DOUBLETILDE
-   94            | DOUBLETILDE inline_text error
-   95            | DOUBLETILDE error
+   92 linethrough: DOUBLETILDE inline_text DOUBLETILDE
+   93            | DOUBLETILDE inline_text error
+   94            | DOUBLETILDE error
 
-   96 line: inline_elements LINEBREAK
-   97     | inline_elements
+   95 line: inline_elements LINEBREAK
+   96     | inline_elements
 
-   98 lines: line
-   99      | lines line
+   97 lines: line
+   98      | lines line
 
-  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
-  101     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
-  102     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
-  103     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error
-  104     | LEFTSQUARE inline_text error
-  105     | LEFTSQUARE error
+   99 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
+  100     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
+  101     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
+  102     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error
+  103     | LEFTSQUARE inline_text error
+  104     | LEFTSQUARE error
+  105     | SIMPLELINK
 
   106 paragraph: lines
 
@@ -263,12 +263,12 @@ Grammar
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256) 9 21 22 23 24 61 62 64 65 67 68 94 95 102 103 104 105 127
-    128 130 131
+error (256) 10 22 23 24 25 60 61 63 64 66 67 93 94 101 102 103 104
+    127 128 130 131
 BLANKLINE (258) 4
-LINEBREAK (259) 16 17 18 78 79 80 81 82 83 89 90 91 92 96 112 113 114
+LINEBREAK (259) 17 18 19 77 78 79 80 81 82 88 89 90 91 95 112 113 114
     154 164
-LF_H (260) 18
+LF_H (260) 19
 LF_UL (261) 132 133
 UL (262)
 LF_VERTICAL (263) 154
@@ -278,45 +278,45 @@ LF_INDENT2_UL (266) 142 143
 LF_INDENT3_UL (267)
 LF_INDENT4_UL (268)
 LF_INDENT_VERTICAL (269)
-LF_INDENT (270) 69 134
-LF_INDENT2 (271) 71 139
-LF_INDENT3 (272) 73 144
-LF_INDENT4 (273) 75
-LF_INDENT5 (274) 77
+LF_INDENT (270) 68 134
+LF_INDENT2 (271) 70 139
+LF_INDENT3 (272) 72 144
+LF_INDENT4 (273) 74
+LF_INDENT5 (274) 76
 LF_Q_H (275) 114
 LF_Q_UL (276) 117 118
 LF_Q_VERTICAL (277)
 LF_Q_INDENT_UL (278) 122 123
 LF_Q_INDENT2_UL (279)
 LF_Q_INDENT_VERTICAL (280)
-LF_Q_INDENT (281) 84 119
-LF_Q_INDENT2 (282) 86 124
-LF_Q_INDENT3 (283) 88
+LF_Q_INDENT (281) 83 119
+LF_Q_INDENT2 (282) 85 124
+LF_Q_INDENT3 (283) 87
 LF_Q (284) 115 116
-ESCAPEDCHAR (285) 55
-LESSTHAN (286) 28
-LARGERTHAN (287) 29
-TRIPLEBACKTICK (288) 42
-BACKTICK (289) 15 60 61 62
-VERTICAL (290) 41 149
-TRIPLEASTERISK (291) 30
-DOUBLEASTERISK (292) 32 126 127 128
-ASTERISK (293) 34 63 64 65
-TRIPLEUNDERSCORE (294) 31
-DOUBLEUNDERSCORE (295) 33 129 130 131
-UNDERSCORE (296) 35 66 67 68
-EXCLAMATION_LEFTSQUARE (297) 19 20 21 22 23 24 37
-LEFTSQUARE (298) 38 100 101 102 103 104 105
-RIGHTSQUARE_LEFTBRACKET (299) 19 20 21 22 39 100 101 102 103
-RIGHTBRACKET (300) 19 20 40 100 101
-DOUBLETILDE (301) 36 93 94 95
+SIMPLELINK (285) 105
+HTMLTAG (286) 5
+ESCAPEDCHAR (287) 54
+TRIPLEBACKTICK (288) 41
+BACKTICK (289) 16 59 60 61
+VERTICAL (290) 40 149
+TRIPLEASTERISK (291) 29
+DOUBLEASTERISK (292) 31 126 127 128
+ASTERISK (293) 33 62 63 64
+TRIPLEUNDERSCORE (294) 30
+DOUBLEUNDERSCORE (295) 32 129 130 131
+UNDERSCORE (296) 34 65 66 67
+EXCLAMATION_LEFTSQUARE (297) 20 21 22 23 24 25 36
+LEFTSQUARE (298) 37 99 100 101 102 103 104
+RIGHTSQUARE_LEFTBRACKET (299) 20 21 22 23 38 99 100 101 102
+RIGHTBRACKET (300) 20 21 39 99 100
+DOUBLETILDE (301) 35 92 93 94
 RIGHTSQUARE (302)
 SEMI_MINUSSERIES_VERTICAL (303) 161
 MINUSSERIES_SEMI_VERTICAL (304) 160
 SEMI_MINUSSERIES_SEMI_VERTICAL (305) 162
 MINUSSERIES_VERTICAL (306) 163
-SPACE (307) 20 56 101
-TEXT (308) 59
+SPACE (307) 21 55 100
+TEXT (308) 58
 ITALICSTART (309)
 LISTSTART (310)
 
@@ -328,81 +328,81 @@ $accept (56)
 markdownfile (57)
     on left: 1, on right: 0
 block (58)
-    on left: 2 3 4 5 6 7 8 9, on right: 10
+    on left: 2 3 4 5 6 7 8 9 10, on right: 11
 blocks (59)
-    on left: 10 11, on right: 1 10
+    on left: 11 12, on right: 1 11
 code_text (60)
-    on left: 12 13, on right: 12 16 17 78 79 80 81 82 83 89 90 91 92
+    on left: 13 14, on right: 13 17 18 77 78 79 80 81 82 88 89 90 91
     112 113
 code_text_item (61)
-    on left: 14 15, on right: 12 13
+    on left: 15 16, on right: 13 14
 codeblock (62)
-    on left: 16 17, on right: 6 17
+    on left: 17 18, on right: 7 18
 header (63)
-    on left: 18, on right: 2
+    on left: 19, on right: 2
 image (64)
-    on left: 19 20 21 22 23 24, on right: 45
+    on left: 20 21 22 23 24 25, on right: 44
 inline_code_text (65)
-    on left: 25 26, on right: 25 60 61
+    on left: 26 27, on right: 26 59 60
 inline_code_text_item (66)
-    on left: 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42,
-    on right: 14 25 26
+    on left: 28 29 30 31 32 33 34 35 36 37 38 39 40 41,
+    on right: 15 26 27
 inline_element (67)
-    on left: 43 44 45 46 47 48 49, on right: 50 51
+    on left: 42 43 44 45 46 47 48, on right: 49 50
 inline_elements (68)
-    on left: 50 51, on right: 18 50 96 97 114
+    on left: 49 50, on right: 19 49 95 96 114
 inline_text (69)
-    on left: 52 53, on right: 19 20 21 22 23 43 52 63 64 66 67 93 94
-    100 101 102 103 104 126 127 129 130
+    on left: 51 52, on right: 20 21 22 23 24 42 51 62 63 65 66 92 93
+    99 100 101 102 103 126 127 129 130
 inline_text_item (70)
-    on left: 54 55 56, on right: 27 52 53
+    on left: 53 54 55, on right: 28 51 52
 uri_text (71)
-    on left: 57 58, on right: 19 20 21 57 100 101 102
+    on left: 56 57, on right: 20 21 22 56 99 100 101
 uri_text_item (72)
-    on left: 59, on right: 54 57 58
+    on left: 58, on right: 53 56 57
 inlinecode (73)
-    on left: 60 61 62, on right: 49
+    on left: 59 60 61, on right: 48
 italic (74)
-    on left: 63 64 65 66 67 68, on right: 46
+    on left: 62 63 64 65 66 67, on right: 45
 lf_indents (75)
-    on left: 69 70, on right: 16 17
+    on left: 68 69, on right: 17 18
 lf_indents2 (76)
-    on left: 71 72, on right: 70 78 79
+    on left: 70 71, on right: 69 77 78
 lf_indents3 (77)
-    on left: 73 74, on right: 72 80 81
+    on left: 72 73, on right: 71 79 80
 lf_indents4 (78)
-    on left: 75 76, on right: 74 82 83
+    on left: 74 75, on right: 73 81 82
 lf_indents5 (79)
-    on left: 77, on right: 76
+    on left: 76, on right: 75
 lf_indents2_codeblock (80)
-    on left: 78 79, on right: 79 135
+    on left: 77 78, on right: 78 135
 lf_indents3_codeblock (81)
-    on left: 80 81, on right: 81 140
+    on left: 79 80, on right: 80 140
 lf_indents4_codeblock (82)
-    on left: 82 83, on right: 83 145
+    on left: 81 82, on right: 82 145
 lf_q_indents (83)
-    on left: 84 85, on right: 112 113
+    on left: 83 84, on right: 112 113
 lf_q_indents2 (84)
-    on left: 86 87, on right: 85 89 90
+    on left: 85 86, on right: 84 88 89
 lf_q_indents3 (85)
-    on left: 88, on right: 87 91 92
+    on left: 87, on right: 86 90 91
 lf_q_indents2_codeblock (86)
-    on left: 89 90, on right: 90 120
+    on left: 88 89, on right: 89 120
 lf_q_indents3_codeblock (87)
-    on left: 91 92, on right: 92 125
+    on left: 90 91, on right: 91 125
 linethrough (88)
-    on left: 93 94 95, on right: 48
+    on left: 92 93 94, on right: 47
 line (89)
-    on left: 96 97, on right: 98 99 115 116 117 118 119 122 123 124
+    on left: 95 96, on right: 97 98 115 116 117 118 119 122 123 124
     132 133 134 137 138 139 142 143 144 149
 lines (90)
-    on left: 98 99, on right: 99 106
+    on left: 97 98, on right: 98 106
 link (91)
-    on left: 100 101 102 103 104 105, on right: 44
+    on left: 99 100 101 102 103 104 105, on right: 43
 paragraph (92)
     on left: 106, on right: 3
 quote_block (93)
-    on left: 107 108 109 110 111, on right: 8 107 108 109 110
+    on left: 107 108 109 110 111, on right: 9 107 108 109 110
 quote_codeblock (94)
     on left: 112 113, on right: 110 113
 quote_header (95)
@@ -414,15 +414,15 @@ quote_unorderlist_0 (97)
 quote_unorderlist_1 (98)
     on left: 122 123 124 125, on right: 121 123 124 125
 strong (99)
-    on left: 126 127 128 129 130 131, on right: 47
+    on left: 126 127 128 129 130 131, on right: 46
 unorderlist_0 (100)
-    on left: 132 133 134 135 136, on right: 5 133 134 135 136
+    on left: 132 133 134 135 136, on right: 6 133 134 135 136
 unorderlist_1 (101)
     on left: 137 138 139 140 141, on right: 136 138 139 140 141
 unorderlist_2 (102)
     on left: 142 143 144 145, on right: 141 143 144 145
 table (103)
-    on left: 146 147, on right: 7
+    on left: 146 147, on right: 8
 table_body (104)
     on left: 148, on right: 146 147
 table_cell (105)
@@ -451,7 +451,7 @@ state 0
 
     0 $accept: . markdownfile $end
 
-    $default  reduce using rule 11 (blocks)
+    $default  reduce using rule 12 (blocks)
 
     markdownfile  go to state 1
     blocks        go to state 2
@@ -467,7 +467,7 @@ state 1
 state 2
 
     1 markdownfile: blocks .
-   10 blocks: blocks . block
+   11 blocks: blocks . block
 
     error                   shift, and go to state 4
     BLANKLINE               shift, and go to state 5
@@ -479,17 +479,19 @@ state 2
     LF_INDENT3              shift, and go to state 11
     LF_INDENT4              shift, and go to state 12
     LF_INDENT5              shift, and go to state 13
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    HTMLTAG                 shift, and go to state 15
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
     $end                    reduce using rule 1 (markdownfile)
     $end                    [reduce using rule 111 (quote_block)]
@@ -509,6 +511,8 @@ state 2
     LF_Q_INDENT2            reduce using rule 111 (quote_block)
     LF_Q_INDENT3            reduce using rule 111 (quote_block)
     LF_Q                    reduce using rule 111 (quote_block)
+    SIMPLELINK              [reduce using rule 111 (quote_block)]
+    HTMLTAG                 [reduce using rule 111 (quote_block)]
     ESCAPEDCHAR             [reduce using rule 111 (quote_block)]
     BACKTICK                [reduce using rule 111 (quote_block)]
     DOUBLEASTERISK          [reduce using rule 111 (quote_block)]
@@ -521,35 +525,35 @@ state 2
     SPACE                   [reduce using rule 111 (quote_block)]
     TEXT                    [reduce using rule 111 (quote_block)]
 
-    block             go to state 25
-    codeblock         go to state 26
-    header            go to state 27
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    lf_indents        go to state 36
-    lf_indents2       go to state 37
-    lf_indents3       go to state 38
-    lf_indents4       go to state 39
-    lf_indents5       go to state 40
-    linethrough       go to state 41
-    line              go to state 42
-    lines             go to state 43
-    link              go to state 44
-    paragraph         go to state 45
-    quote_block       go to state 46
-    strong            go to state 47
-    unorderlist_0     go to state 48
-    table             go to state 49
-    table_body        go to state 50
-    table_head        go to state 51
-    table_row         go to state 52
-    table_rows        go to state 53
+    block             go to state 27
+    codeblock         go to state 28
+    header            go to state 29
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    lf_indents        go to state 38
+    lf_indents2       go to state 39
+    lf_indents3       go to state 40
+    lf_indents4       go to state 41
+    lf_indents5       go to state 42
+    linethrough       go to state 43
+    line              go to state 44
+    lines             go to state 45
+    link              go to state 46
+    paragraph         go to state 47
+    quote_block       go to state 48
+    strong            go to state 49
+    unorderlist_0     go to state 50
+    table             go to state 51
+    table_body        go to state 52
+    table_head        go to state 53
+    table_row         go to state 54
+    table_rows        go to state 55
 
 
 state 3
@@ -561,9 +565,9 @@ state 3
 
 state 4
 
-    9 block: error .
+   10 block: error .
 
-    $default  reduce using rule 9 (block)
+    $default  reduce using rule 10 (block)
 
 
 state 5
@@ -575,147 +579,162 @@ state 5
 
 state 6
 
-   18 header: LF_H . inline_elements LINEBREAK
+   19 header: LF_H . inline_elements LINEBREAK
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 54
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    link              go to state 44
-    strong            go to state 47
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 56
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    link              go to state 46
+    strong            go to state 49
 
 
 state 7
 
   132 unorderlist_0: LF_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    line              go to state 55
-    link              go to state 44
-    strong            go to state 47
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    line              go to state 57
+    link              go to state 46
+    strong            go to state 49
 
 
 state 8
 
   154 table_row: LF_VERTICAL . table_cells LINEBREAK
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    line              go to state 56
-    link              go to state 44
-    strong            go to state 47
-    table_cell        go to state 57
-    table_cells       go to state 58
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    line              go to state 58
+    link              go to state 46
+    strong            go to state 49
+    table_cell        go to state 59
+    table_cells       go to state 60
 
 
 state 9
 
-   69 lf_indents: LF_INDENT .
+   68 lf_indents: LF_INDENT .
 
-    $default  reduce using rule 69 (lf_indents)
+    $default  reduce using rule 68 (lf_indents)
 
 
 state 10
 
-   71 lf_indents2: LF_INDENT2 .
+   70 lf_indents2: LF_INDENT2 .
 
-    $default  reduce using rule 71 (lf_indents2)
+    $default  reduce using rule 70 (lf_indents2)
 
 
 state 11
 
-   73 lf_indents3: LF_INDENT3 .
+   72 lf_indents3: LF_INDENT3 .
 
-    $default  reduce using rule 73 (lf_indents3)
+    $default  reduce using rule 72 (lf_indents3)
 
 
 state 12
 
-   75 lf_indents4: LF_INDENT4 .
+   74 lf_indents4: LF_INDENT4 .
 
-    $default  reduce using rule 75 (lf_indents4)
+    $default  reduce using rule 74 (lf_indents4)
 
 
 state 13
 
-   77 lf_indents5: LF_INDENT5 .
+   76 lf_indents5: LF_INDENT5 .
 
-    $default  reduce using rule 77 (lf_indents5)
+    $default  reduce using rule 76 (lf_indents5)
 
 
 state 14
 
-   55 inline_text_item: ESCAPEDCHAR .
+  105 link: SIMPLELINK .
 
-    $default  reduce using rule 55 (inline_text_item)
+    $default  reduce using rule 105 (link)
 
 
 state 15
 
-   60 inlinecode: BACKTICK . inline_code_text BACKTICK
-   61           | BACKTICK . inline_code_text error
-   62           | BACKTICK . error
+    5 block: HTMLTAG .
 
-    error                    shift, and go to state 59
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    $default  reduce using rule 5 (block)
+
+
+state 16
+
+   54 inline_text_item: ESCAPEDCHAR .
+
+    $default  reduce using rule 54 (inline_text_item)
+
+
+state 17
+
+   59 inlinecode: BACKTICK . inline_code_text BACKTICK
+   60           | BACKTICK . inline_code_text error
+   61           | BACKTICK . error
+
+    error                    shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     VERTICAL                 shift, and go to state 63
     TRIPLEASTERISK           shift, and go to state 64
@@ -729,158 +748,158 @@ state 15
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     inline_code_text       go to state 75
     inline_code_text_item  go to state 76
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
-state 16
+state 18
 
   126 strong: DOUBLEASTERISK . inline_text DOUBLEASTERISK
   127       | DOUBLEASTERISK . inline_text error
   128       | DOUBLEASTERISK . error
 
     error        shift, and go to state 78
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
     inline_text       go to state 79
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
-state 17
+state 19
 
-   63 italic: ASTERISK . inline_text ASTERISK
-   64       | ASTERISK . inline_text error
-   65       | ASTERISK . error
+   62 italic: ASTERISK . inline_text ASTERISK
+   63       | ASTERISK . inline_text error
+   64       | ASTERISK . error
 
     error        shift, and go to state 80
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
     inline_text       go to state 81
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
-state 18
+state 20
 
   129 strong: DOUBLEUNDERSCORE . inline_text DOUBLEUNDERSCORE
   130       | DOUBLEUNDERSCORE . inline_text error
   131       | DOUBLEUNDERSCORE . error
 
     error        shift, and go to state 82
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
     inline_text       go to state 83
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-
-
-state 19
-
-   66 italic: UNDERSCORE . inline_text UNDERSCORE
-   67       | UNDERSCORE . inline_text error
-   68       | UNDERSCORE . error
-
-    error        shift, and go to state 84
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
-
-    inline_text       go to state 85
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-
-
-state 20
-
-   19 image: EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
-   20      | EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
-   21      | EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
-   22      | EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET error
-   23      | EXCLAMATION_LEFTSQUARE . inline_text error
-   24      | EXCLAMATION_LEFTSQUARE . error
-
-    error        shift, and go to state 86
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
-
-    inline_text       go to state 87
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
 state 21
 
-  100 link: LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
-  101     | LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
-  102     | LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
-  103     | LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET error
-  104     | LEFTSQUARE . inline_text error
-  105     | LEFTSQUARE . error
+   65 italic: UNDERSCORE . inline_text UNDERSCORE
+   66       | UNDERSCORE . inline_text error
+   67       | UNDERSCORE . error
 
-    error        shift, and go to state 88
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    error        shift, and go to state 84
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
-    inline_text       go to state 89
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
+    inline_text       go to state 85
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
 state 22
 
-   93 linethrough: DOUBLETILDE . inline_text DOUBLETILDE
-   94            | DOUBLETILDE . inline_text error
-   95            | DOUBLETILDE . error
+   20 image: EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
+   21      | EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
+   22      | EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
+   23      | EXCLAMATION_LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET error
+   24      | EXCLAMATION_LEFTSQUARE . inline_text error
+   25      | EXCLAMATION_LEFTSQUARE . error
 
-    error        shift, and go to state 90
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    error        shift, and go to state 86
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
-    inline_text       go to state 91
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
+    inline_text       go to state 87
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
 state 23
 
-   56 inline_text_item: SPACE .
+   99 link: LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
+  100     | LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
+  101     | LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET uri_text error
+  102     | LEFTSQUARE . inline_text RIGHTSQUARE_LEFTBRACKET error
+  103     | LEFTSQUARE . inline_text error
+  104     | LEFTSQUARE . error
 
-    $default  reduce using rule 56 (inline_text_item)
+    error        shift, and go to state 88
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
+
+    inline_text       go to state 89
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
 state 24
 
-   59 uri_text_item: TEXT .
+   92 linethrough: DOUBLETILDE . inline_text DOUBLETILDE
+   93            | DOUBLETILDE . inline_text error
+   94            | DOUBLETILDE . error
 
-    $default  reduce using rule 59 (uri_text_item)
+    error        shift, and go to state 90
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
+
+    inline_text       go to state 91
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
 
 
 state 25
 
-   10 blocks: blocks block .
+   55 inline_text_item: SPACE .
 
-    $default  reduce using rule 10 (blocks)
+    $default  reduce using rule 55 (inline_text_item)
 
 
 state 26
 
-    6 block: codeblock .
-   17 codeblock: codeblock . lf_indents code_text LINEBREAK
+   58 uri_text_item: TEXT .
+
+    $default  reduce using rule 58 (uri_text_item)
+
+
+state 27
+
+   11 blocks: blocks block .
+
+    $default  reduce using rule 11 (blocks)
+
+
+state 28
+
+    7 block: codeblock .
+   18 codeblock: codeblock . lf_indents code_text LINEBREAK
 
     LF_INDENT   shift, and go to state 9
     LF_INDENT2  shift, and go to state 10
@@ -888,138 +907,138 @@ state 26
     LF_INDENT4  shift, and go to state 12
     LF_INDENT5  shift, and go to state 13
 
-    LF_INDENT   [reduce using rule 6 (block)]
-    LF_INDENT2  [reduce using rule 6 (block)]
-    LF_INDENT3  [reduce using rule 6 (block)]
-    LF_INDENT4  [reduce using rule 6 (block)]
-    LF_INDENT5  [reduce using rule 6 (block)]
-    $default    reduce using rule 6 (block)
+    LF_INDENT   [reduce using rule 7 (block)]
+    LF_INDENT2  [reduce using rule 7 (block)]
+    LF_INDENT3  [reduce using rule 7 (block)]
+    LF_INDENT4  [reduce using rule 7 (block)]
+    LF_INDENT5  [reduce using rule 7 (block)]
+    $default    reduce using rule 7 (block)
 
     lf_indents   go to state 92
-    lf_indents2  go to state 37
-    lf_indents3  go to state 38
-    lf_indents4  go to state 39
-    lf_indents5  go to state 40
+    lf_indents2  go to state 39
+    lf_indents3  go to state 40
+    lf_indents4  go to state 41
+    lf_indents5  go to state 42
 
 
-state 27
+state 29
 
     2 block: header .
 
     $default  reduce using rule 2 (block)
 
 
-state 28
-
-   45 inline_element: image .
-
-    $default  reduce using rule 45 (inline_element)
-
-
-state 29
-
-   51 inline_elements: inline_element .
-
-    $default  reduce using rule 51 (inline_elements)
-
-
 state 30
 
-   50 inline_elements: inline_elements . inline_element
-   96 line: inline_elements . LINEBREAK
-   97     | inline_elements .
+   44 inline_element: image .
 
-    LINEBREAK               shift, and go to state 93
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
-
-    ESCAPEDCHAR             [reduce using rule 97 (line)]
-    BACKTICK                [reduce using rule 97 (line)]
-    DOUBLEASTERISK          [reduce using rule 97 (line)]
-    ASTERISK                [reduce using rule 97 (line)]
-    DOUBLEUNDERSCORE        [reduce using rule 97 (line)]
-    UNDERSCORE              [reduce using rule 97 (line)]
-    EXCLAMATION_LEFTSQUARE  [reduce using rule 97 (line)]
-    LEFTSQUARE              [reduce using rule 97 (line)]
-    DOUBLETILDE             [reduce using rule 97 (line)]
-    SPACE                   [reduce using rule 97 (line)]
-    TEXT                    [reduce using rule 97 (line)]
-    $default                reduce using rule 97 (line)
-
-    image             go to state 28
-    inline_element    go to state 94
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    link              go to state 44
-    strong            go to state 47
+    $default  reduce using rule 44 (inline_element)
 
 
 state 31
 
-   43 inline_element: inline_text .
-   52 inline_text: inline_text . inline_text_item
+   50 inline_elements: inline_element .
 
-    ESCAPEDCHAR  shift, and go to state 14
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
-
-    ESCAPEDCHAR  [reduce using rule 43 (inline_element)]
-    SPACE        [reduce using rule 43 (inline_element)]
-    TEXT         [reduce using rule 43 (inline_element)]
-    $default     reduce using rule 43 (inline_element)
-
-    inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    $default  reduce using rule 50 (inline_elements)
 
 
 state 32
 
-   53 inline_text: inline_text_item .
+   49 inline_elements: inline_elements . inline_element
+   95 line: inline_elements . LINEBREAK
+   96     | inline_elements .
 
-    $default  reduce using rule 53 (inline_text)
+    LINEBREAK               shift, and go to state 93
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
+
+    SIMPLELINK              [reduce using rule 96 (line)]
+    ESCAPEDCHAR             [reduce using rule 96 (line)]
+    BACKTICK                [reduce using rule 96 (line)]
+    DOUBLEASTERISK          [reduce using rule 96 (line)]
+    ASTERISK                [reduce using rule 96 (line)]
+    DOUBLEUNDERSCORE        [reduce using rule 96 (line)]
+    UNDERSCORE              [reduce using rule 96 (line)]
+    EXCLAMATION_LEFTSQUARE  [reduce using rule 96 (line)]
+    LEFTSQUARE              [reduce using rule 96 (line)]
+    DOUBLETILDE             [reduce using rule 96 (line)]
+    SPACE                   [reduce using rule 96 (line)]
+    TEXT                    [reduce using rule 96 (line)]
+    $default                reduce using rule 96 (line)
+
+    image             go to state 30
+    inline_element    go to state 94
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    link              go to state 46
+    strong            go to state 49
 
 
 state 33
 
-   54 inline_text_item: uri_text_item .
+   42 inline_element: inline_text .
+   51 inline_text: inline_text . inline_text_item
 
-    $default  reduce using rule 54 (inline_text_item)
+    ESCAPEDCHAR  shift, and go to state 16
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
+
+    ESCAPEDCHAR  [reduce using rule 42 (inline_element)]
+    SPACE        [reduce using rule 42 (inline_element)]
+    TEXT         [reduce using rule 42 (inline_element)]
+    $default     reduce using rule 42 (inline_element)
+
+    inline_text_item  go to state 95
+    uri_text_item     go to state 35
 
 
 state 34
 
-   49 inline_element: inlinecode .
+   52 inline_text: inline_text_item .
 
-    $default  reduce using rule 49 (inline_element)
+    $default  reduce using rule 52 (inline_text)
 
 
 state 35
 
-   46 inline_element: italic .
+   53 inline_text_item: uri_text_item .
 
-    $default  reduce using rule 46 (inline_element)
+    $default  reduce using rule 53 (inline_text_item)
 
 
 state 36
 
-   16 codeblock: lf_indents . code_text LINEBREAK
+   48 inline_element: inlinecode .
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    $default  reduce using rule 48 (inline_element)
+
+
+state 37
+
+   45 inline_element: italic .
+
+    $default  reduce using rule 45 (inline_element)
+
+
+state 38
+
+   17 codeblock: lf_indents . code_text LINEBREAK
+
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -1034,75 +1053,77 @@ state 36
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 97
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
-
-
-state 37
-
-   70 lf_indents: lf_indents2 .
-
-    $default  reduce using rule 70 (lf_indents)
-
-
-state 38
-
-   72 lf_indents2: lf_indents3 .
-
-    $default  reduce using rule 72 (lf_indents2)
+    uri_text_item          go to state 35
 
 
 state 39
 
-   74 lf_indents3: lf_indents4 .
+   69 lf_indents: lf_indents2 .
 
-    $default  reduce using rule 74 (lf_indents3)
+    $default  reduce using rule 69 (lf_indents)
 
 
 state 40
 
-   76 lf_indents4: lf_indents5 .
+   71 lf_indents2: lf_indents3 .
 
-    $default  reduce using rule 76 (lf_indents4)
+    $default  reduce using rule 71 (lf_indents2)
 
 
 state 41
 
-   48 inline_element: linethrough .
+   73 lf_indents3: lf_indents4 .
 
-    $default  reduce using rule 48 (inline_element)
+    $default  reduce using rule 73 (lf_indents3)
 
 
 state 42
 
-   98 lines: line .
+   75 lf_indents4: lf_indents5 .
 
-    $default  reduce using rule 98 (lines)
+    $default  reduce using rule 75 (lf_indents4)
 
 
 state 43
 
-   99 lines: lines . line
+   47 inline_element: linethrough .
+
+    $default  reduce using rule 47 (inline_element)
+
+
+state 44
+
+   97 lines: line .
+
+    $default  reduce using rule 97 (lines)
+
+
+state 45
+
+   98 lines: lines . line
   106 paragraph: lines .
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
+    SIMPLELINK              [reduce using rule 106 (paragraph)]
     ESCAPEDCHAR             [reduce using rule 106 (paragraph)]
     BACKTICK                [reduce using rule 106 (paragraph)]
     DOUBLEASTERISK          [reduce using rule 106 (paragraph)]
@@ -1116,37 +1137,37 @@ state 43
     TEXT                    [reduce using rule 106 (paragraph)]
     $default                reduce using rule 106 (paragraph)
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 100
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
-state 44
+state 46
 
-   44 inline_element: link .
+   43 inline_element: link .
 
-    $default  reduce using rule 44 (inline_element)
+    $default  reduce using rule 43 (inline_element)
 
 
-state 45
+state 47
 
     3 block: paragraph .
 
     $default  reduce using rule 3 (block)
 
 
-state 46
+state 48
 
-    8 block: quote_block .
+    9 block: quote_block .
   107 quote_block: quote_block . quote_header
   108            | quote_block . quote_unorderlist_0
   109            | quote_block . quote_paragraph
@@ -1159,13 +1180,13 @@ state 46
     LF_Q_INDENT3  shift, and go to state 105
     LF_Q          shift, and go to state 106
 
-    LF_Q_H        [reduce using rule 8 (block)]
-    LF_Q_UL       [reduce using rule 8 (block)]
-    LF_Q_INDENT   [reduce using rule 8 (block)]
-    LF_Q_INDENT2  [reduce using rule 8 (block)]
-    LF_Q_INDENT3  [reduce using rule 8 (block)]
-    LF_Q          [reduce using rule 8 (block)]
-    $default      reduce using rule 8 (block)
+    LF_Q_H        [reduce using rule 9 (block)]
+    LF_Q_UL       [reduce using rule 9 (block)]
+    LF_Q_INDENT   [reduce using rule 9 (block)]
+    LF_Q_INDENT2  [reduce using rule 9 (block)]
+    LF_Q_INDENT3  [reduce using rule 9 (block)]
+    LF_Q          [reduce using rule 9 (block)]
+    $default      reduce using rule 9 (block)
 
     lf_q_indents         go to state 107
     lf_q_indents2        go to state 108
@@ -1176,16 +1197,16 @@ state 46
     quote_unorderlist_0  go to state 113
 
 
-state 47
+state 49
 
-   47 inline_element: strong .
+   46 inline_element: strong .
 
-    $default  reduce using rule 47 (inline_element)
+    $default  reduce using rule 46 (inline_element)
 
 
-state 48
+state 50
 
-    5 block: unorderlist_0 .
+    6 block: unorderlist_0 .
   133 unorderlist_0: unorderlist_0 . LF_UL line
   134              | unorderlist_0 . LF_INDENT line
   135              | unorderlist_0 . lf_indents2_codeblock
@@ -1199,37 +1220,37 @@ state 48
     LF_INDENT4    shift, and go to state 12
     LF_INDENT5    shift, and go to state 13
 
-    LF_UL       [reduce using rule 5 (block)]
-    LF_INDENT   [reduce using rule 5 (block)]
-    LF_INDENT2  [reduce using rule 5 (block)]
-    LF_INDENT3  [reduce using rule 5 (block)]
-    LF_INDENT4  [reduce using rule 5 (block)]
-    LF_INDENT5  [reduce using rule 5 (block)]
-    $default    reduce using rule 5 (block)
+    LF_UL       [reduce using rule 6 (block)]
+    LF_INDENT   [reduce using rule 6 (block)]
+    LF_INDENT2  [reduce using rule 6 (block)]
+    LF_INDENT3  [reduce using rule 6 (block)]
+    LF_INDENT4  [reduce using rule 6 (block)]
+    LF_INDENT5  [reduce using rule 6 (block)]
+    $default    reduce using rule 6 (block)
 
     lf_indents2            go to state 117
-    lf_indents3            go to state 38
-    lf_indents4            go to state 39
-    lf_indents5            go to state 40
+    lf_indents3            go to state 40
+    lf_indents4            go to state 41
+    lf_indents5            go to state 42
     lf_indents2_codeblock  go to state 118
     unorderlist_1          go to state 119
 
 
-state 49
+state 51
 
-    7 block: table .
+    8 block: table .
 
-    $default  reduce using rule 7 (block)
+    $default  reduce using rule 8 (block)
 
 
-state 50
+state 52
 
   147 table: table_body .
 
     $default  reduce using rule 147 (table)
 
 
-state 51
+state 53
 
   146 table: table_head . table_body
 
@@ -1237,10 +1258,10 @@ state 51
 
     table_body  go to state 120
     table_row   go to state 121
-    table_rows  go to state 53
+    table_rows  go to state 55
 
 
-state 52
+state 54
 
   152 table_head: table_row . table_head_separator
   155 table_rows: table_row .
@@ -1253,7 +1274,7 @@ state 52
     table_separator_row   go to state 124
 
 
-state 53
+state 55
 
   148 table_body: table_rows .
   156 table_rows: table_rows . table_row
@@ -1266,212 +1287,198 @@ state 53
     table_row  go to state 125
 
 
-state 54
+state 56
 
-   18 header: LF_H inline_elements . LINEBREAK
-   50 inline_elements: inline_elements . inline_element
+   19 header: LF_H inline_elements . LINEBREAK
+   49 inline_elements: inline_elements . inline_element
 
     LINEBREAK               shift, and go to state 126
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
+    image             go to state 30
     inline_element    go to state 94
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    link              go to state 44
-    strong            go to state 47
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    link              go to state 46
+    strong            go to state 49
 
 
-state 55
+state 57
 
   132 unorderlist_0: LF_UL line .
 
     $default  reduce using rule 132 (unorderlist_0)
 
 
-state 56
+state 58
 
   149 table_cell: line . VERTICAL
 
     VERTICAL  shift, and go to state 127
 
 
-state 57
+state 59
 
   150 table_cells: table_cell .
 
     $default  reduce using rule 150 (table_cells)
 
 
-state 58
+state 60
 
   151 table_cells: table_cells . table_cell
   154 table_row: LF_VERTICAL table_cells . LINEBREAK
 
     LINEBREAK               shift, and go to state 128
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    line              go to state 56
-    link              go to state 44
-    strong            go to state 47
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    line              go to state 58
+    link              go to state 46
+    strong            go to state 49
     table_cell        go to state 129
-
-
-state 59
-
-   62 inlinecode: BACKTICK error .
-
-    $default  reduce using rule 62 (inlinecode)
-
-
-state 60
-
-   28 inline_code_text_item: LESSTHAN .
-
-    $default  reduce using rule 28 (inline_code_text_item)
 
 
 state 61
 
-   29 inline_code_text_item: LARGERTHAN .
+   61 inlinecode: BACKTICK error .
 
-    $default  reduce using rule 29 (inline_code_text_item)
+    $default  reduce using rule 61 (inlinecode)
 
 
 state 62
 
-   42 inline_code_text_item: TRIPLEBACKTICK .
-
-    $default  reduce using rule 42 (inline_code_text_item)
-
-
-state 63
-
-   41 inline_code_text_item: VERTICAL .
+   41 inline_code_text_item: TRIPLEBACKTICK .
 
     $default  reduce using rule 41 (inline_code_text_item)
 
 
-state 64
+state 63
 
-   30 inline_code_text_item: TRIPLEASTERISK .
-
-    $default  reduce using rule 30 (inline_code_text_item)
-
-
-state 65
-
-   32 inline_code_text_item: DOUBLEASTERISK .
-
-    $default  reduce using rule 32 (inline_code_text_item)
-
-
-state 66
-
-   34 inline_code_text_item: ASTERISK .
-
-    $default  reduce using rule 34 (inline_code_text_item)
-
-
-state 67
-
-   31 inline_code_text_item: TRIPLEUNDERSCORE .
-
-    $default  reduce using rule 31 (inline_code_text_item)
-
-
-state 68
-
-   33 inline_code_text_item: DOUBLEUNDERSCORE .
-
-    $default  reduce using rule 33 (inline_code_text_item)
-
-
-state 69
-
-   35 inline_code_text_item: UNDERSCORE .
-
-    $default  reduce using rule 35 (inline_code_text_item)
-
-
-state 70
-
-   37 inline_code_text_item: EXCLAMATION_LEFTSQUARE .
-
-    $default  reduce using rule 37 (inline_code_text_item)
-
-
-state 71
-
-   38 inline_code_text_item: LEFTSQUARE .
-
-    $default  reduce using rule 38 (inline_code_text_item)
-
-
-state 72
-
-   39 inline_code_text_item: RIGHTSQUARE_LEFTBRACKET .
-
-    $default  reduce using rule 39 (inline_code_text_item)
-
-
-state 73
-
-   40 inline_code_text_item: RIGHTBRACKET .
+   40 inline_code_text_item: VERTICAL .
 
     $default  reduce using rule 40 (inline_code_text_item)
 
 
-state 74
+state 64
 
-   36 inline_code_text_item: DOUBLETILDE .
+   29 inline_code_text_item: TRIPLEASTERISK .
+
+    $default  reduce using rule 29 (inline_code_text_item)
+
+
+state 65
+
+   31 inline_code_text_item: DOUBLEASTERISK .
+
+    $default  reduce using rule 31 (inline_code_text_item)
+
+
+state 66
+
+   33 inline_code_text_item: ASTERISK .
+
+    $default  reduce using rule 33 (inline_code_text_item)
+
+
+state 67
+
+   30 inline_code_text_item: TRIPLEUNDERSCORE .
+
+    $default  reduce using rule 30 (inline_code_text_item)
+
+
+state 68
+
+   32 inline_code_text_item: DOUBLEUNDERSCORE .
+
+    $default  reduce using rule 32 (inline_code_text_item)
+
+
+state 69
+
+   34 inline_code_text_item: UNDERSCORE .
+
+    $default  reduce using rule 34 (inline_code_text_item)
+
+
+state 70
+
+   36 inline_code_text_item: EXCLAMATION_LEFTSQUARE .
 
     $default  reduce using rule 36 (inline_code_text_item)
 
 
+state 71
+
+   37 inline_code_text_item: LEFTSQUARE .
+
+    $default  reduce using rule 37 (inline_code_text_item)
+
+
+state 72
+
+   38 inline_code_text_item: RIGHTSQUARE_LEFTBRACKET .
+
+    $default  reduce using rule 38 (inline_code_text_item)
+
+
+state 73
+
+   39 inline_code_text_item: RIGHTBRACKET .
+
+    $default  reduce using rule 39 (inline_code_text_item)
+
+
+state 74
+
+   35 inline_code_text_item: DOUBLETILDE .
+
+    $default  reduce using rule 35 (inline_code_text_item)
+
+
 state 75
 
-   25 inline_code_text: inline_code_text . inline_code_text_item
-   60 inlinecode: BACKTICK inline_code_text . BACKTICK
-   61           | BACKTICK inline_code_text . error
+   26 inline_code_text: inline_code_text . inline_code_text_item
+   59 inlinecode: BACKTICK inline_code_text . BACKTICK
+   60           | BACKTICK inline_code_text . error
 
     error                    shift, and go to state 130
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 131
     VERTICAL                 shift, and go to state 63
@@ -1486,26 +1493,26 @@ state 75
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     inline_code_text_item  go to state 132
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 76
 
-   26 inline_code_text: inline_code_text_item .
+   27 inline_code_text: inline_code_text_item .
 
-    $default  reduce using rule 26 (inline_code_text)
+    $default  reduce using rule 27 (inline_code_text)
 
 
 state 77
 
-   27 inline_code_text_item: inline_text_item .
+   28 inline_code_text_item: inline_text_item .
 
-    $default  reduce using rule 27 (inline_code_text_item)
+    $default  reduce using rule 28 (inline_code_text_item)
 
 
 state 78
@@ -1517,41 +1524,41 @@ state 78
 
 state 79
 
-   52 inline_text: inline_text . inline_text_item
+   51 inline_text: inline_text . inline_text_item
   126 strong: DOUBLEASTERISK inline_text . DOUBLEASTERISK
   127       | DOUBLEASTERISK inline_text . error
 
     error           shift, and go to state 133
-    ESCAPEDCHAR     shift, and go to state 14
+    ESCAPEDCHAR     shift, and go to state 16
     DOUBLEASTERISK  shift, and go to state 134
-    SPACE           shift, and go to state 23
-    TEXT            shift, and go to state 24
+    SPACE           shift, and go to state 25
+    TEXT            shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 80
 
-   65 italic: ASTERISK error .
+   64 italic: ASTERISK error .
 
-    $default  reduce using rule 65 (italic)
+    $default  reduce using rule 64 (italic)
 
 
 state 81
 
-   52 inline_text: inline_text . inline_text_item
-   63 italic: ASTERISK inline_text . ASTERISK
-   64       | ASTERISK inline_text . error
+   51 inline_text: inline_text . inline_text_item
+   62 italic: ASTERISK inline_text . ASTERISK
+   63       | ASTERISK inline_text . error
 
     error        shift, and go to state 135
-    ESCAPEDCHAR  shift, and go to state 14
+    ESCAPEDCHAR  shift, and go to state 16
     ASTERISK     shift, and go to state 136
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 82
@@ -1563,125 +1570,123 @@ state 82
 
 state 83
 
-   52 inline_text: inline_text . inline_text_item
+   51 inline_text: inline_text . inline_text_item
   129 strong: DOUBLEUNDERSCORE inline_text . DOUBLEUNDERSCORE
   130       | DOUBLEUNDERSCORE inline_text . error
 
     error             shift, and go to state 137
-    ESCAPEDCHAR       shift, and go to state 14
+    ESCAPEDCHAR       shift, and go to state 16
     DOUBLEUNDERSCORE  shift, and go to state 138
-    SPACE             shift, and go to state 23
-    TEXT              shift, and go to state 24
+    SPACE             shift, and go to state 25
+    TEXT              shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 84
 
-   68 italic: UNDERSCORE error .
+   67 italic: UNDERSCORE error .
 
-    $default  reduce using rule 68 (italic)
+    $default  reduce using rule 67 (italic)
 
 
 state 85
 
-   52 inline_text: inline_text . inline_text_item
-   66 italic: UNDERSCORE inline_text . UNDERSCORE
-   67       | UNDERSCORE inline_text . error
+   51 inline_text: inline_text . inline_text_item
+   65 italic: UNDERSCORE inline_text . UNDERSCORE
+   66       | UNDERSCORE inline_text . error
 
     error        shift, and go to state 139
-    ESCAPEDCHAR  shift, and go to state 14
+    ESCAPEDCHAR  shift, and go to state 16
     UNDERSCORE   shift, and go to state 140
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 86
 
-   24 image: EXCLAMATION_LEFTSQUARE error .
+   25 image: EXCLAMATION_LEFTSQUARE error .
 
-    $default  reduce using rule 24 (image)
+    $default  reduce using rule 25 (image)
 
 
 state 87
 
-   19 image: EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
-   20      | EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
-   21      | EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text error
-   22      | EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET error
-   23      | EXCLAMATION_LEFTSQUARE inline_text . error
-   52 inline_text: inline_text . inline_text_item
+   20 image: EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
+   21      | EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
+   22      | EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text error
+   23      | EXCLAMATION_LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET error
+   24      | EXCLAMATION_LEFTSQUARE inline_text . error
+   51 inline_text: inline_text . inline_text_item
 
     error                    shift, and go to state 141
-    ESCAPEDCHAR              shift, and go to state 14
+    ESCAPEDCHAR              shift, and go to state 16
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 142
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 88
 
-  105 link: LEFTSQUARE error .
+  104 link: LEFTSQUARE error .
 
-    $default  reduce using rule 105 (link)
+    $default  reduce using rule 104 (link)
 
 
 state 89
 
-   52 inline_text: inline_text . inline_text_item
-  100 link: LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
-  101     | LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
-  102     | LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text error
-  103     | LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET error
-  104     | LEFTSQUARE inline_text . error
+   51 inline_text: inline_text . inline_text_item
+   99 link: LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET
+  100     | LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET
+  101     | LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET uri_text error
+  102     | LEFTSQUARE inline_text . RIGHTSQUARE_LEFTBRACKET error
+  103     | LEFTSQUARE inline_text . error
 
     error                    shift, and go to state 143
-    ESCAPEDCHAR              shift, and go to state 14
+    ESCAPEDCHAR              shift, and go to state 16
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 144
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 90
 
-   95 linethrough: DOUBLETILDE error .
+   94 linethrough: DOUBLETILDE error .
 
-    $default  reduce using rule 95 (linethrough)
+    $default  reduce using rule 94 (linethrough)
 
 
 state 91
 
-   52 inline_text: inline_text . inline_text_item
-   93 linethrough: DOUBLETILDE inline_text . DOUBLETILDE
-   94            | DOUBLETILDE inline_text . error
+   51 inline_text: inline_text . inline_text_item
+   92 linethrough: DOUBLETILDE inline_text . DOUBLETILDE
+   93            | DOUBLETILDE inline_text . error
 
     error        shift, and go to state 145
-    ESCAPEDCHAR  shift, and go to state 14
+    ESCAPEDCHAR  shift, and go to state 16
     DOUBLETILDE  shift, and go to state 146
-    SPACE        shift, and go to state 23
-    TEXT         shift, and go to state 24
+    SPACE        shift, and go to state 25
+    TEXT         shift, and go to state 26
 
     inline_text_item  go to state 95
-    uri_text_item     go to state 33
+    uri_text_item     go to state 35
 
 
 state 92
 
-   17 codeblock: codeblock lf_indents . code_text LINEBREAK
+   18 codeblock: codeblock lf_indents . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -1696,53 +1701,51 @@ state 92
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 147
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 93
 
-   96 line: inline_elements LINEBREAK .
+   95 line: inline_elements LINEBREAK .
 
-    $default  reduce using rule 96 (line)
+    $default  reduce using rule 95 (line)
 
 
 state 94
 
-   50 inline_elements: inline_elements inline_element .
+   49 inline_elements: inline_elements inline_element .
 
-    $default  reduce using rule 50 (inline_elements)
+    $default  reduce using rule 49 (inline_elements)
 
 
 state 95
 
-   52 inline_text: inline_text inline_text_item .
+   51 inline_text: inline_text inline_text_item .
 
-    $default  reduce using rule 52 (inline_text)
+    $default  reduce using rule 51 (inline_text)
 
 
 state 96
 
-   15 code_text_item: BACKTICK .
+   16 code_text_item: BACKTICK .
 
-    $default  reduce using rule 15 (code_text_item)
+    $default  reduce using rule 16 (code_text_item)
 
 
 state 97
 
-   12 code_text: code_text . code_text_item
-   16 codeblock: lf_indents code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   17 codeblock: lf_indents code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 148
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -1757,153 +1760,154 @@ state 97
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 98
 
-   13 code_text: code_text_item .
+   14 code_text: code_text_item .
 
-    $default  reduce using rule 13 (code_text)
+    $default  reduce using rule 14 (code_text)
 
 
 state 99
 
-   14 code_text_item: inline_code_text_item .
+   15 code_text_item: inline_code_text_item .
 
-    $default  reduce using rule 14 (code_text_item)
+    $default  reduce using rule 15 (code_text_item)
 
 
 state 100
 
-   99 lines: lines line .
+   98 lines: lines line .
 
-    $default  reduce using rule 99 (lines)
+    $default  reduce using rule 98 (lines)
 
 
 state 101
 
   114 quote_header: LF_Q_H . inline_elements LINEBREAK
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
+    image             go to state 30
+    inline_element    go to state 31
     inline_elements   go to state 150
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    link              go to state 44
-    strong            go to state 47
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    link              go to state 46
+    strong            go to state 49
 
 
 state 102
 
   117 quote_unorderlist_0: LF_Q_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 151
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 103
 
-   84 lf_q_indents: LF_Q_INDENT .
+   83 lf_q_indents: LF_Q_INDENT .
 
-    $default  reduce using rule 84 (lf_q_indents)
+    $default  reduce using rule 83 (lf_q_indents)
 
 
 state 104
 
-   86 lf_q_indents2: LF_Q_INDENT2 .
+   85 lf_q_indents2: LF_Q_INDENT2 .
 
-    $default  reduce using rule 86 (lf_q_indents2)
+    $default  reduce using rule 85 (lf_q_indents2)
 
 
 state 105
 
-   88 lf_q_indents3: LF_Q_INDENT3 .
+   87 lf_q_indents3: LF_Q_INDENT3 .
 
-    $default  reduce using rule 88 (lf_q_indents3)
+    $default  reduce using rule 87 (lf_q_indents3)
 
 
 state 106
 
   115 quote_paragraph: LF_Q . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 152
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 107
 
   112 quote_codeblock: lf_q_indents . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -1918,28 +1922,28 @@ state 107
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 153
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 108
 
-   85 lf_q_indents: lf_q_indents2 .
+   84 lf_q_indents: lf_q_indents2 .
 
-    $default  reduce using rule 85 (lf_q_indents)
+    $default  reduce using rule 84 (lf_q_indents)
 
 
 state 109
 
-   87 lf_q_indents2: lf_q_indents3 .
+   86 lf_q_indents2: lf_q_indents3 .
 
-    $default  reduce using rule 87 (lf_q_indents2)
+    $default  reduce using rule 86 (lf_q_indents2)
 
 
 state 110
@@ -2009,99 +2013,100 @@ state 114
 
   133 unorderlist_0: unorderlist_0 LF_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 162
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 115
 
   137 unorderlist_1: LF_INDENT_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 163
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 116
 
   134 unorderlist_0: unorderlist_0 LF_INDENT . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 164
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 117
 
-   78 lf_indents2_codeblock: lf_indents2 . code_text LINEBREAK
+   77 lf_indents2_codeblock: lf_indents2 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2116,19 +2121,19 @@ state 117
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 165
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 118
 
-   79 lf_indents2_codeblock: lf_indents2_codeblock . lf_indents2 code_text LINEBREAK
+   78 lf_indents2_codeblock: lf_indents2_codeblock . lf_indents2 code_text LINEBREAK
   135 unorderlist_0: unorderlist_0 lf_indents2_codeblock .
 
     LF_INDENT2  shift, and go to state 10
@@ -2143,9 +2148,9 @@ state 118
     $default    reduce using rule 135 (unorderlist_0)
 
     lf_indents2  go to state 166
-    lf_indents3  go to state 38
-    lf_indents4  go to state 39
-    lf_indents5  go to state 40
+    lf_indents3  go to state 40
+    lf_indents4  go to state 41
+    lf_indents5  go to state 42
 
 
 state 119
@@ -2171,8 +2176,8 @@ state 119
     $default      reduce using rule 136 (unorderlist_0)
 
     lf_indents3            go to state 170
-    lf_indents4            go to state 39
-    lf_indents5            go to state 40
+    lf_indents4            go to state 41
+    lf_indents5            go to state 42
     lf_indents3_codeblock  go to state 171
     unorderlist_2          go to state 172
 
@@ -2228,9 +2233,9 @@ state 125
 
 state 126
 
-   18 header: LF_H inline_elements LINEBREAK .
+   19 header: LF_H inline_elements LINEBREAK .
 
-    $default  reduce using rule 18 (header)
+    $default  reduce using rule 19 (header)
 
 
 state 127
@@ -2256,23 +2261,23 @@ state 129
 
 state 130
 
-   61 inlinecode: BACKTICK inline_code_text error .
-
-    $default  reduce using rule 61 (inlinecode)
-
-
-state 131
-
-   60 inlinecode: BACKTICK inline_code_text BACKTICK .
+   60 inlinecode: BACKTICK inline_code_text error .
 
     $default  reduce using rule 60 (inlinecode)
 
 
+state 131
+
+   59 inlinecode: BACKTICK inline_code_text BACKTICK .
+
+    $default  reduce using rule 59 (inlinecode)
+
+
 state 132
 
-   25 inline_code_text: inline_code_text inline_code_text_item .
+   26 inline_code_text: inline_code_text inline_code_text_item .
 
-    $default  reduce using rule 25 (inline_code_text)
+    $default  reduce using rule 26 (inline_code_text)
 
 
 state 133
@@ -2291,16 +2296,16 @@ state 134
 
 state 135
 
-   64 italic: ASTERISK inline_text error .
+   63 italic: ASTERISK inline_text error .
 
-    $default  reduce using rule 64 (italic)
+    $default  reduce using rule 63 (italic)
 
 
 state 136
 
-   63 italic: ASTERISK inline_text ASTERISK .
+   62 italic: ASTERISK inline_text ASTERISK .
 
-    $default  reduce using rule 63 (italic)
+    $default  reduce using rule 62 (italic)
 
 
 state 137
@@ -2319,34 +2324,34 @@ state 138
 
 state 139
 
-   67 italic: UNDERSCORE inline_text error .
-
-    $default  reduce using rule 67 (italic)
-
-
-state 140
-
-   66 italic: UNDERSCORE inline_text UNDERSCORE .
+   66 italic: UNDERSCORE inline_text error .
 
     $default  reduce using rule 66 (italic)
 
 
+state 140
+
+   65 italic: UNDERSCORE inline_text UNDERSCORE .
+
+    $default  reduce using rule 65 (italic)
+
+
 state 141
 
-   23 image: EXCLAMATION_LEFTSQUARE inline_text error .
+   24 image: EXCLAMATION_LEFTSQUARE inline_text error .
 
-    $default  reduce using rule 23 (image)
+    $default  reduce using rule 24 (image)
 
 
 state 142
 
-   19 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text RIGHTBRACKET
-   20      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text SPACE uri_text RIGHTBRACKET
-   21      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text error
-   22      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . error
+   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text RIGHTBRACKET
+   21      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text SPACE uri_text RIGHTBRACKET
+   22      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text error
+   23      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . error
 
     error  shift, and go to state 180
-    TEXT   shift, and go to state 24
+    TEXT   shift, and go to state 26
 
     uri_text       go to state 181
     uri_text_item  go to state 182
@@ -2354,20 +2359,20 @@ state 142
 
 state 143
 
-  104 link: LEFTSQUARE inline_text error .
+  103 link: LEFTSQUARE inline_text error .
 
-    $default  reduce using rule 104 (link)
+    $default  reduce using rule 103 (link)
 
 
 state 144
 
-  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text RIGHTBRACKET
-  101     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text SPACE uri_text RIGHTBRACKET
-  102     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text error
-  103     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . error
+   99 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text RIGHTBRACKET
+  100     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text SPACE uri_text RIGHTBRACKET
+  101     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . uri_text error
+  102     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET . error
 
     error  shift, and go to state 183
-    TEXT   shift, and go to state 24
+    TEXT   shift, and go to state 26
 
     uri_text       go to state 184
     uri_text_item  go to state 182
@@ -2375,27 +2380,25 @@ state 144
 
 state 145
 
-   94 linethrough: DOUBLETILDE inline_text error .
-
-    $default  reduce using rule 94 (linethrough)
-
-
-state 146
-
-   93 linethrough: DOUBLETILDE inline_text DOUBLETILDE .
+   93 linethrough: DOUBLETILDE inline_text error .
 
     $default  reduce using rule 93 (linethrough)
 
 
+state 146
+
+   92 linethrough: DOUBLETILDE inline_text DOUBLETILDE .
+
+    $default  reduce using rule 92 (linethrough)
+
+
 state 147
 
-   12 code_text: code_text . code_text_item
-   17 codeblock: codeblock lf_indents code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   18 codeblock: codeblock lf_indents code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 185
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2410,57 +2413,58 @@ state 147
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 148
 
-   16 codeblock: lf_indents code_text LINEBREAK .
+   17 codeblock: lf_indents code_text LINEBREAK .
 
-    $default  reduce using rule 16 (codeblock)
+    $default  reduce using rule 17 (codeblock)
 
 
 state 149
 
-   12 code_text: code_text code_text_item .
+   13 code_text: code_text code_text_item .
 
-    $default  reduce using rule 12 (code_text)
+    $default  reduce using rule 13 (code_text)
 
 
 state 150
 
-   50 inline_elements: inline_elements . inline_element
+   49 inline_elements: inline_elements . inline_element
   114 quote_header: LF_Q_H inline_elements . LINEBREAK
 
     LINEBREAK               shift, and go to state 186
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
+    image             go to state 30
     inline_element    go to state 94
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
-    link              go to state 44
-    strong            go to state 47
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
+    link              go to state 46
+    strong            go to state 49
 
 
 state 151
@@ -2479,13 +2483,11 @@ state 152
 
 state 153
 
-   12 code_text: code_text . code_text_item
+   13 code_text: code_text . code_text_item
   112 quote_codeblock: lf_q_indents code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 187
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2500,22 +2502,20 @@ state 153
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 154
 
   113 quote_codeblock: quote_codeblock lf_q_indents . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2530,143 +2530,145 @@ state 154
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 188
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 155
 
   116 quote_paragraph: quote_paragraph LF_Q . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 189
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 156
 
   118 quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 190
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 157
 
   122 quote_unorderlist_1: LF_Q_INDENT_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 191
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 158
 
   119 quote_unorderlist_0: quote_unorderlist_0 LF_Q_INDENT . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 192
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 159
 
-   89 lf_q_indents2_codeblock: lf_q_indents2 . code_text LINEBREAK
+   88 lf_q_indents2_codeblock: lf_q_indents2 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2681,19 +2683,19 @@ state 159
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 193
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 160
 
-   90 lf_q_indents2_codeblock: lf_q_indents2_codeblock . lf_q_indents2 code_text LINEBREAK
+   89 lf_q_indents2_codeblock: lf_q_indents2_codeblock . lf_q_indents2 code_text LINEBREAK
   120 quote_unorderlist_0: quote_unorderlist_0 lf_q_indents2_codeblock .
 
     LF_Q_INDENT2  shift, and go to state 104
@@ -2750,13 +2752,11 @@ state 164
 
 state 165
 
-   12 code_text: code_text . code_text_item
-   78 lf_indents2_codeblock: lf_indents2 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   77 lf_indents2_codeblock: lf_indents2 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 199
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2771,22 +2771,20 @@ state 165
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 166
 
-   79 lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 . code_text LINEBREAK
+   78 lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2801,113 +2799,114 @@ state 166
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 200
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 167
 
   138 unorderlist_1: unorderlist_1 LF_INDENT_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 201
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 168
 
   142 unorderlist_2: LF_INDENT2_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 202
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 169
 
   139 unorderlist_1: unorderlist_1 LF_INDENT2 . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 203
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 170
 
-   80 lf_indents3_codeblock: lf_indents3 . code_text LINEBREAK
+   79 lf_indents3_codeblock: lf_indents3 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -2922,19 +2921,19 @@ state 170
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 204
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 171
 
-   81 lf_indents3_codeblock: lf_indents3_codeblock . lf_indents3 code_text LINEBREAK
+   80 lf_indents3_codeblock: lf_indents3_codeblock . lf_indents3 code_text LINEBREAK
   140 unorderlist_1: unorderlist_1 lf_indents3_codeblock .
 
     LF_INDENT3  shift, and go to state 11
@@ -2947,8 +2946,8 @@ state 171
     $default    reduce using rule 140 (unorderlist_1)
 
     lf_indents3  go to state 205
-    lf_indents4  go to state 39
-    lf_indents5  go to state 40
+    lf_indents4  go to state 41
+    lf_indents5  go to state 42
 
 
 state 172
@@ -2970,7 +2969,7 @@ state 172
     $default       reduce using rule 141 (unorderlist_1)
 
     lf_indents4            go to state 208
-    lf_indents5            go to state 40
+    lf_indents5            go to state 42
     lf_indents4_codeblock  go to state 209
 
 
@@ -3033,60 +3032,60 @@ state 179
 
 state 180
 
-   22 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error .
+   23 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error .
 
-    $default  reduce using rule 22 (image)
+    $default  reduce using rule 23 (image)
 
 
 state 181
 
-   19 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . RIGHTBRACKET
-   20      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . SPACE uri_text RIGHTBRACKET
-   21      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . error
-   57 uri_text: uri_text . uri_text_item
+   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . RIGHTBRACKET
+   21      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . SPACE uri_text RIGHTBRACKET
+   22      | EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . error
+   56 uri_text: uri_text . uri_text_item
 
     error         shift, and go to state 212
     RIGHTBRACKET  shift, and go to state 213
     SPACE         shift, and go to state 214
-    TEXT          shift, and go to state 24
+    TEXT          shift, and go to state 26
 
     uri_text_item  go to state 215
 
 
 state 182
 
-   58 uri_text: uri_text_item .
+   57 uri_text: uri_text_item .
 
-    $default  reduce using rule 58 (uri_text)
+    $default  reduce using rule 57 (uri_text)
 
 
 state 183
 
-  103 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error .
+  102 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET error .
 
-    $default  reduce using rule 103 (link)
+    $default  reduce using rule 102 (link)
 
 
 state 184
 
-   57 uri_text: uri_text . uri_text_item
-  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . RIGHTBRACKET
-  101     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . SPACE uri_text RIGHTBRACKET
-  102     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . error
+   56 uri_text: uri_text . uri_text_item
+   99 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . RIGHTBRACKET
+  100     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . SPACE uri_text RIGHTBRACKET
+  101     | LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text . error
 
     error         shift, and go to state 216
     RIGHTBRACKET  shift, and go to state 217
     SPACE         shift, and go to state 218
-    TEXT          shift, and go to state 24
+    TEXT          shift, and go to state 26
 
     uri_text_item  go to state 215
 
 
 state 185
 
-   17 codeblock: codeblock lf_indents code_text LINEBREAK .
+   18 codeblock: codeblock lf_indents code_text LINEBREAK .
 
-    $default  reduce using rule 17 (codeblock)
+    $default  reduce using rule 18 (codeblock)
 
 
 state 186
@@ -3105,13 +3104,11 @@ state 187
 
 state 188
 
-   12 code_text: code_text . code_text_item
+   13 code_text: code_text . code_text_item
   113 quote_codeblock: quote_codeblock lf_q_indents code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 219
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3126,13 +3123,13 @@ state 188
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 189
@@ -3165,13 +3162,11 @@ state 192
 
 state 193
 
-   12 code_text: code_text . code_text_item
-   89 lf_q_indents2_codeblock: lf_q_indents2 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   88 lf_q_indents2_codeblock: lf_q_indents2 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 220
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3186,22 +3181,20 @@ state 193
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 194
 
-   90 lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 . code_text LINEBREAK
+   89 lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3216,83 +3209,83 @@ state 194
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 221
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 195
 
   123 quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 222
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 196
 
   124 quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT2 . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 223
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 197
 
-   91 lf_q_indents3_codeblock: lf_q_indents3 . code_text LINEBREAK
+   90 lf_q_indents3_codeblock: lf_q_indents3 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3307,19 +3300,19 @@ state 197
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 224
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 198
 
-   92 lf_q_indents3_codeblock: lf_q_indents3_codeblock . lf_q_indents3 code_text LINEBREAK
+   91 lf_q_indents3_codeblock: lf_q_indents3_codeblock . lf_q_indents3 code_text LINEBREAK
   125 quote_unorderlist_1: quote_unorderlist_1 lf_q_indents3_codeblock .
 
     LF_Q_INDENT3  shift, and go to state 105
@@ -3332,20 +3325,18 @@ state 198
 
 state 199
 
-   78 lf_indents2_codeblock: lf_indents2 code_text LINEBREAK .
+   77 lf_indents2_codeblock: lf_indents2 code_text LINEBREAK .
 
-    $default  reduce using rule 78 (lf_indents2_codeblock)
+    $default  reduce using rule 77 (lf_indents2_codeblock)
 
 
 state 200
 
-   12 code_text: code_text . code_text_item
-   79 lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   78 lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 226
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3360,13 +3351,13 @@ state 200
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 201
@@ -3392,13 +3383,11 @@ state 203
 
 state 204
 
-   12 code_text: code_text . code_text_item
-   80 lf_indents3_codeblock: lf_indents3 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   79 lf_indents3_codeblock: lf_indents3 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 227
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3413,22 +3402,20 @@ state 204
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 205
 
-   81 lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 . code_text LINEBREAK
+   80 lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3443,83 +3430,83 @@ state 205
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 228
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 206
 
   143 unorderlist_2: unorderlist_2 LF_INDENT2_UL . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 229
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 207
 
   144 unorderlist_2: unorderlist_2 LF_INDENT3 . line
 
-    ESCAPEDCHAR             shift, and go to state 14
-    BACKTICK                shift, and go to state 15
-    DOUBLEASTERISK          shift, and go to state 16
-    ASTERISK                shift, and go to state 17
-    DOUBLEUNDERSCORE        shift, and go to state 18
-    UNDERSCORE              shift, and go to state 19
-    EXCLAMATION_LEFTSQUARE  shift, and go to state 20
-    LEFTSQUARE              shift, and go to state 21
-    DOUBLETILDE             shift, and go to state 22
-    SPACE                   shift, and go to state 23
-    TEXT                    shift, and go to state 24
+    SIMPLELINK              shift, and go to state 14
+    ESCAPEDCHAR             shift, and go to state 16
+    BACKTICK                shift, and go to state 17
+    DOUBLEASTERISK          shift, and go to state 18
+    ASTERISK                shift, and go to state 19
+    DOUBLEUNDERSCORE        shift, and go to state 20
+    UNDERSCORE              shift, and go to state 21
+    EXCLAMATION_LEFTSQUARE  shift, and go to state 22
+    LEFTSQUARE              shift, and go to state 23
+    DOUBLETILDE             shift, and go to state 24
+    SPACE                   shift, and go to state 25
+    TEXT                    shift, and go to state 26
 
-    image             go to state 28
-    inline_element    go to state 29
-    inline_elements   go to state 30
-    inline_text       go to state 31
-    inline_text_item  go to state 32
-    uri_text_item     go to state 33
-    inlinecode        go to state 34
-    italic            go to state 35
-    linethrough       go to state 41
+    image             go to state 30
+    inline_element    go to state 31
+    inline_elements   go to state 32
+    inline_text       go to state 33
+    inline_text_item  go to state 34
+    uri_text_item     go to state 35
+    inlinecode        go to state 36
+    italic            go to state 37
+    linethrough       go to state 43
     line              go to state 230
-    link              go to state 44
-    strong            go to state 47
+    link              go to state 46
+    strong            go to state 49
 
 
 state 208
 
-   82 lf_indents4_codeblock: lf_indents4 . code_text LINEBREAK
+   81 lf_indents4_codeblock: lf_indents4 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3534,19 +3521,19 @@ state 208
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 231
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 209
 
-   83 lf_indents4_codeblock: lf_indents4_codeblock . lf_indents4 code_text LINEBREAK
+   82 lf_indents4_codeblock: lf_indents4_codeblock . lf_indents4 code_text LINEBREAK
   145 unorderlist_2: unorderlist_2 lf_indents4_codeblock .
 
     LF_INDENT4  shift, and go to state 12
@@ -3557,7 +3544,7 @@ state 209
     $default    reduce using rule 145 (unorderlist_2)
 
     lf_indents4  go to state 232
-    lf_indents5  go to state 40
+    lf_indents5  go to state 42
 
 
 state 210
@@ -3576,23 +3563,23 @@ state 211
 
 state 212
 
-   21 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error .
+   22 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error .
 
-    $default  reduce using rule 21 (image)
+    $default  reduce using rule 22 (image)
 
 
 state 213
 
-   19 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET .
+   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET .
 
-    $default  reduce using rule 19 (image)
+    $default  reduce using rule 20 (image)
 
 
 state 214
 
-   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE . uri_text RIGHTBRACKET
+   21 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE . uri_text RIGHTBRACKET
 
-    TEXT  shift, and go to state 24
+    TEXT  shift, and go to state 26
 
     uri_text       go to state 233
     uri_text_item  go to state 182
@@ -3600,30 +3587,30 @@ state 214
 
 state 215
 
-   57 uri_text: uri_text uri_text_item .
+   56 uri_text: uri_text uri_text_item .
 
-    $default  reduce using rule 57 (uri_text)
+    $default  reduce using rule 56 (uri_text)
 
 
 state 216
 
-  102 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error .
+  101 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error .
 
-    $default  reduce using rule 102 (link)
+    $default  reduce using rule 101 (link)
 
 
 state 217
 
-  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET .
+   99 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET .
 
-    $default  reduce using rule 100 (link)
+    $default  reduce using rule 99 (link)
 
 
 state 218
 
-  101 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE . uri_text RIGHTBRACKET
+  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE . uri_text RIGHTBRACKET
 
-    TEXT  shift, and go to state 24
+    TEXT  shift, and go to state 26
 
     uri_text       go to state 234
     uri_text_item  go to state 182
@@ -3638,20 +3625,18 @@ state 219
 
 state 220
 
-   89 lf_q_indents2_codeblock: lf_q_indents2 code_text LINEBREAK .
+   88 lf_q_indents2_codeblock: lf_q_indents2 code_text LINEBREAK .
 
-    $default  reduce using rule 89 (lf_q_indents2_codeblock)
+    $default  reduce using rule 88 (lf_q_indents2_codeblock)
 
 
 state 221
 
-   12 code_text: code_text . code_text_item
-   90 lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   89 lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 235
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3666,13 +3651,13 @@ state 221
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 222
@@ -3691,13 +3676,11 @@ state 223
 
 state 224
 
-   12 code_text: code_text . code_text_item
-   91 lf_q_indents3_codeblock: lf_q_indents3 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   90 lf_q_indents3_codeblock: lf_q_indents3 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 236
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3712,22 +3695,20 @@ state 224
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 225
 
-   92 lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 . code_text LINEBREAK
+   91 lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3742,39 +3723,37 @@ state 225
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 237
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 226
 
-   79 lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK .
+   78 lf_indents2_codeblock: lf_indents2_codeblock lf_indents2 code_text LINEBREAK .
 
-    $default  reduce using rule 79 (lf_indents2_codeblock)
+    $default  reduce using rule 78 (lf_indents2_codeblock)
 
 
 state 227
 
-   80 lf_indents3_codeblock: lf_indents3 code_text LINEBREAK .
+   79 lf_indents3_codeblock: lf_indents3 code_text LINEBREAK .
 
-    $default  reduce using rule 80 (lf_indents3_codeblock)
+    $default  reduce using rule 79 (lf_indents3_codeblock)
 
 
 state 228
 
-   12 code_text: code_text . code_text_item
-   81 lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   80 lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 238
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3789,13 +3768,13 @@ state 228
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 229
@@ -3814,13 +3793,11 @@ state 230
 
 state 231
 
-   12 code_text: code_text . code_text_item
-   82 lf_indents4_codeblock: lf_indents4 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   81 lf_indents4_codeblock: lf_indents4 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 239
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3835,22 +3812,20 @@ state 231
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 232
 
-   83 lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 . code_text LINEBREAK
+   82 lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 . code_text LINEBREAK
 
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3865,61 +3840,59 @@ state 232
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text              go to state 240
     code_text_item         go to state 98
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 233
 
-   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text . RIGHTBRACKET
-   57 uri_text: uri_text . uri_text_item
+   21 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text . RIGHTBRACKET
+   56 uri_text: uri_text . uri_text_item
 
     RIGHTBRACKET  shift, and go to state 241
-    TEXT          shift, and go to state 24
+    TEXT          shift, and go to state 26
 
     uri_text_item  go to state 215
 
 
 state 234
 
-   57 uri_text: uri_text . uri_text_item
-  101 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text . RIGHTBRACKET
+   56 uri_text: uri_text . uri_text_item
+  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text . RIGHTBRACKET
 
     RIGHTBRACKET  shift, and go to state 242
-    TEXT          shift, and go to state 24
+    TEXT          shift, and go to state 26
 
     uri_text_item  go to state 215
 
 
 state 235
 
-   90 lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 code_text LINEBREAK .
+   89 lf_q_indents2_codeblock: lf_q_indents2_codeblock lf_q_indents2 code_text LINEBREAK .
 
-    $default  reduce using rule 90 (lf_q_indents2_codeblock)
+    $default  reduce using rule 89 (lf_q_indents2_codeblock)
 
 
 state 236
 
-   91 lf_q_indents3_codeblock: lf_q_indents3 code_text LINEBREAK .
+   90 lf_q_indents3_codeblock: lf_q_indents3 code_text LINEBREAK .
 
-    $default  reduce using rule 91 (lf_q_indents3_codeblock)
+    $default  reduce using rule 90 (lf_q_indents3_codeblock)
 
 
 state 237
 
-   12 code_text: code_text . code_text_item
-   92 lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   91 lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 243
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3934,38 +3907,36 @@ state 237
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 238
 
-   81 lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK .
+   80 lf_indents3_codeblock: lf_indents3_codeblock lf_indents3 code_text LINEBREAK .
 
-    $default  reduce using rule 81 (lf_indents3_codeblock)
+    $default  reduce using rule 80 (lf_indents3_codeblock)
 
 
 state 239
 
-   82 lf_indents4_codeblock: lf_indents4 code_text LINEBREAK .
+   81 lf_indents4_codeblock: lf_indents4 code_text LINEBREAK .
 
-    $default  reduce using rule 82 (lf_indents4_codeblock)
+    $default  reduce using rule 81 (lf_indents4_codeblock)
 
 
 state 240
 
-   12 code_text: code_text . code_text_item
-   83 lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text . LINEBREAK
+   13 code_text: code_text . code_text_item
+   82 lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text . LINEBREAK
 
     LINEBREAK                shift, and go to state 244
-    ESCAPEDCHAR              shift, and go to state 14
-    LESSTHAN                 shift, and go to state 60
-    LARGERTHAN               shift, and go to state 61
+    ESCAPEDCHAR              shift, and go to state 16
     TRIPLEBACKTICK           shift, and go to state 62
     BACKTICK                 shift, and go to state 96
     VERTICAL                 shift, and go to state 63
@@ -3980,38 +3951,38 @@ state 240
     RIGHTSQUARE_LEFTBRACKET  shift, and go to state 72
     RIGHTBRACKET             shift, and go to state 73
     DOUBLETILDE              shift, and go to state 74
-    SPACE                    shift, and go to state 23
-    TEXT                     shift, and go to state 24
+    SPACE                    shift, and go to state 25
+    TEXT                     shift, and go to state 26
 
     code_text_item         go to state 149
     inline_code_text_item  go to state 99
     inline_text_item       go to state 77
-    uri_text_item          go to state 33
+    uri_text_item          go to state 35
 
 
 state 241
 
-   20 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET .
+   21 image: EXCLAMATION_LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET .
 
-    $default  reduce using rule 20 (image)
+    $default  reduce using rule 21 (image)
 
 
 state 242
 
-  101 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET .
+  100 link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET .
 
-    $default  reduce using rule 101 (link)
+    $default  reduce using rule 100 (link)
 
 
 state 243
 
-   92 lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 code_text LINEBREAK .
+   91 lf_q_indents3_codeblock: lf_q_indents3_codeblock lf_q_indents3 code_text LINEBREAK .
 
-    $default  reduce using rule 92 (lf_q_indents3_codeblock)
+    $default  reduce using rule 91 (lf_q_indents3_codeblock)
 
 
 state 244
 
-   83 lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text LINEBREAK .
+   82 lf_indents4_codeblock: lf_indents4_codeblock lf_indents4 code_text LINEBREAK .
 
-    $default  reduce using rule 83 (lf_indents4_codeblock)
+    $default  reduce using rule 82 (lf_indents4_codeblock)

@@ -115,7 +115,7 @@ plus_series \+{3,}
 
     /* special chars: "\[]^-?.*+|()$/{}%<> */
 
-{blankline}                             { yylineno++; P("BLANKLINE"); RETURN(BLANKLINE); }
+{blankline}                             { yylineno++; SETYYLVAL(yytext); P("BLANKLINE"); RETURN(BLANKLINE); }
 \r?\n                                   { yylineno++; SETYYLVAL(yytext); P("LINEBREAK"); RETURN(LINEBREAK); }
 
 ^{header}                               { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
@@ -151,9 +151,14 @@ plus_series \+{3,}
 
 @\[[^\]]+\]                             { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 
+\<(https?|ftp|file|ref|mailto):\/\/[^\r\n>]+\>    { 
+                                            SETYYLVAL(yytext); P("SIMPLELINK"); RETURN(SIMPLELINK); }
+
+    /* block and functional html tags must be in one line and must start at first column */
+^\<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|command|datalist|dd|del|details|dir|div|dfn|dialog|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h[1-6]|head|header|hr|html|i|iframe|img|input|ins|isindex|kbd|keygen|label|legend|li|link|map|mark|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|section|select|small|source|span|strike|strong|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr|xmp)([" "\r\n][^>]*\/?\>|\/?\>).*\r?\n   { 
+                                            SETYYLVAL(yytext); P("HTMLTAG"); RETURN(HTMLTAG); }
+
 \\[\\`*_()#+\-.!]                       { SETYYLVAL(yytext); P("ESCAPEDCHAR"); RETURN(ESCAPEDCHAR); }
-\<                                      { SETYYLVAL(yytext); P("LESSTHAN"); RETURN(LESSTHAN); }
-\>                                      { SETYYLVAL(yytext); P("LARGERTHAN"); RETURN(LARGERTHAN); }
 ```                                     { SETYYLVAL(yytext); P("TRIPLEBACKTICK"); RETURN(TRIPLEBACKTICK); }
 `                                       { SETYYLVAL(yytext); P("BACKTICK"); RETURN(BACKTICK); }
 \|                                      { SETYYLVAL(yytext); P("VERTICAL"); RETURN(VERTICAL); }

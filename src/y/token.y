@@ -44,9 +44,10 @@
 
 %token <text> LF_Q
 
+%token <text> SIMPLELINK         
+%token <text> HTMLTAG         
+
 %token <text> ESCAPEDCHAR         
-%token <text> LESSTHAN            
-%token <text> LARGERTHAN          
 %token <text> TRIPLEBACKTICK      
 %token <text> BACKTICK            
 %token <text> VERTICAL            

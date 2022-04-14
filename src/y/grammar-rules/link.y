@@ -19,6 +19,11 @@ link:
     | LEFTSQUARE error {
             show_rule("link: LEFTSQUARE error");
         }
+    | SIMPLELINK {
+            show_rule("link: SIMPLELINK");
+            tag_info = markdown_get_tag_info($1);
+            $$ = str_format("<a href=\"%s\">%s</a>", tag_info->content, tag_info->content);
+        }
     ;
 
 

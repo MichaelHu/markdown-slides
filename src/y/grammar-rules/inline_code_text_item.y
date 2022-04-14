@@ -3,14 +3,6 @@ inline_code_text_item:
             show_rule("inline_code_text_item: inline_text_item");
             $$ = $1;
         }
-    | LESSTHAN {
-            show_rule("inline_code_text_item: LESSTHAN");
-            $$ = $1;
-        }           
-    | LARGERTHAN {
-            show_rule("inline_code_text_item: LARGERTHAN");
-            $$ = $1;
-        }           
     | TRIPLEASTERISK {
             show_rule("inline_code_text_item: TRIPLEASTERISK");
             $$ = $1;
