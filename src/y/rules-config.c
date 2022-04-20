@@ -17,6 +17,12 @@ static char* grammar_rules[] = {
 
     "block: HTMLTAG", "1",
 
+    "block: SCRIPTSTART code_text SCRIPTEND", "1",
+
+    "block: STYLESTART code_text STYLEEND", "1",
+
+    "block: SVGSTART code_text SVGEND", "1",
+
     "block: unorderlist_0", "1",
 
         "unorderlist_0: LF_UL line", "2",

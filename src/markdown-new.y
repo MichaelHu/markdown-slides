@@ -107,6 +107,12 @@ static char* grammar_rules[] = {
 
     "block: HTMLTAG", "1",
 
+    "block: SCRIPTSTART code_text SCRIPTEND", "1",
+
+    "block: STYLESTART code_text STYLEEND", "1",
+
+    "block: SVGSTART code_text SVGEND", "1",
+
     "block: unorderlist_0", "1",
 
         "unorderlist_0: LF_UL line", "2",
@@ -429,6 +435,10 @@ static void show_rule( char *str ){
 %token <text> SIMPLELINK         
 %token <text> HTMLTAG         
 
+%token <text> SCRIPTSTART SCRIPTEND        
+%token <text> STYLESTART STYLEEND        
+%token <text> SVGSTART SVGEND        
+
 %token <text> ESCAPEDCHAR         
 %token <text> TRIPLEBACKTICK      
 %token <text> BACKTICK            
@@ -572,6 +582,18 @@ block:
     | HTMLTAG {
             show_rule("block: HTMLTAG");
             $$ = $1;
+        }
+    | SCRIPTSTART code_text SCRIPTEND {
+            show_rule("block: SCRIPTSTART code_text SCRIPTEND");
+            $$ = str_format("%s%s%s", $1, $2, $3);
+        }
+    | STYLESTART code_text STYLEEND {
+            show_rule("block: STYLESTART code_text STYLEEND");
+            $$ = str_format("%s%s%s", $1, $2, $3);
+        }
+    | SVGSTART code_text SVGEND {
+            show_rule("block: SVGSTART code_text SVGEND");
+            $$ = str_format("%s%s%s", $1, $2, $3);
         }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");

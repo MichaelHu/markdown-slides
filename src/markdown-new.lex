@@ -158,6 +158,77 @@ plus_series \+{3,}
 ^\<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|command|datalist|dd|del|details|dir|div|dfn|dialog|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h[1-6]|head|header|hr|html|i|iframe|img|input|ins|isindex|kbd|keygen|label|legend|li|link|map|mark|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|section|select|small|source|span|strike|strong|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr|xmp)([" "\r\n][^>]*\/?\>|\/?\>).*\r?\n   { 
                                             SETYYLVAL(yytext); P("HTMLTAG"); RETURN(HTMLTAG); }
 
+    /* script block */
+    /* problem triggered below: input buffer overflow, can't enlarge buffer because scanner uses REJECT */
+    /*^\<script[^>]*>/(.|[\r\n])*\<\/script>  { */
+
+^\<script[^>]*>                         {
+                                            enterState(SCRIPTBLOCK, "SCRIPTBLOCK"); 
+                                            SETYYLVAL(yytext); 
+                                            P("SCRIPTSTART"); 
+                                            RETURN(SCRIPTSTART); 
+                                        }
+<SCRIPTBLOCK>\<\/script>.*\r?\n         { 
+                                            P("SCRIPTEND"); 
+                                            yylineno++;
+                                            restoreState(); 
+                                            SETYYLVAL("</script>"); 
+                                            RETURN(SCRIPTEND);
+                                        }
+<SCRIPTBLOCK>{normaltext}               { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+<SCRIPTBLOCK>\r?\n                      { 
+                                            yylineno++; 
+                                            SETYYLVAL(yytext); 
+                                            P("TEXT"); 
+                                            RETURN(TEXT); 
+                                        }
+
+    /* style block */
+    /* ^\<style[^>]*>/(.|[\r\n])*\<\/style>    { */
+^\<style[^>]*>                          {
+                                            SETYYLVAL(yytext); 
+                                            P("STYLESTART"); 
+                                            enterState(STYLEBLOCK, "STYLEBLOCK"); 
+                                            RETURN(STYLESTART); 
+                                        }
+<STYLEBLOCK>\<\/style>.*\r?\n           { 
+                                            P("STYLEEND"); 
+                                            yylineno++;
+                                            SETYYLVAL("</style>");
+                                            restoreState(); 
+                                            RETURN(STYLEEND);
+                                        }
+<STYLEBLOCK>{normaltext}                { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+<STYLEBLOCK>\r?\n                       { 
+                                            yylineno++; 
+                                            SETYYLVAL(yytext); 
+                                            P("TEXT"); 
+                                            RETURN(TEXT); 
+                                        }
+
+
+
+    /* svg block */
+^\<svg[^>]*>                            {
+                                            SETYYLVAL(yytext); 
+                                            P("SVGSTART"); 
+                                            enterState(SVGBLOCK, "SVGBLOCK"); 
+                                            RETURN(SVGSTART); 
+                                        }
+<SVGBLOCK>\<\/svg>.*\r?\n               { 
+                                            P("SVGEND"); 
+                                            yylineno++;
+                                            SETYYLVAL("</svg>"); 
+                                            restoreState(); 
+                                            RETURN(SVGEND);
+                                        }
+<SVGBLOCK>{normaltext}                  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+<SVGBLOCK>\r?\n                         { 
+                                            yylineno++; 
+                                            SETYYLVAL(yytext); 
+                                            P("TEXT"); 
+                                            RETURN(TEXT); 
+                                        }
 \\[\\`*_()#+\-.!]                       { SETYYLVAL(yytext); P("ESCAPEDCHAR"); RETURN(ESCAPEDCHAR); }
 ```                                     { SETYYLVAL(yytext); P("TRIPLEBACKTICK"); RETURN(TRIPLEBACKTICK); }
 `                                       { SETYYLVAL(yytext); P("BACKTICK"); RETURN(BACKTICK); }

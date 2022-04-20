@@ -145,4 +145,29 @@ quote-codeblock-text-1
 <a href="http://irice.top">http://irice.top</a>
 <a href="<file://irice.top>"><file://irice.top></a>
 <a href="irice.top">irice.top</a>
-</p>==================================
+</p>
+
+
+<h2> script block</h2>
+<script type="text/javascript">
+var a = 'markdown';
+window.alert('hello, ' + a);
+</script>
+<h2> style block</h2>
+<span id="aaa">red text</span>
+<style type="text/css">
+#aaa {
+    color: red;
+}
+</style>
+
+<h2> svg block</h2>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348">
+  <title>React Logo</title>
+  <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
+  <g stroke="#61dafb" stroke-width="1" fill="none">
+    <ellipse rx="11" ry="4.2"/>
+    <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+    <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+  </g>
+</svg>==================================

@@ -47,6 +47,10 @@
 %token <text> SIMPLELINK         
 %token <text> HTMLTAG         
 
+%token <text> SCRIPTSTART SCRIPTEND        
+%token <text> STYLESTART STYLEEND        
+%token <text> SVGSTART SVGEND        
+
 %token <text> ESCAPEDCHAR         
 %token <text> TRIPLEBACKTICK      
 %token <text> BACKTICK            
