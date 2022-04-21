@@ -6,6 +6,7 @@
     /* bind union part with terminal symbol */
 
 %token <text> BLANKLINE
+%token <text> QUOTEBLANKLINE
 %token <text> LINEBREAK           
 
 %token <text> LF_H                

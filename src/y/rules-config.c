@@ -115,6 +115,8 @@ static char* grammar_rules[] = {
         "quote_codeblock: lf_q_indents code_text LINEBREAK", "2",
         "quote_codeblock: quote_codeblock lf_q_indents code_text LINEBREAK", "2",
 
+    "quote_block: quote_block QUOTEBLANKLINE", "1",
+
     "quote_block: NULL", "1",
 
     "block: error",     "1",

@@ -5469,6 +5469,7 @@
             [> quote_unorderlist_1: quote_unorderlist_1 lf_q_indents3_codeblock
         [> quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1
     [> quote_block: quote_block quote_unorderlist_0
+    [> quote_block: quote_block QUOTEBLANKLINE
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
                             [> inline_text: inline_text_item

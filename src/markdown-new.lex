@@ -116,6 +116,7 @@ plus_series \+{3,}
     /* special chars: "\[]^-?.*+|()$/{}%<> */
 
 {blankline}                             { yylineno++; SETYYLVAL(yytext); P("BLANKLINE"); RETURN(BLANKLINE); }
+{quoteblankline}                        { yylineno++; SETYYLVAL(yytext); P("QUOTEBLANKLINE"); RETURN(QUOTEBLANKLINE); }
 \r?\n                                   { yylineno++; SETYYLVAL(yytext); P("LINEBREAK"); RETURN(LINEBREAK); }
 
 ^{header}                               { SETYYLVAL(yytext); P("LF_H"); RETURN(LF_H); }
