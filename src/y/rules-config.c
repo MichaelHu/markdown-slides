@@ -76,7 +76,7 @@ static char* grammar_rules[] = {
                     /* cell: item VERTICAL */
                     "table_separator_cell: table_separator_item", "5",
 
-                    "table_cell: line VERTICAL", "5",
+                    "table_cell: inline_elements VERTICAL", "5",
 
                         "table_separator_item: MINUSSERIES_SEMI_VERTICAL", "6",
                         "table_separator_item: SEMI_MINUSSERIES_VERTICAL", "6",
@@ -161,7 +161,6 @@ static char* grammar_rules[] = {
             "lines: lines line", "3",
 
                 "line: inline_elements LINEBREAK", "4",
-                "line: inline_elements", "4",
 
                     "inline_elements: inline_elements inline_element", "5",
                     "inline_elements: inline_element", "5",

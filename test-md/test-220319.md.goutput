@@ -1019,11 +1019,6 @@
 [4;31;42m                             [> image: EXCLAMATION_LEFTSQUARE inline_text error [0m
                         [> inline_element: image
                     [> inline_elements: inline_element
-                [> line: inline_elements
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
-[> blocks: blocks block
 [4;31;42m     [> block: error [0m
 [> blocks: blocks block
 [4;31;42m     [> block: error [0m
@@ -1128,11 +1123,6 @@
 [4;31;42m                             [> link: LEFTSQUARE inline_text error [0m
                         [> inline_element: link
                     [> inline_elements: inline_element
-                [> line: inline_elements
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
-[> blocks: blocks block
 [4;31;42m     [> block: error [0m
 [> blocks: blocks block
 [4;31;42m     [> block: error [0m
@@ -1422,11 +1412,6 @@
 [4;31;42m                             [> link: LEFTSQUARE inline_text error [0m
                         [> inline_element: link
                     [> inline_elements: inline_elements inline_element
-                [> line: inline_elements
-            [> lines: line
-        [> paragraph: lines
-    [> block: paragraph
-[> blocks: blocks block
 [4;31;42m     [> block: error [0m
 [> blocks: blocks block
 [4;31;42m     [> block: error [0m
@@ -6092,8 +6077,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6109,8 +6093,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6126,8 +6109,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_row
@@ -6151,8 +6133,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6168,8 +6149,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6185,8 +6165,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_row
@@ -6204,8 +6183,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6221,8 +6199,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6238,8 +6215,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_rows table_row
@@ -6267,8 +6243,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6284,8 +6259,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6301,8 +6275,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
                         [> table_separator_item: SEMI_MINUSSERIES_VERTICAL
@@ -6331,8 +6304,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6348,8 +6320,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6365,8 +6336,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_row
@@ -6384,8 +6354,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6401,8 +6370,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6418,8 +6386,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_rows table_row
@@ -6443,8 +6410,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6460,8 +6426,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6477,8 +6442,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
                         [> table_separator_item: MINUSSERIES_VERTICAL
@@ -6501,8 +6465,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6518,8 +6481,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6535,8 +6497,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_row
@@ -6554,8 +6515,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6571,8 +6531,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6588,8 +6547,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_rows table_row
@@ -6607,8 +6565,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6624,8 +6581,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                                 [> uri_text_item: TEXT
                                 [> inline_text_item: uri_text_item
@@ -6641,8 +6597,7 @@
                             [> inline_text: inline_text inline_text_item
                         [> inline_element: inline_text
                     [> inline_elements: inline_element
-                [> line: inline_elements
-                    [> table_cell: line VERTICAL
+                    [> table_cell: inline_elements VERTICAL
                 [> table_cells: table_cells table_cell
                 [> table_row: LF_VERTICAL table_cells LINEBREAK
             [> table_rows: table_rows table_row
