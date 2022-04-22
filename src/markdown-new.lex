@@ -105,7 +105,7 @@ normaltext [^#@>\<*_\\`{}()\[\]+\-! \t0-9.\r\n|]+|.
 indent [ ]{4}|\t
 quote \>[ ]
 header #{1,6}
-unorderlist [*+-][ ]
+unorderlist ([*+-]|[0-9]+\.)[ ]
 vertical \|
 minus_series \-{3,}
 plus_series \+{3,}

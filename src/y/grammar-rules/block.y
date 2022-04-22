@@ -30,7 +30,7 @@ block:
         }
     | unorderlist_0 {
             show_rule("block: unorderlist_0");
-            $$ = str_format("<ul>%s</ul>", $1);
+            $$ = str_format("<%s>%s</%s>", is_orderlist($1)?"ol":"ul", $1, is_orderlist($1)?"ol":"ul");
         }
     | codeblock {
             show_rule("block: codeblock");

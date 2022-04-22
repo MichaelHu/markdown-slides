@@ -2,7 +2,7 @@ unorderlist_0:
     LF_UL line {
             show_rule("unorderlist_0: LF_UL line");
             tag_info = markdown_get_tag_info($2);
-            $$ = str_format("<li%s>%s</li>", tag_info->attr, tag_info->content);
+            $$ = str_format("<li%s%s>%s</li>", is_orderlist_tag($1)?" isol":"", tag_info->attr, tag_info->content);
         }
     | unorderlist_0 LF_UL line {
             show_rule("unorderlist_0: unorderlist_0 LF_UL line");
@@ -19,7 +19,7 @@ unorderlist_0:
         }
     | unorderlist_0 unorderlist_1 {
             show_rule("unorderlist_0: unorderlist_0 unorderlist_1");
-            $$ = str_format("%s<ul>%s</ul></li>", str_replace_right($1,"</li>", ""), $2);
+            $$ = str_format("%s<%s>%s</%s></li>", str_replace_right($1,"</li>", ""), is_orderlist($2)?"ol":"ul", $2, is_orderlist($2)?"ol":"ul");
         }
     ;
 

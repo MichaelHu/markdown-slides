@@ -1,7 +1,8 @@
 unorderlist_2: 
     LF_INDENT2_UL line {
             show_rule("unorderlist_2: LF_INDENT2_UL line");
-            $$ = str_format("<li>%s</li>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<li%s%s>%s</li>", is_orderlist_tag($1)?" isol":"", tag_info->attr, tag_info->content);
         }
     | unorderlist_2 LF_INDENT2_UL line {
             show_rule("unorderlist_2: unorderlist_2 LF_INDENT2_UL line");
