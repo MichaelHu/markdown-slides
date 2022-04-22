@@ -191,8 +191,79 @@ static void test_markdown_get_tag_info(void) {
 
 }
 
+static void test_markdown_is_orderlist_tag(void) {
+    test_util_log_str("\n# test_markdown_is_orderlist_tag");
+
+    test_util_int_equal(
+        "test 1"
+        , is_orderlist_tag("10. ")
+        , 1
+    );
+
+    test_util_int_equal(
+        "test 2"
+        , is_orderlist_tag("    10. ")
+        , 1
+    );
+
+    test_util_int_equal(
+        "test 3"
+        , is_orderlist_tag("    * ")
+        , 0
+    );
+
+    test_util_int_equal(
+        "test 4"
+        , is_orderlist_tag("+ ")
+        , 0
+    );
+
+    test_util_int_equal(
+        "test 5"
+        , is_orderlist_tag("            - ")
+        , 0
+    );
+
+}
+
+static void test_markdown_is_orderlist(void) {
+    test_util_log_str("\n# test_markdown_is_orderlist");
+
+    test_util_int_equal(
+        "test 1"
+        , is_orderlist("10. ")
+        , 0
+    );
+
+    test_util_int_equal(
+        "test 2"
+        , is_orderlist("    10. ")
+        , 0
+    );
+
+    test_util_int_equal(
+        "test 3"
+        , is_orderlist("    * ")
+        , 0
+    );
+
+    test_util_int_equal(
+        "test 4"
+        , is_orderlist("+ ")
+        , 0
+    );
+
+    test_util_int_equal(
+        "test 5"
+        , is_orderlist("            - ")
+        , 0
+    );
+
+}
+
 void test_markdown_utils(void) {
     test_markdown_get_standard_link_tag_info(); 
     test_markdown_get_standard_image_tag_info(); 
     test_markdown_get_tag_info(); 
+    test_markdown_is_orderlist();
 }

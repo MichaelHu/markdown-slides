@@ -189,4 +189,12 @@ t_tag_info *markdown_get_tag_info(char *s){
     return info;
 }
 
+/* if ends with ". " */
+int is_orderlist_tag(char *s) {
+    return str_end_with(s, ". ");
+}
+
+int is_orderlist(char *s) {
+    return str_begin_with(s, "<li isol");
+}
 

@@ -402,4 +402,22 @@ char* str_trim_left_n_lf_indents( char *str, int cnt ){
     return str_ret;
 }
 
+int str_begin_with(char *s, char *p){
+    if( !!strstr(s, p) ){
+        return 1;
+    }
+    return 0;
+}
+
+int str_end_with(char *s, char *p){
+    int s_len = strlen(s), p_len = strlen(p);
+    if( s_len < p_len ){
+        return 0;
+    }
+    char *tail = s + s_len - p_len;
+    if( 0 == strcmp( p, tail ) ){
+        return 1;
+    }
+    return 0;
+}
 

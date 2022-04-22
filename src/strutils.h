@@ -23,3 +23,5 @@ char *str_replace_right(char *s, char *pattern, char *replacement);
 void str_memory_stat();
 
 char *html_escape(char *s);
+int str_begin_with(char *s, char *p);
+int str_end_with(char *s, char *p);

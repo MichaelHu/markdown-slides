@@ -462,6 +462,55 @@ static void test_str_memory_stat(void) {
     str_memory_stat();
 }
 
+static void test_str_begin_with(void) {
+    test_util_log_str("\n# test_str_begin_with");
+
+    test_util_int_equal(
+        "test 1"
+        , str_begin_with("", "123")
+        , 0 
+    );
+
+    test_util_int_equal(
+        "test 2"
+        , str_begin_with("34g", "3")
+        , 1 
+    );
+
+    test_util_int_equal(
+        "test 3"
+        , str_begin_with("34g", "")
+        , 1 
+    );
+}
+
+static void test_str_end_with(void) {
+    test_util_log_str("\n# test_str_end_with");
+
+    test_util_int_equal(
+        "test 1"
+        , str_end_with("", "123")
+        , 0 
+    );
+
+    test_util_int_equal(
+        "test 2"
+        , str_end_with("hello, world!", "d!")
+        , 1 
+    );
+
+    test_util_int_equal(
+        "test 3"
+        , str_end_with("hello, world!", "")
+        , 1 
+    );
+
+    test_util_int_equal(
+        "test 4"
+        , str_end_with("hello, world!  ", "! ")
+        , 0 
+    );
+}
 
 void test_strutils(void) {
     test_str_trim_right();
@@ -480,4 +529,7 @@ void test_strutils(void) {
     test_str_trim_left_n_lf_indents();
 
     test_str_memory_stat();
+
+    test_str_begin_with();
+    test_str_end_with();
 }
