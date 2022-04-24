@@ -137,6 +137,7 @@ plus_series \+{3,}
 
 ^{quote}{header}                        { SETYYLVAL(yytext); P("LF_Q_H"); RETURN(LF_Q_H); }
 ^{quote}{unorderlist}                   { SETYYLVAL(yytext); P("LF_Q_UL"); RETURN(LF_Q_UL); }
+^{quote}{vertical}/:?{minus_series}:?   { SETYYLVAL(yytext); P("LF_Q_VERTICAL_HEAD_SEP"); RETURN(LF_Q_VERTICAL_HEAD_SEP); }
 ^{quote}{vertical}                      { SETYYLVAL(yytext); P("LF_Q_VERTICAL"); RETURN(LF_Q_VERTICAL); }
 
 ^{quote}{indent}{unorderlist}           { SETYYLVAL(yytext); P("LF_Q_INDENT_UL"); RETURN(LF_Q_INDENT_UL); }

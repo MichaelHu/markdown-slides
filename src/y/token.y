@@ -33,6 +33,7 @@
 %token <text> LF_Q_H
 %token <text> LF_Q_UL
 %token <text> LF_Q_VERTICAL
+%token <text> LF_Q_VERTICAL_HEAD_SEP 
 
 %token <text> LF_Q_INDENT_UL                
 %token <text> LF_Q_INDENT2_UL                
@@ -77,7 +78,7 @@
 %token <text> TEXT                
 
     /* bind union part with nonterminal symbol */
-%type <text> markdownfile
+%type <text> markdown_file
 %type <text> blocks
 %type <text> block
 %type <text> quote_block
@@ -136,6 +137,14 @@
 %type <text> table_separator_cells
 %type <text> table_separator_cell
 %type <text> table_separator_item
+
+%type <text> quote_table
+%type <text> quote_table_body
+%type <text> quote_table_head
+%type <text> quote_table_head_separator
+%type <text> quote_table_row
+%type <text> quote_table_rows
+%type <text> quote_table_separator_row
 
 %nonassoc ITALICSTART
 %nonassoc LISTSTART

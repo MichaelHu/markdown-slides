@@ -90,7 +90,7 @@ static void parse_doc(void) {
 
 static char* grammar_rules[] = {
 
-"markdownfile: blocks", "-1",
+"markdown_file: blocks", "-1",
 
 "blocks: blocks block", "0",
 "blocks: NULL",         "0",
@@ -206,6 +206,26 @@ static char* grammar_rules[] = {
         "quote_codeblock: quote_codeblock lf_q_indents code_text LINEBREAK", "2",
 
     "quote_block: quote_block QUOTEBLANKLINE", "1",
+
+    "quote_block: quote_block quote_table", "1",
+
+        "quote_table: quote_table_head quote_table_body", "2",
+        "quote_table: quote_table_body", "2",
+
+            "quote_table_head: quote_table_row quote_table_head_separator", "3",
+
+            "quote_table_head_separator: quote_table_separator_row", "3",
+
+            "quote_table_body: quote_table_rows", "3",
+
+            "quote_table_rows: quote_table_row", "3",
+            "quote_table_rows: quote_table_rows quote_table_row", "3",
+
+                /* sep row: LF_Q_VERTICAL_HEAD_SEP ... LINEBREAK */
+                "quote_table_separator_row: LF_Q_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK", "4",
+
+                /* row: LF_Q_VERTICAL ... LINEBREAK */
+                "quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK", "4",
 
     "quote_block: NULL", "1",
 
@@ -422,6 +442,7 @@ static void show_rule( char *str ){
 %token <text> LF_Q_H
 %token <text> LF_Q_UL
 %token <text> LF_Q_VERTICAL
+%token <text> LF_Q_VERTICAL_HEAD_SEP 
 
 %token <text> LF_Q_INDENT_UL                
 %token <text> LF_Q_INDENT2_UL                
@@ -466,7 +487,7 @@ static void show_rule( char *str ){
 %token <text> TEXT                
 
     /* bind union part with nonterminal symbol */
-%type <text> markdownfile
+%type <text> markdown_file
 %type <text> blocks
 %type <text> block
 %type <text> quote_block
@@ -526,6 +547,14 @@ static void show_rule( char *str ){
 %type <text> table_separator_cell
 %type <text> table_separator_item
 
+%type <text> quote_table
+%type <text> quote_table_body
+%type <text> quote_table_head
+%type <text> quote_table_head_separator
+%type <text> quote_table_row
+%type <text> quote_table_rows
+%type <text> quote_table_separator_row
+
 %nonassoc ITALICSTART
 %nonassoc LISTSTART
 
@@ -534,13 +563,13 @@ static void show_rule( char *str ){
     /**
      * ========== grammar rules begin ===========
      */
-markdownfile: 
+markdown_file: 
     blocks { 
             /**
              * 1. _root_node == $1
              */
 
-            show_rule("markdownfile: blocks");
+            show_rule("markdown_file: blocks");
 
             if( !_ISDEBUGPARSER ){
                 fprintf(stdout, "==================================\n");
@@ -1129,6 +1158,10 @@ quote_block:
             show_rule("quote_block: quote_block quote_codeblock");
             $$ = str_format("%s<pre><code>%s</code></pre>", $1, $2);
         }
+    | quote_block quote_table {
+            show_rule("quote_block: quote_block quote_table");
+            $$ = str_format("%s<table>%s</table>", $1, $2);
+        }
     | quote_block QUOTEBLANKLINE {
             show_rule("quote_block: quote_block QUOTEBLANKLINE");
             $$ = str_format("%s%s", $1, str_replace_left($2, ">", ""));
@@ -1171,6 +1204,62 @@ quote_paragraph:
         }
     ;
 
+
+quote_table:
+    quote_table_head quote_table_body {
+            show_rule("quote_table: quote_table_head quote_table_body");
+            $$ = str_format("%s%s", $1, $2);
+        }
+    | quote_table_body {
+            show_rule("quote_table: quote_table_body");
+            $$ = $1;
+        }
+    ;
+
+quote_table_body:
+    quote_table_rows {
+            show_rule("quote_table_body: quote_table_rows");
+            $$ = str_format("<tbody>%s</tbody>", $1);
+        }
+    ;
+
+
+quote_table_head:
+    quote_table_row quote_table_head_separator {
+            show_rule("quote_table_head: quote_table_row quote_table_head_separator");
+            $$ = str_format("<thead>%s</thead>", $1);
+        }
+    ;
+
+
+quote_table_head_separator:
+    quote_table_separator_row {
+            show_rule("quote_table_head_separator: quote_table_separator_row");
+            $$ = "";
+        }
+    ;
+quote_table_row:
+    LF_Q_VERTICAL table_cells LINEBREAK {
+            show_rule("quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK");
+            $$ = str_format("<tr>%s</tr>", $2);
+    }
+    ;
+quote_table_rows:
+    quote_table_row {
+            show_rule("quote_table_rows: quote_table_row");
+            $$ = str_format("%s", $1);
+    }
+    | quote_table_rows quote_table_row {
+            show_rule("quote_table_rows: quote_table_rows quote_table_row");
+            $$ = str_format("%s%s", $1, $2);
+    }
+    ;
+quote_table_separator_row:
+    LF_Q_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK {
+            show_rule("quote_table_separator_row: LF_Q_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK");
+            $$ = str_format("<tr>%s</tr>", $2);
+        }
+    ;
 
 quote_unorderlist_0: 
     LF_Q_UL line {

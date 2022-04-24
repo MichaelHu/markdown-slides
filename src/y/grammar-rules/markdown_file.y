@@ -1,10 +1,10 @@
-markdownfile: 
+markdown_file: 
     blocks { 
             /**
              * 1. _root_node == $1
              */
 
-            show_rule("markdownfile: blocks");
+            show_rule("markdown_file: blocks");
 
             if( !_ISDEBUGPARSER ){
                 fprintf(stdout, "==================================\n");

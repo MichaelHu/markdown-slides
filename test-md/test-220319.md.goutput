@@ -8935,8 +8935,582 @@
 [> blocks: blocks block
     [> block: BLANKLINE
 [> blocks: blocks block
-    [> block: BLANKLINE
+                                [> inline_text_item: SPACE
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+        [> header: LF_H inline_elements LINEBREAK
+    [> block: header
 [> blocks: blocks block
     [> block: BLANKLINE
 [> blocks: blocks block
-[> markdownfile: blocks
+    [> quote_block: NULL
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_row
+            [> quote_table_body: quote_table_rows
+        [> quote_table: quote_table_body
+    [> quote_block: quote_block quote_table
+    [> quote_block: quote_block QUOTEBLANKLINE
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_row
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_rows quote_table_row
+            [> quote_table_body: quote_table_rows
+        [> quote_table: quote_table_body
+    [> quote_block: quote_block quote_table
+    [> quote_block: quote_block QUOTEBLANKLINE
+    [> quote_block: quote_block QUOTEBLANKLINE
+    [> quote_block: quote_block QUOTEBLANKLINE
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+                        [> table_separator_item: SEMI_MINUSSERIES_VERTICAL
+                    [> table_separator_cell: table_separator_item
+                [> table_separator_cells: table_separator_cell
+                        [> table_separator_item: SEMI_MINUSSERIES_SEMI_VERTICAL
+                    [> table_separator_cell: table_separator_item
+                [> table_separator_cells: table_separator_cells table_separator_cell
+                        [> table_separator_item: MINUSSERIES_SEMI_VERTICAL
+                    [> table_separator_cell: table_separator_item
+                [> table_separator_cells: table_separator_cells table_separator_cell
+                [> quote_table_separator_row: LF_Q_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK
+            [> quote_table_head_separator: quote_table_separator_row
+            [> quote_table_head: quote_table_row quote_table_head_separator
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_row
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_rows quote_table_row
+            [> quote_table_body: quote_table_rows
+        [> quote_table: quote_table_head quote_table_body
+    [> quote_block: quote_block quote_table
+    [> quote_block: quote_block QUOTEBLANKLINE
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+                        [> table_separator_item: MINUSSERIES_VERTICAL
+                    [> table_separator_cell: table_separator_item
+                [> table_separator_cells: table_separator_cell
+                [> quote_table_separator_row: LF_Q_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK
+            [> quote_table_head_separator: quote_table_separator_row
+            [> quote_table_head: quote_table_row quote_table_head_separator
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_row
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_rows quote_table_row
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                                [> uri_text_item: TEXT
+                                [> inline_text_item: uri_text_item
+                            [> inline_text: inline_text inline_text_item
+                        [> inline_element: inline_text
+                    [> inline_elements: inline_element
+                    [> table_cell: inline_elements VERTICAL
+                [> table_cells: table_cells table_cell
+                [> quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK
+            [> quote_table_rows: quote_table_rows quote_table_row
+            [> quote_table_body: quote_table_rows
+        [> quote_table: quote_table_head quote_table_body
+    [> quote_block: quote_block quote_table
+    [> block: quote_block
+[> blocks: blocks block
+[> markdown_file: blocks

@@ -50,7 +50,7 @@ EOF
 
 # file list from y directory, make sure that markdown-file.y the first item!
 for i in `cat <<EOF
-    markdown-file.y
+    markdown_file.y
     block.y
     blocks.y
     code_text.y
@@ -77,10 +77,17 @@ for i in `cat <<EOF
     lines.y
     link.y
     paragraph.y
-    quote-block.y
+    quote_block.y
     quote_codeblock.y
     quote_header.y
     quote_paragraph.y
+    quote_table.y
+    quote_table_body.y
+    quote_table_head.y
+    quote_table_head_separator.y
+    quote_table_row.y
+    quote_table_rows.y
+    quote_table_separator_row.y
     quote_unorderlist_0.y
     quote_unorderlist_1.y
     strong.y

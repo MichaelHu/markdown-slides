@@ -1,6 +1,6 @@
 static char* grammar_rules[] = {
 
-"markdownfile: blocks", "-1",
+"markdown_file: blocks", "-1",
 
 "blocks: blocks block", "0",
 "blocks: NULL",         "0",
@@ -116,6 +116,26 @@ static char* grammar_rules[] = {
         "quote_codeblock: quote_codeblock lf_q_indents code_text LINEBREAK", "2",
 
     "quote_block: quote_block QUOTEBLANKLINE", "1",
+
+    "quote_block: quote_block quote_table", "1",
+
+        "quote_table: quote_table_head quote_table_body", "2",
+        "quote_table: quote_table_body", "2",
+
+            "quote_table_head: quote_table_row quote_table_head_separator", "3",
+
+            "quote_table_head_separator: quote_table_separator_row", "3",
+
+            "quote_table_body: quote_table_rows", "3",
+
+            "quote_table_rows: quote_table_row", "3",
+            "quote_table_rows: quote_table_rows quote_table_row", "3",
+
+                /* sep row: LF_Q_VERTICAL_HEAD_SEP ... LINEBREAK */
+                "quote_table_separator_row: LF_Q_VERTICAL_HEAD_SEP table_separator_cells LINEBREAK", "4",
+
+                /* row: LF_Q_VERTICAL ... LINEBREAK */
+                "quote_table_row: LF_Q_VERTICAL table_cells LINEBREAK", "4",
 
     "quote_block: NULL", "1",
 
