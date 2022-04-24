@@ -482,6 +482,12 @@ static void test_str_begin_with(void) {
         , str_begin_with("34g", "")
         , 1 
     );
+
+    test_util_int_equal(
+        "test 4"
+        , str_begin_with("34g", "4")
+        , 0 
+    );
 }
 
 static void test_str_end_with(void) {

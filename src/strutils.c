@@ -403,7 +403,7 @@ char* str_trim_left_n_lf_indents( char *str, int cnt ){
 }
 
 int str_begin_with(char *s, char *p){
-    if( !!strstr(s, p) ){
+    if( strstr(s, p) == s){
         return 1;
     }
     return 0;
