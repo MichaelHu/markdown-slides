@@ -5,7 +5,7 @@ quote_block:
         }
     | quote_block quote_unorderlist_0 {
             show_rule("quote_block: quote_block quote_unorderlist_0");
-            $$ = str_format("%s<ul>%s</ul>", $1, $2);
+            $$ = str_format("%s<%s>%s</%s>", $1, is_orderlist($2)?"ol":"ul", $2, is_orderlist($2)?"ol":"ul");
         }
     | quote_block quote_paragraph {
             show_rule("quote_block: quote_block quote_paragraph");

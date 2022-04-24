@@ -1148,7 +1148,7 @@ quote_block:
         }
     | quote_block quote_unorderlist_0 {
             show_rule("quote_block: quote_block quote_unorderlist_0");
-            $$ = str_format("%s<ul>%s</ul>", $1, $2);
+            $$ = str_format("%s<%s>%s</%s>", $1, is_orderlist($2)?"ol":"ul", $2, is_orderlist($2)?"ol":"ul");
         }
     | quote_block quote_paragraph {
             show_rule("quote_block: quote_block quote_paragraph");
@@ -1264,7 +1264,8 @@ quote_table_separator_row:
 quote_unorderlist_0: 
     LF_Q_UL line {
             show_rule("quote_unorderlist_0: LF_Q_UL line");
-            $$ = str_format("<li>%s</li>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<li%s%s>%s</li>", is_orderlist_tag($1)?" isol":"", tag_info->attr, tag_info->content);
         }
     | quote_unorderlist_0 LF_Q_UL line {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 LF_Q_UL line");
@@ -1280,7 +1281,7 @@ quote_unorderlist_0:
         }
     | quote_unorderlist_0 quote_unorderlist_1 {
             show_rule("quote_unorderlist_0: quote_unorderlist_0 quote_unorderlist_1");
-            $$ = str_format("%s<ul>%s</ul></li>", str_replace_right($1,"</li>", ""), $2);
+            $$ = str_format("%s<%s>%s</%s></li>", str_replace_right($1,"</li>", ""), is_orderlist($2)?"ol":"ul", $2, is_orderlist($2)?"ol":"ul");
         }
     ;
 
@@ -1288,7 +1289,8 @@ quote_unorderlist_0:
 quote_unorderlist_1: 
     LF_Q_INDENT_UL line {
             show_rule("quote_unorderlist_1: LF_Q_INDENT_UL line");
-            $$ = str_format("<li>%s</li>", $2);
+            tag_info = markdown_get_tag_info($2);
+            $$ = str_format("<li%s%s>%s</li>", is_orderlist_tag($1)?" isol":"", tag_info->attr, tag_info->content);
         }
     | quote_unorderlist_1 LF_Q_INDENT_UL line {
             show_rule("quote_unorderlist_1: quote_unorderlist_1 LF_Q_INDENT_UL line");
