@@ -76,6 +76,7 @@
 %token <text> MINUSSERIES_VERTICAL 
 %token <text> SPACE
 %token <text> TEXT                
+%token <text> RAW_TEXT                
 
     /* bind union part with nonterminal symbol */
 %type <text> markdown_file
@@ -110,6 +111,8 @@
 %type <text> unorderlist_2
 %type <text> inline_elements
 %type <text> inline_element
+%type <text> raw_text
+%type <text> raw_text_item
 %type <text> uri_text
 %type <text> uri_text_item
 %type <text> inline_text

@@ -6823,122 +6823,53 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-    [> block: SCRIPTSTART code_text SCRIPTEND
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+    [> block: SCRIPTSTART raw_text SCRIPTEND
 [> blocks: blocks block
     [> block: BLANKLINE
 [> blocks: blocks block
@@ -6983,87 +6914,39 @@
 [> blocks: blocks block
     [> block: HTMLTAG
 [> blocks: blocks block
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-    [> block: STYLESTART code_text STYLEEND
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+    [> block: STYLESTART raw_text STYLEEND
 [> blocks: blocks block
     [> block: BLANKLINE
 [> blocks: blocks block
@@ -7102,697 +6985,283 @@
         [> header: LF_H inline_elements LINEBREAK
     [> block: header
 [> blocks: blocks block
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-                                [> uri_text_item: TEXT
-                                [> inline_text_item: uri_text_item
-                                [> inline_code_text_item: inline_text_item
-                                [> code_text_item: inline_code_text_item
-                            [> code_text: code_text code_text_item
-    [> block: SVGSTART code_text SVGEND
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+                                [> raw_text_item: RAW_TEXT
+                            [> raw_text: raw_text raw_text_item
+    [> block: SVGSTART raw_text SVGEND
 [> blocks: blocks block
     [> block: BLANKLINE
 [> blocks: blocks block

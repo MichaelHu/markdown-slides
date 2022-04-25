@@ -177,12 +177,12 @@ plus_series \+{3,}
                                             SETYYLVAL("</script>"); 
                                             RETURN(SCRIPTEND);
                                         }
-<SCRIPTBLOCK>{normaltext}               { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+<SCRIPTBLOCK>{normaltext}               { SETYYLVAL(yytext); P("RAW_TEXT"); RETURN(RAW_TEXT); }
 <SCRIPTBLOCK>\r?\n                      { 
                                             yylineno++; 
                                             SETYYLVAL(yytext); 
-                                            P("TEXT"); 
-                                            RETURN(TEXT); 
+                                            P("RAW_TEXT"); 
+                                            RETURN(RAW_TEXT); 
                                         }
 
     /* style block */
@@ -200,12 +200,12 @@ plus_series \+{3,}
                                             restoreState(); 
                                             RETURN(STYLEEND);
                                         }
-<STYLEBLOCK>{normaltext}                { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+<STYLEBLOCK>{normaltext}                { SETYYLVAL(yytext); P("RAW_TEXT"); RETURN(RAW_TEXT); }
 <STYLEBLOCK>\r?\n                       { 
                                             yylineno++; 
                                             SETYYLVAL(yytext); 
-                                            P("TEXT"); 
-                                            RETURN(TEXT); 
+                                            P("RAW_TEXT"); 
+                                            RETURN(RAW_TEXT); 
                                         }
 
 
@@ -224,12 +224,12 @@ plus_series \+{3,}
                                             restoreState(); 
                                             RETURN(SVGEND);
                                         }
-<SVGBLOCK>{normaltext}                  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+<SVGBLOCK>{normaltext}                  { SETYYLVAL(yytext); P("RAW_TEXT"); RETURN(RAW_TEXT); }
 <SVGBLOCK>\r?\n                         { 
                                             yylineno++; 
                                             SETYYLVAL(yytext); 
-                                            P("TEXT"); 
-                                            RETURN(TEXT); 
+                                            P("RAW_TEXT"); 
+                                            RETURN(RAW_TEXT); 
                                         }
 \\[\\`*_()#+\-.!]                       { SETYYLVAL(yytext); P("ESCAPEDCHAR"); RETURN(ESCAPEDCHAR); }
 ```                                     { SETYYLVAL(yytext); P("TRIPLEBACKTICK"); RETURN(TRIPLEBACKTICK); }

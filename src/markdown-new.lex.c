@@ -1482,7 +1482,7 @@ YY_RULE_SETUP
 case 32:
 YY_RULE_SETUP
 #line 181 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+{ SETYYLVAL(yytext); P("RAW_TEXT"); RETURN(RAW_TEXT); }
 	YY_BREAK
 case 33:
 /* rule 33 can match eol */
@@ -1491,8 +1491,8 @@ YY_RULE_SETUP
 { 
                                             yylineno++; 
                                             SETYYLVAL(yytext); 
-                                            P("TEXT"); 
-                                            RETURN(TEXT); 
+                                            P("RAW_TEXT"); 
+                                            RETURN(RAW_TEXT); 
                                         }
 	YY_BREAK
 /* style block */
@@ -1523,7 +1523,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 204 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+{ SETYYLVAL(yytext); P("RAW_TEXT"); RETURN(RAW_TEXT); }
 	YY_BREAK
 case 37:
 /* rule 37 can match eol */
@@ -1532,8 +1532,8 @@ YY_RULE_SETUP
 { 
                                             yylineno++; 
                                             SETYYLVAL(yytext); 
-                                            P("TEXT"); 
-                                            RETURN(TEXT); 
+                                            P("RAW_TEXT"); 
+                                            RETURN(RAW_TEXT); 
                                         }
 	YY_BREAK
 /* svg block */
@@ -1563,7 +1563,7 @@ YY_RULE_SETUP
 case 40:
 YY_RULE_SETUP
 #line 228 "markdown-new.lex"
-{ SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+{ SETYYLVAL(yytext); P("RAW_TEXT"); RETURN(RAW_TEXT); }
 	YY_BREAK
 case 41:
 /* rule 41 can match eol */
@@ -1572,8 +1572,8 @@ YY_RULE_SETUP
 { 
                                             yylineno++; 
                                             SETYYLVAL(yytext); 
-                                            P("TEXT"); 
-                                            RETURN(TEXT); 
+                                            P("RAW_TEXT"); 
+                                            RETURN(RAW_TEXT); 
                                         }
 	YY_BREAK
 case 42:

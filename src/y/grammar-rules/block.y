@@ -16,16 +16,16 @@ block:
             show_rule("block: HTMLTAG");
             $$ = $1;
         }
-    | SCRIPTSTART code_text SCRIPTEND {
-            show_rule("block: SCRIPTSTART code_text SCRIPTEND");
+    | SCRIPTSTART raw_text SCRIPTEND {
+            show_rule("block: SCRIPTSTART raw_text SCRIPTEND");
             $$ = str_format("%s%s%s", $1, $2, $3);
         }
-    | STYLESTART code_text STYLEEND {
-            show_rule("block: STYLESTART code_text STYLEEND");
+    | STYLESTART raw_text STYLEEND {
+            show_rule("block: STYLESTART raw_text STYLEEND");
             $$ = str_format("%s%s%s", $1, $2, $3);
         }
-    | SVGSTART code_text SVGEND {
-            show_rule("block: SVGSTART code_text SVGEND");
+    | SVGSTART raw_text SVGEND {
+            show_rule("block: SVGSTART raw_text SVGEND");
             $$ = str_format("%s%s%s", $1, $2, $3);
         }
     | unorderlist_0 {

@@ -90,6 +90,8 @@ for i in `cat <<EOF
     quote_table_separator_row.y
     quote_unorderlist_0.y
     quote_unorderlist_1.y
+    raw_text.y
+    raw_text_item.y
     strong.y
     unorderlist_0.y
     unorderlist_1.y

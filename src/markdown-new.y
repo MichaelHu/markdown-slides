@@ -107,11 +107,11 @@ static char* grammar_rules[] = {
 
     "block: HTMLTAG", "1",
 
-    "block: SCRIPTSTART code_text SCRIPTEND", "1",
+    "block: SCRIPTSTART raw_text SCRIPTEND", "1",
 
-    "block: STYLESTART code_text STYLEEND", "1",
+    "block: STYLESTART raw_text STYLEEND", "1",
 
-    "block: SVGSTART code_text SVGEND", "1",
+    "block: SVGSTART raw_text SVGEND", "1",
 
     "block: unorderlist_0", "1",
 
@@ -297,6 +297,9 @@ static char* grammar_rules[] = {
                             "code_text: code_text code_text_item", "7",
                             "code_text: code_text_item", "7",
 
+                            "raw_text: raw_text raw_text_item", "7",
+                            "raw_text: raw_text_item", "7",
+
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error", "7",
@@ -363,7 +366,9 @@ static char* grammar_rules[] = {
                                 "inline_code_text_item: TRIPLEBACKTICK", "8",
 
                                 "code_text_item: inline_code_text_item", "8",
-                                "code_text_item: BACKTICK", "8"
+                                "code_text_item: BACKTICK", "8",
+
+                                "raw_text_item: RAW_TEXT", "8"
 
 };
 
@@ -485,6 +490,7 @@ static void show_rule( char *str ){
 %token <text> MINUSSERIES_VERTICAL 
 %token <text> SPACE
 %token <text> TEXT                
+%token <text> RAW_TEXT                
 
     /* bind union part with nonterminal symbol */
 %type <text> markdown_file
@@ -519,6 +525,8 @@ static void show_rule( char *str ){
 %type <text> unorderlist_2
 %type <text> inline_elements
 %type <text> inline_element
+%type <text> raw_text
+%type <text> raw_text_item
 %type <text> uri_text
 %type <text> uri_text_item
 %type <text> inline_text
@@ -614,16 +622,16 @@ block:
             show_rule("block: HTMLTAG");
             $$ = $1;
         }
-    | SCRIPTSTART code_text SCRIPTEND {
-            show_rule("block: SCRIPTSTART code_text SCRIPTEND");
+    | SCRIPTSTART raw_text SCRIPTEND {
+            show_rule("block: SCRIPTSTART raw_text SCRIPTEND");
             $$ = str_format("%s%s%s", $1, $2, $3);
         }
-    | STYLESTART code_text STYLEEND {
-            show_rule("block: STYLESTART code_text STYLEEND");
+    | STYLESTART raw_text STYLEEND {
+            show_rule("block: STYLESTART raw_text STYLEEND");
             $$ = str_format("%s%s%s", $1, $2, $3);
         }
-    | SVGSTART code_text SVGEND {
-            show_rule("block: SVGSTART code_text SVGEND");
+    | SVGSTART raw_text SVGEND {
+            show_rule("block: SVGSTART raw_text SVGEND");
             $$ = str_format("%s%s%s", $1, $2, $3);
         }
     | unorderlist_0 {
@@ -887,7 +895,7 @@ uri_text:
 uri_text_item:
     TEXT {
             show_rule("uri_text_item: TEXT");
-            $$ = $1;
+            $$ = html_escape( $1 );
         }           
     ;          
 
@@ -1305,6 +1313,26 @@ quote_unorderlist_1:
             $$ = str_format("%s<pre><code>%s</code></pre></li>", str_replace_right($1,"</li>", ""), $2);
         }
     ;
+
+
+raw_text:
+    raw_text raw_text_item {
+            show_rule("raw_text: raw_text raw_text_item");
+            $$ = str_concat($1, $2);
+        }
+    | raw_text_item {
+            show_rule("raw_text: raw_text_item");
+            $$ = $1;
+        }
+    ;
+
+
+raw_text_item:
+    RAW_TEXT {
+            show_rule("raw_text_item: RAW_TEXT");
+            $$ = $1;
+        }           
+    ;          
 
 
 strong:

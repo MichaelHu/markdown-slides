@@ -17,11 +17,11 @@ static char* grammar_rules[] = {
 
     "block: HTMLTAG", "1",
 
-    "block: SCRIPTSTART code_text SCRIPTEND", "1",
+    "block: SCRIPTSTART raw_text SCRIPTEND", "1",
 
-    "block: STYLESTART code_text STYLEEND", "1",
+    "block: STYLESTART raw_text STYLEEND", "1",
 
-    "block: SVGSTART code_text SVGEND", "1",
+    "block: SVGSTART raw_text SVGEND", "1",
 
     "block: unorderlist_0", "1",
 
@@ -207,6 +207,9 @@ static char* grammar_rules[] = {
                             "code_text: code_text code_text_item", "7",
                             "code_text: code_text_item", "7",
 
+                            "raw_text: raw_text raw_text_item", "7",
+                            "raw_text: raw_text_item", "7",
+
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text SPACE uri_text RIGHTBRACKET", "7",
                             "link: LEFTSQUARE inline_text RIGHTSQUARE_LEFTBRACKET uri_text error", "7",
@@ -273,7 +276,9 @@ static char* grammar_rules[] = {
                                 "inline_code_text_item: TRIPLEBACKTICK", "8",
 
                                 "code_text_item: inline_code_text_item", "8",
-                                "code_text_item: BACKTICK", "8"
+                                "code_text_item: BACKTICK", "8",
+
+                                "raw_text_item: RAW_TEXT", "8"
 
 };
 

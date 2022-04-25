@@ -98,8 +98,9 @@
      MINUSSERIES_VERTICAL = 314,
      SPACE = 315,
      TEXT = 316,
-     ITALICSTART = 317,
-     LISTSTART = 318
+     RAW_TEXT = 317,
+     ITALICSTART = 318,
+     LISTSTART = 319
    };
 #endif
 /* Tokens.  */
@@ -162,21 +163,22 @@
 #define MINUSSERIES_VERTICAL 314
 #define SPACE 315
 #define TEXT 316
-#define ITALICSTART 317
-#define LISTSTART 318
+#define RAW_TEXT 317
+#define ITALICSTART 318
+#define LISTSTART 319
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 410 "markdown-new.y"
+#line 415 "markdown-new.y"
 {
     char *text;
     /* t_node *node; */
 }
 /* Line 1529 of yacc.c.  */
-#line 180 "markdown-new.y.h"
+#line 182 "markdown-new.y.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
