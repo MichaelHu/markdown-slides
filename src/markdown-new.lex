@@ -237,10 +237,16 @@ plus_series \+{3,}
 \|                                      { SETYYLVAL(yytext); P("VERTICAL"); RETURN(VERTICAL); }
 \*\*\*                                  { SETYYLVAL(yytext); P("TRIPLEASTERISK"); RETURN(TRIPLEASTERISK); }
 \*\*                                    { SETYYLVAL(yytext); P("DOUBLEASTERISK"); RETURN(DOUBLEASTERISK); }
-\*                                      { SETYYLVAL(yytext); P("ASTERISK"); RETURN(ASTERISK); }
+
+\*/[^*\r\n]+\*                          { SETYYLVAL(yytext); P("ASTERISK"); enterState(XEMSTART, "XEMSTART"); RETURN(ASTERISK); }
+<XEMSTART>\*                            { SETYYLVAL(yytext); P("ASTERISK"); restoreState(); RETURN(ASTERISK); }
+<XEMSTART>{normaltext}                  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+_/[^_\r\n]+_                            { SETYYLVAL(yytext); P("UNDERSCORE"); enterState(YEMSTART, "YEMSTART"); RETURN(UNDERSCORE); }
+<YEMSTART>_                             { SETYYLVAL(yytext); P("UNDERSCORE"); restoreState(); RETURN(UNDERSCORE); }
+<YEMSTART>{normaltext}                  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+
 ___                                     { SETYYLVAL(yytext); P("TRIPLEUNDERSCORE"); RETURN(TRIPLEUNDERSCORE); }
 __                                      { SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
-_                                       { SETYYLVAL(yytext); P("UNDERSCORE"); RETURN(UNDERSCORE); }
 !\[                                     { SETYYLVAL(yytext); P("EXCLAMATION_LEFTSQUARE"); RETURN(EXCLAMATION_LEFTSQUARE); }
 \[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
 \]\(                                    { SETYYLVAL(yytext); P("RIGHTSQUARE_LEFTBRACKET"); RETURN(RIGHTSQUARE_LEFTBRACKET); }
