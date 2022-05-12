@@ -98,6 +98,11 @@ static void clearAllState() {
 %x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART XSTRONGSTART YSTRONGSTART INDENTTABLEROW
 %x INDENTQUOTE QUOTESTART
 
+
+    /* need escaped chars in regular expression: "/<>" */
+    /* /  : look ahead */
+    /* <> : state */
+
     /* blankline ^[ ]{0,4}\r?\n */
 blankline ^[ \t]*\r?\n
 quoteblankline ^>[ ]{0,4}\r?\n
@@ -247,12 +252,17 @@ _/[^_\r\n]+_                            { SETYYLVAL(yytext); P("UNDERSCORE"); en
 
 ___                                     { SETYYLVAL(yytext); P("TRIPLEUNDERSCORE"); RETURN(TRIPLEUNDERSCORE); }
 __                                      { SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
-!\[                                     { SETYYLVAL(yytext); P("EXCLAMATION_LEFTSQUARE"); RETURN(EXCLAMATION_LEFTSQUARE); }
-\[                                      { SETYYLVAL(yytext); P("LEFTSQUARE"); RETURN(LEFTSQUARE); }
-\]\(                                    { SETYYLVAL(yytext); P("RIGHTSQUARE_LEFTBRACKET"); RETURN(RIGHTSQUARE_LEFTBRACKET); }
-\)                                      { SETYYLVAL(yytext); P("RIGHTBRACKET"); RETURN(RIGHTBRACKET); }
+
+!\[/[^\]\r\n]+\]\([^\)\r\n]+\)          { SETYYLVAL(yytext); P("EXCLAMATION_LEFTSQUARE"); enterState(LINKSTART, "LINKSTART"); RETURN(EXCLAMATION_LEFTSQUARE); }
+\[/[^\]\r\n]+\]\([^\)\r\n]+\)           { SETYYLVAL(yytext); P("LEFTSQUARE"); enterState(LINKSTART, "LINKSTART"); RETURN(LEFTSQUARE); }
+<LINKSTART>\]\(                         { SETYYLVAL(yytext); P("RIGHTSQUARE_LEFTBRACKET"); enterState(LINKATTR, "LINKATTR"); RETURN(RIGHTSQUARE_LEFTBRACKET); }
+<LINKSTART,LINKATTR,ATTRSTART>\)        { SETYYLVAL(yytext); P("RIGHTBRACKET"); clearAllState(); RETURN(RIGHTBRACKET); }
+<LINKSTART,LINKATTR>[ \t]               { SETYYLVAL(yytext); P("SPACE"); enterState(ATTRSTART, "ATTRSTART"); RETURN(SPACE); }
+<LINKSTART,LINKATTR,ATTRSTART>{normaltext}  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+
 [ \t]                                   { SETYYLVAL(yytext); P("SPACE"); RETURN(SPACE); }
 ~~                                      { SETYYLVAL(yytext); P("DOUBLETILDE"); RETURN(DOUBLETILDE); }
+
 :{minus_series}\|                       { SETYYLVAL(yytext); P("SEMI_MINUSSERIES_VERTICAL"); RETURN(SEMI_MINUSSERIES_VERTICAL); }
 {minus_series}:\|                       { SETYYLVAL(yytext); P("MINUSSERIES_SEMI_VERTICAL"); RETURN(MINUSSERIES_SEMI_VERTICAL); }
 :{minus_series}:\|                      { SETYYLVAL(yytext); P("SEMI_MINUSSERIES_SEMI_VERTICAL"); RETURN(SEMI_MINUSSERIES_SEMI_VERTICAL); }
