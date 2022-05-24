@@ -97,6 +97,7 @@ static void clearAllState() {
 %x INDENTLIST SHTMLBLOCK SCRIPTBLOCK STYLEBLOCK SVGBLOCK
 %x TABLEROW LINKSTART LINKATTR ATTRSTART XEMSTART YEMSTART XSTRONGSTART YSTRONGSTART INDENTTABLEROW
 %x INDENTQUOTE QUOTESTART
+%x TRIPLEUNDERSCORE_CONTENT
 
 
     /* need escaped chars in regular expression: "/<>" */
@@ -250,7 +251,10 @@ _/[^_\r\n]+_                            { SETYYLVAL(yytext); P("UNDERSCORE"); en
 <YEMSTART>_                             { SETYYLVAL(yytext); P("UNDERSCORE"); restoreState(); RETURN(UNDERSCORE); }
 <YEMSTART>{normaltext}                  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
 
-___                                     { SETYYLVAL(yytext); P("TRIPLEUNDERSCORE"); RETURN(TRIPLEUNDERSCORE); }
+___/[^\r\n]+?___                        { SETYYLVAL(yytext); P("TRIPLEUNDERSCORE"); enterState(TRIPLEUNDERSCORE_CONTENT, "TRIPLEUNDERSCORE_CONTENT"); RETURN(TRIPLEUNDERSCORE); }
+<TRIPLEUNDERSCORE_CONTENT>___           { SETYYLVAL(yytext); P("TRIPLEUNDERSCORE"); restoreState(); RETURN(TRIPLEUNDERSCORE); }
+<TRIPLEUNDERSCORE_CONTENT>{normaltext}  { SETYYLVAL(yytext); P("TEXT"); RETURN(TEXT); }
+
 __                                      { SETYYLVAL(yytext); P("DOUBLEUNDERSCORE"); RETURN(DOUBLEUNDERSCORE); }
 
 !\[/[^\]\r\n]+\]\([^\)\r\n]+\)          { SETYYLVAL(yytext); P("EXCLAMATION_LEFTSQUARE"); enterState(LINKSTART, "LINKSTART"); RETURN(EXCLAMATION_LEFTSQUARE); }

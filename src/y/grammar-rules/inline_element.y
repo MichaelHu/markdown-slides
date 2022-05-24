@@ -18,6 +18,10 @@ inline_element:
             show_rule("inline_element: strong");
             $$ = $1;
         }
+    | strong_italic {
+            show_rule("inline_element: strong_italic");
+            $$ = $1;
+        }
     | linethrough {
             show_rule("inline_element: linethrough");
             $$ = $1;

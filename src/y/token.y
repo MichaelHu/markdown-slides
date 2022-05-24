@@ -125,6 +125,7 @@
 %type <text> image
 %type <text> italic
 %type <text> strong
+%type <text> strong_italic
 %type <text> linethrough
 %type <text> inlinecode
 

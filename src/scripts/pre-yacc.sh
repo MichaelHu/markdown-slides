@@ -93,6 +93,7 @@ for i in `cat <<EOF
     raw_text.y
     raw_text_item.y
     strong.y
+    strong_italic.y
     unorderlist_0.y
     unorderlist_1.y
     unorderlist_2.y

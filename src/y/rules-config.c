@@ -192,6 +192,7 @@ static char* grammar_rules[] = {
                         "inline_element: image", "6",
                         "inline_element: italic", "6",
                         "inline_element: strong", "6",
+                        "inline_element: strong_italic", "6",
                         "inline_element: linethrough", "6",
                         "inline_element: inlinecode", "6",
 
@@ -238,6 +239,10 @@ static char* grammar_rules[] = {
                             "strong: DOUBLEUNDERSCORE inline_text DOUBLEUNDERSCORE", "7",
                             "strong: DOUBLEUNDERSCORE inline_text error", "7",
                             "strong: DOUBLEUNDERSCORE error", "7",
+
+                            "strong_italic: TRIPLEUNDERSCORE inline_text TRIPLEUNDERSCORE", "7",
+                            "strong_italic: TRIPLEUNDERSCORE inline_text error", "7",
+                            "strong_italic: TRIPLEUNDERSCORE error", "7",
 
                             "linethrough: DOUBLETILDE inline_text DOUBLETILDE", "7",
                             "linethrough: DOUBLETILDE inline_text error", "7",
