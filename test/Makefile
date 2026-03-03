@@ -14,7 +14,8 @@ test.out: main.o test-utils.o \
 	logutils.o \
 	test-strutils.o \
 	test-markdown-utils.o \
-	test-node.o
+	test-node.o \
+	test-markdown-parser.o
 	gcc $^ -o $@ -g
 
 strutils.o:
