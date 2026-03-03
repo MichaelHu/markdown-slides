@@ -3,7 +3,7 @@
 
 static t_tag last_tag = TAG_EOF; 
 
-void pop_bigger_level_tag(level){
+void pop_bigger_level_tag(int level){
     t_tag_item *item = tag_top_stack();
 
     while( item

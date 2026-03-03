@@ -124,6 +124,14 @@ markdown-slides 是一个用 C 语言编写的 Markdown 解析器，专为创建
 - **Make**：构建工具
 - **reveal.js**：幻灯片展示框架（第三方库）
 
+## 词法分析
+
+markdown-slides 使用 flex 工具生成词法分析器。词法分析器将 Markdown 文件分解为令牌（tokens），供语法分析器使用。项目入口文件为 `markdown.lex`。
+
+## 语法分析
+
+markdown-slides 使用 bison 工具生成语法分析器。语法分析器根据词法分析器提供的令牌，构建抽象语法树（AST），并将其转换为 HTML。项目入口文件为 `markdown.y`。
+
 ## 许可证
 
 本项目使用 MIT 许可证。
