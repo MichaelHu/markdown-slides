@@ -8,8 +8,13 @@ test: build
 test.out: main.o test-utils.o \
 	strutils.o \
 	markdown-utils.o \
+	node.o \
+	tagstack.o \
+	tagstackcheck.o \
+	logutils.o \
 	test-strutils.o \
-	test-markdown-utils.o
+	test-markdown-utils.o \
+	test-node.o
 	gcc $^ -o $@ -g
 
 strutils.o:
@@ -17,6 +22,18 @@ strutils.o:
 
 markdown-utils.o:
 	gcc -c ../src/markdown-utils.c -g
+
+node.o:
+	gcc -c ../src/node.c -g
+
+tagstack.o:
+	gcc -c ../src/tagstack.c -g
+
+logutils.o:
+	gcc -c ../src/logutils.c -g
+
+tagstackcheck.o:
+	gcc -c ../src/tagstackcheck.c -g
 
 test-utils.o:
 	gcc -c ./test-lib/test-utils.c -g
